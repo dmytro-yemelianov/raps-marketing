@@ -222,14 +222,83 @@
             // Enhanced current page highlighting
             const currentPath = window.location.pathname;
             const navLinks = document.querySelectorAll('.nav-section a');
-            
+
             navLinks.forEach(link => {
                 const href = link.getAttribute('href');
-                if (href === currentPath || 
+                if (href === currentPath ||
                     currentPath.includes(href) ||
                     (href !== '/' && currentPath.endsWith(href.replace(/^\//, '')))) {
                     link.classList.add('current-page');
                 }
+            });
+
+            // Collapsible navigation sections
+            const navSections = document.querySelectorAll('.nav-section');
+            const STORAGE_KEY = 'raps-nav-collapsed';
+
+            // Load saved collapsed state from localStorage
+            function loadCollapsedState() {
+                try {
+                    const saved = localStorage.getItem(STORAGE_KEY);
+                    return saved ? JSON.parse(saved) : {};
+                } catch (e) {
+                    return {};
+                }
+            }
+
+            // Save collapsed state to localStorage
+            function saveCollapsedState(state) {
+                try {
+                    localStorage.setItem(STORAGE_KEY, JSON.stringify(state));
+                } catch (e) {
+                    // localStorage might be unavailable
+                }
+            }
+
+            // Get section identifier from h3 text
+            function getSectionId(section) {
+                const h3 = section.querySelector('h3');
+                return h3 ? h3.textContent.trim().replace(/\s+/g, '-').toLowerCase() : null;
+            }
+
+            // Initialize collapsed states
+            const collapsedState = loadCollapsedState();
+
+            navSections.forEach(section => {
+                const h3 = section.querySelector('h3');
+                const sectionId = getSectionId(section);
+
+                if (!h3 || !sectionId) return;
+
+                // Restore saved state (but don't collapse section containing current page)
+                const hasCurrentPage = section.querySelector('.current-page');
+                if (collapsedState[sectionId] && !hasCurrentPage) {
+                    section.classList.add('collapsed');
+                }
+
+                // Add click handler for toggling
+                h3.addEventListener('click', function(e) {
+                    e.preventDefault();
+                    section.classList.toggle('collapsed');
+
+                    // Update saved state
+                    const updatedState = loadCollapsedState();
+                    updatedState[sectionId] = section.classList.contains('collapsed');
+                    saveCollapsedState(updatedState);
+                });
+
+                // Add keyboard accessibility
+                h3.setAttribute('role', 'button');
+                h3.setAttribute('tabindex', '0');
+                h3.setAttribute('aria-expanded', !section.classList.contains('collapsed'));
+
+                h3.addEventListener('keydown', function(e) {
+                    if (e.key === 'Enter' || e.key === ' ') {
+                        e.preventDefault();
+                        h3.click();
+                        h3.setAttribute('aria-expanded', !section.classList.contains('collapsed'));
+                    }
+                });
             });
             
             // Smooth scrolling for anchor links

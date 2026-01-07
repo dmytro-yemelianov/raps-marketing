@@ -163,6 +163,43 @@ body.sidebar-open {
   display: flex;
   align-items: center;
   gap: 0.5rem;
+  cursor: pointer;
+  user-select: none;
+  padding: 0.5rem;
+  border-radius: var(--border-radius);
+  transition: background-color 0.2s ease, color 0.2s ease;
+}
+
+.nav-section h3:hover {
+  background-color: var(--slate-800);
+  color: var(--slate-200);
+}
+
+.nav-section h3::after {
+  content: '';
+  margin-left: auto;
+  width: 0;
+  height: 0;
+  border-left: 5px solid transparent;
+  border-right: 5px solid transparent;
+  border-top: 5px solid var(--slate-500);
+  transition: transform 0.3s ease;
+}
+
+.nav-section.collapsed h3::after {
+  transform: rotate(-90deg);
+}
+
+.nav-section ul {
+  max-height: 1000px;
+  overflow: hidden;
+  transition: max-height 0.3s ease-in-out, opacity 0.2s ease;
+  opacity: 1;
+}
+
+.nav-section.collapsed ul {
+  max-height: 0;
+  opacity: 0;
 }
 
 .nav-section ul {
