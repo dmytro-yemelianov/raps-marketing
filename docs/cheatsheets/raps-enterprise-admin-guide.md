@@ -1,5 +1,15 @@
 # RAPS Enterprise Admin Cheat Sheet
 
+---
+
+**Document Version**: v4.2 (January 2026)  
+**RAPS Enterprise Edition**: 4.2.1  
+**APS API Compatibility**: Data Management v1, Model Derivative v2, OSS v2, Construction Cloud v1, Design Automation v3  
+**Enterprise Features**: SSO, RBAC, Multi-tenant, Compliance (SOC 2, GDPR)  
+**Minimum System Requirements**: 4GB RAM, 10GB disk, RHEL 8+/Ubuntu 20.04+  
+
+---
+
 ## Enterprise Deployment
 
 ### 1. Prerequisites
@@ -447,4 +457,39 @@ raps update check --security      # Security updates
 ```
 
 ---
-*RAPS Enterprise Admin Guide v4.0 | Updated: 2026 | Classification: Internal Use*
+
+## Version & Compatibility Information
+
+### Enterprise Feature Matrix
+
+| Feature | RAPS 4.2.1 | RAPS 4.1.x | RAPS 4.0.x |
+|---------|-------------|-------------|-------------|
+| SSO Integration | ✅ Full | ✅ Full | ✅ Basic |
+| Multi-Tenant | ✅ Advanced | ✅ Standard | ✅ Basic |
+| MCP Server | ✅ v1.2.0 | ✅ v1.1.0 | ✅ v1.0.0 |
+| Compliance Tools | ✅ SOC2, GDPR | ✅ SOC2 | ✅ Basic |
+| High Availability | ✅ Full | ✅ Limited | ❌ None |
+
+### APS API Version Requirements
+
+- **Minimum**: Data Management v1, Model Derivative v1, OSS v1
+- **Recommended**: Data Management v1, Model Derivative v2, OSS v2  
+- **Enterprise**: Add Construction Cloud v1, Design Automation v3
+- **Future**: Reality Capture v1 (planned Q2 2026)
+
+### Deprecation Notices
+
+- **RAPS 3.x**: End of support December 2026
+- **APS Model Derivative v1**: Deprecated, migrate to v2 by Q3 2026
+- **Legacy Authentication**: OAuth 1.0 removed in RAPS 5.0
+
+### Upgrade Recommendations
+
+1. **Immediate**: Upgrade from RAPS 3.x to 4.2.x
+2. **Planned**: Migrate Model Derivative v1 → v2 workflows  
+3. **Optional**: Enable MCP Server for AI operations
+4. **Future**: Plan for RAPS 5.0 migration (Q4 2026)
+
+---
+
+*RAPS Enterprise Admin Guide v4.2 | RAPS Enterprise v4.2.1 | APS APIs: DM v1, MD v2, OSS v2, CC v1, DA v3 | Updated: January 2026 | Classification: Internal Use*

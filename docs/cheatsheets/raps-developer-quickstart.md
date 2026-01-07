@@ -1,5 +1,14 @@
 # RAPS Developer Quick Start Cheat Sheet
 
+---
+
+**Document Version**: v4.2 (January 2026)  
+**RAPS Version**: 4.2.1  
+**APS API Compatibility**: Data Management v1, Model Derivative v2, OSS v2, Authentication v2  
+**Minimum Rust Version**: 1.88.0  
+
+---
+
 ## Installation & Setup (< 5 minutes)
 
 ### 1. Install RAPS
@@ -297,4 +306,31 @@ raps config reset               # Reset configuration
 **💬 Community**: [discord.gg/raps](https://discord.gg/raps)  
 
 ---
-*RAPS Developer Cheat Sheet v4.0 | Updated: 2026*
+
+## Version Compatibility Notes
+
+### RAPS 4.2.1 Changes
+- Enhanced MCP integration for natural language operations
+- Improved parallel processing performance (10% faster)
+- New `raps health monitor` command for real-time monitoring
+- Extended APS API timeout handling
+
+### Backward Compatibility
+- **RAPS 4.x**: All commands compatible
+- **RAPS 3.x**: Core commands compatible, some advanced features unavailable
+- **APS API Changes**: Model Derivative v2 required for new formats
+
+### Upgrade Path
+```bash
+# Check current version
+raps --version
+
+# Upgrade to latest
+# macOS: brew upgrade raps
+# Windows: scoop update raps
+# Linux: cargo install --force raps-cli
+```
+
+---
+
+*RAPS Developer Cheat Sheet v4.2 | RAPS v4.2.1 | APS APIs: DM v1, MD v2, OSS v2, Auth v2 | Updated: January 2026*

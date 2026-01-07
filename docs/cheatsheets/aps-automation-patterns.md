@@ -1,5 +1,15 @@
 # APS Automation Patterns Cheat Sheet
 
+---
+
+**Document Version**: v4.2 (January 2026)  
+**RAPS Version**: 4.2.1 (with MCP Server v1.2.0)  
+**APS API Coverage**: Data Management v1, Model Derivative v2, OSS v2, Authentication v2, Construction Cloud v1, Design Automation v3  
+**Integration Support**: GitHub Actions, Jenkins, Docker, Kubernetes  
+**AI Features**: Natural Language Operations via MCP Protocol v1.2.0  
+
+---
+
 ## Common Automation Workflows
 
 ### 🚀 File Processing Pipeline
@@ -511,4 +521,43 @@ raps degradation configure \
 - **Community Examples**: [github.com/raps-cli/examples](https://github.com/raps-cli/examples)
 
 ---
-*APS Automation Patterns v4.0 | Updated: 2026 | For Enterprise Use*
+
+## Version-Specific Features & Changes
+
+### RAPS 4.2.1 New Automation Features
+- **Natural Language Automation**: `raps ai-assistant "upload all models and generate PDFs"`
+- **Enhanced Parallel Processing**: 50% faster bulk operations
+- **Improved Error Recovery**: Smart retry with exponential backoff
+- **Advanced Monitoring**: Real-time performance analytics
+
+### MCP Server v1.2.0 Integration
+```bash
+# Natural language workflow automation
+raps mcp enable
+raps ai "process all models in staging bucket for client presentation"
+raps ai "migrate production data to new tenant with validation"
+```
+
+### API Version Dependencies
+
+| Pattern | Min APS API | Recommended | Notes |
+|---------|-------------|-------------|-------|
+| File Processing | DM v1, MD v1 | DM v1, MD v2 | v2 has better format support |
+| Enterprise SSO | Auth v1 | Auth v2 | v2 required for advanced features |
+| Multi-Tenant | DM v1, OSS v1 | DM v1, OSS v2, CC v1 | Construction Cloud for enterprise |
+| CI/CD Integration | All v1 | All v2 | Better webhook support in v2 |
+| AI Operations | All v2 | All v2 + MCP v1.2 | Requires latest versions |
+
+### Deprecation Warnings
+- **Model Derivative v1**: Pattern examples updated for v2 migration
+- **OAuth 1.0 Flows**: Removed from all examples (use OAuth 2.0)
+- **Legacy Webhook Format**: Update to new schema before Q3 2026
+
+### Compatibility Notes
+- **RAPS 4.x**: All patterns compatible across minor versions
+- **RAPS 3.x**: Basic patterns work, AI features unavailable
+- **APS API**: Patterns tested against latest API versions only
+
+---
+
+*APS Automation Patterns v4.2 | RAPS v4.2.1 + MCP v1.2.0 | APS APIs: DM v1, MD v2, OSS v2, Auth v2, CC v1, DA v3 | Updated: January 2026 | For Enterprise Use*

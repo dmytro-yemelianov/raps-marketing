@@ -4,7 +4,20 @@
 
 *First-ever natural language interface for APS automation eliminates code complexity for enterprise teams*
 
-**[LOCATION], June 10, 2026** – RAPS today announced the official launch of its Model Context Protocol (MCP) server, introducing the world's first AI-powered natural language interface for Autodesk Platform Services automation. This breakthrough technology allows enterprise teams to perform complex APS operations using simple English commands, fundamentally transforming how organizations interact with Autodesk's cloud services.
+**[LOCATION], June 10, 2026**
+
+---
+
+**Version Information**
+- **RAPS Version**: 4.2.0 (with MCP Server v1.2.0)
+- **APS API Compatibility**: Data Management v1, Model Derivative v2, OSS v2, Construction Cloud v1
+- **MCP Protocol**: v1.2.0 (Latest)
+- **AI Integration**: Claude 3.5+ Compatible
+- **OpenAPI Specification**: 3.0.3
+
+---
+
+RAPS today announced the official launch of its Model Context Protocol (MCP) server, introducing the world's first AI-powered natural language interface for Autodesk Platform Services automation. This breakthrough technology allows enterprise teams to perform complex APS operations using simple English commands, fundamentally transforming how organizations interact with Autodesk's cloud services.
 
 ### The End of API Complexity
 

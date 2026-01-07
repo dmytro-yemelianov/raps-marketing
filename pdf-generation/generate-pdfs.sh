@@ -127,6 +127,9 @@ generate_pdf() {
         --variable=linkcolor:blue \
         --variable=urlcolor:blue \
         --variable=toccolor:black \
+        --variable=header-left:"RAPS v4.2.1" \
+        --variable=header-right:"APS APIs: DM v1, MD v2, OSS v2" \
+        --variable=footer-center:"rapscli.xyz | $(date '+%B %Y')" \
         -o "$output_file"
     
     if [ -f "$output_file" ]; then

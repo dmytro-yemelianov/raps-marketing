@@ -4,7 +4,19 @@
 
 *New version delivers 95% faster APS operations, enterprise SSO, and AI-powered natural language interface*
 
-**[LOCATION], March 15, 2026** – RAPS (Rust-based APS CLI), the leading automation tool for Autodesk Platform Services, today announced the release of RAPS 4.0, featuring groundbreaking enterprise capabilities and AI integration that transforms how organizations interact with APS APIs. The new version addresses critical gaps in enterprise APS operations, delivering unprecedented speed, security, and simplicity.
+**[LOCATION], March 15, 2026**
+
+---
+
+**Version Information**
+- **RAPS Version**: 4.0.0 (LTS Release)
+- **APS API Compatibility**: Data Management v1, Model Derivative v2, OSS v2, Authentication v2
+- **MCP Protocol**: v1.0.0 
+- **OpenAPI Specification**: 3.0.3
+
+---
+
+RAPS (Rust-based APS CLI), the leading automation tool for Autodesk Platform Services, today announced the release of RAPS 4.0, featuring groundbreaking enterprise capabilities and AI integration that transforms how organizations interact with APS APIs. The new version addresses critical gaps in enterprise APS operations, delivering unprecedented speed, security, and simplicity.
 
 ### Key Innovation: From Code to Conversation
 
