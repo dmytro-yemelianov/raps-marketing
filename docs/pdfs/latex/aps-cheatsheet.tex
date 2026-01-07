@@ -1,0 +1,346 @@
+\documentclass[10pt,a4paper,landscape]{article}
+
+% Packages
+\usepackage[margin=0.5in]{geometry}
+\usepackage{multicol}
+\usepackage{xcolor}
+\usepackage{tikz}
+\usepackage{tabularx}
+\usepackage{booktabs}
+\usepackage{fancyhdr}
+\usepackage{hyperref}
+\usepackage{fontspec}
+\usepackage{listings}
+\usepackage{tcolorbox}
+\usepackage{enumitem}
+\usepackage{graphicx}
+\usepackage{array}
+
+% RAPS Color Scheme
+\definecolor{rapsblue}{RGB}{102,126,234}
+\definecolor{rapspurple}{RGB}{118,75,162}
+\definecolor{rapsgreen}{RGB}{40,167,69}
+\definecolor{rapsgray}{RGB}{108,117,125}
+\definecolor{rapslight}{RGB}{248,249,250}
+\definecolor{rapsdark}{RGB}{52,58,64}
+
+% Font settings
+\setmainfont{Helvetica Neue}
+\setmonofont{Consolas}
+
+% Column settings
+\setlength{\columnsep}{15pt}
+\setlength{\columnseprule}{0.5pt}
+
+% Header/Footer
+\pagestyle{fancy}
+\fancyhf{}
+\fancyhead[L]{\color{rapsgray}\small APS Developer Cheat Sheet}
+\fancyhead[C]{\color{rapsblue}\large\textbf{🌼 RAPS v4.2.1}}
+\fancyhead[R]{\color{rapsgray}\small January 2026}
+\fancyfoot[C]{\color{rapsgray}\small rapscli.xyz - Professional APS Automation}
+\renewcommand{\headrulewidth}{0.5pt}
+\renewcommand{\footrulewidth}{0.5pt}
+
+% Custom commands
+\newcommand{\sectionbox}[1]{%
+    \colorbox{rapsblue}{\color{white}\textbf{#1}}%
+}
+
+\newcommand{\rapscmd}[1]{\colorbox{rapslight}{\texttt{\color{rapsblue}#1}}}
+\newcommand{\endpoint}[1]{\texttt{\small\color{rapspurple}#1}}
+
+% Code listing style
+\lstdefinestyle{raps}{
+    backgroundcolor=\color{rapslight},
+    basicstyle=\ttfamily\scriptsize,
+    keywordstyle=\color{rapsblue},
+    stringstyle=\color{rapsgreen},
+    commentstyle=\color{rapsgray},
+    breaklines=true,
+    frame=none,
+    xleftmargin=0pt,
+    xrightmargin=0pt
+}
+\lstset{style=raps}
+
+% Compact table style
+\newcolumntype{L}[1]{>{\raggedright\arraybackslash}p{#1}}
+\newcolumntype{C}[1]{>{\centering\arraybackslash}p{#1}}
+
+% Document
+\begin{document}
+
+% Title Section
+\begin{center}
+    {\Huge\color{rapsblue}\textbf{APS Developer Cheat Sheet}}\\
+    \vspace{2mm}
+    {\large\color{rapsgray}Single-page reference for Autodesk Platform Services with RAPS CLI}\\
+    \vspace{2mm}
+    {\small\color{rapspurple}Document v2.1 | RAPS v4.2.1 | Generated: \today}
+\end{center}
+
+\vspace{-3mm}
+\rule{\textwidth}{1pt}
+\vspace{2mm}
+
+% Three column layout
+\begin{multicols}{3}
+
+% Authentication Section
+\sectionbox{AUTHENTICATION}\\[2mm]
+\begin{tcolorbox}[colback=rapslight,colframe=rapsblue,boxrule=0.5pt,arc=2mm,left=2mm,right=2mm,top=1mm,bottom=1mm]
+\textbf{OAuth Flows}\\[1mm]
+\begin{tabular}{@{}ll@{}}
+\textbf{2-Legged} & \textbf{3-Legged}\\
+\midrule
+Server-to-server & User-facing apps\\
+App identity only & User + app context\\
+Limited BIM360 & Full BIM360 access\\
+\texttt{client\_credentials} & \texttt{authorization\_code}\\
+\rapscmd{raps auth login} & \rapscmd{raps auth login --3legged}\\
+\end{tabular}
+\end{tcolorbox}
+
+\vspace{2mm}
+\textbf{Essential OAuth Scopes}\\[1mm]
+{\footnotesize
+\begin{tabular}{@{}lL{4cm}@{}}
+\toprule
+\textbf{Scope} & \textbf{Purpose}\\
+\midrule
+\texttt{data:read} & Read files/projects\\
+\texttt{data:write} & Modify metadata\\
+\texttt{data:create} & Upload files\\
+\texttt{bucket:read} & List buckets\\
+\texttt{bucket:create} & Create buckets\\
+\texttt{viewables:read} & View models\\
+\texttt{code:all} & Design Automation\\
+\texttt{account:read} & BIM360/ACC info\\
+\bottomrule
+\end{tabular}
+}
+
+\vspace{3mm}
+% Data Management Section
+\sectionbox{DATA MANAGEMENT API}\\[2mm]
+{\footnotesize
+\begin{tabular}{@{}L{3.5cm}L{3.5cm}@{}}
+\toprule
+\textbf{Operation} & \textbf{RAPS Command}\\
+\midrule
+List Hubs & \rapscmd{raps dm hubs}\\
+List Projects & \rapscmd{raps dm projects}\\
+List Folders & \rapscmd{raps dm folders <id>}\\
+Upload File & \rapscmd{raps dm upload <file>}\\
+Download & \rapscmd{raps dm download <id>}\\
+\bottomrule
+\end{tabular}
+}
+
+\vspace{2mm}
+\textbf{URN Encoding}
+\begin{lstlisting}
+# Manual (error-prone)
+echo -n "urn:..." | base64
+
+# With RAPS (automatic)
+raps urn encode "urn:adsk..."
+\end{lstlisting}
+
+\vspace{3mm}
+% OSS Section
+\sectionbox{OBJECT STORAGE SERVICE}\\[2mm]
+\textbf{Bucket Operations}\\[1mm]
+{\footnotesize
+\begin{tabular}{@{}lL{3.5cm}@{}}
+\toprule
+\textbf{Action} & \textbf{Command}\\
+\midrule
+List & \rapscmd{raps bucket list}\\
+Create & \rapscmd{raps bucket create <name>}\\
+Delete & \rapscmd{raps bucket delete <name>}\\
+\bottomrule
+\end{tabular}
+}
+
+\vspace{2mm}
+\textbf{Object Operations}\\[1mm]
+{\footnotesize
+\begin{tabular}{@{}lL{3.5cm}@{}}
+\toprule
+\textbf{Action} & \textbf{Command}\\
+\midrule
+Upload & \rapscmd{raps oss upload <file>}\\
+List & \rapscmd{raps oss list <bucket>}\\
+Download & \rapscmd{raps oss download <urn>}\\
+\bottomrule
+\end{tabular}
+}
+
+\vspace{2mm}
+\textbf{Bucket Naming Rules}
+\begin{itemize}[leftmargin=*,itemsep=0pt,topsep=0pt]
+\item 3-128 chars, lowercase
+\item Start/end with letter or number
+\item No spaces, underscores, IPs
+\end{itemize}
+
+\columnbreak
+
+% Model Derivative Section
+\sectionbox{MODEL DERIVATIVE API}\\[2mm]
+\textbf{Translation Workflow}
+\begin{center}
+\begin{tikzpicture}[scale=0.6]
+\node[draw,rounded corners,fill=rapslight] (upload) at (0,0) {Upload};
+\node[draw,rounded corners,fill=rapslight] (translate) at (2.5,0) {Translate};
+\node[draw,rounded corners,fill=rapslight] (poll) at (5,0) {Poll Status};
+\node[draw,rounded corners,fill=rapslight] (download) at (7.5,0) {Download};
+\draw[->,thick,color=rapsblue] (upload) -- (translate);
+\draw[->,thick,color=rapsblue] (translate) -- (poll);
+\draw[->,thick,color=rapsblue] (poll) -- (download);
+\end{tikzpicture}
+\end{center}
+
+\vspace{2mm}
+\textbf{Translation Operations}\\[1mm]
+{\footnotesize
+\begin{tabular}{@{}L{3cm}L{4cm}@{}}
+\toprule
+\textbf{Operation} & \textbf{RAPS Command}\\
+\midrule
+Start & \rapscmd{raps translate <urn>}\\
+Status & \rapscmd{raps translate status <urn>}\\
+Wait & \rapscmd{raps translate <urn> --wait}\\
+Properties & \rapscmd{raps translate props <urn>}\\
+\bottomrule
+\end{tabular}
+}
+
+\vspace{2mm}
+\textbf{Output Formats}\\[1mm]
+{\footnotesize
+\begin{tabular}{@{}llL{3cm}@{}}
+\toprule
+\textbf{Format} & \textbf{Code} & \textbf{Use Case}\\
+\midrule
+SVF2 & \texttt{svf2} & Web viewer (modern)\\
+SVF & \texttt{svf} & Web viewer (legacy)\\
+OBJ & \texttt{obj} & 3D meshes\\
+STL & \texttt{stl} & 3D printing\\
+PDF & \texttt{pdf} & 2D drawings\\
+DWG & \texttt{dwg} & AutoCAD format\\
+\bottomrule
+\end{tabular}
+}
+
+\vspace{3mm}
+% Design Automation Section
+\sectionbox{DESIGN AUTOMATION API}\\[2mm]
+\textbf{Supported Engines}\\[1mm]
+{\footnotesize
+\begin{tabular}{@{}lll@{}}
+\toprule
+\textbf{Engine} & \textbf{Files} & \textbf{RAPS Filter}\\
+\midrule
+AutoCAD & DWG, DXF & \texttt{--filter autocad}\\
+Revit & RVT, RFA & \texttt{--filter revit}\\
+Inventor & IPT, IAM & \texttt{--filter inventor}\\
+3ds Max & MAX & \texttt{--filter max}\\
+\bottomrule
+\end{tabular}
+}
+
+\vspace{2mm}
+\textbf{DA Components}
+\begin{center}
+\begin{tikzpicture}[scale=0.7]
+\node[draw,fill=rapslight] (app) at (0,0) {AppBundle};
+\node[draw,fill=rapslight] (act) at (2.5,0) {Activity};
+\node[draw,fill=rapslight] (work) at (5,0) {WorkItem};
+\node at (0,-0.5) {\tiny (code)};
+\node at (2.5,-0.5) {\tiny (process)};
+\node at (5,-0.5) {\tiny (execution)};
+\draw[->,thick] (app) -- (act);
+\draw[->,thick] (act) -- (work);
+\end{tikzpicture}
+\end{center}
+
+\columnbreak
+
+% Common Issues Section
+\sectionbox{COMMON ERROR CODES}\\[2mm]
+{\footnotesize
+\begin{tabular}{@{}llL{3.5cm}@{}}
+\toprule
+\textbf{Code} & \textbf{Cause} & \textbf{RAPS Solution}\\
+\midrule
+400 & Invalid request & Built-in validation\\
+401 & Expired token & \rapscmd{raps auth refresh}\\
+403 & No permissions & \rapscmd{raps auth status}\\
+404 & URN not found & \rapscmd{raps urn encode}\\
+409 & Name conflict & \rapscmd{raps bucket list}\\
+429 & Rate limit & Auto rate limiting\\
+\bottomrule
+\end{tabular}
+}
+
+\vspace{3mm}
+% Quick Commands Section
+\sectionbox{QUICK COMMANDS}\\[2mm]
+\textbf{First-Time Setup}
+\begin{lstlisting}
+# Install
+brew install raps  # macOS
+scoop install raps # Windows
+
+# Authenticate
+raps auth login
+
+# Verify
+raps auth status
+\end{lstlisting}
+
+\textbf{Common Workflow}
+\begin{lstlisting}
+# Upload -> Translate -> View
+raps oss upload model.rvt bucket
+raps translate $(raps urn encode \
+  "urn:...") --wait
+raps view <urn>
+\end{lstlisting}
+
+\textbf{Batch Operations}
+\begin{lstlisting}
+# Process multiple files
+raps oss upload-batch *.dwg \
+  --bucket mybucket
+raps translate-batch --bucket \
+  mybucket --formats svf2
+\end{lstlisting}
+
+\vspace{3mm}
+% Tips Section
+\sectionbox{PRO TIPS}\\[2mm]
+\begin{itemize}[leftmargin=*,itemsep=0pt,topsep=0pt]
+\item Use profiles: \rapscmd{--profile prod}
+\item Enable verbose: \rapscmd{--verbose}
+\item Health check: \rapscmd{raps health}
+\item View examples: \rapscmd{raps examples}
+\end{itemize}
+
+\vspace{3mm}
+% Footer Section
+\begin{tcolorbox}[colback=rapsdark,colframe=rapsdark,boxrule=0pt,arc=2mm,left=2mm,right=2mm,top=1mm,bottom=1mm]
+\color{white}
+\textbf{Resources}\\
+\small
+🌐 \href{https://rapscli.xyz}{rapscli.xyz} | 
+📧 \href{mailto:support@rapscli.xyz}{support@rapscli.xyz}\\
+💬 Discord: \href{https://discord.gg/raps}{discord.gg/raps}\\
+📚 Docs: \href{https://aps.autodesk.com}{aps.autodesk.com}
+\end{tcolorbox}
+
+\end{multicols}
+\end{document}

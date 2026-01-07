@@ -1,0 +1,570 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>APS Token Cost Calculator - RAPS</title>
+    
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;900&display=swap');
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        /* Print optimization */
+        @page {
+            size: A4;
+            margin: 0;
+        }
+        
+        @media print {
+            body {
+                -webkit-print-color-adjust: exact;
+                print-color-adjust: exact;
+            }
+        }
+        
+        body {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: #1a202c;
+            width: 210mm;
+            min-height: 297mm;
+            margin: 0 auto;
+        }
+        
+        .page {
+            background: white;
+            width: 210mm;
+            min-height: 297mm;
+            position: relative;
+            display: flex;
+            flex-direction: column;
+        }
+        
+        /* Header */
+        .header {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 30px 40px;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .header::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            right: -10%;
+            width: 300px;
+            height: 300px;
+            background: rgba(255,255,255,0.1);
+            border-radius: 50%;
+        }
+        
+        .logo-section {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: 20px;
+            position: relative;
+            z-index: 1;
+        }
+        
+        .logo {
+            font-size: 28px;
+            font-weight: 900;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        
+        .version-badge {
+            background: rgba(255,255,255,0.2);
+            padding: 4px 12px;
+            border-radius: 20px;
+            font-size: 12px;
+            font-weight: 600;
+        }
+        
+        .title {
+            font-size: 36px;
+            font-weight: 700;
+            margin-bottom: 10px;
+            position: relative;
+            z-index: 1;
+        }
+        
+        .subtitle {
+            font-size: 16px;
+            opacity: 0.9;
+            position: relative;
+            z-index: 1;
+        }
+        
+        /* Main Content Grid */
+        .content {
+            padding: 40px;
+            flex: 1;
+        }
+        
+        .grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 30px;
+            margin-bottom: 30px;
+        }
+        
+        .card {
+            background: white;
+            border-radius: 12px;
+            padding: 24px;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.07);
+            border: 1px solid #e2e8f0;
+            transition: transform 0.2s;
+        }
+        
+        .card-title {
+            font-size: 14px;
+            font-weight: 600;
+            color: #64748b;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            margin-bottom: 12px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        
+        .icon {
+            width: 20px;
+            height: 20px;
+            background: #667eea;
+            border-radius: 4px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 12px;
+        }
+        
+        /* Pricing Table */
+        .pricing-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 8px;
+        }
+        
+        .pricing-table th {
+            background: #f8fafc;
+            padding: 12px;
+            text-align: left;
+            font-weight: 600;
+            font-size: 13px;
+            color: #475569;
+            border-bottom: 2px solid #e2e8f0;
+        }
+        
+        .pricing-table td {
+            padding: 12px;
+            font-size: 14px;
+            border-bottom: 1px solid #f1f5f9;
+        }
+        
+        .price-badge {
+            background: #10b981;
+            color: white;
+            padding: 4px 8px;
+            border-radius: 4px;
+            font-weight: 600;
+            font-size: 12px;
+            display: inline-block;
+        }
+        
+        .free-badge {
+            background: #667eea;
+        }
+        
+        /* Cost Calculator Visual */
+        .calculator-visual {
+            background: linear-gradient(135deg, #f6f8fb 0%, #e9ecf1 100%);
+            border-radius: 12px;
+            padding: 24px;
+            position: relative;
+        }
+        
+        .calc-display {
+            background: #1a202c;
+            color: #10b981;
+            font-family: 'Courier New', monospace;
+            padding: 20px;
+            border-radius: 8px;
+            font-size: 18px;
+            margin-bottom: 20px;
+            box-shadow: inset 0 2px 4px rgba(0,0,0,0.3);
+        }
+        
+        .calc-display .label {
+            color: #64748b;
+            font-size: 12px;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+        
+        .calc-display .value {
+            font-size: 32px;
+            font-weight: bold;
+            margin: 8px 0;
+        }
+        
+        /* Chart Container */
+        .chart-container {
+            position: relative;
+            height: 200px;
+            margin: 20px 0;
+        }
+        
+        .bar-chart {
+            display: flex;
+            align-items: flex-end;
+            justify-content: space-around;
+            height: 100%;
+            padding: 0 20px;
+        }
+        
+        .bar {
+            width: 60px;
+            background: linear-gradient(to top, #667eea, #764ba2);
+            border-radius: 4px 4px 0 0;
+            position: relative;
+            transition: all 0.3s;
+        }
+        
+        .bar:nth-child(1) { height: 30%; }
+        .bar:nth-child(2) { height: 15%; }
+        .bar:nth-child(3) { height: 80%; }
+        .bar:nth-child(4) { height: 100%; }
+        
+        .bar-label {
+            position: absolute;
+            bottom: -30px;
+            left: 50%;
+            transform: translateX(-50%);
+            font-size: 11px;
+            font-weight: 600;
+            color: #64748b;
+            white-space: nowrap;
+        }
+        
+        .bar-value {
+            position: absolute;
+            top: -25px;
+            left: 50%;
+            transform: translateX(-50%);
+            font-size: 12px;
+            font-weight: bold;
+            color: #1a202c;
+        }
+        
+        /* Comparison Section */
+        .comparison {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 20px;
+            margin: 30px 0;
+        }
+        
+        .tier-card {
+            text-align: center;
+            padding: 20px;
+            border-radius: 8px;
+            border: 2px solid #e2e8f0;
+            position: relative;
+        }
+        
+        .tier-card.recommended {
+            border-color: #667eea;
+            background: linear-gradient(135deg, rgba(102,126,234,0.05) 0%, rgba(118,75,162,0.05) 100%);
+        }
+        
+        .tier-card.recommended::before {
+            content: 'RECOMMENDED';
+            position: absolute;
+            top: -10px;
+            left: 50%;
+            transform: translateX(-50%);
+            background: #667eea;
+            color: white;
+            padding: 2px 12px;
+            border-radius: 10px;
+            font-size: 10px;
+            font-weight: bold;
+        }
+        
+        .tier-name {
+            font-size: 18px;
+            font-weight: 700;
+            margin-bottom: 8px;
+        }
+        
+        .tier-price {
+            font-size: 28px;
+            font-weight: 900;
+            color: #667eea;
+            margin: 10px 0;
+        }
+        
+        .tier-features {
+            list-style: none;
+            padding: 0;
+            margin: 15px 0;
+            font-size: 13px;
+        }
+        
+        .tier-features li {
+            padding: 6px 0;
+            color: #64748b;
+        }
+        
+        .tier-features li::before {
+            content: '✓';
+            color: #10b981;
+            font-weight: bold;
+            margin-right: 8px;
+        }
+        
+        /* RAPS CLI Section */
+        .raps-section {
+            background: linear-gradient(135deg, #1a202c 0%, #2d3748 100%);
+            color: white;
+            padding: 30px;
+            border-radius: 12px;
+            margin: 30px 0;
+        }
+        
+        .raps-title {
+            font-size: 20px;
+            font-weight: 700;
+            margin-bottom: 15px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        
+        .code-block {
+            background: rgba(0,0,0,0.3);
+            border: 1px solid rgba(255,255,255,0.1);
+            border-radius: 6px;
+            padding: 15px;
+            font-family: 'Courier New', monospace;
+            font-size: 13px;
+            margin: 10px 0;
+        }
+        
+        .code-comment {
+            color: #94a3b8;
+            font-style: italic;
+        }
+        
+        /* Footer */
+        .footer {
+            background: #f8fafc;
+            padding: 30px 40px;
+            border-top: 2px solid #e2e8f0;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        
+        .footer-links {
+            display: flex;
+            gap: 30px;
+            font-size: 14px;
+        }
+        
+        .footer-links a {
+            color: #64748b;
+            text-decoration: none;
+            font-weight: 500;
+        }
+        
+        .footer-brand {
+            font-weight: 700;
+            color: #667eea;
+        }
+    </style>
+</head>
+<body>
+    <div class="page">
+        <!-- Header -->
+        <div class="header">
+            <div class="logo-section">
+                <div class="logo">
+                    🌼 RAPS
+                </div>
+                <div class="version-badge">v4.2.1</div>
+            </div>
+            <h1 class="title">APS Token Cost Calculator</h1>
+            <p class="subtitle">Estimate your monthly Autodesk Platform Services costs instantly</p>
+        </div>
+        
+        <!-- Main Content -->
+        <div class="content">
+            <!-- Pricing Grid -->
+            <div class="grid">
+                <!-- Current Pricing -->
+                <div class="card">
+                    <div class="card-title">
+                        <span class="icon">💰</span>
+                        Current APS Pricing (2026)
+                    </div>
+                    <table class="pricing-table">
+                        <thead>
+                            <tr>
+                                <th>Operation</th>
+                                <th>Tokens</th>
+                                <th>Cost</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>Revit/Navisworks</td>
+                                <td>1.5</td>
+                                <td><span class="price-badge">$4.50</span></td>
+                            </tr>
+                            <tr>
+                                <td>Other Formats</td>
+                                <td>0.5</td>
+                                <td><span class="price-badge">$1.50</span></td>
+                            </tr>
+                            <tr>
+                                <td>Design Automation</td>
+                                <td>6/hour</td>
+                                <td><span class="price-badge">$18/hr</span></td>
+                            </tr>
+                            <tr>
+                                <td>Viewer Sessions</td>
+                                <td>0</td>
+                                <td><span class="price-badge free-badge">FREE</span></td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+                
+                <!-- Cost Calculator -->
+                <div class="card calculator-visual">
+                    <div class="card-title">
+                        <span class="icon">🧮</span>
+                        Monthly Estimate
+                    </div>
+                    <div class="calc-display">
+                        <div class="label">Total Monthly Cost</div>
+                        <div class="value">$847.50</div>
+                        <div class="label">283 tokens/month</div>
+                    </div>
+                    <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 15px;">
+                        <div>
+                            <div style="font-size: 12px; color: #64748b; margin-bottom: 4px;">Revit Files</div>
+                            <div style="font-size: 20px; font-weight: bold;">50</div>
+                        </div>
+                        <div>
+                            <div style="font-size: 12px; color: #64748b; margin-bottom: 4px;">DA Hours</div>
+                            <div style="font-size: 20px; font-weight: bold;">25</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Usage Chart -->
+            <div class="card">
+                <div class="card-title">
+                    <span class="icon">📊</span>
+                    Cost Breakdown by Service
+                </div>
+                <div class="chart-container">
+                    <div class="bar-chart">
+                        <div class="bar">
+                            <span class="bar-value">$225</span>
+                            <span class="bar-label">Revit</span>
+                        </div>
+                        <div class="bar">
+                            <span class="bar-value">$75</span>
+                            <span class="bar-label">DWG</span>
+                        </div>
+                        <div class="bar">
+                            <span class="bar-value">$450</span>
+                            <span class="bar-label">Design Auto</span>
+                        </div>
+                        <div class="bar">
+                            <span class="bar-value">$97.50</span>
+                            <span class="bar-label">Other</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Tier Comparison -->
+            <div class="comparison">
+                <div class="tier-card">
+                    <div class="tier-name">Free Tier</div>
+                    <div class="tier-price">$0</div>
+                    <ul class="tier-features">
+                        <li>100 translations/mo</li>
+                        <li>25 DA hours/mo</li>
+                        <li>Community support</li>
+                    </ul>
+                </div>
+                <div class="tier-card recommended">
+                    <div class="tier-name">Pay-as-you-go</div>
+                    <div class="tier-price">$3/token</div>
+                    <ul class="tier-features">
+                        <li>Unlimited translations</li>
+                        <li>Unlimited DA hours</li>
+                        <li>Priority support</li>
+                    </ul>
+                </div>
+                <div class="tier-card">
+                    <div class="tier-name">Enterprise</div>
+                    <div class="tier-price">Custom</div>
+                    <ul class="tier-features">
+                        <li>Volume discounts</li>
+                        <li>Dedicated support</li>
+                        <li>SLA guarantees</li>
+                    </ul>
+                </div>
+            </div>
+            
+            <!-- RAPS CLI Section -->
+            <div class="raps-section">
+                <div class="raps-title">
+                    💡 Calculate with RAPS CLI
+                </div>
+                <div class="code-block">
+                    <span class="code-comment"># Estimate monthly costs instantly</span><br>
+                    raps usage estimate --translations 100 --da-hours 25<br><br>
+                    
+                    <span class="code-comment"># Track actual usage</span><br>
+                    raps cost report --monthly<br><br>
+                    
+                    <span class="code-comment"># Set budget alerts</span><br>
+                    raps config set budget.monthly 1000<br>
+                    raps config set budget.alert 80%
+                </div>
+            </div>
+        </div>
+        
+        <!-- Footer -->
+        <div class="footer">
+            <div class="footer-brand">RAPS - Professional APS Automation</div>
+            <div class="footer-links">
+                <a href="https://rapscli.xyz">rapscli.xyz</a>
+                <a href="mailto:support@rapscli.xyz">support@rapscli.xyz</a>
+                <a href="https://discord.gg/raps">Discord</a>
+            </div>
+        </div>
+    </div>
+</body>
+</html>
