@@ -1,0 +1,242 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import '../styles/global.css';
+---
+
+<BaseLayout 
+  title="RAPS - Professional CLI for Autodesk Platform Services" 
+  description="The most powerful command-line tool for APS automation. Simplify authentication, manage resources, and accelerate development."
+>
+  <!-- Hero Section -->
+  <section class="relative overflow-hidden hero-pattern">
+    <div class="content-container py-20">
+      <div class="max-w-4xl mx-auto text-center fade-in">
+        <h1 class="text-5xl md:text-6xl font-bold mb-6">
+          <span class="gradient-text">RAPS CLI</span>
+        </h1>
+        <p class="text-xl md:text-2xl text-gray-600 mb-8">
+          The Professional Command-Line Tool for Autodesk Platform Services
+        </p>
+        <p class="text-lg text-gray-500 mb-12 max-w-2xl mx-auto">
+          Stop fighting with OAuth, token management, and API complexity. 
+          RAPS handles the hard parts so you can focus on building.
+        </p>
+        <div class="flex flex-col sm:flex-row gap-4 justify-center">
+          <a href="#install" class="btn btn-primary text-lg px-8 py-3">
+            Get Started →
+          </a>
+          <a href="/guides" class="btn btn-secondary text-lg px-8 py-3">
+            View Documentation
+          </a>
+        </div>
+        <div class="mt-12 p-4 bg-gray-900 rounded-lg text-left max-w-2xl mx-auto">
+          <code class="text-green-400 text-sm md:text-base">
+            $ npm install -g @rapscli/cli<br/>
+            $ raps auth login<br/>
+            $ raps oss upload model.rvt --translate
+          </code>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Pain Points Section -->
+  <section class="py-16 bg-gray-50">
+    <div class="content-container">
+      <div class="text-center mb-12">
+        <h2 class="text-3xl md:text-4xl font-bold mb-4">
+          Why Developers Choose RAPS
+        </h2>
+        <p class="text-lg text-gray-600">
+          We solve the universal pain points that plague CAD/PLM developers everywhere
+        </p>
+      </div>
+      <div class="feature-grid">
+        <div class="card p-6">
+          <div class="text-4xl mb-4">🔐</div>
+          <h3 class="text-xl font-semibold mb-2">Authentication Simplified</h3>
+          <p class="text-gray-600">
+            Handle 2-legged, 3-legged, and PKCE OAuth flows with a single command. 
+            Automatic token refresh, secure storage, and zero manual configuration.
+          </p>
+        </div>
+        <div class="card p-6">
+          <div class="text-4xl mb-4">🔄</div>
+          <h3 class="text-xl font-semibold mb-2">File Translation Made Easy</h3>
+          <p class="text-gray-600">
+            Upload, translate, and monitor progress with intelligent retry logic. 
+            No more polling loops or timeout failures.
+          </p>
+        </div>
+        <div class="card p-6">
+          <div class="text-4xl mb-4">📦</div>
+          <h3 class="text-xl font-semibold mb-2">Version Stability</h3>
+          <p class="text-gray-600">
+            One CLI works across all APS versions. No annual rebuilds, 
+            no breaking changes, just consistent reliability.
+          </p>
+        </div>
+        <div class="card p-6">
+          <div class="text-4xl mb-4">📚</div>
+          <h3 class="text-xl font-semibold mb-2">Complete Documentation</h3>
+          <p class="text-gray-600">
+            Comprehensive guides, real examples, and clear error messages. 
+            Everything you need, nothing you don't.
+          </p>
+        </div>
+        <div class="card p-6">
+          <div class="text-4xl mb-4">🚀</div>
+          <h3 class="text-xl font-semibold mb-2">Enterprise Ready</h3>
+          <p class="text-gray-600">
+            SSO support, team profiles, audit logging, and CI/CD integration. 
+            Built for professional development teams.
+          </p>
+        </div>
+        <div class="card p-6">
+          <div class="text-4xl mb-4">🤖</div>
+          <h3 class="text-xl font-semibold mb-2">AI Integration</h3>
+          <p class="text-gray-600">
+            MCP server for Claude, Copilot, and Cursor. 
+            Let AI handle the repetitive APS tasks.
+          </p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Market Validation Section -->
+  <section class="py-16">
+    <div class="content-container">
+      <div class="bg-gradient-to-r from-raps-blue to-raps-purple rounded-2xl p-8 md:p-12 text-white">
+        <div class="grid md:grid-cols-2 gap-8 items-center">
+          <div>
+            <h2 class="text-3xl md:text-4xl font-bold mb-6">
+              The Industry-Wide Problem We Solve
+            </h2>
+            <p class="text-lg mb-6 opacity-90">
+              Our research across Autodesk, PTC, Dassault, and Siemens platforms reveals 
+              that authentication complexity, file translation failures, and SDK version 
+              conflicts are universal problems costing the industry $600M+ annually.
+            </p>
+            <a href="/articles/cross-platform-pain-points" class="inline-flex items-center text-white font-semibold hover:underline">
+              Read the Research →
+            </a>
+          </div>
+          <div class="grid grid-cols-2 gap-4">
+            <div class="bg-white/10 backdrop-blur rounded-lg p-4">
+              <div class="text-3xl font-bold mb-2">100K+</div>
+              <div class="text-sm opacity-90">Developers Affected</div>
+            </div>
+            <div class="bg-white/10 backdrop-blur rounded-lg p-4">
+              <div class="text-3xl font-bold mb-2">70%</div>
+              <div class="text-sm opacity-90">Market Coverage</div>
+            </div>
+            <div class="bg-white/10 backdrop-blur rounded-lg p-4">
+              <div class="text-3xl font-bold mb-2">3 Weeks</div>
+              <div class="text-sm opacity-90">Saved Annually</div>
+            </div>
+            <div class="bg-white/10 backdrop-blur rounded-lg p-4">
+              <div class="text-3xl font-bold mb-2">$600M</div>
+              <div class="text-sm opacity-90">Industry Waste</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Code Examples Section -->
+  <section class="py-16 bg-gray-50">
+    <div class="content-container">
+      <h2 class="text-3xl md:text-4xl font-bold text-center mb-12">
+        Powerful Yet Simple
+      </h2>
+      <div class="grid md:grid-cols-2 gap-8">
+        <div>
+          <h3 class="text-xl font-semibold mb-4">Authentication in One Line</h3>
+          <div class="bg-gray-900 rounded-lg p-4 text-sm">
+            <code class="text-gray-100">
+              <span class="text-green-400"># 3-legged OAuth with PKCE</span><br/>
+              $ raps auth login --pkce<br/><br/>
+              <span class="text-green-400"># 2-legged for automation</span><br/>
+              $ raps auth client-credentials<br/><br/>
+              <span class="text-green-400"># Token automatically refreshed</span><br/>
+              $ raps config show token
+            </code>
+          </div>
+        </div>
+        <div>
+          <h3 class="text-xl font-semibold mb-4">File Operations Simplified</h3>
+          <div class="bg-gray-900 rounded-lg p-4 text-sm">
+            <code class="text-gray-100">
+              <span class="text-green-400"># Upload and translate</span><br/>
+              $ raps oss upload model.rvt \<br/>
+                &nbsp;&nbsp;--bucket my-bucket \<br/>
+                &nbsp;&nbsp;--translate svf2<br/><br/>
+              <span class="text-green-400"># Monitor progress</span><br/>
+              $ raps derivative status $URN \<br/>
+                &nbsp;&nbsp;--watch --notify
+            </code>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Installation Section -->
+  <section id="install" class="py-16">
+    <div class="content-container">
+      <div class="max-w-3xl mx-auto">
+        <h2 class="text-3xl md:text-4xl font-bold text-center mb-12">
+          Get Started in 60 Seconds
+        </h2>
+        <div class="space-y-6">
+          <div class="card p-6">
+            <h3 class="text-xl font-semibold mb-3">1. Install RAPS</h3>
+            <div class="bg-gray-100 rounded p-3">
+              <code class="text-sm">npm install -g @rapscli/cli</code>
+            </div>
+          </div>
+          <div class="card p-6">
+            <h3 class="text-xl font-semibold mb-3">2. Configure Authentication</h3>
+            <div class="bg-gray-100 rounded p-3">
+              <code class="text-sm">raps auth login</code>
+            </div>
+          </div>
+          <div class="card p-6">
+            <h3 class="text-xl font-semibold mb-3">3. Start Using APS APIs</h3>
+            <div class="bg-gray-100 rounded p-3">
+              <code class="text-sm">raps oss ls --bucket my-bucket</code>
+            </div>
+          </div>
+        </div>
+        <div class="text-center mt-8">
+          <a href="/guides/quickstart" class="btn btn-primary text-lg px-8 py-3">
+            View Full Documentation →
+          </a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- CTA Section -->
+  <section class="py-16 bg-gradient-to-r from-raps-blue to-raps-purple text-white">
+    <div class="content-container text-center">
+      <h2 class="text-3xl md:text-4xl font-bold mb-6">
+        Join Thousands of Developers Using RAPS
+      </h2>
+      <p class="text-xl mb-8 opacity-90 max-w-2xl mx-auto">
+        Stop wasting time on authentication, token management, and API complexity. 
+        Let RAPS handle the infrastructure so you can ship features faster.
+      </p>
+      <div class="flex flex-col sm:flex-row gap-4 justify-center">
+        <a href="#install" class="btn bg-white text-raps-blue hover:bg-gray-100 text-lg px-8 py-3">
+          Install Now
+        </a>
+        <a href="https://github.com" class="btn bg-white/20 backdrop-blur text-white hover:bg-white/30 text-lg px-8 py-3">
+          Star on GitHub
+        </a>
+      </div>
+    </div>
+  </section>
+</BaseLayout>
