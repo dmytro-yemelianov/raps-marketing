@@ -1,0 +1,702 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>APS JWT Token Decoder Tool</title>
+    <meta name="description" content="Interactive tool to decode and analyze Autodesk Platform Services (APS) JWT authentication tokens">
+    <meta name="keywords" content="APS, JWT, token, decoder, authentication, OAuth, Autodesk">
+    
+    <style>
+        * {
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            line-height: 1.6;
+            color: #333;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+        }
+        
+        .container {
+            background: white;
+            border-radius: 12px;
+            padding: 30px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+        }
+        
+        h1 {
+            color: #2c3e50;
+            text-align: center;
+            margin-bottom: 10px;
+            font-size: 2.2em;
+        }
+        
+        .subtitle {
+            text-align: center;
+            color: #7f8c8d;
+            margin-bottom: 30px;
+            font-style: italic;
+        }
+        
+        .tool-section {
+            background: #f8f9fa;
+            border-radius: 8px;
+            padding: 25px;
+            margin-bottom: 25px;
+            border-left: 4px solid #facc15;
+        }
+        
+        .tool-section h2 {
+            margin-top: 0;
+            color: #2c3e50;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        
+        .tool-section h2::before {
+            content: "🔓";
+            font-size: 0.9em;
+        }
+        
+        label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: 600;
+            color: #34495e;
+        }
+        
+        textarea {
+            width: 100%;
+            padding: 12px;
+            border: 2px solid #ddd;
+            border-radius: 6px;
+            font-family: 'Courier New', monospace;
+            font-size: 14px;
+            transition: border-color 0.3s;
+            min-height: 120px;
+            resize: vertical;
+        }
+        
+        textarea:focus {
+            outline: none;
+            border-color: #facc15;
+            box-shadow: 0 0 0 3px rgba(250, 204, 21, 0.1);
+        }
+        
+        button {
+            background: #facc15;
+            color: #000;
+            border: none;
+            padding: 12px 24px;
+            border-radius: 6px;
+            cursor: pointer;
+            font-weight: 600;
+            font-size: 14px;
+            transition: all 0.3s;
+            margin: 10px 5px 10px 0;
+        }
+        
+        button:hover {
+            background: #eab308;
+            transform: translateY(-1px);
+            box-shadow: 0 4px 8px rgba(0,0,0,0.2);
+        }
+        
+        button:active {
+            transform: translateY(0);
+        }
+        
+        .result-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 20px;
+            margin-top: 20px;
+        }
+        
+        .result-section {
+            background: white;
+            border: 2px solid #e9ecef;
+            border-radius: 8px;
+            padding: 20px;
+        }
+        
+        .result-section h3 {
+            margin-top: 0;
+            color: #495057;
+            border-bottom: 2px solid #facc15;
+            padding-bottom: 10px;
+        }
+        
+        .json-display {
+            background: #f8f9fa;
+            border: 1px solid #dee2e6;
+            border-radius: 4px;
+            padding: 15px;
+            font-family: 'Courier New', monospace;
+            font-size: 13px;
+            white-space: pre-wrap;
+            max-height: 300px;
+            overflow-y: auto;
+        }
+        
+        .token-parts {
+            margin: 15px 0;
+        }
+        
+        .token-part {
+            margin: 10px 0;
+            padding: 10px;
+            border-radius: 4px;
+            font-family: 'Courier New', monospace;
+            font-size: 12px;
+            word-break: break-all;
+            border-left: 4px solid;
+        }
+        
+        .token-header {
+            background: #fff3cd;
+            border-left-color: #ffc107;
+        }
+        
+        .token-payload {
+            background: #d4edda;
+            border-left-color: #28a745;
+        }
+        
+        .token-signature {
+            background: #cce5ff;
+            border-left-color: #007bff;
+        }
+        
+        .error {
+            background: #ffebee;
+            border: 1px solid #f44336;
+            color: #c62828;
+            border-radius: 6px;
+            padding: 15px;
+            margin-top: 15px;
+        }
+        
+        .warning {
+            background: #fff3e0;
+            border: 1px solid #ff9800;
+            color: #e65100;
+            border-radius: 6px;
+            padding: 15px;
+            margin: 15px 0;
+        }
+        
+        .info-box {
+            background: #e3f2fd;
+            border: 1px solid #2196f3;
+            border-radius: 6px;
+            padding: 15px;
+            margin: 15px 0;
+        }
+        
+        .info-box h4 {
+            margin-top: 0;
+            color: #1565c0;
+        }
+        
+        .scope-list {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px;
+            margin-top: 10px;
+        }
+        
+        .scope-tag {
+            background: #facc15;
+            color: #000;
+            padding: 4px 8px;
+            border-radius: 12px;
+            font-size: 12px;
+            font-weight: 600;
+        }
+        
+        .raps-tip {
+            background: #e3f2fd;
+            border: 1px solid #2196f3;
+            border-radius: 6px;
+            padding: 15px;
+            margin: 20px 0;
+            border-left: 4px solid #2196f3;
+        }
+        
+        .raps-tip h3 {
+            margin-top: 0;
+            color: #1565c0;
+        }
+        
+        .raps-tip code {
+            background: #1565c0;
+            color: white;
+            padding: 2px 6px;
+            border-radius: 3px;
+            font-weight: 600;
+        }
+        
+        .expiry-status {
+            display: inline-block;
+            padding: 4px 8px;
+            border-radius: 4px;
+            font-size: 12px;
+            font-weight: 600;
+            margin-left: 10px;
+        }
+        
+        .expiry-valid {
+            background: #d4edda;
+            color: #155724;
+        }
+        
+        .expiry-expired {
+            background: #f8d7da;
+            color: #721c24;
+        }
+        
+        .expiry-soon {
+            background: #fff3cd;
+            color: #856404;
+        }
+        
+        .copy-btn {
+            background: #6c757d;
+            color: white;
+            font-size: 12px;
+            padding: 6px 12px;
+            margin-left: 10px;
+        }
+        
+        .copy-btn:hover {
+            background: #5a6268;
+        }
+        
+        @media (max-width: 768px) {
+            body {
+                padding: 10px;
+            }
+            
+            .container {
+                padding: 20px;
+            }
+            
+            .result-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            h1 {
+                font-size: 1.8em;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>🔓 APS JWT Token Decoder</h1>
+        <p class="subtitle">Decode and analyze Autodesk Platform Services JWT authentication tokens</p>
+        
+        <div class="raps-tip">
+            <h3>💡 RAPS CLI Alternative</h3>
+            <p>Instead of using this web tool, you can use RAPS CLI:</p>
+            <p><code>raps auth status</code> - View current token details</p>
+            <p><code>raps auth decode-token &lt;jwt-token&gt;</code> - Decode specific token</p>
+        </div>
+        
+        <div class="warning">
+            <strong>⚠️ Security Notice:</strong> This tool runs entirely in your browser. No tokens are sent to any server. 
+            However, be careful when sharing decoded token information as it may contain sensitive data.
+        </div>
+        
+        <!-- Token Input Section -->
+        <div class="tool-section">
+            <h2>Enter JWT Token</h2>
+            <p>Paste your APS authentication token (JWT) to decode and analyze it</p>
+            
+            <label for="tokenInput">JWT Token:</label>
+            <textarea id="tokenInput" placeholder="eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxMjM0NTY3ODkwIiwibmFtZSI6IkpvaG4gRG9lIiwiaWF0IjoxNTE2MjM5MDIyfQ.SflKxwRJSMeKKF2QT4fwpMeJf36POk6yJV_adQssw5c"></textarea>
+            
+            <button onclick="decodeToken()">🔍 Decode Token</button>
+            <button onclick="validateToken()">✅ Validate JWT Format</button>
+            <button onclick="generateSampleToken()">📝 Load Sample Token</button>
+            <button onclick="clearToken()">🗑️ Clear</button>
+            
+            <div id="tokenValidation"></div>
+        </div>
+        
+        <!-- Token Parts Visualization -->
+        <div id="tokenParts" style="display: none;">
+            <div class="tool-section">
+                <h2>JWT Token Structure</h2>
+                <div class="token-parts">
+                    <div class="token-part token-header">
+                        <strong>Header:</strong> <span id="headerPart"></span>
+                    </div>
+                    <div class="token-part token-payload">
+                        <strong>Payload:</strong> <span id="payloadPart"></span>
+                    </div>
+                    <div class="token-part token-signature">
+                        <strong>Signature:</strong> <span id="signaturePart"></span>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Decoded Information -->
+        <div id="decodedInfo" style="display: none;">
+            <div class="result-grid">
+                <!-- Token Header -->
+                <div class="result-section">
+                    <h3>🏷️ Token Header</h3>
+                    <div id="headerInfo" class="json-display"></div>
+                </div>
+                
+                <!-- Token Payload -->
+                <div class="result-section">
+                    <h3>📦 Token Payload</h3>
+                    <div id="payloadInfo" class="json-display"></div>
+                </div>
+            </div>
+            
+            <!-- Token Analysis -->
+            <div class="tool-section">
+                <h2>Token Analysis</h2>
+                <div id="tokenAnalysis"></div>
+            </div>
+            
+            <!-- Scope Information -->
+            <div id="scopeSection" style="display: none;">
+                <div class="tool-section">
+                    <h2>OAuth Scopes</h2>
+                    <div id="scopeInfo"></div>
+                    <div id="scopeList" class="scope-list"></div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Information Box -->
+        <div class="info-box">
+            <h4>🔒 About JWT Tokens</h4>
+            <p>JSON Web Tokens (JWT) are used by APS for authentication. They contain:</p>
+            <ul>
+                <li><strong>Header:</strong> Token type and signing algorithm</li>
+                <li><strong>Payload:</strong> Claims including user info, scopes, and expiration</li>
+                <li><strong>Signature:</strong> Verification signature (cannot be decoded)</li>
+            </ul>
+            <p>APS tokens typically expire after 1 hour (3600 seconds) and contain OAuth scopes that define what APIs you can access.</p>
+        </div>
+    </div>
+
+    <script>
+        let currentToken = '';
+
+        function decodeToken() {
+            const token = document.getElementById('tokenInput').value.trim();
+            
+            if (!token) {
+                showError('Please enter a JWT token to decode.');
+                return;
+            }
+            
+            currentToken = token;
+            
+            try {
+                const parts = token.split('.');
+                
+                if (parts.length !== 3) {
+                    showError('Invalid JWT format. JWT tokens should have 3 parts separated by dots.');
+                    return;
+                }
+                
+                // Decode header
+                const header = JSON.parse(atob(parts[0]));
+                
+                // Decode payload (add padding if needed)
+                let payload64 = parts[1];
+                while (payload64.length % 4) {
+                    payload64 += '=';
+                }
+                const payload = JSON.parse(atob(payload64));
+                
+                // Display token parts
+                displayTokenParts(parts);
+                
+                // Display decoded information
+                displayDecodedInfo(header, payload);
+                
+                // Analyze token
+                analyzeToken(payload);
+                
+                // Show scope information if available
+                if (payload.scope) {
+                    displayScopeInfo(payload.scope);
+                }
+                
+                // Clear any previous errors
+                document.getElementById('tokenValidation').innerHTML = '';
+                
+            } catch (error) {
+                showError(`Failed to decode token: ${error.message}`);
+                hideDecodedInfo();
+            }
+        }
+
+        function validateToken() {
+            const token = document.getElementById('tokenInput').value.trim();
+            const validationDiv = document.getElementById('tokenValidation');
+            
+            if (!token) {
+                showValidation(validationDiv, 'Please enter a token to validate.', false);
+                return;
+            }
+            
+            try {
+                const parts = token.split('.');
+                
+                if (parts.length !== 3) {
+                    showValidation(validationDiv, '❌ Invalid JWT format. Should have 3 parts separated by dots.', false);
+                    return;
+                }
+                
+                // Try to decode header and payload
+                JSON.parse(atob(parts[0]));
+                let payload64 = parts[1];
+                while (payload64.length % 4) {
+                    payload64 += '=';
+                }
+                JSON.parse(atob(payload64));
+                
+                showValidation(validationDiv, '✅ Valid JWT format', true);
+                
+            } catch (error) {
+                showValidation(validationDiv, `❌ Invalid JWT: ${error.message}`, false);
+            }
+        }
+
+        function generateSampleToken() {
+            // Sample APS token structure (this is just for demo purposes)
+            const sampleHeader = btoa(JSON.stringify({
+                "alg": "RS256",
+                "typ": "JWT",
+                "kid": "sample-key-id"
+            }));
+            
+            const samplePayload = btoa(JSON.stringify({
+                "sub": "12345678-1234-5678-9abc-123456789012",
+                "aud": "your-client-id",
+                "iss": "https://developer.api.autodesk.com",
+                "exp": Math.floor(Date.now() / 1000) + 3600,
+                "iat": Math.floor(Date.now() / 1000),
+                "scope": "data:read data:write viewables:read bucket:read",
+                "client_id": "your-client-id",
+                "userid": "ABCD123456789012",
+                "gty": "client-credentials"
+            }));
+            
+            const sampleSignature = "sample-signature-not-real";
+            
+            const sampleToken = `${sampleHeader}.${samplePayload}.${sampleSignature}`;
+            
+            document.getElementById('tokenInput').value = sampleToken;
+            
+            // Auto-decode the sample
+            setTimeout(decodeToken, 100);
+        }
+
+        function clearToken() {
+            document.getElementById('tokenInput').value = '';
+            document.getElementById('tokenValidation').innerHTML = '';
+            hideDecodedInfo();
+        }
+
+        function displayTokenParts(parts) {
+            document.getElementById('headerPart').textContent = parts[0];
+            document.getElementById('payloadPart').textContent = parts[1];
+            document.getElementById('signaturePart').textContent = parts[2];
+            document.getElementById('tokenParts').style.display = 'block';
+        }
+
+        function displayDecodedInfo(header, payload) {
+            // Display header
+            document.getElementById('headerInfo').textContent = JSON.stringify(header, null, 2);
+            
+            // Display payload
+            document.getElementById('payloadInfo').textContent = JSON.stringify(payload, null, 2);
+            
+            document.getElementById('decodedInfo').style.display = 'block';
+        }
+
+        function analyzeToken(payload) {
+            let analysis = '';
+            
+            // Token type analysis
+            analysis += '<div class="info-box">';
+            analysis += '<h4>🔍 Token Information</h4>';
+            
+            if (payload.gty) {
+                const grantType = payload.gty === 'client-credentials' ? '2-legged OAuth' : '3-legged OAuth';
+                analysis += `<p><strong>Grant Type:</strong> ${grantType} (${payload.gty})</p>`;
+            }
+            
+            if (payload.client_id) {
+                analysis += `<p><strong>Client ID:</strong> ${payload.client_id}</p>`;
+            }
+            
+            if (payload.userid) {
+                analysis += `<p><strong>User ID:</strong> ${payload.userid}</p>`;
+            }
+            
+            if (payload.aud) {
+                analysis += `<p><strong>Audience:</strong> ${payload.aud}</p>`;
+            }
+            
+            if (payload.iss) {
+                analysis += `<p><strong>Issuer:</strong> ${payload.iss}</p>`;
+            }
+            
+            analysis += '</div>';
+            
+            // Expiration analysis
+            if (payload.exp) {
+                const expiryTime = new Date(payload.exp * 1000);
+                const now = new Date();
+                const timeUntilExpiry = expiryTime - now;
+                const minutesUntilExpiry = Math.floor(timeUntilExpiry / 60000);
+                
+                let expiryStatus = '';
+                let expiryClass = '';
+                
+                if (timeUntilExpiry <= 0) {
+                    expiryStatus = 'EXPIRED';
+                    expiryClass = 'expiry-expired';
+                } else if (minutesUntilExpiry <= 10) {
+                    expiryStatus = `Expires in ${minutesUntilExpiry} minutes`;
+                    expiryClass = 'expiry-soon';
+                } else {
+                    expiryStatus = `Valid for ${minutesUntilExpiry} minutes`;
+                    expiryClass = 'expiry-valid';
+                }
+                
+                analysis += '<div class="info-box">';
+                analysis += '<h4>⏰ Token Expiration</h4>';
+                analysis += `<p><strong>Expires:</strong> ${expiryTime.toLocaleString()} <span class="expiry-status ${expiryClass}">${expiryStatus}</span></p>`;
+                
+                if (payload.iat) {
+                    const issuedTime = new Date(payload.iat * 1000);
+                    analysis += `<p><strong>Issued:</strong> ${issuedTime.toLocaleString()}</p>`;
+                }
+                
+                analysis += '</div>';
+            }
+            
+            document.getElementById('tokenAnalysis').innerHTML = analysis;
+        }
+
+        function displayScopeInfo(scopeString) {
+            const scopes = scopeString.split(' ').filter(scope => scope.trim());
+            
+            let scopeInfo = '<p>This token grants the following permissions:</p>';
+            
+            // Scope explanations
+            const scopeExplanations = {
+                'data:read': 'Read files and projects from Data Management API',
+                'data:write': 'Modify files and metadata in Data Management API',
+                'data:create': 'Create new files and folders in Data Management API',
+                'bucket:read': 'List and access Object Storage buckets',
+                'bucket:create': 'Create new Object Storage buckets',
+                'bucket:delete': 'Delete Object Storage buckets',
+                'viewables:read': 'Access translated models for viewing',
+                'code:all': 'Full access to Design Automation API',
+                'account:read': 'Read BIM 360/ACC account information',
+                'account:write': 'Modify BIM 360/ACC account settings'
+            };
+            
+            scopeInfo += '<ul>';
+            scopes.forEach(scope => {
+                const explanation = scopeExplanations[scope] || 'Custom or unknown scope';
+                scopeInfo += `<li><strong>${scope}</strong>: ${explanation}</li>`;
+            });
+            scopeInfo += '</ul>';
+            
+            document.getElementById('scopeInfo').innerHTML = scopeInfo;
+            
+            // Display scope tags
+            const scopeListDiv = document.getElementById('scopeList');
+            scopeListDiv.innerHTML = '';
+            scopes.forEach(scope => {
+                const tag = document.createElement('span');
+                tag.className = 'scope-tag';
+                tag.textContent = scope;
+                scopeListDiv.appendChild(tag);
+            });
+            
+            document.getElementById('scopeSection').style.display = 'block';
+        }
+
+        function showError(message) {
+            document.getElementById('tokenValidation').innerHTML = 
+                `<div class="error">${message}</div>`;
+            hideDecodedInfo();
+        }
+
+        function showValidation(element, message, isValid) {
+            const className = isValid ? 'info-box' : 'error';
+            element.innerHTML = `<div class="${className}">${message}</div>`;
+        }
+
+        function hideDecodedInfo() {
+            document.getElementById('decodedInfo').style.display = 'none';
+            document.getElementById('tokenParts').style.display = 'none';
+            document.getElementById('scopeSection').style.display = 'none';
+        }
+
+        function copyToClipboard(text) {
+            navigator.clipboard.writeText(text).then(() => {
+                // Create temporary feedback
+                alert('Copied to clipboard!');
+            }).catch(err => {
+                // Fallback for older browsers
+                const textarea = document.createElement('textarea');
+                textarea.value = text;
+                document.body.appendChild(textarea);
+                textarea.select();
+                document.execCommand('copy');
+                document.body.removeChild(textarea);
+                alert('Copied to clipboard!');
+            });
+        }
+
+        // Auto-decode when token is pasted
+        document.getElementById('tokenInput').addEventListener('paste', function(e) {
+            setTimeout(() => {
+                if (e.target.value.trim()) {
+                    validateToken();
+                }
+            }, 100);
+        });
+
+        // Keyboard shortcut for decoding
+        document.addEventListener('keydown', function(e) {
+            if (e.ctrlKey && e.key === 'Enter') {
+                if (document.activeElement.id === 'tokenInput') {
+                    decodeToken();
+                }
+            }
+        });
+
+        // Auto-resize textarea
+        document.getElementById('tokenInput').addEventListener('input', function(e) {
+            e.target.style.height = 'auto';
+            e.target.style.height = (e.target.scrollHeight) + 'px';
+        });
+    </script>
+</body>
+</html>
