@@ -1,0 +1,223 @@
+---
+---
+
+@import "{{ site.theme }}";
+
+/* RAPS Brand Colors */
+:root {
+  --rapeseed-yellow: #facc15;
+  --rapeseed-dark: #eab308;
+  --slate-blue: #1e293b;
+  --slate-light: #64748b;
+  --success-green: #10b981;
+  --warning-amber: #f59e0b;
+  --error-red: #ef4444;
+}
+
+/* Custom styling for marketing hub */
+body {
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "Noto Sans", Helvetica, Arial, sans-serif;
+  line-height: 1.6;
+  color: #24292f;
+}
+
+header h1 a {
+  color: var(--rapeseed-dark);
+  text-decoration: none;
+  font-weight: bold;
+}
+
+header h1 a:hover {
+  color: var(--rapeseed-yellow);
+}
+
+/* Navigation styling */
+header nav h3 {
+  color: var(--slate-blue);
+  font-size: 14px;
+  font-weight: bold;
+  margin: 20px 0 8px 0;
+  padding-bottom: 4px;
+  border-bottom: 1px solid #e1e4e8;
+}
+
+header nav ul {
+  list-style: none;
+  padding: 0;
+  margin: 0 0 15px 0;
+}
+
+header nav ul li {
+  margin: 4px 0;
+}
+
+header nav ul li a {
+  color: var(--slate-light);
+  text-decoration: none;
+  font-size: 13px;
+  padding: 2px 0;
+  display: block;
+}
+
+header nav ul li a:hover {
+  color: var(--rapeseed-dark);
+  text-decoration: underline;
+}
+
+/* Content area improvements */
+section {
+  max-width: none;
+}
+
+/* Table styling */
+table {
+  border-collapse: collapse;
+  width: 100%;
+  margin: 20px 0;
+  font-size: 14px;
+}
+
+table th, table td {
+  border: 1px solid #d0d7de;
+  padding: 8px 12px;
+  text-align: left;
+}
+
+table th {
+  background-color: #f6f8fa;
+  font-weight: bold;
+}
+
+table tr:nth-child(even) {
+  background-color: #f6f8fa;
+}
+
+/* Status indicators */
+.status-green { color: var(--success-green); }
+.status-yellow { color: var(--warning-amber); }
+.status-red { color: var(--error-red); }
+
+/* Code blocks */
+code {
+  background-color: rgba(175, 184, 193, 0.2);
+  padding: 2px 4px;
+  border-radius: 3px;
+  font-size: 85%;
+}
+
+pre {
+  background-color: #f6f8fa;
+  border-radius: 6px;
+  padding: 16px;
+  overflow-x: auto;
+}
+
+pre code {
+  background-color: transparent;
+  padding: 0;
+}
+
+/* Blockquotes */
+blockquote {
+  border-left: 4px solid var(--rapeseed-yellow);
+  padding-left: 16px;
+  margin-left: 0;
+  color: var(--slate-light);
+  font-style: italic;
+}
+
+/* Links */
+a {
+  color: var(--rapeseed-dark);
+  text-decoration: none;
+}
+
+a:hover {
+  text-decoration: underline;
+}
+
+/* Headings */
+h1, h2, h3, h4, h5, h6 {
+  color: var(--slate-blue);
+  margin-top: 24px;
+  margin-bottom: 16px;
+  font-weight: bold;
+  line-height: 1.25;
+}
+
+h1 {
+  font-size: 2em;
+  padding-bottom: 10px;
+  border-bottom: 1px solid #e1e4e8;
+}
+
+h2 {
+  font-size: 1.5em;
+  padding-bottom: 8px;
+  border-bottom: 1px solid #e1e4e8;
+}
+
+/* Lists */
+ul, ol {
+  padding-left: 20px;
+  margin-bottom: 16px;
+}
+
+li {
+  margin-bottom: 4px;
+}
+
+/* Responsive design */
+@media (max-width: 720px) {
+  .wrapper {
+    width: auto;
+    margin: 0;
+  }
+  
+  header, section, footer {
+    float: none;
+    position: static;
+    width: auto;
+  }
+  
+  header {
+    padding-right: 20px;
+  }
+  
+  section {
+    border: none;
+    padding: 20px;
+  }
+}
+
+/* Custom alert boxes */
+.alert {
+  padding: 12px 16px;
+  margin: 16px 0;
+  border-radius: 6px;
+  border-left: 4px solid;
+}
+
+.alert-info {
+  background-color: #f0f9ff;
+  border-left-color: #0ea5e9;
+  color: #0c4a6e;
+}
+
+.alert-success {
+  background-color: #f0fdf4;
+  border-left-color: var(--success-green);
+  color: #14532d;
+}
+
+.alert-warning {
+  background-color: #fffbeb;
+  border-left-color: var(--warning-amber);
+  color: #92400e;
+}
+
+.alert-error {
+  background-color: #fef2f2;
+  border-left-color: var(--error-red);
+  color: #991b1b;
+}

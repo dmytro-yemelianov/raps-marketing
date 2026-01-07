@@ -1,0 +1,122 @@
+title: RAPS Marketing Strategy Hub
+description: Comprehensive marketing strategy for establishing RAPS as the dominant APS automation solution
+baseurl: "/raps-marketing"
+url: "https://dmytro-yemelianov.github.io"
+
+# Theme configuration
+theme: minima
+plugins:
+  - jekyll-feed
+  - jekyll-sitemap
+
+# Navigation
+nav:
+  - title: "Strategy"
+    items:
+      - title: "Master Plan"
+        url: "/MASTER-EXECUTION-PLAN"
+      - title: "Implementation"
+        url: "/IMPLEMENTATION-ROADMAP"
+      - title: "Community Takeover"
+        url: "/strategy/community-takeover-plan"
+      - title: "Brand Positioning"
+        url: "/strategy/brand-positioning"
+  - title: "Campaigns"
+    items:
+      - title: "DevCon 2026"
+        url: "/campaigns/devcon-2026/"
+      - title: "MCP Launch"
+        url: "/campaigns/mcp-announcement/launch-strategy"
+      - title: "Enterprise Sales"
+        url: "/campaigns/enterprise-outreach/enterprise-sales-strategy"
+  - title: "Content"
+    items:
+      - title: "Manifesto"
+        url: "/content/manifesto/raps-manifesto"
+      - title: "Articles"
+        url: "/content/articles/technical-series-outlines"
+      - title: "Videos"
+        url: "/content/videos/demo-scripts"
+      - title: "Social Media"
+        url: "/content/social/linkedin-content-calendar"
+  - title: "Community"
+    items:
+      - title: "Forum Playbook"
+        url: "/community/autodesk-forums/engagement-playbook"
+      - title: "Cheatsheets"
+        url: "/content/cheatsheets/autodesk-forums-cheatsheet"
+  - title: "Analytics"
+    items:
+      - title: "KPI Dashboard"
+        url: "/analytics/kpi-dashboard"
+
+# Markdown settings
+markdown: kramdown
+highlighter: rouge
+kramdown:
+  input: GFM
+  syntax_highlighter: rouge
+
+# Collections
+collections:
+  strategy:
+    output: true
+    permalink: /:collection/:name/
+  campaigns:
+    output: true
+    permalink: /:collection/:name/
+  content:
+    output: true
+    permalink: /:collection/:name/
+  community:
+    output: true
+    permalink: /:collection/:name/
+  analytics:
+    output: true
+    permalink: /:collection/:name/
+
+# Defaults
+defaults:
+  - scope:
+      path: ""
+      type: "pages"
+    values:
+      layout: "default"
+  - scope:
+      path: ""
+      type: "strategy"
+    values:
+      layout: "page"
+  - scope:
+      path: ""
+      type: "campaigns"
+    values:
+      layout: "page"
+  - scope:
+      path: ""
+      type: "content"
+    values:
+      layout: "page"
+  - scope:
+      path: ""
+      type: "community"
+    values:
+      layout: "page"
+  - scope:
+      path: ""
+      type: "analytics"
+    values:
+      layout: "page"
+
+# Exclude files
+exclude:
+  - Gemfile
+  - Gemfile.lock
+  - node_modules
+  - vendor/bundle/
+  - vendor/cache/
+  - vendor/gems/
+  - vendor/ruby/
+  - .git/
+  - .gitignore
+  - README.md

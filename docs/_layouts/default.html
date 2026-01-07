@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="{{ site.lang | default: "en-US" }}">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>{{ page.title | default: site.title }}</title>
+    <meta name="description" content="{{ page.description | default: site.description | strip_html | normalize_whitespace | truncate: 160 | escape }}">
+    <link rel="stylesheet" href="{{ '/assets/css/style.css' | relative_url }}">
+</head>
+<body>
+    <div class="wrapper">
+        <header>
+            <h1><a href="{{ '/' | relative_url }}">🌼 RAPS Marketing</a></h1>
+            <p>{{ site.description | default: "Strategic marketing hub for RAPS APS automation" }}</p>
+            
+            <nav>
+                <h3>🎯 Strategy</h3>
+                <ul>
+                    <li><a href="{{ '/MASTER-EXECUTION-PLAN' | relative_url }}">Master Plan</a></li>
+                    <li><a href="{{ '/IMPLEMENTATION-ROADMAP' | relative_url }}">Implementation</a></li>
+                    <li><a href="{{ '/strategy/community-takeover-plan' | relative_url }}">Community Takeover</a></li>
+                    <li><a href="{{ '/strategy/brand-positioning' | relative_url }}">Brand Positioning</a></li>
+                </ul>
+                
+                <h3>📢 Campaigns</h3>
+                <ul>
+                    <li><a href="{{ '/campaigns/devcon-2026/' | relative_url }}">DevCon 2026</a></li>
+                    <li><a href="{{ '/campaigns/mcp-announcement/launch-strategy' | relative_url }}">MCP Launch</a></li>
+                    <li><a href="{{ '/campaigns/enterprise-outreach/enterprise-sales-strategy' | relative_url }}">Enterprise Sales</a></li>
+                </ul>
+                
+                <h3>📝 Content</h3>
+                <ul>
+                    <li><a href="{{ '/content/manifesto/raps-manifesto' | relative_url }}">Manifesto</a></li>
+                    <li><a href="{{ '/content/articles/technical-series-outlines' | relative_url }}">Articles</a></li>
+                    <li><a href="{{ '/content/videos/demo-scripts' | relative_url }}">Videos</a></li>
+                    <li><a href="{{ '/content/social/linkedin-content-calendar' | relative_url }}">LinkedIn</a></li>
+                </ul>
+                
+                <h3>🤝 Community</h3>
+                <ul>
+                    <li><a href="{{ '/community/autodesk-forums/engagement-playbook' | relative_url }}">Forum Playbook</a></li>
+                    <li><a href="{{ '/content/cheatsheets/autodesk-forums-cheatsheet' | relative_url }}">Cheatsheets</a></li>
+                </ul>
+                
+                <h3>📊 Analytics</h3>
+                <ul>
+                    <li><a href="{{ '/analytics/kpi-dashboard' | relative_url }}">KPI Dashboard</a></li>
+                </ul>
+            </nav>
+        </header>
+        
+        <section>
+            {{ content }}
+        </section>
+        
+        <footer>
+            <p><small>RAPS Marketing Strategy Hub<br>
+            <a href="https://github.com/dmytro-yemelianov/raps-marketing">Private Repository</a> | 
+            <a href="https://rapscli.xyz">RAPS Website</a></small></p>
+        </footer>
+    </div>
+    
+    <script src="{{ '/assets/js/scale.fix.js' | relative_url }}"></script>
+</body>
+</html>
