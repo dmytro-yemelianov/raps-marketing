@@ -65,28 +65,28 @@
 
 ## DevCon Event Strategy
 
-### Session Proposals (Submitted)
+### Session Proposals (Actually Submitted) ✅
 
-1. **"Industrial CI/CD for Autodesk Platform Services"** ⭐ PRIMARY
-   - **Format**: 45-minute technical session
-   - **Audience**: Developers, DevOps engineers
-   - **Demo**: Live pipeline creation from zero to production
-   - **Takeaway**: Complete RAPS workflow template
+1. **"ACC at Enterprise Scale: Automating the Impossible"** ⭐ PRIMARY
+   - **Session ID**: 1259
+   - **Status**: Complete submission
+   - **Focus**: Large-scale ACC automation and workflow optimization
+   - **Target Audience**: Enterprise teams, ACC power users, system integrators
+   - **Key Message**: RAPS enables enterprise-scale ACC operations that were previously manual
 
-2. **"Teaching AI to Speak APS: MCP Server Integration"** 
-   - **Format**: 30-minute innovation showcase
-   - **Audience**: AI/ML practitioners, forward-thinking developers
-   - **Demo**: Natural language APS operations with Claude/Cursor
-   - **Takeaway**: MCP server setup and integration guide
+2. **"AI Pair-Assistant for APS Operators: The End of Scripts?"** 🤖 INNOVATION
+   - **Session ID**: 1257  
+   - **Status**: Complete submission
+   - **Focus**: MCP server integration enabling natural language APS operations
+   - **Target Audience**: AI-forward developers, modern toolchain adopters
+   - **Key Message**: Natural language interface eliminates need to memorize CLI commands
 
-3. **"From PowerShell Scripts to Production Pipelines"**
-   - **Format**: 60-minute workshop
-   - **Audience**: Mid-level developers, team leads
-   - **Demo**: Migration of existing scripts to RAPS
-   - **Takeaway**: Migration methodology and tools
-
-4. **"Enterprise APS: Scale, Security, and Monitoring"**
-   - **Format**: 45-minute case study presentation  
+3. **"Zero to Production: Shipping an AI-Ready APS CLI in 30 Min"** ⚡ TECHNICAL
+   - **Session ID**: 1258
+   - **Status**: Complete submission
+   - **Focus**: Rapid deployment and getting started with RAPS automation
+   - **Target Audience**: DevOps engineers, team leads, decision makers
+   - **Key Message**: Modern tooling can deliver immediate value with minimal setup  
    - **Audience**: Enterprise architects, CTOs
    - **Demo**: Multi-tenant deployment with audit logging
    - **Takeaway**: Enterprise deployment checklist
