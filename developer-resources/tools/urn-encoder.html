@@ -1,0 +1,658 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>APS URN Encoder/Decoder Tool</title>
+    <meta name="description" content="Interactive tool to encode and decode Autodesk Platform Services (APS) URNs with base64 URL-safe encoding">
+    <meta name="keywords" content="APS, URN, encoder, decoder, base64, Autodesk, Forge">
+    
+    <style>
+        * {
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            line-height: 1.6;
+            color: #333;
+            max-width: 1000px;
+            margin: 0 auto;
+            padding: 20px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+        }
+        
+        .container {
+            background: white;
+            border-radius: 12px;
+            padding: 30px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+        }
+        
+        h1 {
+            color: #2c3e50;
+            text-align: center;
+            margin-bottom: 10px;
+            font-size: 2.2em;
+        }
+        
+        .subtitle {
+            text-align: center;
+            color: #7f8c8d;
+            margin-bottom: 30px;
+            font-style: italic;
+        }
+        
+        .tool-section {
+            background: #f8f9fa;
+            border-radius: 8px;
+            padding: 25px;
+            margin-bottom: 25px;
+            border-left: 4px solid #facc15;
+        }
+        
+        .tool-section h2 {
+            margin-top: 0;
+            color: #2c3e50;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        
+        .tool-section h2::before {
+            content: "🔧";
+            font-size: 0.9em;
+        }
+        
+        label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: 600;
+            color: #34495e;
+        }
+        
+        input[type="text"], textarea {
+            width: 100%;
+            padding: 12px;
+            border: 2px solid #ddd;
+            border-radius: 6px;
+            font-family: 'Courier New', monospace;
+            font-size: 14px;
+            transition: border-color 0.3s;
+        }
+        
+        input[type="text"]:focus, textarea:focus {
+            outline: none;
+            border-color: #facc15;
+            box-shadow: 0 0 0 3px rgba(250, 204, 21, 0.1);
+        }
+        
+        textarea {
+            resize: vertical;
+            min-height: 100px;
+        }
+        
+        button {
+            background: #facc15;
+            color: #000;
+            border: none;
+            padding: 12px 24px;
+            border-radius: 6px;
+            cursor: pointer;
+            font-weight: 600;
+            font-size: 14px;
+            transition: all 0.3s;
+            margin: 10px 5px 10px 0;
+        }
+        
+        button:hover {
+            background: #eab308;
+            transform: translateY(-1px);
+            box-shadow: 0 4px 8px rgba(0,0,0,0.2);
+        }
+        
+        button:active {
+            transform: translateY(0);
+        }
+        
+        .result {
+            background: #e8f5e8;
+            border: 1px solid #4caf50;
+            border-radius: 6px;
+            padding: 15px;
+            margin-top: 15px;
+            word-break: break-all;
+            font-family: 'Courier New', monospace;
+        }
+        
+        .error {
+            background: #ffebee;
+            border: 1px solid #f44336;
+            color: #c62828;
+        }
+        
+        .examples {
+            background: #fff3cd;
+            border: 1px solid #ffc107;
+            border-radius: 6px;
+            padding: 20px;
+            margin: 20px 0;
+        }
+        
+        .examples h3 {
+            margin-top: 0;
+            color: #856404;
+        }
+        
+        .example-item {
+            margin: 10px 0;
+            padding: 10px;
+            background: white;
+            border-radius: 4px;
+            cursor: pointer;
+            transition: background-color 0.2s;
+        }
+        
+        .example-item:hover {
+            background: #f8f9fa;
+        }
+        
+        .example-label {
+            font-weight: 600;
+            color: #495057;
+            margin-bottom: 5px;
+        }
+        
+        .example-value {
+            font-family: 'Courier New', monospace;
+            font-size: 13px;
+            color: #6c757d;
+            word-break: break-all;
+        }
+        
+        .raps-tip {
+            background: #e3f2fd;
+            border: 1px solid #2196f3;
+            border-radius: 6px;
+            padding: 15px;
+            margin: 20px 0;
+            border-left: 4px solid #2196f3;
+        }
+        
+        .raps-tip h3 {
+            margin-top: 0;
+            color: #1565c0;
+        }
+        
+        .raps-tip code {
+            background: #1565c0;
+            color: white;
+            padding: 2px 6px;
+            border-radius: 3px;
+            font-weight: 600;
+        }
+        
+        .copy-btn {
+            background: #6c757d;
+            color: white;
+            font-size: 12px;
+            padding: 6px 12px;
+            margin-left: 10px;
+        }
+        
+        .copy-btn:hover {
+            background: #5a6268;
+        }
+        
+        .validation {
+            margin-top: 10px;
+            padding: 10px;
+            border-radius: 4px;
+            font-size: 14px;
+        }
+        
+        .validation.valid {
+            background: #d4edda;
+            border: 1px solid #c3e6cb;
+            color: #155724;
+        }
+        
+        .validation.invalid {
+            background: #f8d7da;
+            border: 1px solid #f5c6cb;
+            color: #721c24;
+        }
+        
+        .format-info {
+            background: #f1f3f4;
+            border-radius: 6px;
+            padding: 15px;
+            margin: 15px 0;
+            font-size: 14px;
+        }
+        
+        .format-info h4 {
+            margin: 0 0 10px 0;
+            color: #333;
+        }
+        
+        @media (max-width: 768px) {
+            body {
+                padding: 10px;
+            }
+            
+            .container {
+                padding: 20px;
+            }
+            
+            h1 {
+                font-size: 1.8em;
+            }
+            
+            .tool-section {
+                padding: 20px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>🛠️ APS URN Encoder/Decoder</h1>
+        <p class="subtitle">Interactive tool for Autodesk Platform Services URN encoding and decoding</p>
+        
+        <div class="raps-tip">
+            <h3>💡 RAPS CLI Alternative</h3>
+            <p>Instead of using this web tool, you can use RAPS CLI:</p>
+            <p><code>raps urn encode "urn:adsk.objects:os.object:bucket/file.dwg"</code></p>
+            <p><code>raps urn decode "dXJuOmFkc2sub2JqZWN0cy..."</code></p>
+        </div>
+        
+        <!-- URN Encoder Section -->
+        <div class="tool-section">
+            <h2>Encode URN to Base64</h2>
+            <p>Convert a plain URN to base64 URL-safe encoded format for APS API calls</p>
+            
+            <label for="urnInput">Enter URN:</label>
+            <input type="text" id="urnInput" placeholder="urn:adsk.objects:os.object:mybucket/model.rvt" />
+            
+            <button onclick="encodeURN()">🔒 Encode URN</button>
+            <button onclick="validateURN()">✅ Validate Format</button>
+            
+            <div id="encodeResult"></div>
+            <div id="urnValidation"></div>
+        </div>
+        
+        <!-- URN Decoder Section -->
+        <div class="tool-section">
+            <h2>Decode Base64 to URN</h2>
+            <p>Convert a base64 encoded URN back to readable format</p>
+            
+            <label for="base64Input">Enter Base64 Encoded URN:</label>
+            <textarea id="base64Input" placeholder="dXJuOmFkc2sub2JqZWN0cy5vcy5vYmplY3Q6bXlidWNrZXQvbW9kZWwucnZ0"></textarea>
+            
+            <button onclick="decodeURN()">🔓 Decode URN</button>
+            <button onclick="validateBase64()">✅ Validate Base64</button>
+            
+            <div id="decodeResult"></div>
+            <div id="base64Validation"></div>
+        </div>
+        
+        <!-- Examples Section -->
+        <div class="examples">
+            <h3>📋 Common URN Examples</h3>
+            <p>Click any example to use it in the encoder:</p>
+            
+            <div class="example-item" onclick="setExample('oss')">
+                <div class="example-label">Object Storage Service (OSS)</div>
+                <div class="example-value">urn:adsk.objects:os.object:mybucket/model.rvt</div>
+            </div>
+            
+            <div class="example-item" onclick="setExample('dm')">
+                <div class="example-label">Data Management (BIM 360/ACC)</div>
+                <div class="example-value">urn:adsk.wipprod:dm.lineage:12345678-1234-5678-9abc-123456789012</div>
+            </div>
+            
+            <div class="example-item" onclick="setExample('revit')">
+                <div class="example-label">OSS with Revit File</div>
+                <div class="example-value">urn:adsk.objects:os.object:construction-models/building-A.rvt</div>
+            </div>
+            
+            <div class="example-item" onclick="setExample('dwg')">
+                <div class="example-label">OSS with AutoCAD File</div>
+                <div class="example-value">urn:adsk.objects:os.object:cad-drawings/floor-plan.dwg</div>
+            </div>
+            
+            <div class="example-item" onclick="setExample('inventor')">
+                <div class="example-label">OSS with Inventor Assembly</div>
+                <div class="example-value">urn:adsk.objects:os.object:mechanical-parts/assembly.iam</div>
+            </div>
+        </div>
+        
+        <!-- Format Information -->
+        <div class="format-info">
+            <h4>📖 URN Format Guide</h4>
+            <p><strong>Object Storage Service URN:</strong></p>
+            <p><code>urn:adsk.objects:os.object:{bucket}/{object}</code></p>
+            
+            <p><strong>Data Management URN:</strong></p>
+            <p><code>urn:adsk.wipprod:dm.lineage:{item-id}</code></p>
+            
+            <p><strong>Base64 Encoding Rules:</strong></p>
+            <ul>
+                <li>Standard base64 encoding</li>
+                <li>Replace <code>+</code> with <code>-</code></li>
+                <li>Replace <code>/</code> with <code>_</code></li>
+                <li>Remove padding <code>=</code> characters</li>
+            </ul>
+        </div>
+        
+        <!-- Advanced Tools -->
+        <div class="tool-section">
+            <h2>Advanced Tools</h2>
+            
+            <button onclick="generateRandomURN()">🎲 Generate Test URN</button>
+            <button onclick="batchProcess()">📦 Batch Process</button>
+            <button onclick="copyToClipboard('lastEncoded')">📋 Copy Last Result</button>
+            <button onclick="clearAll()">🗑️ Clear All</button>
+            
+            <div id="advancedResult"></div>
+        </div>
+    </div>
+
+    <script>
+        let lastEncoded = '';
+        let lastDecoded = '';
+
+        // URN Encoding Function
+        function encodeURN() {
+            const urn = document.getElementById('urnInput').value.trim();
+            const resultDiv = document.getElementById('encodeResult');
+            
+            if (!urn) {
+                showResult(resultDiv, 'Please enter a URN to encode.', 'error');
+                return;
+            }
+            
+            try {
+                // Convert to base64 and make URL-safe
+                const encoded = btoa(urn)
+                    .replace(/\+/g, '-')
+                    .replace(/\//g, '_')
+                    .replace(/=/g, '');
+                
+                lastEncoded = encoded;
+                
+                const html = `
+                    <div class="result">
+                        <strong>Encoded URN:</strong><br>
+                        <span style="word-break: break-all;">${encoded}</span>
+                        <button class="copy-btn" onclick="copyToClipboard('${encoded}')">Copy</button>
+                    </div>
+                    <div class="format-info" style="margin-top: 10px;">
+                        <h4>🔧 Usage in API calls:</h4>
+                        <p><strong>Model Derivative:</strong><br>
+                        <code>GET /modelderivative/v2/designdata/${encoded}/manifest</code></p>
+                        
+                        <p><strong>With RAPS:</strong><br>
+                        <code>raps translate ${encoded} --formats svf2</code></p>
+                    </div>
+                `;
+                showResult(resultDiv, html);
+                
+            } catch (error) {
+                showResult(resultDiv, `Encoding failed: ${error.message}`, 'error');
+            }
+        }
+
+        // URN Decoding Function
+        function decodeURN() {
+            const base64 = document.getElementById('base64Input').value.trim();
+            const resultDiv = document.getElementById('decodeResult');
+            
+            if (!base64) {
+                showResult(resultDiv, 'Please enter a base64 encoded URN to decode.', 'error');
+                return;
+            }
+            
+            try {
+                // Convert URL-safe base64 back to standard base64
+                let standardBase64 = base64
+                    .replace(/-/g, '+')
+                    .replace(/_/g, '/');
+                
+                // Add padding if needed
+                while (standardBase64.length % 4) {
+                    standardBase64 += '=';
+                }
+                
+                const decoded = atob(standardBase64);
+                lastDecoded = decoded;
+                
+                const html = `
+                    <div class="result">
+                        <strong>Decoded URN:</strong><br>
+                        <span style="word-break: break-all;">${decoded}</span>
+                        <button class="copy-btn" onclick="copyToClipboard('${decoded}')">Copy</button>
+                    </div>
+                    ${analyzeURN(decoded)}
+                `;
+                showResult(resultDiv, html);
+                
+            } catch (error) {
+                showResult(resultDiv, `Decoding failed: ${error.message}`, 'error');
+            }
+        }
+
+        // URN Analysis Function
+        function analyzeURN(urn) {
+            let analysis = '<div class="format-info" style="margin-top: 10px;"><h4>🔍 URN Analysis:</h4>';
+            
+            if (urn.includes('urn:adsk.objects:os.object:')) {
+                const parts = urn.split(':');
+                const objectPath = parts[4] || '';
+                const pathParts = objectPath.split('/');
+                const bucket = pathParts[0] || 'Unknown';
+                const object = pathParts.slice(1).join('/') || 'Unknown';
+                
+                analysis += `
+                    <p><strong>Type:</strong> Object Storage Service (OSS)</p>
+                    <p><strong>Bucket:</strong> ${bucket}</p>
+                    <p><strong>Object:</strong> ${object}</p>
+                    <p><strong>File Extension:</strong> ${object.split('.').pop()?.toUpperCase() || 'Unknown'}</p>
+                `;
+            } else if (urn.includes('urn:adsk.wipprod:dm.lineage:')) {
+                const itemId = urn.split(':')[3] || 'Unknown';
+                analysis += `
+                    <p><strong>Type:</strong> Data Management (BIM 360/ACC)</p>
+                    <p><strong>Item ID:</strong> ${itemId}</p>
+                `;
+            } else {
+                analysis += '<p><strong>Type:</strong> Unknown or custom URN format</p>';
+            }
+            
+            analysis += '</div>';
+            return analysis;
+        }
+
+        // Validation Functions
+        function validateURN() {
+            const urn = document.getElementById('urnInput').value.trim();
+            const validationDiv = document.getElementById('urnValidation');
+            
+            if (!urn) {
+                showValidation(validationDiv, 'Please enter a URN to validate.', false);
+                return;
+            }
+            
+            const isValid = urn.startsWith('urn:adsk.') && urn.includes(':');
+            const message = isValid ? 
+                '✅ Valid URN format' : 
+                '❌ Invalid URN format. Should start with "urn:adsk." and contain colons.';
+                
+            showValidation(validationDiv, message, isValid);
+        }
+
+        function validateBase64() {
+            const base64 = document.getElementById('base64Input').value.trim();
+            const validationDiv = document.getElementById('base64Validation');
+            
+            if (!base64) {
+                showValidation(validationDiv, 'Please enter base64 text to validate.', false);
+                return;
+            }
+            
+            try {
+                // Test if it's valid base64
+                const standardBase64 = base64.replace(/-/g, '+').replace(/_/g, '/');
+                atob(standardBase64.padEnd(standardBase64.length + (4 - standardBase64.length % 4) % 4, '='));
+                showValidation(validationDiv, '✅ Valid base64 format', true);
+            } catch (error) {
+                showValidation(validationDiv, '❌ Invalid base64 format', false);
+            }
+        }
+
+        // Utility Functions
+        function showResult(element, content, type = '') {
+            element.innerHTML = `<div class="result ${type}">${content}</div>`;
+        }
+
+        function showValidation(element, message, isValid) {
+            const className = isValid ? 'valid' : 'invalid';
+            element.innerHTML = `<div class="validation ${className}">${message}</div>`;
+        }
+
+        function setExample(type) {
+            const examples = {
+                'oss': 'urn:adsk.objects:os.object:mybucket/model.rvt',
+                'dm': 'urn:adsk.wipprod:dm.lineage:12345678-1234-5678-9abc-123456789012',
+                'revit': 'urn:adsk.objects:os.object:construction-models/building-A.rvt',
+                'dwg': 'urn:adsk.objects:os.object:cad-drawings/floor-plan.dwg',
+                'inventor': 'urn:adsk.objects:os.object:mechanical-parts/assembly.iam'
+            };
+            
+            document.getElementById('urnInput').value = examples[type] || '';
+        }
+
+        function generateRandomURN() {
+            const bucketName = 'test-bucket-' + Math.random().toString(36).substr(2, 9);
+            const fileName = 'model-' + Math.random().toString(36).substr(2, 5) + '.rvt';
+            const urn = `urn:adsk.objects:os.object:${bucketName}/${fileName}`;
+            
+            document.getElementById('urnInput').value = urn;
+            document.getElementById('advancedResult').innerHTML = 
+                '<div class="result">🎲 Random test URN generated! Click "Encode URN" to process it.</div>';
+        }
+
+        function batchProcess() {
+            const urnInput = document.getElementById('urnInput').value.trim();
+            const base64Input = document.getElementById('base64Input').value.trim();
+            
+            if (!urnInput && !base64Input) {
+                document.getElementById('advancedResult').innerHTML = 
+                    '<div class="result error">Enter URN or Base64 text to process.</div>';
+                return;
+            }
+            
+            let results = '<div class="result"><h4>📦 Batch Processing Results:</h4>';
+            
+            if (urnInput) {
+                try {
+                    const encoded = btoa(urnInput).replace(/\+/g, '-').replace(/\//g, '_').replace(/=/g, '');
+                    results += `<p><strong>Encoded:</strong> ${encoded}</p>`;
+                } catch (error) {
+                    results += `<p><strong>Encoding Error:</strong> ${error.message}</p>`;
+                }
+            }
+            
+            if (base64Input) {
+                try {
+                    const standardBase64 = base64Input.replace(/-/g, '+').replace(/_/g, '/');
+                    const padded = standardBase64.padEnd(standardBase64.length + (4 - standardBase64.length % 4) % 4, '=');
+                    const decoded = atob(padded);
+                    results += `<p><strong>Decoded:</strong> ${decoded}</p>`;
+                } catch (error) {
+                    results += `<p><strong>Decoding Error:</strong> ${error.message}</p>`;
+                }
+            }
+            
+            results += '</div>';
+            document.getElementById('advancedResult').innerHTML = results;
+        }
+
+        function copyToClipboard(text) {
+            if (text === 'lastEncoded') {
+                text = lastEncoded;
+            } else if (text === 'lastDecoded') {
+                text = lastDecoded;
+            }
+            
+            if (!text) {
+                alert('Nothing to copy. Process a URN first.');
+                return;
+            }
+            
+            navigator.clipboard.writeText(text).then(() => {
+                // Create temporary feedback
+                const originalText = event.target.textContent;
+                event.target.textContent = 'Copied!';
+                event.target.style.background = '#28a745';
+                
+                setTimeout(() => {
+                    event.target.textContent = originalText;
+                    event.target.style.background = '#6c757d';
+                }, 1000);
+            }).catch(err => {
+                // Fallback for older browsers
+                const textarea = document.createElement('textarea');
+                textarea.value = text;
+                document.body.appendChild(textarea);
+                textarea.select();
+                document.execCommand('copy');
+                document.body.removeChild(textarea);
+                alert('Copied to clipboard!');
+            });
+        }
+
+        function clearAll() {
+            document.getElementById('urnInput').value = '';
+            document.getElementById('base64Input').value = '';
+            document.getElementById('encodeResult').innerHTML = '';
+            document.getElementById('decodeResult').innerHTML = '';
+            document.getElementById('urnValidation').innerHTML = '';
+            document.getElementById('base64Validation').innerHTML = '';
+            document.getElementById('advancedResult').innerHTML = '';
+            lastEncoded = '';
+            lastDecoded = '';
+        }
+
+        // Keyboard shortcuts
+        document.addEventListener('keydown', function(e) {
+            if (e.ctrlKey && e.key === 'Enter') {
+                if (document.activeElement.id === 'urnInput') {
+                    encodeURN();
+                } else if (document.activeElement.id === 'base64Input') {
+                    decodeURN();
+                }
+            }
+        });
+
+        // Auto-process when pasting
+        document.getElementById('urnInput').addEventListener('paste', function(e) {
+            setTimeout(() => {
+                if (e.target.value.trim()) {
+                    validateURN();
+                }
+            }, 100);
+        });
+
+        document.getElementById('base64Input').addEventListener('paste', function(e) {
+            setTimeout(() => {
+                if (e.target.value.trim()) {
+                    validateBase64();
+                }
+            }, 100);
+        });
+    </script>
+</body>
+</html>
