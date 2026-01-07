@@ -27,9 +27,13 @@
 \definecolor{rapserror}{RGB}{220,53,69}
 \definecolor{rapswarning}{RGB}{255,193,7}
 
-% Font settings
-\setmainfont{Helvetica Neue}
-\setmonofont{Consolas}
+% Font settings - Using system-available fonts
+\setmainfont{Arial}[
+  BoldFont = Arial Bold,
+  ItalicFont = Arial Italic,
+  BoldItalicFont = Arial Bold Italic
+]
+\setmonofont{Courier New}
 
 % Header/Footer
 \pagestyle{fancy}

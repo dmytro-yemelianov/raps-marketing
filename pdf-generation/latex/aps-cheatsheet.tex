@@ -24,9 +24,13 @@
 \definecolor{rapslight}{RGB}{248,249,250}
 \definecolor{rapsdark}{RGB}{52,58,64}
 
-% Font settings
-\setmainfont{Helvetica Neue}
-\setmonofont{Consolas}
+% Font settings - Using system-available fonts
+\setmainfont{Arial}[
+  BoldFont = Arial Bold,
+  ItalicFont = Arial Italic,
+  BoldItalicFont = Arial Bold Italic
+]
+\setmonofont{Courier New}
 
 % Column settings
 \setlength{\columnsep}{15pt}
