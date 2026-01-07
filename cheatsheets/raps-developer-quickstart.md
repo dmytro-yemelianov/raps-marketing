@@ -54,6 +54,7 @@ raps auth login --profile staging
 ## Essential Commands
 
 ### Authentication & Config
+
 | Command | Description |
 |---------|-------------|
 | `raps auth login` | Interactive OAuth login |
@@ -63,6 +64,7 @@ raps auth login --profile staging
 | `raps config set profile <name>` | Switch active profile |
 
 ### Object Storage Service (OSS)
+
 | Command | Description |
 |---------|-------------|
 | `raps oss buckets` | List all buckets |
@@ -73,6 +75,7 @@ raps auth login --profile staging
 | `raps oss list <bucket>` | List bucket contents |
 
 ### Data Management (DM)
+
 | Command | Description |
 |---------|-------------|
 | `raps dm projects` | List all projects |
@@ -82,6 +85,7 @@ raps auth login --profile staging
 | `raps dm create-folder <name>` | Create folder |
 
 ### Model Derivative
+
 | Command | Description |
 |---------|-------------|
 | `raps derivative start <urn>` | Start translation job |
@@ -90,6 +94,7 @@ raps auth login --profile staging
 | `raps derivative download <urn>` | Download derivatives |
 
 ### Bulk Operations
+
 | Command | Description |
 |---------|-------------|
 | `raps batch upload <pattern>` | Upload matching files |
