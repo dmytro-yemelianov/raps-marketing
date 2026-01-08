@@ -175,9 +175,11 @@ declare module 'astro:content' {
 	type DataEntryMap = {
 		"analytics": Record<string, {
   id: string;
-  body?: string;
+  render(): Render[".md"];
+  slug: string;
+  body: string;
   collection: "analytics";
-  data: any;
+  data: InferEntrySchema<"analytics">;
   rendered?: RenderedContent;
   filePath?: string;
 }>;
@@ -193,17 +195,21 @@ declare module 'astro:content' {
 }>;
 "calendar": Record<string, {
   id: string;
-  body?: string;
+  render(): Render[".md"];
+  slug: string;
+  body: string;
   collection: "calendar";
-  data: any;
+  data: InferEntrySchema<"calendar">;
   rendered?: RenderedContent;
   filePath?: string;
 }>;
 "campaigns": Record<string, {
   id: string;
-  body?: string;
+  render(): Render[".md"];
+  slug: string;
+  body: string;
   collection: "campaigns";
-  data: any;
+  data: InferEntrySchema<"campaigns">;
   rendered?: RenderedContent;
   filePath?: string;
 }>;
@@ -219,9 +225,11 @@ declare module 'astro:content' {
 }>;
 "community": Record<string, {
   id: string;
-  body?: string;
+  render(): Render[".md"];
+  slug: string;
+  body: string;
   collection: "community";
-  data: any;
+  data: InferEntrySchema<"community">;
   rendered?: RenderedContent;
   filePath?: string;
 }>;
@@ -237,9 +245,11 @@ declare module 'astro:content' {
 }>;
 "press": Record<string, {
   id: string;
-  body?: string;
+  render(): Render[".md"];
+  slug: string;
+  body: string;
   collection: "press";
-  data: any;
+  data: InferEntrySchema<"press">;
   rendered?: RenderedContent;
   filePath?: string;
 }>;
@@ -255,17 +265,41 @@ declare module 'astro:content' {
 }>;
 "references": Record<string, {
   id: string;
-  body?: string;
+  render(): Render[".md"];
+  slug: string;
+  body: string;
   collection: "references";
-  data: any;
+  data: InferEntrySchema<"references">;
+  rendered?: RenderedContent;
+  filePath?: string;
+}>;
+"stories": Record<string, {
+  id: string;
+  render(): Render[".md"];
+  slug: string;
+  body: string;
+  collection: "stories";
+  data: InferEntrySchema<"stories">;
   rendered?: RenderedContent;
   filePath?: string;
 }>;
 "strategy": Record<string, {
   id: string;
-  body?: string;
+  render(): Render[".md"];
+  slug: string;
+  body: string;
   collection: "strategy";
-  data: any;
+  data: InferEntrySchema<"strategy">;
+  rendered?: RenderedContent;
+  filePath?: string;
+}>;
+"videos": Record<string, {
+  id: string;
+  render(): Render[".md"];
+  slug: string;
+  body: string;
+  collection: "videos";
+  data: InferEntrySchema<"videos">;
   rendered?: RenderedContent;
   filePath?: string;
 }>;

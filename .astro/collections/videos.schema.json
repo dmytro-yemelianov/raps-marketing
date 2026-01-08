@@ -1,7 +1,7 @@
 {
-  "$ref": "#/definitions/calendar",
+  "$ref": "#/definitions/videos",
   "definitions": {
-    "calendar": {
+    "videos": {
       "type": "object",
       "properties": {
         "title": {
@@ -13,14 +13,20 @@
         "type": {
           "type": "string",
           "enum": [
-            "master",
-            "campaign",
-            "theme",
-            "integrated"
+            "demo",
+            "tutorial",
+            "marketing",
+            "comparison"
           ]
         },
-        "quarter": {
-          "type": "string"
+        "audience": {
+          "type": "string",
+          "enum": [
+            "all",
+            "developer",
+            "enterprise",
+            "decision-maker"
+          ]
         },
         "priority": {
           "type": "string",
@@ -55,6 +61,7 @@
         "title",
         "description",
         "type",
+        "audience",
         "lastUpdated"
       ],
       "additionalProperties": false

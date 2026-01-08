@@ -66,7 +66,10 @@ print("=" * 40)
 # LaTeX files to compile
 tex_files = [
     'aps-cheatsheet.tex',
-    'error-codes-reference.tex'
+    'error-codes-reference.tex',
+    'raps-developer-quickstart.tex',
+    'forge-to-aps-migration-guide.tex',
+    'aps-oauth-scopes-reference.tex'
 ]
 
 success_count = 0

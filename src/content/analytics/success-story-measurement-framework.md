@@ -1,3 +1,11 @@
+---
+title: "Success Story Measurement Framework"
+description: "Comprehensive metrics to measure the effectiveness of RAPS success stories in driving technical adoption, community engagement, and business development outcomes"
+reportType: "framework"
+metrics: ["adoption rate", "community engagement", "business conversion", "technical implementation"]
+frequency: "quarterly"
+---
+
 # Success Story Measurement Framework
 
 ## Executive Summary

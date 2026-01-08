@@ -1,3 +1,11 @@
+---
+title: "RAPS Introduces Revolutionary AI Assistant for Autodesk Platform Services Operations"
+description: "First-ever natural language interface for APS automation eliminates code complexity for enterprise teams"
+type: "release"
+publishDate: 2026-06-10
+status: "published"
+---
+
 # FOR IMMEDIATE RELEASE
 
 ## RAPS Introduces Revolutionary AI Assistant for Autodesk Platform Services Operations

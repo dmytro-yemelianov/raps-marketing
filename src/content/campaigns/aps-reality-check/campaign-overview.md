@@ -1,3 +1,13 @@
+---
+title: "APS Reality Check Campaign Overview"
+description: "What Autodesk Doesn't Tell You About Building with APS - expose operational reality and position RAPS as the essential bridge"
+campaign: "aps-reality-check"
+status: "active"
+startDate: 2026-01-22
+endDate: 2026-04-15
+targetAudience: ["APS developers", "Enterprise architects", "DevOps teams"]
+---
+
 # "APS Reality Check" Campaign Overview
 
 ## Campaign Concept

@@ -1,3 +1,13 @@
+---
+title: "DevCon 2026 Session Preparation Plan"
+description: "Comprehensive preparation strategy for RAPS sessions at DevCon 2026, focusing on enterprise ACC automation and industry positioning"
+campaign: "devcon-2026"
+status: "planning"
+startDate: 2026-01-01
+endDate: 2026-12-31
+targetAudience: ["Enterprise architects", "ACC administrators", "DevOps engineers", "APS developers"]
+---
+
 # DevCon 2026 Session Preparation Plan
 
 ## Submitted Sessions Overview

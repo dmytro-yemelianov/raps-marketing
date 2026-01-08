@@ -122,8 +122,33 @@ const calendar = defineCollection({
   schema: z.object({
     title: z.string(),
     description: z.string(),
-    calendarType: z.enum(['master', 'campaign', 'theme', 'integrated']),
-    timeframe: z.string(),
+    type: z.enum(['master', 'campaign', 'theme', 'integrated']),
+    quarter: z.string().optional(),
+    priority: z.enum(['low', 'medium', 'high']).default('medium'),
+    lastUpdated: z.coerce.date(),
+  }),
+});
+
+const stories = defineCollection({
+  type: 'content',
+  schema: z.object({
+    title: z.string(),
+    description: z.string(),
+    type: z.enum(['case-study', 'success-story', 'transformation']),
+    audience: z.enum(['enterprise', 'developer', 'startup', 'government']),
+    priority: z.enum(['low', 'medium', 'high']).default('medium'),
+    lastUpdated: z.coerce.date(),
+  }),
+});
+
+const videos = defineCollection({
+  type: 'content',
+  schema: z.object({
+    title: z.string(),
+    description: z.string(),
+    type: z.enum(['demo', 'tutorial', 'marketing', 'comparison']),
+    audience: z.enum(['all', 'developer', 'enterprise', 'decision-maker']),
+    priority: z.enum(['low', 'medium', 'high']).default('medium'),
     lastUpdated: z.coerce.date(),
   }),
 });
@@ -133,12 +158,13 @@ export const collections = {
   'guides': guides,
   'cheatsheets': cheatsheets,
   'recipes': recipes,
-  // TODO: Add frontmatter to these collections:
-  // 'campaigns': campaigns,
-  // 'strategy': strategy,
-  // 'analytics': analytics,
-  // 'references': references,
-  // 'community': community,
-  // 'press': press,
-  // 'calendar': calendar,
+  'strategy': strategy,
+  'analytics': analytics,
+  'campaigns': campaigns,
+  'references': references,
+  'community': community,
+  'press': press,
+  'calendar': calendar,
+  'stories': stories,
+  'videos': videos,
 };

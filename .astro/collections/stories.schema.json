@@ -1,7 +1,7 @@
 {
-  "$ref": "#/definitions/calendar",
+  "$ref": "#/definitions/stories",
   "definitions": {
-    "calendar": {
+    "stories": {
       "type": "object",
       "properties": {
         "title": {
@@ -13,14 +13,19 @@
         "type": {
           "type": "string",
           "enum": [
-            "master",
-            "campaign",
-            "theme",
-            "integrated"
+            "case-study",
+            "success-story",
+            "transformation"
           ]
         },
-        "quarter": {
-          "type": "string"
+        "audience": {
+          "type": "string",
+          "enum": [
+            "enterprise",
+            "developer",
+            "startup",
+            "government"
+          ]
         },
         "priority": {
           "type": "string",
@@ -55,6 +60,7 @@
         "title",
         "description",
         "type",
+        "audience",
         "lastUpdated"
       ],
       "additionalProperties": false

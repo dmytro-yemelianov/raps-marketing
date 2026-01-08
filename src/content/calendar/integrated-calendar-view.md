@@ -1,3 +1,12 @@
+---
+title: "RAPS Marketing Integrated Calendar 2026"
+description: "Integrated view of all marketing activities, campaigns, and themes for comprehensive planning"
+type: "integrated"
+quarter: "all"
+priority: "high"
+lastUpdated: 2026-01-08
+---
+
 # RAPS Marketing Integrated Calendar 2026
 
 ## Calendar Navigation

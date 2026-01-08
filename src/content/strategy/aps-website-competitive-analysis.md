@@ -1,3 +1,11 @@
+---
+title: "APS Website Competitive Analysis & Marketing Opportunities"
+description: "Analysis of aps.autodesk.com reveals significant gaps in developer tooling, automation, and operational excellence that RAPS can exploit for competitive positioning"
+category: "competitive"
+priority: "high"
+lastUpdated: 2026-01-08
+---
+
 # APS Website Competitive Analysis & Marketing Opportunities
 
 ## Executive Summary

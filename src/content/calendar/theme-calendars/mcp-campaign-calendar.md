@@ -1,3 +1,12 @@
+---
+title: "MCP (Model Context Protocol) Campaign Calendar"
+description: "Campaign calendar for AI-powered APS automation launch, making APS operations accessible through natural language"
+type: "campaign"
+quarter: "Q1-Q3"
+priority: "medium"
+lastUpdated: 2026-01-08
+---
+
 # MCP (Model Context Protocol) Campaign Calendar
 
 ## Campaign Overview: "AI-Powered APS Automation"

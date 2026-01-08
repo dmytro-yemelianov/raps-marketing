@@ -1,3 +1,13 @@
+---
+title: "Enterprise Sales Strategy: Production-Ready APS Automation"
+description: "Comprehensive strategy to convert enterprise prospects into paying customers through targeted automation solutions and services"
+campaign: "enterprise-outreach"
+status: "planning"
+startDate: 2026-01-01
+endDate: 2026-12-31
+targetAudience: ["Enterprise decision makers", "IT directors", "AEC executives", "Manufacturing leaders"]
+---
+
 # Enterprise Sales Strategy: "Production-Ready APS Automation"
 
 ## Strategic Overview

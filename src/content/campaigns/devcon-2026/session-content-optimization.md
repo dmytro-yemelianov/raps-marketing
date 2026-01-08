@@ -1,3 +1,13 @@
+---
+title: "DevCon 2026 Session Content Optimization"
+description: "Strategic analysis and optimization of DevCon session content for maximum impact and audience engagement"
+campaign: "devcon-2026"
+status: "planning"
+startDate: 2026-03-01
+endDate: 2026-06-07
+targetAudience: ["Conference attendees", "Enterprise developers", "APS integrators"]
+---
+
 # DevCon Session Content Optimization
 
 ## Strategic Session Positioning Analysis

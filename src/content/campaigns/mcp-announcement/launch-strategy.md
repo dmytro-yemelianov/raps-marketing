@@ -1,3 +1,13 @@
+---
+title: "MCP Server Launch Campaign: Teaching AI to Speak APS"
+description: "Strategic launch campaign for RAPS MCP server integration, positioning RAPS as the pioneer of AI-integrated APS operations"
+campaign: "mcp-announcement"
+status: "planning"
+startDate: 2026-03-01
+endDate: 2026-09-01
+targetAudience: ["AI developers", "APS developers", "DevOps engineers", "Enterprise architects"]
+---
+
 # MCP Server Launch Campaign: "Teaching AI to Speak APS"
 
 ## Campaign Overview

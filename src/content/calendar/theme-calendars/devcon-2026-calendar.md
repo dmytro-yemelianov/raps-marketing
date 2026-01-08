@@ -1,3 +1,12 @@
+---
+title: "DevCon 2026 Campaign Calendar"
+description: "Detailed timeline and milestones for RAPS DevCon 2026 campaign from January through July"
+type: "campaign"
+quarter: "Q1-Q2"
+priority: "high"
+lastUpdated: 2026-01-08
+---
+
 # DevCon 2026 Campaign Calendar
 
 ## Campaign Timeline: January - July 2026

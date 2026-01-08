@@ -1,4 +1,6 @@
 ---
+import '../styles/global.css';
+
 export interface Props {
   title: string;
   description?: string;
@@ -62,6 +64,19 @@ const canonicalURL = new URL(Astro.url.pathname, Astro.site);
             <a href="/recipes" class="text-gray-700 hover:text-raps-blue transition">Recipes</a>
             <a href="/tools" class="text-gray-700 hover:text-raps-blue transition">Tools</a>
             <a href="/pdfs" class="text-gray-700 hover:text-raps-blue transition">PDFs</a>
+            <div class="relative group">
+              <button class="text-gray-700 hover:text-raps-blue transition flex items-center">
+                Strategy <span class="ml-1 text-xs">▼</span>
+              </button>
+              <div class="absolute top-full left-0 mt-2 w-48 bg-white shadow-lg rounded-lg opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all">
+                <a href="/analytics" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-50">📊 Analytics</a>
+                <a href="/campaigns" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-50">🎯 Campaigns</a>
+                <a href="/strategy" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-50">📋 Strategy</a>
+                <a href="/community" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-50">👥 Community</a>
+                <a href="/press" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-50">📰 Press</a>
+                <a href="/calendar" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-50">📅 Calendar</a>
+              </div>
+            </div>
             <a href="https://github.com/autodesk-platform-services/raps" class="text-gray-700 hover:text-raps-blue transition">
               GitHub
             </a>

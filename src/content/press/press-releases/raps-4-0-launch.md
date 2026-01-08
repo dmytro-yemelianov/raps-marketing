@@ -1,3 +1,11 @@
+---
+title: "RAPS 4.0 Revolutionizes Autodesk Platform Services Automation with Enterprise-Grade CLI Tools"
+description: "New version delivers 95% faster APS operations, enterprise SSO, and AI-powered natural language interface"
+type: "release"
+publishDate: 2026-03-15
+status: "published"
+---
+
 # FOR IMMEDIATE RELEASE
 
 ## RAPS 4.0 Revolutionizes Autodesk Platform Services Automation with Enterprise-Grade CLI Tools

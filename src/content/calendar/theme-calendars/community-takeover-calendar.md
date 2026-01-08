@@ -1,3 +1,12 @@
+---
+title: "Community Takeover Campaign Calendar"
+description: "Comprehensive calendar for dominating Autodesk developer forums and becoming the go-to authority for APS automation"
+type: "theme"
+quarter: "all"
+priority: "high"
+lastUpdated: 2026-01-08
+---
+
 # Community Takeover Campaign Calendar
 
 ## Campaign Overview: "Dominating Autodesk Developer Forums"

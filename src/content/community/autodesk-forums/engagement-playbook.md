@@ -1,3 +1,11 @@
+---
+title: "Autodesk Forums Engagement Playbook"
+description: "Strategic guide to become the #1 most helpful contributor in APS automation discussions"
+platform: "forums"
+engagement: "high"
+lastUpdated: 2026-01-08
+---
+
 # Autodesk Forums Engagement Playbook
 
 ## Strategic Overview

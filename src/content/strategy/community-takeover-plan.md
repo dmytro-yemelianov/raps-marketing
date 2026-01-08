@@ -1,3 +1,11 @@
+---
+title: "Autodesk Community Takeover Strategy"
+description: "Establish RAPS as the dominant automation solution in Autodesk communities, becoming the go-to tool for APS CI/CD workflows"
+category: "community"
+priority: "high"
+lastUpdated: 2026-01-08
+---
+
 # Autodesk Community Takeover Strategy
 
 > **🎯 Objective**: Establish RAPS as the dominant automation solution in Autodesk communities, becoming the go-to tool for APS CI/CD workflows.
