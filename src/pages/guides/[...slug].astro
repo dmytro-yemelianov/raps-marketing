@@ -1,0 +1,209 @@
+---
+import { type CollectionEntry, getCollection } from 'astro:content';
+import BaseLayout from '../../layouts/BaseLayout.astro';
+
+export async function getStaticPaths() {
+  const guides = await getCollection('guides');
+  return guides.map((guide) => ({
+    params: { slug: guide.slug },
+    props: guide,
+  }));
+}
+
+type Props = CollectionEntry<'guides'>;
+
+const guide = Astro.props;
+const { Content } = await guide.render();
+---
+
+<BaseLayout 
+  title={guide.data.title}
+  description={guide.data.description}
+>
+  <article class="content-container py-12">
+    <div class="max-w-4xl mx-auto">
+      <!-- Guide Header -->
+      <header class="mb-8">
+        <div class="flex items-center text-sm text-gray-500 mb-4">
+          <a href="/guides" class="hover:text-raps-blue">Guides</a>
+          <span class="mx-2">→</span>
+          <span class="capitalize">{guide.data.category.replace('-', ' ')}</span>
+          <span class="mx-2">→</span>
+          <span>Current</span>
+        </div>
+        
+        <div class="flex items-center gap-4 mb-4">
+          <span class={`px-3 py-1 text-sm rounded-full ${
+            guide.data.difficulty === 'beginner' ? 'bg-green-100 text-green-800' :
+            guide.data.difficulty === 'intermediate' ? 'bg-yellow-100 text-yellow-800' :
+            'bg-red-100 text-red-800'
+          }`}>
+            {guide.data.difficulty}
+          </span>
+          {guide.data.readTime && (
+            <span class="text-sm text-gray-500">
+              {guide.data.readTime} min read
+            </span>
+          )}
+        </div>
+        
+        <h1 class="text-4xl md:text-5xl font-bold mb-4">
+          {guide.data.title}
+        </h1>
+        
+        <p class="text-xl text-gray-600 mb-6">
+          {guide.data.description}
+        </p>
+      </header>
+
+      <!-- Table of Contents (if content has headings) -->
+      <nav class="bg-gray-50 rounded-lg p-6 mb-8">
+        <h2 class="text-lg font-semibold mb-4 flex items-center">
+          <span class="text-2xl mr-2">📋</span>
+          Table of Contents
+        </h2>
+        <div id="toc" class="text-sm">
+          <!-- TOC will be populated by JavaScript -->
+        </div>
+      </nav>
+
+      <!-- Guide Content -->
+      <div class="prose prose-lg prose-gray max-w-none">
+        <Content />
+      </div>
+
+      <!-- Navigation -->
+      <nav class="mt-12 pt-8 border-t border-gray-200">
+        <div class="flex justify-between items-center">
+          <a href="/guides" class="btn btn-secondary">
+            ← Back to Guides
+          </a>
+          <div class="flex space-x-4">
+            <a href="/tools" class="btn btn-primary">
+              Try Tools →
+            </a>
+          </div>
+        </div>
+      </nav>
+
+      <!-- Help Section -->
+      <div class="mt-8 bg-blue-50 rounded-lg p-6">
+        <h3 class="font-semibold mb-2 text-blue-900">Need Help?</h3>
+        <p class="text-sm text-blue-800 mb-4">
+          Having trouble with this guide? Check our troubleshooting resources or use our interactive tools.
+        </p>
+        <div class="flex space-x-4">
+          <a href="/guides?category=troubleshooting" class="text-blue-600 hover:underline text-sm">
+            Troubleshooting Guides
+          </a>
+          <a href="/tools" class="text-blue-600 hover:underline text-sm">
+            Interactive Tools
+          </a>
+          <a href="/articles" class="text-blue-600 hover:underline text-sm">
+            Related Articles
+          </a>
+        </div>
+      </div>
+    </div>
+  </article>
+
+  <script>
+    // Generate table of contents
+    document.addEventListener('DOMContentLoaded', function() {
+      const toc = document.getElementById('toc');
+      const headings = document.querySelectorAll('.prose h2, .prose h3');
+      
+      if (headings.length === 0) {
+        toc.innerHTML = '<p class="text-gray-500 italic">No sections found</p>';
+        return;
+      }
+      
+      const tocList = document.createElement('ul');
+      tocList.className = 'space-y-1';
+      
+      headings.forEach((heading, index) => {
+        const id = `heading-${index}`;
+        heading.id = id;
+        
+        const li = document.createElement('li');
+        const a = document.createElement('a');
+        a.href = `#${id}`;
+        a.textContent = heading.textContent;
+        a.className = `block hover:text-raps-blue transition ${
+          heading.tagName === 'H2' ? 'font-medium' : 'ml-4 text-gray-600'
+        }`;
+        
+        li.appendChild(a);
+        tocList.appendChild(li);
+      });
+      
+      toc.appendChild(tocList);
+    });
+  </script>
+</BaseLayout>
+
+<style>
+  .prose {
+    color: rgb(55 65 81);
+  }
+  
+  .prose h1, .prose h2, .prose h3, .prose h4 {
+    color: rgb(17 24 39);
+  }
+  
+  .prose h2 {
+    @apply text-2xl font-bold mt-8 mb-4 scroll-mt-20;
+  }
+  
+  .prose h3 {
+    @apply text-xl font-semibold mt-6 mb-3 scroll-mt-20;
+  }
+  
+  .prose p {
+    @apply mb-4;
+  }
+  
+  .prose ul, .prose ol {
+    @apply mb-4 ml-6;
+  }
+  
+  .prose li {
+    @apply mb-1;
+  }
+  
+  .prose blockquote {
+    @apply border-l-4 border-raps-blue bg-blue-50 pl-4 pr-4 py-2 my-6 italic;
+  }
+  
+  .prose code {
+    @apply bg-gray-100 text-raps-blue px-1 py-0.5 rounded text-sm font-mono;
+  }
+  
+  .prose pre {
+    @apply bg-gray-900 text-gray-100 rounded-lg p-4 overflow-x-auto my-6;
+  }
+  
+  .prose pre code {
+    @apply bg-transparent p-0 text-gray-100;
+  }
+  
+  .prose a {
+    @apply text-raps-blue hover:underline;
+  }
+  
+  .prose table {
+    @apply w-full border-collapse border border-gray-300 my-6;
+  }
+  
+  .prose th, .prose td {
+    @apply border border-gray-300 px-3 py-2 text-left;
+  }
+  
+  .prose th {
+    @apply bg-gray-100 font-semibold;
+  }
+  
+  .prose img {
+    @apply rounded-lg shadow-md my-6;
+  }
+</style>

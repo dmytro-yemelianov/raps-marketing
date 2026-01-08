@@ -1,6 +1,10 @@
 ---
 title: "Which APS API Do I Need? - Decision Tree Guide"
 description: "Interactive flowchart to help developers choose the right Autodesk Platform Services API for their project"
+category: "getting-started"
+difficulty: "beginner"
+readTime: 15
+order: 2
 keywords: ["APS", "API", "decision tree", "Model Derivative", "Data Management", "Viewer", "Design Automation"]
 raps_commands: ["raps --help", "raps auth login", "raps dm projects", "raps translate", "raps view"]
 raps_version: ">=4.2.0"

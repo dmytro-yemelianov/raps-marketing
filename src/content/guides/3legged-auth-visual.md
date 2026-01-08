@@ -1,3 +1,12 @@
+---
+title: "3-Legged OAuth Visual Walkthrough"
+description: "Master APS 3-legged authentication with step-by-step diagrams and code"
+category: "authentication"
+difficulty: "intermediate"
+readTime: 20
+order: 1
+---
+
 # 3-Legged OAuth Visual Walkthrough
 
 **Master APS 3-legged authentication with step-by-step diagrams and code**

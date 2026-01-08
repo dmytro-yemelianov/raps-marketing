@@ -1,0 +1,296 @@
+<!DOCTYPE html><html lang="en" data-astro-cid-37fxchfa> <head><meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><link rel="icon" type="image/svg+xml" href="/favicon.svg"><meta name="generator" content="Astro v5.16.7"><!-- Primary Meta Tags --><title>BIM360/ACC Provisioning Checklist: Fix 403 Errors | RAPS CLI</title><meta name="title" content="BIM360/ACC Provisioning Checklist: Fix 403 Errors | RAPS CLI"><meta name="description" content="The #1 cause of APS API 403 errors — and how to fix them"><!-- Open Graph / Facebook --><meta property="og:type" content="website"><meta property="og:url" content="https://rapscli.xyz/guides/acc-provisioning-checklist/"><meta property="og:title" content="BIM360/ACC Provisioning Checklist: Fix 403 Errors | RAPS CLI"><meta property="og:description" content="The #1 cause of APS API 403 errors — and how to fix them"><meta property="og:image" content="https://rapscli.xyz/og-image.png"><!-- Twitter --><meta property="twitter:card" content="summary_large_image"><meta property="twitter:url" content="https://rapscli.xyz/guides/acc-provisioning-checklist/"><meta property="twitter:title" content="BIM360/ACC Provisioning Checklist: Fix 403 Errors | RAPS CLI"><meta property="twitter:description" content="The #1 cause of APS API 403 errors — and how to fix them"><meta property="twitter:image" content="https://rapscli.xyz/og-image.png"><!-- Canonical URL --><link rel="canonical" href="https://rapscli.xyz/guides/acc-provisioning-checklist/"><!-- Fonts --><link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin><link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet"><style>html{scroll-behavior:smooth}body{font-family:Inter,system-ui,sans-serif}
+.prose[data-astro-cid-oolc5s6i]{color:#374151}.prose[data-astro-cid-oolc5s6i] h1[data-astro-cid-oolc5s6i],.prose[data-astro-cid-oolc5s6i] h2[data-astro-cid-oolc5s6i],.prose[data-astro-cid-oolc5s6i] h3[data-astro-cid-oolc5s6i],.prose[data-astro-cid-oolc5s6i] h4[data-astro-cid-oolc5s6i]{color:#111827}.prose[data-astro-cid-oolc5s6i] h2[data-astro-cid-oolc5s6i]{margin-top:2rem;margin-bottom:1rem;scroll-margin-top:5rem;font-size:1.5rem;line-height:2rem;font-weight:700}.prose[data-astro-cid-oolc5s6i] h3[data-astro-cid-oolc5s6i]{margin-top:1.5rem;margin-bottom:.75rem;scroll-margin-top:5rem;font-size:1.25rem;line-height:1.75rem;font-weight:600}.prose[data-astro-cid-oolc5s6i] p[data-astro-cid-oolc5s6i]{margin-bottom:1rem}.prose[data-astro-cid-oolc5s6i] ul[data-astro-cid-oolc5s6i],.prose[data-astro-cid-oolc5s6i] ol[data-astro-cid-oolc5s6i]{margin-bottom:1rem;margin-left:1.5rem}.prose[data-astro-cid-oolc5s6i] li[data-astro-cid-oolc5s6i]{margin-bottom:.25rem}.prose[data-astro-cid-oolc5s6i] blockquote[data-astro-cid-oolc5s6i]{margin-top:1.5rem;margin-bottom:1.5rem;border-left-width:4px;--tw-border-opacity: 1;border-color:rgb(102 126 234 / var(--tw-border-opacity, 1));--tw-bg-opacity: 1;background-color:rgb(239 246 255 / var(--tw-bg-opacity, 1));padding:.5rem 1rem;font-style:italic}.prose[data-astro-cid-oolc5s6i] code[data-astro-cid-oolc5s6i]{border-radius:.25rem;--tw-bg-opacity: 1;background-color:rgb(243 244 246 / var(--tw-bg-opacity, 1));padding:.125rem .25rem;font-family:Consolas,Monaco,monospace;font-size:.875rem;line-height:1.25rem;--tw-text-opacity: 1;color:rgb(102 126 234 / var(--tw-text-opacity, 1))}.prose[data-astro-cid-oolc5s6i] pre[data-astro-cid-oolc5s6i]{margin-top:1.5rem;margin-bottom:1.5rem;overflow-x:auto;border-radius:.5rem;--tw-bg-opacity: 1;background-color:rgb(17 24 39 / var(--tw-bg-opacity, 1));padding:1rem;--tw-text-opacity: 1;color:rgb(243 244 246 / var(--tw-text-opacity, 1))}.prose[data-astro-cid-oolc5s6i] pre[data-astro-cid-oolc5s6i] code[data-astro-cid-oolc5s6i]{background-color:transparent;padding:0;--tw-text-opacity: 1;color:rgb(243 244 246 / var(--tw-text-opacity, 1))}.prose[data-astro-cid-oolc5s6i] a[data-astro-cid-oolc5s6i]{--tw-text-opacity: 1;color:rgb(102 126 234 / var(--tw-text-opacity, 1))}.prose[data-astro-cid-oolc5s6i] a[data-astro-cid-oolc5s6i]:hover{text-decoration-line:underline}.prose[data-astro-cid-oolc5s6i] table[data-astro-cid-oolc5s6i]{margin-top:1.5rem;margin-bottom:1.5rem;width:100%;border-collapse:collapse;border-width:1px;--tw-border-opacity: 1;border-color:rgb(209 213 219 / var(--tw-border-opacity, 1))}.prose[data-astro-cid-oolc5s6i] th[data-astro-cid-oolc5s6i],.prose[data-astro-cid-oolc5s6i] td[data-astro-cid-oolc5s6i]{border-width:1px;--tw-border-opacity: 1;border-color:rgb(209 213 219 / var(--tw-border-opacity, 1));padding:.5rem .75rem;text-align:left}.prose[data-astro-cid-oolc5s6i] th[data-astro-cid-oolc5s6i]{--tw-bg-opacity: 1;background-color:rgb(243 244 246 / var(--tw-bg-opacity, 1));font-weight:600}.prose[data-astro-cid-oolc5s6i] img[data-astro-cid-oolc5s6i]{margin-top:1.5rem;margin-bottom:1.5rem;border-radius:.5rem;--tw-shadow: 0 4px 6px -1px rgb(0 0 0 / .1), 0 2px 4px -2px rgb(0 0 0 / .1);--tw-shadow-colored: 0 4px 6px -1px var(--tw-shadow-color), 0 2px 4px -2px var(--tw-shadow-color);box-shadow:var(--tw-ring-offset-shadow, 0 0 #0000),var(--tw-ring-shadow, 0 0 #0000),var(--tw-shadow)}
+</style></head> <body class="min-h-screen bg-white" data-astro-cid-37fxchfa> <nav class="sticky top-0 z-50 bg-white/95 backdrop-blur border-b border-gray-200" data-astro-cid-37fxchfa> <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8" data-astro-cid-37fxchfa> <div class="flex justify-between items-center h-16" data-astro-cid-37fxchfa> <div class="flex items-center" data-astro-cid-37fxchfa> <a href="/" class="flex items-center space-x-2" data-astro-cid-37fxchfa> <span class="text-2xl font-bold bg-gradient-to-r from-raps-blue to-raps-purple bg-clip-text text-transparent" data-astro-cid-37fxchfa>
+RAPS
+</span> <span class="text-gray-500" data-astro-cid-37fxchfa>v4.2.1</span> </a> </div> <nav class="hidden md:flex items-center space-x-8" data-astro-cid-37fxchfa> <a href="/articles" class="text-gray-700 hover:text-raps-blue transition" data-astro-cid-37fxchfa>Articles</a> <a href="/guides" class="text-gray-700 hover:text-raps-blue transition" data-astro-cid-37fxchfa>Guides</a> <a href="/tools" class="text-gray-700 hover:text-raps-blue transition" data-astro-cid-37fxchfa>Tools</a> <a href="/pdfs" class="text-gray-700 hover:text-raps-blue transition" data-astro-cid-37fxchfa>PDFs</a> <a href="https://github.com/autodesk-platform-services/raps" class="text-gray-700 hover:text-raps-blue transition" data-astro-cid-37fxchfa>
+GitHub
+</a> <a href="https://github.com/autodesk-platform-services/raps/releases" class="px-4 py-2 bg-gradient-to-r from-raps-blue to-raps-purple text-white rounded-lg hover:shadow-lg transition" data-astro-cid-37fxchfa>
+Download
+</a> </nav> <button class="md:hidden p-2 rounded-lg hover:bg-gray-100" data-astro-cid-37fxchfa> <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" data-astro-cid-37fxchfa> <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16" data-astro-cid-37fxchfa></path> </svg> </button> </div> </div> </nav> <main data-astro-cid-37fxchfa>  <article class="content-container py-12" data-astro-cid-oolc5s6i> <div class="max-w-4xl mx-auto" data-astro-cid-oolc5s6i> <!-- Guide Header --> <header class="mb-8" data-astro-cid-oolc5s6i> <div class="flex items-center text-sm text-gray-500 mb-4" data-astro-cid-oolc5s6i> <a href="/guides" class="hover:text-raps-blue" data-astro-cid-oolc5s6i>Guides</a> <span class="mx-2" data-astro-cid-oolc5s6i>→</span> <span class="capitalize" data-astro-cid-oolc5s6i>troubleshooting</span> <span class="mx-2" data-astro-cid-oolc5s6i>→</span> <span data-astro-cid-oolc5s6i>Current</span> </div> <div class="flex items-center gap-4 mb-4" data-astro-cid-oolc5s6i> <span class="px-3 py-1 text-sm rounded-full bg-green-100 text-green-800" data-astro-cid-oolc5s6i> beginner </span> <span class="text-sm text-gray-500" data-astro-cid-oolc5s6i> 10 min read
+</span> </div> <h1 class="text-4xl md:text-5xl font-bold mb-4" data-astro-cid-oolc5s6i> BIM360/ACC Provisioning Checklist: Fix 403 Errors </h1> <p class="text-xl text-gray-600 mb-6" data-astro-cid-oolc5s6i> The #1 cause of APS API 403 errors — and how to fix them </p> </header> <!-- Table of Contents (if content has headings) --> <nav class="bg-gray-50 rounded-lg p-6 mb-8" data-astro-cid-oolc5s6i> <h2 class="text-lg font-semibold mb-4 flex items-center" data-astro-cid-oolc5s6i> <span class="text-2xl mr-2" data-astro-cid-oolc5s6i>📋</span>
+Table of Contents
+</h2> <div id="toc" class="text-sm" data-astro-cid-oolc5s6i> <!-- TOC will be populated by JavaScript --> </div> </nav> <!-- Guide Content --> <div class="prose prose-lg prose-gray max-w-none" data-astro-cid-oolc5s6i> <h1 id="bim360acc-provisioning-checklist-fix-403-errors">BIM360/ACC Provisioning Checklist: Fix 403 Errors</h1>
+<p><strong>The #1 cause of APS API 403 errors — and how to fix them</strong></p>
+<hr>
+<h2 id="️-the-problem">⚠️ The Problem</h2>
+<p>Getting <code>403 Forbidden</code> errors when calling APS APIs with BIM360 or Autodesk Construction Cloud (ACC)? You’re not alone.</p>
+<p><strong>The root cause</strong>: Developers don’t realize they must manually enable custom integrations from the ACC admin console. This isn’t mentioned in most tutorials, causing hours of frustration.</p>
+<h2 id="-quick-fix">🎯 Quick Fix</h2>
+<p><strong>If you’re getting 403 errors, skip to Step 3</strong> — that’s usually the missing piece.</p>
+<hr>
+<h2 id="-complete-setup-checklist">📋 Complete Setup Checklist</h2>
+<h3 id="step-1-create-aps-application">Step 1: Create APS Application</h3>
+<p><strong>✅ Prerequisites:</strong></p>
+<ul class="contains-task-list">
+<li class="task-list-item"><input type="checkbox" disabled> Autodesk account with developer access</li>
+<li class="task-list-item"><input type="checkbox" disabled> Access to <a href="https://aps.autodesk.com">aps.autodesk.com</a></li>
+</ul>
+<p><strong>✅ App Creation:</strong></p>
+<ul class="contains-task-list">
+<li class="task-list-item"><input type="checkbox" disabled> Logged into APS Developer Portal</li>
+<li class="task-list-item"><input type="checkbox" disabled> Created new application</li>
+<li class="task-list-item"><input type="checkbox" disabled> Noted <strong>Client ID</strong> (you’ll need this exact value)</li>
+<li class="task-list-item"><input type="checkbox" disabled> Noted <strong>Client Secret</strong> (keep secure!)</li>
+<li class="task-list-item"><input type="checkbox" disabled> Set <strong>Callback URL</strong> correctly:
+<ul>
+<li>Development: <code>http://localhost:3000/callback</code></li>
+<li>Production: Your actual domain</li>
+</ul>
+</li>
+<li class="task-list-item"><input type="checkbox" disabled> Selected required <strong>API access</strong>:
+<ul>
+<li>✅ Data Management API</li>
+<li>✅ Model Derivative API</li>
+<li>✅ Any other APIs you need</li>
+</ul>
+</li>
+</ul>
+<hr>
+<h3 id="step-2-verify-acc-admin-access">Step 2: Verify ACC Admin Access</h3>
+<p><strong>✅ Account Requirements:</strong></p>
+<ul class="contains-task-list">
+<li class="task-list-item"><input type="checkbox" disabled> You are an <strong>Account Admin</strong> in ACC/BIM360 (not just Project Admin)</li>
+<li class="task-list-item"><input type="checkbox" disabled> Your ACC subscription is active</li>
+<li class="task-list-item"><input type="checkbox" disabled> You can access Account Administration settings</li>
+</ul>
+<p><strong>❌ If you’re NOT an Account Admin:</strong></p>
+<pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8; overflow-x: auto; white-space: pre-wrap; word-wrap: break-word;" tabindex="0" data-language="plaintext"><code><span class="line"><span>Contact your ACC Account Admin and ask them to:</span></span>
+<span class="line"><span>1. Add your APS Client ID to custom integrations</span></span>
+<span class="line"><span>2. Grant required permissions</span></span>
+<span class="line"><span>3. Share the integration details with you</span></span></code></pre>
+<hr>
+<h3 id="step-3-enable-custom-integration-critical-step">Step 3: Enable Custom Integration (CRITICAL STEP)</h3>
+<p><strong>🚨 This step is missed by 90% of developers</strong></p>
+<p><strong>✅ In ACC Admin Console:</strong></p>
+<ul class="contains-task-list">
+<li class="task-list-item"><input type="checkbox" disabled> Logged into ACC as <strong>Account Admin</strong></li>
+<li class="task-list-item"><input type="checkbox" disabled> Navigated to: <strong>Account Admin → Settings → Custom Integrations</strong></li>
+<li class="task-list-item"><input type="checkbox" disabled> Clicked <strong>“Add Custom Integration”</strong></li>
+<li class="task-list-item"><input type="checkbox" disabled> Entered your <strong>exact Client ID</strong> from Step 1</li>
+<li class="task-list-item"><input type="checkbox" disabled> Selected <strong>required access levels</strong>:
+<ul>
+<li>✅ BIM 360 Account Admin (for account-level operations)</li>
+<li>✅ BIM 360 Docs (for file operations)</li>
+<li>✅ Any additional services you need</li>
+</ul>
+</li>
+<li class="task-list-item"><input type="checkbox" disabled> Completed the integration wizard</li>
+<li class="task-list-item"><input type="checkbox" disabled> Waited <strong>5-10 minutes</strong> for propagation</li>
+</ul>
+<p><strong>⏱️ Common mistake</strong>: Not waiting for propagation. Changes take 5-10 minutes.</p>
+<hr>
+<h3 id="step-4-per-project-setup-if-using-2-legged-auth">Step 4: Per-Project Setup (If Using 2-Legged Auth)</h3>
+<p><strong>✅ Project-Level Access:</strong></p>
+<ul class="contains-task-list">
+<li class="task-list-item"><input type="checkbox" disabled> Added the custom integration to specific projects</li>
+<li class="task-list-item"><input type="checkbox" disabled> Verified integration appears in Project Admin → Integrations</li>
+<li class="task-list-item"><input type="checkbox" disabled> Granted necessary project permissions</li>
+</ul>
+<p><strong>✅ For 3-Legged Auth:</strong></p>
+<ul class="contains-task-list">
+<li class="task-list-item"><input type="checkbox" disabled> Ensured user has project access</li>
+<li class="task-list-item"><input type="checkbox" disabled> User accepted any pending invitations</li>
+<li class="task-list-item"><input type="checkbox" disabled> User has appropriate role (Admin, Member, etc.)</li>
+</ul>
+<hr>
+<h3 id="step-5-test-authentication">Step 5: Test Authentication</h3>
+<p><strong>✅ Basic Connection Test:</strong></p>
+<pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8; overflow-x: auto; white-space: pre-wrap; word-wrap: break-word;" tabindex="0" data-language="bash"><code><span class="line"><span style="color:#6A737D"># Using RAPS CLI</span></span>
+<span class="line"><span style="color:#B392F0">raps</span><span style="color:#9ECBFF"> auth</span><span style="color:#9ECBFF"> login</span></span>
+<span class="line"><span style="color:#B392F0">raps</span><span style="color:#9ECBFF"> dm</span><span style="color:#9ECBFF"> projects</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#6A737D"># Should list your ACC projects without 403 errors</span></span></code></pre>
+<p><strong>✅ Manual API Test:</strong></p>
+<pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8; overflow-x: auto; white-space: pre-wrap; word-wrap: break-word;" tabindex="0" data-language="bash"><code><span class="line"><span style="color:#6A737D"># Get 3-legged token first, then:</span></span>
+<span class="line"><span style="color:#B392F0">curl</span><span style="color:#79B8FF"> -X</span><span style="color:#9ECBFF"> GET</span><span style="color:#79B8FF"> \</span></span>
+<span class="line"><span style="color:#9ECBFF">  'https://developer.api.autodesk.com/project/v1/hubs'</span><span style="color:#79B8FF"> \</span></span>
+<span class="line"><span style="color:#79B8FF">  -H</span><span style="color:#9ECBFF"> 'Authorization: Bearer YOUR_3LEGGED_TOKEN'</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#6A737D"># Should return hub data, not 403</span></span></code></pre>
+<hr>
+<h2 id="-troubleshooting-403-errors">🔧 Troubleshooting 403 Errors</h2>
+<h3 id="error-client_id-does-not-have-access">Error: “client_id does not have access”</h3>
+<p><strong>❌ Cause</strong>: Integration not added to ACC (Step 3 skipped)
+<strong>✅ Fix</strong>: Complete Step 3 — add Client ID to Custom Integrations</p>
+<h3 id="error-user-not-authorized">Error: “User not authorized”</h3>
+<p><strong>❌ Cause</strong>: User lacks project permissions
+<strong>✅ Fix</strong>: Grant user project access or use 2-legged auth</p>
+<h3 id="error-project-not-found">Error: “Project not found”</h3>
+<p><strong>❌ Cause</strong>: 3-legged token from wrong user
+<strong>✅ Fix</strong>: Ensure user has access to the specific project</p>
+<h3 id="error-forbidden-generic">Error: “Forbidden” (generic)</h3>
+<p><strong>❌ Cause</strong>: Multiple possible issues
+<strong>✅ Fix</strong>: Work through checklist step by step</p>
+<hr>
+<h2 id="-auth-flow-comparison">🎭 Auth Flow Comparison</h2>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<table><thead><tr><th>Auth Type</th><th>When to Use</th><th>Setup Requirements</th><th>Common Issues</th></tr></thead><tbody><tr><td><strong>2-Legged</strong></td><td>Server-to-server automation</td><td>Custom Integration + Project access</td><td>Forget project setup</td></tr><tr><td><strong>3-Legged</strong></td><td>User-interactive apps</td><td>Custom Integration + User consent</td><td>Wrong user permissions</td></tr></tbody></table>
+<p><strong>💡 RAPS CLI handles both flows automatically:</strong></p>
+<pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8; overflow-x: auto; white-space: pre-wrap; word-wrap: break-word;" tabindex="0" data-language="bash"><code><span class="line"><span style="color:#6A737D"># 3-legged (interactive)</span></span>
+<span class="line"><span style="color:#B392F0">raps</span><span style="color:#9ECBFF"> auth</span><span style="color:#9ECBFF"> login</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#6A737D"># 2-legged (automated)  </span></span>
+<span class="line"><span style="color:#B392F0">raps</span><span style="color:#9ECBFF"> auth</span><span style="color:#9ECBFF"> set</span><span style="color:#79B8FF"> --client-id</span><span style="color:#9ECBFF"> ID</span><span style="color:#79B8FF"> --client-secret</span><span style="color:#9ECBFF"> SECRET</span></span></code></pre>
+<hr>
+<h2 id="-timeline-for-setup">🕐 Timeline for Setup</h2>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<table><thead><tr><th>Step</th><th>Time Required</th><th>Can Be Automated?</th></tr></thead><tbody><tr><td>1. Create APS app</td><td>5 minutes</td><td>No</td></tr><tr><td>2. Verify admin access</td><td>0-24 hours</td><td>No</td></tr><tr><td>3. Add custom integration</td><td>5 minutes</td><td>No</td></tr><tr><td>4. Project setup</td><td>2 minutes/project</td><td>Partially</td></tr><tr><td>5. Test connection</td><td>1 minute</td><td>Yes</td></tr></tbody></table>
+<p><strong>Total: 15-30 minutes + admin approval time</strong></p>
+<hr>
+<h2 id="-common-gotchas">🚨 Common Gotchas</h2>
+<h3 id="1-client-id-copy-paste-errors">1. Client ID Copy-Paste Errors</h3>
+<p><strong>Problem</strong>: Typos when copying Client ID to ACC
+<strong>Solution</strong>: Copy-paste, don’t type manually</p>
+<h3 id="2-regional-differences">2. Regional Differences</h3>
+<p><strong>Problem</strong>: EMEA accounts have different requirements
+<strong>Solution</strong>: Use correct base URL and region headers</p>
+<h3 id="3-multi-tenant-confusion">3. Multi-Tenant Confusion</h3>
+<p><strong>Problem</strong>: Multiple ACC accounts, wrong integration
+<strong>Solution</strong>: Verify you’re in the correct account</p>
+<h3 id="4-permission-inheritance">4. Permission Inheritance</h3>
+<p><strong>Problem</strong>: Assuming project permissions = account permissions
+<strong>Solution</strong>: Grant both account AND project access</p>
+<hr>
+<h2 id="-migration-from-forge">🔄 Migration from Forge</h2>
+<p><strong>If migrating from Forge:</strong></p>
+<pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8; overflow-x: auto; white-space: pre-wrap; word-wrap: break-word;" tabindex="0" data-language="markdown"><code><span class="line"><span style="color:#E1E4E8">Old Forge App → New APS App:</span></span>
+<span class="line"><span style="color:#E1E4E8">✅ Same process applies</span></span>
+<span class="line"><span style="color:#E1E4E8">✅ Must still add Client ID to ACC Custom Integrations  </span></span>
+<span class="line"><span style="color:#E1E4E8">✅ No automatic permission transfer</span></span></code></pre>
+<p><strong>Migration checklist:</strong></p>
+<ul class="contains-task-list">
+<li class="task-list-item"><input type="checkbox" disabled> Created new APS app (or migrated existing)</li>
+<li class="task-list-item"><input type="checkbox" disabled> Updated ACC Custom Integrations with new Client ID</li>
+<li class="task-list-item"><input type="checkbox" disabled> Tested all project access</li>
+<li class="task-list-item"><input type="checkbox" disabled> Updated application code to use APS endpoints</li>
+</ul>
+<hr>
+<h2 id="-testing-with-raps-cli">💻 Testing with RAPS CLI</h2>
+<p><strong>Validate your setup:</strong></p>
+<pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8; overflow-x: auto; white-space: pre-wrap; word-wrap: break-word;" tabindex="0" data-language="bash"><code><span class="line"><span style="color:#6A737D"># 1. Check authentication</span></span>
+<span class="line"><span style="color:#B392F0">raps</span><span style="color:#9ECBFF"> auth</span><span style="color:#9ECBFF"> status</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#6A737D"># 2. List accessible hubs</span></span>
+<span class="line"><span style="color:#B392F0">raps</span><span style="color:#9ECBFF"> dm</span><span style="color:#9ECBFF"> hubs</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#6A737D"># 3. List projects in each hub</span></span>
+<span class="line"><span style="color:#B392F0">raps</span><span style="color:#9ECBFF"> dm</span><span style="color:#9ECBFF"> projects</span><span style="color:#79B8FF"> --hub-id</span><span style="color:#F97583"> &#x3C;</span><span style="color:#9ECBFF">hub-i</span><span style="color:#E1E4E8">d</span><span style="color:#F97583">></span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#6A737D"># 4. Test file operations</span></span>
+<span class="line"><span style="color:#B392F0">raps</span><span style="color:#9ECBFF"> dm</span><span style="color:#9ECBFF"> folders</span><span style="color:#F97583"> &#x3C;</span><span style="color:#9ECBFF">project-i</span><span style="color:#E1E4E8">d</span><span style="color:#F97583">></span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#6A737D"># 5. Verify provisioning status</span></span>
+<span class="line"><span style="color:#B392F0">raps</span><span style="color:#9ECBFF"> acc</span><span style="color:#9ECBFF"> check-provisioning</span></span></code></pre>
+<p><strong>Expected output:</strong></p>
+<ul>
+<li>✅ No 403 errors</li>
+<li>✅ Your ACC projects listed</li>
+<li>✅ Folder structure visible</li>
+</ul>
+<hr>
+<h2 id="-when-you-need-help">📞 When You Need Help</h2>
+<h3 id="still-getting-403s-after-following-this-guide">Still getting 403s after following this guide?</h3>
+<p><strong>Check these:</strong></p>
+<ol>
+<li><strong>Timing</strong>: Wait 15+ minutes after adding integration</li>
+<li><strong>Region</strong>: Ensure consistent US/EMEA region usage</li>
+<li><strong>Scopes</strong>: Verify your token has required scopes</li>
+<li><strong>User</strong>: Confirm the user actually has project access</li>
+</ol>
+<p><strong>Get support:</strong></p>
+<ul>
+<li>🆘 <strong>RAPS Discord</strong>: <a href="https://discord.gg/raps">discord.gg/raps</a></li>
+<li>📧 <strong>Email</strong>: <a href="mailto:support@rapscli.xyz">support@rapscli.xyz</a></li>
+<li>🤖 <strong>RAPS CLI</strong>: <code>raps support create-ticket</code></li>
+</ul>
+<hr>
+<h2 id="-success-checklist">🎯 Success Checklist</h2>
+<p><strong>You’re ready when:</strong></p>
+<ul class="contains-task-list">
+<li class="task-list-item"><input type="checkbox" disabled> No 403 errors on basic API calls</li>
+<li class="task-list-item"><input type="checkbox" disabled> Can list ACC projects via API</li>
+<li class="task-list-item"><input type="checkbox" disabled> Can upload/download files</li>
+<li class="task-list-item"><input type="checkbox" disabled> RAPS CLI authentication works</li>
+<li class="task-list-item"><input type="checkbox" disabled> All team members can access</li>
+</ul>
+<p><strong>Time saved</strong>: ~4 hours of debugging per developer 🎉</p>
+<hr>
+<h2 id="-related-guides">📚 Related Guides</h2>
+<ul>
+<li><a href="../3legged-auth-visual">3-Legged Auth Visual Walkthrough</a> — Understanding OAuth flow</li>
+<li><a href="../token-refresh-patterns">Token Refresh Patterns</a> — Production authentication</li>
+<li><a href="../../tools/region-checker">Region Mismatch Debugger</a> — US/EMEA troubleshooting</li>
+</ul>
+<hr>
+<p><em>Last Updated: January 2026 | RAPS v4.2.1</em><br>
+<em>Based on community feedback from 1000+ developers</em></p> </div> <!-- Navigation --> <nav class="mt-12 pt-8 border-t border-gray-200" data-astro-cid-oolc5s6i> <div class="flex justify-between items-center" data-astro-cid-oolc5s6i> <a href="/guides" class="btn btn-secondary" data-astro-cid-oolc5s6i>
+← Back to Guides
+</a> <div class="flex space-x-4" data-astro-cid-oolc5s6i> <a href="/tools" class="btn btn-primary" data-astro-cid-oolc5s6i>
+Try Tools →
+</a> </div> </div> </nav> <!-- Help Section --> <div class="mt-8 bg-blue-50 rounded-lg p-6" data-astro-cid-oolc5s6i> <h3 class="font-semibold mb-2 text-blue-900" data-astro-cid-oolc5s6i>Need Help?</h3> <p class="text-sm text-blue-800 mb-4" data-astro-cid-oolc5s6i>
+Having trouble with this guide? Check our troubleshooting resources or use our interactive tools.
+</p> <div class="flex space-x-4" data-astro-cid-oolc5s6i> <a href="/guides?category=troubleshooting" class="text-blue-600 hover:underline text-sm" data-astro-cid-oolc5s6i>
+Troubleshooting Guides
+</a> <a href="/tools" class="text-blue-600 hover:underline text-sm" data-astro-cid-oolc5s6i>
+Interactive Tools
+</a> <a href="/articles" class="text-blue-600 hover:underline text-sm" data-astro-cid-oolc5s6i>
+Related Articles
+</a> </div> </div> </div> </article> <script type="module">document.addEventListener("DOMContentLoaded",function(){const o=document.getElementById("toc"),c=document.querySelectorAll(".prose h2, .prose h3");if(c.length===0){o.innerHTML='<p class="text-gray-500 italic">No sections found</p>';return}const t=document.createElement("ul");t.className="space-y-1",c.forEach((n,d)=>{const a=`heading-${d}`;n.id=a;const s=document.createElement("li"),e=document.createElement("a");e.href=`#${a}`,e.textContent=n.textContent,e.className=`block hover:text-raps-blue transition ${n.tagName==="H2"?"font-medium":"ml-4 text-gray-600"}`,s.appendChild(e),t.appendChild(s)}),o.appendChild(t)});</script>  </main> <footer class="bg-gray-50 border-t border-gray-200 mt-20" data-astro-cid-37fxchfa> <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12" data-astro-cid-37fxchfa> <div class="grid grid-cols-1 md:grid-cols-4 gap-8" data-astro-cid-37fxchfa> <div data-astro-cid-37fxchfa> <h3 class="font-semibold text-gray-900 mb-4" data-astro-cid-37fxchfa>Product</h3> <ul class="space-y-2" data-astro-cid-37fxchfa> <li data-astro-cid-37fxchfa><a href="/features" class="text-gray-600 hover:text-raps-blue" data-astro-cid-37fxchfa>Features</a></li> <li data-astro-cid-37fxchfa><a href="/pricing" class="text-gray-600 hover:text-raps-blue" data-astro-cid-37fxchfa>Pricing</a></li> <li data-astro-cid-37fxchfa><a href="/changelog" class="text-gray-600 hover:text-raps-blue" data-astro-cid-37fxchfa>Changelog</a></li> <li data-astro-cid-37fxchfa><a href="/roadmap" class="text-gray-600 hover:text-raps-blue" data-astro-cid-37fxchfa>Roadmap</a></li> </ul> </div> <div data-astro-cid-37fxchfa> <h3 class="font-semibold text-gray-900 mb-4" data-astro-cid-37fxchfa>Resources</h3> <ul class="space-y-2" data-astro-cid-37fxchfa> <li data-astro-cid-37fxchfa><a href="/docs" class="text-gray-600 hover:text-raps-blue" data-astro-cid-37fxchfa>Documentation</a></li> <li data-astro-cid-37fxchfa><a href="/guides" class="text-gray-600 hover:text-raps-blue" data-astro-cid-37fxchfa>Guides</a></li> <li data-astro-cid-37fxchfa><a href="/articles" class="text-gray-600 hover:text-raps-blue" data-astro-cid-37fxchfa>Articles</a></li> <li data-astro-cid-37fxchfa><a href="/tools" class="text-gray-600 hover:text-raps-blue" data-astro-cid-37fxchfa>Tools</a></li> </ul> </div> <div data-astro-cid-37fxchfa> <h3 class="font-semibold text-gray-900 mb-4" data-astro-cid-37fxchfa>Community</h3> <ul class="space-y-2" data-astro-cid-37fxchfa> <li data-astro-cid-37fxchfa><a href="https://github.com" class="text-gray-600 hover:text-raps-blue" data-astro-cid-37fxchfa>GitHub</a></li> <li data-astro-cid-37fxchfa><a href="https://discord.gg" class="text-gray-600 hover:text-raps-blue" data-astro-cid-37fxchfa>Discord</a></li> <li data-astro-cid-37fxchfa><a href="https://twitter.com" class="text-gray-600 hover:text-raps-blue" data-astro-cid-37fxchfa>Twitter</a></li> <li data-astro-cid-37fxchfa><a href="/blog" class="text-gray-600 hover:text-raps-blue" data-astro-cid-37fxchfa>Blog</a></li> </ul> </div> <div data-astro-cid-37fxchfa> <h3 class="font-semibold text-gray-900 mb-4" data-astro-cid-37fxchfa>Company</h3> <ul class="space-y-2" data-astro-cid-37fxchfa> <li data-astro-cid-37fxchfa><a href="/about" class="text-gray-600 hover:text-raps-blue" data-astro-cid-37fxchfa>About</a></li> <li data-astro-cid-37fxchfa><a href="/contact" class="text-gray-600 hover:text-raps-blue" data-astro-cid-37fxchfa>Contact</a></li> <li data-astro-cid-37fxchfa><a href="/privacy" class="text-gray-600 hover:text-raps-blue" data-astro-cid-37fxchfa>Privacy</a></li> <li data-astro-cid-37fxchfa><a href="/terms" class="text-gray-600 hover:text-raps-blue" data-astro-cid-37fxchfa>Terms</a></li> </ul> </div> </div> <div class="mt-8 pt-8 border-t border-gray-200" data-astro-cid-37fxchfa> <p class="text-center text-gray-600" data-astro-cid-37fxchfa>
+© 2026 RAPS CLI. Professional APS Automation Tools.
+</p> </div> </div> </footer> </body></html> 

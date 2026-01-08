@@ -1,0 +1,485 @@
+<!DOCTYPE html><html lang="en" data-astro-cid-37fxchfa> <head><meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><link rel="icon" type="image/svg+xml" href="/favicon.svg"><meta name="generator" content="Astro v5.16.7"><!-- Primary Meta Tags --><title>3-Legged OAuth Visual Walkthrough | RAPS CLI</title><meta name="title" content="3-Legged OAuth Visual Walkthrough | RAPS CLI"><meta name="description" content="Master APS 3-legged authentication with step-by-step diagrams and code"><!-- Open Graph / Facebook --><meta property="og:type" content="website"><meta property="og:url" content="https://rapscli.xyz/guides/3legged-auth-visual/"><meta property="og:title" content="3-Legged OAuth Visual Walkthrough | RAPS CLI"><meta property="og:description" content="Master APS 3-legged authentication with step-by-step diagrams and code"><meta property="og:image" content="https://rapscli.xyz/og-image.png"><!-- Twitter --><meta property="twitter:card" content="summary_large_image"><meta property="twitter:url" content="https://rapscli.xyz/guides/3legged-auth-visual/"><meta property="twitter:title" content="3-Legged OAuth Visual Walkthrough | RAPS CLI"><meta property="twitter:description" content="Master APS 3-legged authentication with step-by-step diagrams and code"><meta property="twitter:image" content="https://rapscli.xyz/og-image.png"><!-- Canonical URL --><link rel="canonical" href="https://rapscli.xyz/guides/3legged-auth-visual/"><!-- Fonts --><link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin><link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet"><style>html{scroll-behavior:smooth}body{font-family:Inter,system-ui,sans-serif}
+.prose[data-astro-cid-oolc5s6i]{color:#374151}.prose[data-astro-cid-oolc5s6i] h1[data-astro-cid-oolc5s6i],.prose[data-astro-cid-oolc5s6i] h2[data-astro-cid-oolc5s6i],.prose[data-astro-cid-oolc5s6i] h3[data-astro-cid-oolc5s6i],.prose[data-astro-cid-oolc5s6i] h4[data-astro-cid-oolc5s6i]{color:#111827}.prose[data-astro-cid-oolc5s6i] h2[data-astro-cid-oolc5s6i]{margin-top:2rem;margin-bottom:1rem;scroll-margin-top:5rem;font-size:1.5rem;line-height:2rem;font-weight:700}.prose[data-astro-cid-oolc5s6i] h3[data-astro-cid-oolc5s6i]{margin-top:1.5rem;margin-bottom:.75rem;scroll-margin-top:5rem;font-size:1.25rem;line-height:1.75rem;font-weight:600}.prose[data-astro-cid-oolc5s6i] p[data-astro-cid-oolc5s6i]{margin-bottom:1rem}.prose[data-astro-cid-oolc5s6i] ul[data-astro-cid-oolc5s6i],.prose[data-astro-cid-oolc5s6i] ol[data-astro-cid-oolc5s6i]{margin-bottom:1rem;margin-left:1.5rem}.prose[data-astro-cid-oolc5s6i] li[data-astro-cid-oolc5s6i]{margin-bottom:.25rem}.prose[data-astro-cid-oolc5s6i] blockquote[data-astro-cid-oolc5s6i]{margin-top:1.5rem;margin-bottom:1.5rem;border-left-width:4px;--tw-border-opacity: 1;border-color:rgb(102 126 234 / var(--tw-border-opacity, 1));--tw-bg-opacity: 1;background-color:rgb(239 246 255 / var(--tw-bg-opacity, 1));padding:.5rem 1rem;font-style:italic}.prose[data-astro-cid-oolc5s6i] code[data-astro-cid-oolc5s6i]{border-radius:.25rem;--tw-bg-opacity: 1;background-color:rgb(243 244 246 / var(--tw-bg-opacity, 1));padding:.125rem .25rem;font-family:Consolas,Monaco,monospace;font-size:.875rem;line-height:1.25rem;--tw-text-opacity: 1;color:rgb(102 126 234 / var(--tw-text-opacity, 1))}.prose[data-astro-cid-oolc5s6i] pre[data-astro-cid-oolc5s6i]{margin-top:1.5rem;margin-bottom:1.5rem;overflow-x:auto;border-radius:.5rem;--tw-bg-opacity: 1;background-color:rgb(17 24 39 / var(--tw-bg-opacity, 1));padding:1rem;--tw-text-opacity: 1;color:rgb(243 244 246 / var(--tw-text-opacity, 1))}.prose[data-astro-cid-oolc5s6i] pre[data-astro-cid-oolc5s6i] code[data-astro-cid-oolc5s6i]{background-color:transparent;padding:0;--tw-text-opacity: 1;color:rgb(243 244 246 / var(--tw-text-opacity, 1))}.prose[data-astro-cid-oolc5s6i] a[data-astro-cid-oolc5s6i]{--tw-text-opacity: 1;color:rgb(102 126 234 / var(--tw-text-opacity, 1))}.prose[data-astro-cid-oolc5s6i] a[data-astro-cid-oolc5s6i]:hover{text-decoration-line:underline}.prose[data-astro-cid-oolc5s6i] table[data-astro-cid-oolc5s6i]{margin-top:1.5rem;margin-bottom:1.5rem;width:100%;border-collapse:collapse;border-width:1px;--tw-border-opacity: 1;border-color:rgb(209 213 219 / var(--tw-border-opacity, 1))}.prose[data-astro-cid-oolc5s6i] th[data-astro-cid-oolc5s6i],.prose[data-astro-cid-oolc5s6i] td[data-astro-cid-oolc5s6i]{border-width:1px;--tw-border-opacity: 1;border-color:rgb(209 213 219 / var(--tw-border-opacity, 1));padding:.5rem .75rem;text-align:left}.prose[data-astro-cid-oolc5s6i] th[data-astro-cid-oolc5s6i]{--tw-bg-opacity: 1;background-color:rgb(243 244 246 / var(--tw-bg-opacity, 1));font-weight:600}.prose[data-astro-cid-oolc5s6i] img[data-astro-cid-oolc5s6i]{margin-top:1.5rem;margin-bottom:1.5rem;border-radius:.5rem;--tw-shadow: 0 4px 6px -1px rgb(0 0 0 / .1), 0 2px 4px -2px rgb(0 0 0 / .1);--tw-shadow-colored: 0 4px 6px -1px var(--tw-shadow-color), 0 2px 4px -2px var(--tw-shadow-color);box-shadow:var(--tw-ring-offset-shadow, 0 0 #0000),var(--tw-ring-shadow, 0 0 #0000),var(--tw-shadow)}
+</style></head> <body class="min-h-screen bg-white" data-astro-cid-37fxchfa> <nav class="sticky top-0 z-50 bg-white/95 backdrop-blur border-b border-gray-200" data-astro-cid-37fxchfa> <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8" data-astro-cid-37fxchfa> <div class="flex justify-between items-center h-16" data-astro-cid-37fxchfa> <div class="flex items-center" data-astro-cid-37fxchfa> <a href="/" class="flex items-center space-x-2" data-astro-cid-37fxchfa> <span class="text-2xl font-bold bg-gradient-to-r from-raps-blue to-raps-purple bg-clip-text text-transparent" data-astro-cid-37fxchfa>
+RAPS
+</span> <span class="text-gray-500" data-astro-cid-37fxchfa>v4.2.1</span> </a> </div> <nav class="hidden md:flex items-center space-x-8" data-astro-cid-37fxchfa> <a href="/articles" class="text-gray-700 hover:text-raps-blue transition" data-astro-cid-37fxchfa>Articles</a> <a href="/guides" class="text-gray-700 hover:text-raps-blue transition" data-astro-cid-37fxchfa>Guides</a> <a href="/tools" class="text-gray-700 hover:text-raps-blue transition" data-astro-cid-37fxchfa>Tools</a> <a href="/pdfs" class="text-gray-700 hover:text-raps-blue transition" data-astro-cid-37fxchfa>PDFs</a> <a href="https://github.com/autodesk-platform-services/raps" class="text-gray-700 hover:text-raps-blue transition" data-astro-cid-37fxchfa>
+GitHub
+</a> <a href="https://github.com/autodesk-platform-services/raps/releases" class="px-4 py-2 bg-gradient-to-r from-raps-blue to-raps-purple text-white rounded-lg hover:shadow-lg transition" data-astro-cid-37fxchfa>
+Download
+</a> </nav> <button class="md:hidden p-2 rounded-lg hover:bg-gray-100" data-astro-cid-37fxchfa> <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" data-astro-cid-37fxchfa> <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16" data-astro-cid-37fxchfa></path> </svg> </button> </div> </div> </nav> <main data-astro-cid-37fxchfa>  <article class="content-container py-12" data-astro-cid-oolc5s6i> <div class="max-w-4xl mx-auto" data-astro-cid-oolc5s6i> <!-- Guide Header --> <header class="mb-8" data-astro-cid-oolc5s6i> <div class="flex items-center text-sm text-gray-500 mb-4" data-astro-cid-oolc5s6i> <a href="/guides" class="hover:text-raps-blue" data-astro-cid-oolc5s6i>Guides</a> <span class="mx-2" data-astro-cid-oolc5s6i>→</span> <span class="capitalize" data-astro-cid-oolc5s6i>authentication</span> <span class="mx-2" data-astro-cid-oolc5s6i>→</span> <span data-astro-cid-oolc5s6i>Current</span> </div> <div class="flex items-center gap-4 mb-4" data-astro-cid-oolc5s6i> <span class="px-3 py-1 text-sm rounded-full bg-yellow-100 text-yellow-800" data-astro-cid-oolc5s6i> intermediate </span> <span class="text-sm text-gray-500" data-astro-cid-oolc5s6i> 20 min read
+</span> </div> <h1 class="text-4xl md:text-5xl font-bold mb-4" data-astro-cid-oolc5s6i> 3-Legged OAuth Visual Walkthrough </h1> <p class="text-xl text-gray-600 mb-6" data-astro-cid-oolc5s6i> Master APS 3-legged authentication with step-by-step diagrams and code </p> </header> <!-- Table of Contents (if content has headings) --> <nav class="bg-gray-50 rounded-lg p-6 mb-8" data-astro-cid-oolc5s6i> <h2 class="text-lg font-semibold mb-4 flex items-center" data-astro-cid-oolc5s6i> <span class="text-2xl mr-2" data-astro-cid-oolc5s6i>📋</span>
+Table of Contents
+</h2> <div id="toc" class="text-sm" data-astro-cid-oolc5s6i> <!-- TOC will be populated by JavaScript --> </div> </nav> <!-- Guide Content --> <div class="prose prose-lg prose-gray max-w-none" data-astro-cid-oolc5s6i> <h1 id="3-legged-oauth-visual-walkthrough">3-Legged OAuth Visual Walkthrough</h1>
+<p><strong>Master APS 3-legged authentication with step-by-step diagrams and code</strong></p>
+<hr>
+<h2 id="-why-this-guide-exists">🎯 Why This Guide Exists</h2>
+<p>The 3-legged OAuth flow is <strong>the most confusing part of APS development</strong>. Developers consistently get lost in:</p>
+<ul>
+<li>The difference between authorization code vs access token</li>
+<li>When to redirect vs when to make API calls</li>
+<li>How callback URLs actually work</li>
+<li>Managing token refresh properly</li>
+</ul>
+<p>This guide provides <strong>visual diagrams</strong> and <strong>working code</strong> to eliminate the confusion.</p>
+<hr>
+<h2 id="-the-complete-flow-diagram">🔄 The Complete Flow Diagram</h2>
+<pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8; overflow-x: auto; white-space: pre-wrap; word-wrap: break-word;" tabindex="0" data-language="plaintext"><code><span class="line"><span>┌──────────────┐     1. User clicks "Login"      ┌──────────────┐</span></span>
+<span class="line"><span>│   Your App   │ ─────────────────────────────→  │   Autodesk   │</span></span>
+<span class="line"><span>│              │                                  │   OAuth      │</span></span>
+<span class="line"><span>│              │ ←───────────────────────────── │   Server     │</span></span>
+<span class="line"><span>│              │     2. Redirect to /authorize   │              │</span></span>
+<span class="line"><span>└──────────────┘                                  └──────────────┘</span></span>
+<span class="line"><span>       │                                                 │</span></span>
+<span class="line"><span>       │        3. User enters credentials               │</span></span>
+<span class="line"><span>       │        4. User grants permissions               │</span></span>
+<span class="line"><span>       ↓                                                 ↓</span></span>
+<span class="line"><span>┌──────────────┐     5. Redirect with ?code=...  ┌──────────────┐</span></span>
+<span class="line"><span>│   Callback   │ ←────────────────────────────── │   Autodesk   │</span></span>
+<span class="line"><span>│   Endpoint   │                                  │              │</span></span>
+<span class="line"><span>│              │ ─────────────────────────────→  │              │</span></span>
+<span class="line"><span>│              │     6. Exchange code for token   │              │</span></span>
+<span class="line"><span>└──────────────┘                                  └──────────────┘</span></span>
+<span class="line"><span>       │</span></span>
+<span class="line"><span>       │     7. Store tokens, redirect to app</span></span>
+<span class="line"><span>       ↓</span></span>
+<span class="line"><span>┌──────────────┐</span></span>
+<span class="line"><span>│   App Home   │  Now authenticated!</span></span>
+<span class="line"><span>└──────────────┘</span></span></code></pre>
+<hr>
+<h2 id="-step-by-step-breakdown">📋 Step-by-Step Breakdown</h2>
+<h3 id="step-1-initiate-authentication">Step 1: Initiate Authentication</h3>
+<p><strong>What happens</strong>: User clicks “Login with Autodesk” in your app</p>
+<p><strong>Your code does</strong>:</p>
+<pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8; overflow-x: auto; white-space: pre-wrap; word-wrap: break-word;" tabindex="0" data-language="javascript"><code><span class="line"><span style="color:#6A737D">// Construct authorization URL</span></span>
+<span class="line"><span style="color:#F97583">const</span><span style="color:#79B8FF"> authUrl</span><span style="color:#F97583"> =</span><span style="color:#9ECBFF"> 'https://developer.api.autodesk.com/authentication/v2/authorize?'</span><span style="color:#F97583"> +</span></span>
+<span class="line"><span style="color:#9ECBFF">  'response_type=code'</span><span style="color:#F97583"> +</span></span>
+<span class="line"><span style="color:#9ECBFF">  '&#x26;client_id='</span><span style="color:#F97583"> +</span><span style="color:#79B8FF"> CLIENT_ID</span><span style="color:#F97583"> +</span></span>
+<span class="line"><span style="color:#9ECBFF">  '&#x26;redirect_uri='</span><span style="color:#F97583"> +</span><span style="color:#B392F0"> encodeURIComponent</span><span style="color:#E1E4E8">(</span><span style="color:#79B8FF">REDIRECT_URI</span><span style="color:#E1E4E8">) </span><span style="color:#F97583">+</span></span>
+<span class="line"><span style="color:#9ECBFF">  '&#x26;scope='</span><span style="color:#F97583"> +</span><span style="color:#B392F0"> encodeURIComponent</span><span style="color:#E1E4E8">(</span><span style="color:#9ECBFF">'data:read data:write'</span><span style="color:#E1E4E8">);</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#6A737D">// Redirect user to Autodesk</span></span>
+<span class="line"><span style="color:#E1E4E8">window.location.href </span><span style="color:#F97583">=</span><span style="color:#E1E4E8"> authUrl;</span></span></code></pre>
+<p><strong>What user sees</strong>: Redirected to Autodesk login page</p>
+<p><strong>RAPS equivalent</strong>: <code>raps auth login --3legged</code></p>
+<hr>
+<h3 id="step-2-user-authentication">Step 2: User Authentication</h3>
+<p><strong>What happens</strong>: User logs into their Autodesk account</p>
+<p><strong>User experience</strong>:</p>
+<pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8; overflow-x: auto; white-space: pre-wrap; word-wrap: break-word;" tabindex="0" data-language="plaintext"><code><span class="line"><span>┌─────────────────────────────────┐</span></span>
+<span class="line"><span>│     Autodesk Login Page         │</span></span>
+<span class="line"><span>│                                 │</span></span>
+<span class="line"><span>│  Email: user@company.com        │</span></span>
+<span class="line"><span>│  Password: ••••••••             │</span></span>
+<span class="line"><span>│                                 │</span></span>
+<span class="line"><span>│  [Login] [Forgot Password?]     │</span></span>
+<span class="line"><span>└─────────────────────────────────┘</span></span></code></pre>
+<p><strong>Your app</strong>: Waits for callback (no action needed)</p>
+<hr>
+<h3 id="step-3-permission-grant">Step 3: Permission Grant</h3>
+<p><strong>What happens</strong>: User sees permission request and clicks “Allow”</p>
+<p><strong>User experience</strong>:</p>
+<pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8; overflow-x: auto; white-space: pre-wrap; word-wrap: break-word;" tabindex="0" data-language="plaintext"><code><span class="line"><span>┌─────────────────────────────────┐</span></span>
+<span class="line"><span>│   Authorization Request         │</span></span>
+<span class="line"><span>│                                 │</span></span>
+<span class="line"><span>│  YourApp wants to:              │</span></span>
+<span class="line"><span>│  ✓ Read your files              │</span></span>
+<span class="line"><span>│  ✓ Write to your projects       │</span></span>
+<span class="line"><span>│                                 │</span></span>
+<span class="line"><span>│  [Allow] [Deny]                 │</span></span>
+<span class="line"><span>└─────────────────────────────────┘</span></span></code></pre>
+<p><strong>Your app</strong>: Still waiting for callback</p>
+<hr>
+<h3 id="step-4-authorization-code-return">Step 4: Authorization Code Return</h3>
+<p><strong>What happens</strong>: Autodesk redirects back to your app with authorization code</p>
+<p><strong>HTTP Request to your callback</strong>:</p>
+<pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8; overflow-x: auto; white-space: pre-wrap; word-wrap: break-word;" tabindex="0" data-language="plaintext"><code><span class="line"><span>GET /callback?code=ABC123...&#x26;state=optional HTTP/1.1</span></span>
+<span class="line"><span>Host: yourapp.com</span></span></code></pre>
+<p><strong>Your callback endpoint receives</strong>:</p>
+<pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8; overflow-x: auto; white-space: pre-wrap; word-wrap: break-word;" tabindex="0" data-language="javascript"><code><span class="line"><span style="color:#E1E4E8">app.</span><span style="color:#B392F0">get</span><span style="color:#E1E4E8">(</span><span style="color:#9ECBFF">'/callback'</span><span style="color:#E1E4E8">, (</span><span style="color:#FFAB70">req</span><span style="color:#E1E4E8">, </span><span style="color:#FFAB70">res</span><span style="color:#E1E4E8">) </span><span style="color:#F97583">=></span><span style="color:#E1E4E8"> {</span></span>
+<span class="line"><span style="color:#F97583">  const</span><span style="color:#79B8FF"> authCode</span><span style="color:#F97583"> =</span><span style="color:#E1E4E8"> req.query.code;</span></span>
+<span class="line"><span style="color:#F97583">  const</span><span style="color:#79B8FF"> state</span><span style="color:#F97583"> =</span><span style="color:#E1E4E8"> req.query.state; </span><span style="color:#6A737D">// verify if you sent one</span></span>
+<span class="line"><span style="color:#E1E4E8">  </span></span>
+<span class="line"><span style="color:#F97583">  if</span><span style="color:#E1E4E8"> (</span><span style="color:#F97583">!</span><span style="color:#E1E4E8">authCode) {</span></span>
+<span class="line"><span style="color:#6A737D">    // User denied permission or error occurred</span></span>
+<span class="line"><span style="color:#F97583">    return</span><span style="color:#E1E4E8"> res.</span><span style="color:#B392F0">redirect</span><span style="color:#E1E4E8">(</span><span style="color:#9ECBFF">'/login?error=access_denied'</span><span style="color:#E1E4E8">);</span></span>
+<span class="line"><span style="color:#E1E4E8">  }</span></span>
+<span class="line"><span style="color:#E1E4E8">  </span></span>
+<span class="line"><span style="color:#6A737D">  // Continue to Step 5...</span></span>
+<span class="line"><span style="color:#E1E4E8">});</span></span></code></pre>
+<hr>
+<h3 id="step-5-exchange-code-for-tokens">Step 5: Exchange Code for Tokens</h3>
+<p><strong>What happens</strong>: Your server exchanges authorization code for access token</p>
+<p><strong>API Call</strong>:</p>
+<pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8; overflow-x: auto; white-space: pre-wrap; word-wrap: break-word;" tabindex="0" data-language="javascript"><code><span class="line"><span style="color:#F97583">const</span><span style="color:#79B8FF"> tokenResponse</span><span style="color:#F97583"> =</span><span style="color:#F97583"> await</span><span style="color:#B392F0"> fetch</span><span style="color:#E1E4E8">(</span><span style="color:#9ECBFF">'https://developer.api.autodesk.com/authentication/v2/token'</span><span style="color:#E1E4E8">, {</span></span>
+<span class="line"><span style="color:#E1E4E8">  method: </span><span style="color:#9ECBFF">'POST'</span><span style="color:#E1E4E8">,</span></span>
+<span class="line"><span style="color:#E1E4E8">  headers: {</span></span>
+<span class="line"><span style="color:#9ECBFF">    'Content-Type'</span><span style="color:#E1E4E8">: </span><span style="color:#9ECBFF">'application/x-www-form-urlencoded'</span></span>
+<span class="line"><span style="color:#E1E4E8">  },</span></span>
+<span class="line"><span style="color:#E1E4E8">  body: </span><span style="color:#F97583">new</span><span style="color:#B392F0"> URLSearchParams</span><span style="color:#E1E4E8">({</span></span>
+<span class="line"><span style="color:#E1E4E8">    grant_type: </span><span style="color:#9ECBFF">'authorization_code'</span><span style="color:#E1E4E8">,</span></span>
+<span class="line"><span style="color:#E1E4E8">    code: authCode,</span></span>
+<span class="line"><span style="color:#E1E4E8">    client_id: </span><span style="color:#79B8FF">CLIENT_ID</span><span style="color:#E1E4E8">,</span></span>
+<span class="line"><span style="color:#E1E4E8">    client_secret: </span><span style="color:#79B8FF">CLIENT_SECRET</span><span style="color:#E1E4E8">,</span></span>
+<span class="line"><span style="color:#E1E4E8">    redirect_uri: </span><span style="color:#79B8FF">REDIRECT_URI</span></span>
+<span class="line"><span style="color:#E1E4E8">  })</span></span>
+<span class="line"><span style="color:#E1E4E8">});</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#F97583">const</span><span style="color:#79B8FF"> tokens</span><span style="color:#F97583"> =</span><span style="color:#F97583"> await</span><span style="color:#E1E4E8"> tokenResponse.</span><span style="color:#B392F0">json</span><span style="color:#E1E4E8">();</span></span></code></pre>
+<p><strong>Response</strong>:</p>
+<pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8; overflow-x: auto; white-space: pre-wrap; word-wrap: break-word;" tabindex="0" data-language="json"><code><span class="line"><span style="color:#E1E4E8">{</span></span>
+<span class="line"><span style="color:#79B8FF">  "access_token"</span><span style="color:#E1E4E8">: </span><span style="color:#9ECBFF">"eyJ0eXAiOiJKV1QiLCJhbGciOiJSUzI1NiJ9..."</span><span style="color:#E1E4E8">,</span></span>
+<span class="line"><span style="color:#79B8FF">  "refresh_token"</span><span style="color:#E1E4E8">: </span><span style="color:#9ECBFF">"OjfMGp8pF7gQPq5wYiRnwP1kLp..."</span><span style="color:#E1E4E8">,</span></span>
+<span class="line"><span style="color:#79B8FF">  "token_type"</span><span style="color:#E1E4E8">: </span><span style="color:#9ECBFF">"Bearer"</span><span style="color:#E1E4E8">, </span></span>
+<span class="line"><span style="color:#79B8FF">  "expires_in"</span><span style="color:#E1E4E8">: </span><span style="color:#79B8FF">3600</span></span>
+<span class="line"><span style="color:#E1E4E8">}</span></span></code></pre>
+<hr>
+<h3 id="step-6-store-tokens-and-complete-login">Step 6: Store Tokens and Complete Login</h3>
+<p><strong>What happens</strong>: Your app stores tokens securely and redirects user to app</p>
+<p><strong>Security considerations</strong>:</p>
+<pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8; overflow-x: auto; white-space: pre-wrap; word-wrap: break-word;" tabindex="0" data-language="javascript"><code><span class="line"><span style="color:#6A737D">// ✅ SECURE: Server-side session storage</span></span>
+<span class="line"><span style="color:#E1E4E8">req.session.accessToken </span><span style="color:#F97583">=</span><span style="color:#E1E4E8"> tokens.access_token;</span></span>
+<span class="line"><span style="color:#E1E4E8">req.session.refreshToken </span><span style="color:#F97583">=</span><span style="color:#E1E4E8"> tokens.refresh_token;</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#6A737D">// ❌ INSECURE: Client-side storage</span></span>
+<span class="line"><span style="color:#E1E4E8">localStorage.</span><span style="color:#B392F0">setItem</span><span style="color:#E1E4E8">(</span><span style="color:#9ECBFF">'token'</span><span style="color:#E1E4E8">, tokens.access_token); </span><span style="color:#6A737D">// Don't do this!</span></span></code></pre>
+<p><strong>Complete the flow</strong>:</p>
+<pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8; overflow-x: auto; white-space: pre-wrap; word-wrap: break-word;" tabindex="0" data-language="javascript"><code><span class="line"><span style="color:#6A737D">// Store tokens securely</span></span>
+<span class="line"><span style="color:#F97583">await</span><span style="color:#B392F0"> storeUserTokens</span><span style="color:#E1E4E8">(userId, tokens);</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#6A737D">// Redirect to app home</span></span>
+<span class="line"><span style="color:#E1E4E8">res.</span><span style="color:#B392F0">redirect</span><span style="color:#E1E4E8">(</span><span style="color:#9ECBFF">'/dashboard?login=success'</span><span style="color:#E1E4E8">);</span></span></code></pre>
+<hr>
+<h2 id="-flow-summary-table">📊 Flow Summary Table</h2>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<table><thead><tr><th>Step</th><th>Endpoint</th><th>What You Send</th><th>What You Get</th><th>Who Initiates</th></tr></thead><tbody><tr><td>1</td><td><code>/authorize</code></td><td>client_id, redirect_uri, scope, response_type=code</td><td>Redirect to Autodesk login</td><td>Your app</td></tr><tr><td>2-3</td><td>(user action)</td><td>-</td><td>User logs in and grants permissions</td><td>User</td></tr><tr><td>4</td><td><code>/callback</code></td><td>(receive code parameter)</td><td>Authorization code</td><td>Autodesk</td></tr><tr><td>5</td><td><code>/token</code></td><td>code, client_id, client_secret, grant_type=authorization_code</td><td>access_token, refresh_token</td><td>Your app</td></tr></tbody></table>
+<hr>
+<h2 id="-complete-working-example">🔧 Complete Working Example</h2>
+<h3 id="frontend-html--javascript">Frontend (HTML + JavaScript)</h3>
+<pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8; overflow-x: auto; white-space: pre-wrap; word-wrap: break-word;" tabindex="0" data-language="html"><code><span class="line"><span style="color:#E1E4E8">&#x3C;!</span><span style="color:#85E89D">DOCTYPE</span><span style="color:#B392F0"> html</span><span style="color:#E1E4E8">></span></span>
+<span class="line"><span style="color:#E1E4E8">&#x3C;</span><span style="color:#85E89D">html</span><span style="color:#E1E4E8">></span></span>
+<span class="line"><span style="color:#E1E4E8">&#x3C;</span><span style="color:#85E89D">head</span><span style="color:#E1E4E8">></span></span>
+<span class="line"><span style="color:#E1E4E8">    &#x3C;</span><span style="color:#85E89D">title</span><span style="color:#E1E4E8">>APS 3-Legged Auth Demo&#x3C;/</span><span style="color:#85E89D">title</span><span style="color:#E1E4E8">></span></span>
+<span class="line"><span style="color:#E1E4E8">&#x3C;/</span><span style="color:#85E89D">head</span><span style="color:#E1E4E8">></span></span>
+<span class="line"><span style="color:#E1E4E8">&#x3C;</span><span style="color:#85E89D">body</span><span style="color:#E1E4E8">></span></span>
+<span class="line"><span style="color:#E1E4E8">    &#x3C;</span><span style="color:#85E89D">div</span><span style="color:#B392F0"> id</span><span style="color:#E1E4E8">=</span><span style="color:#9ECBFF">"loginSection"</span><span style="color:#E1E4E8">></span></span>
+<span class="line"><span style="color:#E1E4E8">        &#x3C;</span><span style="color:#85E89D">h1</span><span style="color:#E1E4E8">>APS Authentication Demo&#x3C;/</span><span style="color:#85E89D">h1</span><span style="color:#E1E4E8">></span></span>
+<span class="line"><span style="color:#E1E4E8">        &#x3C;</span><span style="color:#85E89D">button</span><span style="color:#B392F0"> onclick</span><span style="color:#E1E4E8">=</span><span style="color:#9ECBFF">"</span><span style="color:#B392F0">startAuth</span><span style="color:#9ECBFF">()"</span><span style="color:#E1E4E8">>Login with Autodesk&#x3C;/</span><span style="color:#85E89D">button</span><span style="color:#E1E4E8">></span></span>
+<span class="line"><span style="color:#E1E4E8">    &#x3C;/</span><span style="color:#85E89D">div</span><span style="color:#E1E4E8">></span></span>
+<span class="line"><span style="color:#E1E4E8">    </span></span>
+<span class="line"><span style="color:#E1E4E8">    &#x3C;</span><span style="color:#85E89D">div</span><span style="color:#B392F0"> id</span><span style="color:#E1E4E8">=</span><span style="color:#9ECBFF">"userSection"</span><span style="color:#B392F0"> style</span><span style="color:#E1E4E8">=</span><span style="color:#9ECBFF">"display: none;"</span><span style="color:#E1E4E8">></span></span>
+<span class="line"><span style="color:#E1E4E8">        &#x3C;</span><span style="color:#85E89D">h1</span><span style="color:#E1E4E8">>Welcome!&#x3C;/</span><span style="color:#85E89D">h1</span><span style="color:#E1E4E8">></span></span>
+<span class="line"><span style="color:#E1E4E8">        &#x3C;</span><span style="color:#85E89D">p</span><span style="color:#E1E4E8">>Access Token: &#x3C;</span><span style="color:#85E89D">span</span><span style="color:#B392F0"> id</span><span style="color:#E1E4E8">=</span><span style="color:#9ECBFF">"tokenDisplay"</span><span style="color:#E1E4E8">>&#x3C;/</span><span style="color:#85E89D">span</span><span style="color:#E1E4E8">>&#x3C;/</span><span style="color:#85E89D">p</span><span style="color:#E1E4E8">></span></span>
+<span class="line"><span style="color:#E1E4E8">        &#x3C;</span><span style="color:#85E89D">button</span><span style="color:#B392F0"> onclick</span><span style="color:#E1E4E8">=</span><span style="color:#9ECBFF">"</span><span style="color:#B392F0">logout</span><span style="color:#9ECBFF">()"</span><span style="color:#E1E4E8">>Logout&#x3C;/</span><span style="color:#85E89D">button</span><span style="color:#E1E4E8">></span></span>
+<span class="line"><span style="color:#E1E4E8">    &#x3C;/</span><span style="color:#85E89D">div</span><span style="color:#E1E4E8">></span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#E1E4E8">    &#x3C;</span><span style="color:#85E89D">script</span><span style="color:#E1E4E8">></span></span>
+<span class="line"><span style="color:#F97583">        const</span><span style="color:#79B8FF"> CLIENT_ID</span><span style="color:#F97583"> =</span><span style="color:#9ECBFF"> 'your_client_id'</span><span style="color:#E1E4E8">;</span></span>
+<span class="line"><span style="color:#F97583">        const</span><span style="color:#79B8FF"> REDIRECT_URI</span><span style="color:#F97583"> =</span><span style="color:#9ECBFF"> 'http://localhost:3000/callback'</span><span style="color:#E1E4E8">;</span></span>
+<span class="line"><span style="color:#F97583">        const</span><span style="color:#79B8FF"> SCOPES</span><span style="color:#F97583"> =</span><span style="color:#9ECBFF"> 'data:read data:write'</span><span style="color:#E1E4E8">;</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#F97583">        function</span><span style="color:#B392F0"> startAuth</span><span style="color:#E1E4E8">() {</span></span>
+<span class="line"><span style="color:#F97583">            const</span><span style="color:#79B8FF"> authUrl</span><span style="color:#F97583"> =</span><span style="color:#9ECBFF"> `https://developer.api.autodesk.com/authentication/v2/authorize?`</span><span style="color:#F97583"> +</span></span>
+<span class="line"><span style="color:#9ECBFF">                `response_type=code&#x26;`</span><span style="color:#F97583"> +</span></span>
+<span class="line"><span style="color:#9ECBFF">                `client_id=${</span><span style="color:#79B8FF">CLIENT_ID</span><span style="color:#9ECBFF">}&#x26;`</span><span style="color:#F97583"> +</span></span>
+<span class="line"><span style="color:#9ECBFF">                `redirect_uri=${</span><span style="color:#B392F0">encodeURIComponent</span><span style="color:#9ECBFF">(</span><span style="color:#79B8FF">REDIRECT_URI</span><span style="color:#9ECBFF">)</span><span style="color:#9ECBFF">}&#x26;`</span><span style="color:#F97583"> +</span></span>
+<span class="line"><span style="color:#9ECBFF">                `scope=${</span><span style="color:#B392F0">encodeURIComponent</span><span style="color:#9ECBFF">(</span><span style="color:#79B8FF">SCOPES</span><span style="color:#9ECBFF">)</span><span style="color:#9ECBFF">}`</span><span style="color:#E1E4E8">;</span></span>
+<span class="line"><span style="color:#E1E4E8">            </span></span>
+<span class="line"><span style="color:#E1E4E8">            window.location.href </span><span style="color:#F97583">=</span><span style="color:#E1E4E8"> authUrl;</span></span>
+<span class="line"><span style="color:#E1E4E8">        }</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#6A737D">        // Check if we just returned from auth</span></span>
+<span class="line"><span style="color:#F97583">        const</span><span style="color:#79B8FF"> urlParams</span><span style="color:#F97583"> =</span><span style="color:#F97583"> new</span><span style="color:#B392F0"> URLSearchParams</span><span style="color:#E1E4E8">(window.location.search);</span></span>
+<span class="line"><span style="color:#F97583">        if</span><span style="color:#E1E4E8"> (urlParams.</span><span style="color:#B392F0">get</span><span style="color:#E1E4E8">(</span><span style="color:#9ECBFF">'token'</span><span style="color:#E1E4E8">)) {</span></span>
+<span class="line"><span style="color:#B392F0">            showUserSection</span><span style="color:#E1E4E8">(urlParams.</span><span style="color:#B392F0">get</span><span style="color:#E1E4E8">(</span><span style="color:#9ECBFF">'token'</span><span style="color:#E1E4E8">));</span></span>
+<span class="line"><span style="color:#E1E4E8">        }</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#F97583">        function</span><span style="color:#B392F0"> showUserSection</span><span style="color:#E1E4E8">(</span><span style="color:#FFAB70">token</span><span style="color:#E1E4E8">) {</span></span>
+<span class="line"><span style="color:#E1E4E8">            document.</span><span style="color:#B392F0">getElementById</span><span style="color:#E1E4E8">(</span><span style="color:#9ECBFF">'loginSection'</span><span style="color:#E1E4E8">).style.display </span><span style="color:#F97583">=</span><span style="color:#9ECBFF"> 'none'</span><span style="color:#E1E4E8">;</span></span>
+<span class="line"><span style="color:#E1E4E8">            document.</span><span style="color:#B392F0">getElementById</span><span style="color:#E1E4E8">(</span><span style="color:#9ECBFF">'userSection'</span><span style="color:#E1E4E8">).style.display </span><span style="color:#F97583">=</span><span style="color:#9ECBFF"> 'block'</span><span style="color:#E1E4E8">;</span></span>
+<span class="line"><span style="color:#E1E4E8">            document.</span><span style="color:#B392F0">getElementById</span><span style="color:#E1E4E8">(</span><span style="color:#9ECBFF">'tokenDisplay'</span><span style="color:#E1E4E8">).textContent </span><span style="color:#F97583">=</span><span style="color:#E1E4E8"> token.</span><span style="color:#B392F0">substring</span><span style="color:#E1E4E8">(</span><span style="color:#79B8FF">0</span><span style="color:#E1E4E8">, </span><span style="color:#79B8FF">20</span><span style="color:#E1E4E8">) </span><span style="color:#F97583">+</span><span style="color:#9ECBFF"> '...'</span><span style="color:#E1E4E8">;</span></span>
+<span class="line"><span style="color:#E1E4E8">        }</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#F97583">        function</span><span style="color:#B392F0"> logout</span><span style="color:#E1E4E8">() {</span></span>
+<span class="line"><span style="color:#6A737D">            // Clear session</span></span>
+<span class="line"><span style="color:#B392F0">            fetch</span><span style="color:#E1E4E8">(</span><span style="color:#9ECBFF">'/logout'</span><span style="color:#E1E4E8">, { method: </span><span style="color:#9ECBFF">'POST'</span><span style="color:#E1E4E8"> })</span></span>
+<span class="line"><span style="color:#E1E4E8">                .</span><span style="color:#B392F0">then</span><span style="color:#E1E4E8">(() </span><span style="color:#F97583">=></span><span style="color:#E1E4E8"> window.location.</span><span style="color:#B392F0">reload</span><span style="color:#E1E4E8">());</span></span>
+<span class="line"><span style="color:#E1E4E8">        }</span></span>
+<span class="line"><span style="color:#E1E4E8">    &#x3C;/</span><span style="color:#85E89D">script</span><span style="color:#E1E4E8">></span></span>
+<span class="line"><span style="color:#E1E4E8">&#x3C;/</span><span style="color:#85E89D">body</span><span style="color:#E1E4E8">></span></span>
+<span class="line"><span style="color:#E1E4E8">&#x3C;/</span><span style="color:#85E89D">html</span><span style="color:#E1E4E8">></span></span></code></pre>
+<h3 id="backend-nodejs--express">Backend (Node.js + Express)</h3>
+<pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8; overflow-x: auto; white-space: pre-wrap; word-wrap: break-word;" tabindex="0" data-language="javascript"><code><span class="line"><span style="color:#F97583">const</span><span style="color:#79B8FF"> express</span><span style="color:#F97583"> =</span><span style="color:#B392F0"> require</span><span style="color:#E1E4E8">(</span><span style="color:#9ECBFF">'express'</span><span style="color:#E1E4E8">);</span></span>
+<span class="line"><span style="color:#F97583">const</span><span style="color:#79B8FF"> session</span><span style="color:#F97583"> =</span><span style="color:#B392F0"> require</span><span style="color:#E1E4E8">(</span><span style="color:#9ECBFF">'express-session'</span><span style="color:#E1E4E8">);</span></span>
+<span class="line"><span style="color:#F97583">const</span><span style="color:#79B8FF"> app</span><span style="color:#F97583"> =</span><span style="color:#B392F0"> express</span><span style="color:#E1E4E8">();</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#6A737D">// Configure session</span></span>
+<span class="line"><span style="color:#E1E4E8">app.</span><span style="color:#B392F0">use</span><span style="color:#E1E4E8">(</span><span style="color:#B392F0">session</span><span style="color:#E1E4E8">({</span></span>
+<span class="line"><span style="color:#E1E4E8">    secret: </span><span style="color:#9ECBFF">'your-session-secret'</span><span style="color:#E1E4E8">,</span></span>
+<span class="line"><span style="color:#E1E4E8">    resave: </span><span style="color:#79B8FF">false</span><span style="color:#E1E4E8">,</span></span>
+<span class="line"><span style="color:#E1E4E8">    saveUninitialized: </span><span style="color:#79B8FF">false</span></span>
+<span class="line"><span style="color:#E1E4E8">}));</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#F97583">const</span><span style="color:#79B8FF"> CLIENT_ID</span><span style="color:#F97583"> =</span><span style="color:#E1E4E8"> process.env.</span><span style="color:#79B8FF">APS_CLIENT_ID</span><span style="color:#E1E4E8">;</span></span>
+<span class="line"><span style="color:#F97583">const</span><span style="color:#79B8FF"> CLIENT_SECRET</span><span style="color:#F97583"> =</span><span style="color:#E1E4E8"> process.env.</span><span style="color:#79B8FF">APS_CLIENT_SECRET</span><span style="color:#E1E4E8">;</span></span>
+<span class="line"><span style="color:#F97583">const</span><span style="color:#79B8FF"> REDIRECT_URI</span><span style="color:#F97583"> =</span><span style="color:#9ECBFF"> 'http://localhost:3000/callback'</span><span style="color:#E1E4E8">;</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#6A737D">// Serve static files</span></span>
+<span class="line"><span style="color:#E1E4E8">app.</span><span style="color:#B392F0">use</span><span style="color:#E1E4E8">(express.</span><span style="color:#B392F0">static</span><span style="color:#E1E4E8">(</span><span style="color:#9ECBFF">'public'</span><span style="color:#E1E4E8">));</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#6A737D">// OAuth callback endpoint</span></span>
+<span class="line"><span style="color:#E1E4E8">app.</span><span style="color:#B392F0">get</span><span style="color:#E1E4E8">(</span><span style="color:#9ECBFF">'/callback'</span><span style="color:#E1E4E8">, </span><span style="color:#F97583">async</span><span style="color:#E1E4E8"> (</span><span style="color:#FFAB70">req</span><span style="color:#E1E4E8">, </span><span style="color:#FFAB70">res</span><span style="color:#E1E4E8">) </span><span style="color:#F97583">=></span><span style="color:#E1E4E8"> {</span></span>
+<span class="line"><span style="color:#F97583">    const</span><span style="color:#79B8FF"> authCode</span><span style="color:#F97583"> =</span><span style="color:#E1E4E8"> req.query.code;</span></span>
+<span class="line"><span style="color:#E1E4E8">    </span></span>
+<span class="line"><span style="color:#F97583">    if</span><span style="color:#E1E4E8"> (</span><span style="color:#F97583">!</span><span style="color:#E1E4E8">authCode) {</span></span>
+<span class="line"><span style="color:#F97583">        return</span><span style="color:#E1E4E8"> res.</span><span style="color:#B392F0">redirect</span><span style="color:#E1E4E8">(</span><span style="color:#9ECBFF">'/?error=access_denied'</span><span style="color:#E1E4E8">);</span></span>
+<span class="line"><span style="color:#E1E4E8">    }</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#F97583">    try</span><span style="color:#E1E4E8"> {</span></span>
+<span class="line"><span style="color:#6A737D">        // Exchange code for tokens</span></span>
+<span class="line"><span style="color:#F97583">        const</span><span style="color:#79B8FF"> response</span><span style="color:#F97583"> =</span><span style="color:#F97583"> await</span><span style="color:#B392F0"> fetch</span><span style="color:#E1E4E8">(</span><span style="color:#9ECBFF">'https://developer.api.autodesk.com/authentication/v2/token'</span><span style="color:#E1E4E8">, {</span></span>
+<span class="line"><span style="color:#E1E4E8">            method: </span><span style="color:#9ECBFF">'POST'</span><span style="color:#E1E4E8">,</span></span>
+<span class="line"><span style="color:#E1E4E8">            headers: {</span></span>
+<span class="line"><span style="color:#9ECBFF">                'Content-Type'</span><span style="color:#E1E4E8">: </span><span style="color:#9ECBFF">'application/x-www-form-urlencoded'</span></span>
+<span class="line"><span style="color:#E1E4E8">            },</span></span>
+<span class="line"><span style="color:#E1E4E8">            body: </span><span style="color:#F97583">new</span><span style="color:#B392F0"> URLSearchParams</span><span style="color:#E1E4E8">({</span></span>
+<span class="line"><span style="color:#E1E4E8">                grant_type: </span><span style="color:#9ECBFF">'authorization_code'</span><span style="color:#E1E4E8">,</span></span>
+<span class="line"><span style="color:#E1E4E8">                code: authCode,</span></span>
+<span class="line"><span style="color:#E1E4E8">                client_id: </span><span style="color:#79B8FF">CLIENT_ID</span><span style="color:#E1E4E8">,</span></span>
+<span class="line"><span style="color:#E1E4E8">                client_secret: </span><span style="color:#79B8FF">CLIENT_SECRET</span><span style="color:#E1E4E8">,</span></span>
+<span class="line"><span style="color:#E1E4E8">                redirect_uri: </span><span style="color:#79B8FF">REDIRECT_URI</span></span>
+<span class="line"><span style="color:#E1E4E8">            })</span></span>
+<span class="line"><span style="color:#E1E4E8">        });</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#F97583">        const</span><span style="color:#79B8FF"> tokens</span><span style="color:#F97583"> =</span><span style="color:#F97583"> await</span><span style="color:#E1E4E8"> response.</span><span style="color:#B392F0">json</span><span style="color:#E1E4E8">();</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#F97583">        if</span><span style="color:#E1E4E8"> (tokens.access_token) {</span></span>
+<span class="line"><span style="color:#6A737D">            // Store in session</span></span>
+<span class="line"><span style="color:#E1E4E8">            req.session.accessToken </span><span style="color:#F97583">=</span><span style="color:#E1E4E8"> tokens.access_token;</span></span>
+<span class="line"><span style="color:#E1E4E8">            req.session.refreshToken </span><span style="color:#F97583">=</span><span style="color:#E1E4E8"> tokens.refresh_token;</span></span>
+<span class="line"><span style="color:#E1E4E8">            </span></span>
+<span class="line"><span style="color:#6A737D">            // Redirect with success</span></span>
+<span class="line"><span style="color:#E1E4E8">            res.</span><span style="color:#B392F0">redirect</span><span style="color:#E1E4E8">(</span><span style="color:#9ECBFF">`/?token=${</span><span style="color:#E1E4E8">tokens</span><span style="color:#9ECBFF">.</span><span style="color:#E1E4E8">access_token</span><span style="color:#9ECBFF">}`</span><span style="color:#E1E4E8">);</span></span>
+<span class="line"><span style="color:#E1E4E8">        } </span><span style="color:#F97583">else</span><span style="color:#E1E4E8"> {</span></span>
+<span class="line"><span style="color:#E1E4E8">            res.</span><span style="color:#B392F0">redirect</span><span style="color:#E1E4E8">(</span><span style="color:#9ECBFF">'/?error=token_exchange_failed'</span><span style="color:#E1E4E8">);</span></span>
+<span class="line"><span style="color:#E1E4E8">        }</span></span>
+<span class="line"><span style="color:#E1E4E8">    } </span><span style="color:#F97583">catch</span><span style="color:#E1E4E8"> (error) {</span></span>
+<span class="line"><span style="color:#E1E4E8">        console.</span><span style="color:#B392F0">error</span><span style="color:#E1E4E8">(</span><span style="color:#9ECBFF">'Token exchange error:'</span><span style="color:#E1E4E8">, error);</span></span>
+<span class="line"><span style="color:#E1E4E8">        res.</span><span style="color:#B392F0">redirect</span><span style="color:#E1E4E8">(</span><span style="color:#9ECBFF">'/?error=server_error'</span><span style="color:#E1E4E8">);</span></span>
+<span class="line"><span style="color:#E1E4E8">    }</span></span>
+<span class="line"><span style="color:#E1E4E8">});</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#6A737D">// Logout endpoint</span></span>
+<span class="line"><span style="color:#E1E4E8">app.</span><span style="color:#B392F0">post</span><span style="color:#E1E4E8">(</span><span style="color:#9ECBFF">'/logout'</span><span style="color:#E1E4E8">, (</span><span style="color:#FFAB70">req</span><span style="color:#E1E4E8">, </span><span style="color:#FFAB70">res</span><span style="color:#E1E4E8">) </span><span style="color:#F97583">=></span><span style="color:#E1E4E8"> {</span></span>
+<span class="line"><span style="color:#E1E4E8">    req.session.</span><span style="color:#B392F0">destroy</span><span style="color:#E1E4E8">();</span></span>
+<span class="line"><span style="color:#E1E4E8">    res.</span><span style="color:#B392F0">json</span><span style="color:#E1E4E8">({ success: </span><span style="color:#79B8FF">true</span><span style="color:#E1E4E8"> });</span></span>
+<span class="line"><span style="color:#E1E4E8">});</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#6A737D">// API endpoint example</span></span>
+<span class="line"><span style="color:#E1E4E8">app.</span><span style="color:#B392F0">get</span><span style="color:#E1E4E8">(</span><span style="color:#9ECBFF">'/api/user-info'</span><span style="color:#E1E4E8">, </span><span style="color:#F97583">async</span><span style="color:#E1E4E8"> (</span><span style="color:#FFAB70">req</span><span style="color:#E1E4E8">, </span><span style="color:#FFAB70">res</span><span style="color:#E1E4E8">) </span><span style="color:#F97583">=></span><span style="color:#E1E4E8"> {</span></span>
+<span class="line"><span style="color:#F97583">    const</span><span style="color:#79B8FF"> token</span><span style="color:#F97583"> =</span><span style="color:#E1E4E8"> req.session.accessToken;</span></span>
+<span class="line"><span style="color:#E1E4E8">    </span></span>
+<span class="line"><span style="color:#F97583">    if</span><span style="color:#E1E4E8"> (</span><span style="color:#F97583">!</span><span style="color:#E1E4E8">token) {</span></span>
+<span class="line"><span style="color:#F97583">        return</span><span style="color:#E1E4E8"> res.</span><span style="color:#B392F0">status</span><span style="color:#E1E4E8">(</span><span style="color:#79B8FF">401</span><span style="color:#E1E4E8">).</span><span style="color:#B392F0">json</span><span style="color:#E1E4E8">({ error: </span><span style="color:#9ECBFF">'Not authenticated'</span><span style="color:#E1E4E8"> });</span></span>
+<span class="line"><span style="color:#E1E4E8">    }</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#F97583">    try</span><span style="color:#E1E4E8"> {</span></span>
+<span class="line"><span style="color:#F97583">        const</span><span style="color:#79B8FF"> userResponse</span><span style="color:#F97583"> =</span><span style="color:#F97583"> await</span><span style="color:#B392F0"> fetch</span><span style="color:#E1E4E8">(</span><span style="color:#9ECBFF">'https://developer.api.autodesk.com/userprofile/v1/users/@me'</span><span style="color:#E1E4E8">, {</span></span>
+<span class="line"><span style="color:#E1E4E8">            headers: {</span></span>
+<span class="line"><span style="color:#9ECBFF">                'Authorization'</span><span style="color:#E1E4E8">: </span><span style="color:#9ECBFF">`Bearer ${</span><span style="color:#E1E4E8">token</span><span style="color:#9ECBFF">}`</span></span>
+<span class="line"><span style="color:#E1E4E8">            }</span></span>
+<span class="line"><span style="color:#E1E4E8">        });</span></span>
+<span class="line"><span style="color:#E1E4E8">        </span></span>
+<span class="line"><span style="color:#F97583">        const</span><span style="color:#79B8FF"> userData</span><span style="color:#F97583"> =</span><span style="color:#F97583"> await</span><span style="color:#E1E4E8"> userResponse.</span><span style="color:#B392F0">json</span><span style="color:#E1E4E8">();</span></span>
+<span class="line"><span style="color:#E1E4E8">        res.</span><span style="color:#B392F0">json</span><span style="color:#E1E4E8">(userData);</span></span>
+<span class="line"><span style="color:#E1E4E8">    } </span><span style="color:#F97583">catch</span><span style="color:#E1E4E8"> (error) {</span></span>
+<span class="line"><span style="color:#E1E4E8">        res.</span><span style="color:#B392F0">status</span><span style="color:#E1E4E8">(</span><span style="color:#79B8FF">500</span><span style="color:#E1E4E8">).</span><span style="color:#B392F0">json</span><span style="color:#E1E4E8">({ error: </span><span style="color:#9ECBFF">'Failed to fetch user info'</span><span style="color:#E1E4E8"> });</span></span>
+<span class="line"><span style="color:#E1E4E8">    }</span></span>
+<span class="line"><span style="color:#E1E4E8">});</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#E1E4E8">app.</span><span style="color:#B392F0">listen</span><span style="color:#E1E4E8">(</span><span style="color:#79B8FF">3000</span><span style="color:#E1E4E8">, () </span><span style="color:#F97583">=></span><span style="color:#E1E4E8"> {</span></span>
+<span class="line"><span style="color:#E1E4E8">    console.</span><span style="color:#B392F0">log</span><span style="color:#E1E4E8">(</span><span style="color:#9ECBFF">'Server running on http://localhost:3000'</span><span style="color:#E1E4E8">);</span></span>
+<span class="line"><span style="color:#E1E4E8">});</span></span></code></pre>
+<hr>
+<h2 id="-common-mistakes--solutions">🚨 Common Mistakes &#x26; Solutions</h2>
+<h3 id="1-callback-url-mismatch">1. Callback URL Mismatch</h3>
+<p><strong>❌ Problem</strong>: <code>redirect_uri_mismatch</code> error</p>
+<p><strong>Cause</strong>: URL in code doesn’t exactly match APS app settings</p>
+<p><strong>✅ Solution</strong>:</p>
+<pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8; overflow-x: auto; white-space: pre-wrap; word-wrap: break-word;" tabindex="0" data-language="javascript"><code><span class="line"><span style="color:#6A737D">// In APS app settings: http://localhost:3000/callback</span></span>
+<span class="line"><span style="color:#6A737D">// In your code: </span></span>
+<span class="line"><span style="color:#F97583">const</span><span style="color:#79B8FF"> REDIRECT_URI</span><span style="color:#F97583"> =</span><span style="color:#9ECBFF"> 'http://localhost:3000/callback'</span><span style="color:#E1E4E8">; </span><span style="color:#6A737D">// Must match exactly</span></span></code></pre>
+<h3 id="2-storing-tokens-insecurely">2. Storing Tokens Insecurely</h3>
+<p><strong>❌ Problem</strong>: Tokens in localStorage or client-side cookies</p>
+<p><strong>Cause</strong>: Security vulnerability - tokens can be stolen by XSS</p>
+<p><strong>✅ Solution</strong>:</p>
+<pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8; overflow-x: auto; white-space: pre-wrap; word-wrap: break-word;" tabindex="0" data-language="javascript"><code><span class="line"><span style="color:#6A737D">// ✅ SECURE: Server-side session storage</span></span>
+<span class="line"><span style="color:#E1E4E8">req.session.accessToken </span><span style="color:#F97583">=</span><span style="color:#E1E4E8"> tokens.access_token;</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#6A737D">// ✅ SECURE: Encrypted HTTP-only cookies</span></span>
+<span class="line"><span style="color:#E1E4E8">res.</span><span style="color:#B392F0">cookie</span><span style="color:#E1E4E8">(</span><span style="color:#9ECBFF">'session_id'</span><span style="color:#E1E4E8">, sessionId, { </span></span>
+<span class="line"><span style="color:#E1E4E8">    httpOnly: </span><span style="color:#79B8FF">true</span><span style="color:#E1E4E8">, </span></span>
+<span class="line"><span style="color:#E1E4E8">    secure: </span><span style="color:#79B8FF">true</span><span style="color:#E1E4E8">, </span></span>
+<span class="line"><span style="color:#E1E4E8">    sameSite: </span><span style="color:#9ECBFF">'strict'</span><span style="color:#E1E4E8"> </span></span>
+<span class="line"><span style="color:#E1E4E8">});</span></span></code></pre>
+<h3 id="3-not-handling-token-refresh">3. Not Handling Token Refresh</h3>
+<p><strong>❌ Problem</strong>: App breaks when access token expires (after 1 hour)</p>
+<p><strong>Cause</strong>: No token refresh logic</p>
+<p><strong>✅ Solution</strong>:</p>
+<pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8; overflow-x: auto; white-space: pre-wrap; word-wrap: break-word;" tabindex="0" data-language="javascript"><code><span class="line"><span style="color:#F97583">async</span><span style="color:#F97583"> function</span><span style="color:#B392F0"> refreshTokenIfNeeded</span><span style="color:#E1E4E8">() {</span></span>
+<span class="line"><span style="color:#F97583">    const</span><span style="color:#79B8FF"> tokenAge</span><span style="color:#F97583"> =</span><span style="color:#E1E4E8"> Date.</span><span style="color:#B392F0">now</span><span style="color:#E1E4E8">() </span><span style="color:#F97583">-</span><span style="color:#E1E4E8"> req.session.tokenTimestamp;</span></span>
+<span class="line"><span style="color:#E1E4E8">    </span></span>
+<span class="line"><span style="color:#F97583">    if</span><span style="color:#E1E4E8"> (tokenAge </span><span style="color:#F97583">></span><span style="color:#79B8FF"> 55</span><span style="color:#F97583"> *</span><span style="color:#79B8FF"> 60</span><span style="color:#F97583"> *</span><span style="color:#79B8FF"> 1000</span><span style="color:#E1E4E8">) { </span><span style="color:#6A737D">// Refresh 5 min before expiry</span></span>
+<span class="line"><span style="color:#F97583">        const</span><span style="color:#79B8FF"> response</span><span style="color:#F97583"> =</span><span style="color:#F97583"> await</span><span style="color:#B392F0"> fetch</span><span style="color:#E1E4E8">(</span><span style="color:#9ECBFF">'https://developer.api.autodesk.com/authentication/v2/token'</span><span style="color:#E1E4E8">, {</span></span>
+<span class="line"><span style="color:#E1E4E8">            method: </span><span style="color:#9ECBFF">'POST'</span><span style="color:#E1E4E8">,</span></span>
+<span class="line"><span style="color:#E1E4E8">            headers: { </span><span style="color:#9ECBFF">'Content-Type'</span><span style="color:#E1E4E8">: </span><span style="color:#9ECBFF">'application/x-www-form-urlencoded'</span><span style="color:#E1E4E8"> },</span></span>
+<span class="line"><span style="color:#E1E4E8">            body: </span><span style="color:#F97583">new</span><span style="color:#B392F0"> URLSearchParams</span><span style="color:#E1E4E8">({</span></span>
+<span class="line"><span style="color:#E1E4E8">                grant_type: </span><span style="color:#9ECBFF">'refresh_token'</span><span style="color:#E1E4E8">,</span></span>
+<span class="line"><span style="color:#E1E4E8">                refresh_token: req.session.refreshToken,</span></span>
+<span class="line"><span style="color:#E1E4E8">                client_id: </span><span style="color:#79B8FF">CLIENT_ID</span><span style="color:#E1E4E8">,</span></span>
+<span class="line"><span style="color:#E1E4E8">                client_secret: </span><span style="color:#79B8FF">CLIENT_SECRET</span></span>
+<span class="line"><span style="color:#E1E4E8">            })</span></span>
+<span class="line"><span style="color:#E1E4E8">        });</span></span>
+<span class="line"><span style="color:#E1E4E8">        </span></span>
+<span class="line"><span style="color:#F97583">        const</span><span style="color:#79B8FF"> newTokens</span><span style="color:#F97583"> =</span><span style="color:#F97583"> await</span><span style="color:#E1E4E8"> response.</span><span style="color:#B392F0">json</span><span style="color:#E1E4E8">();</span></span>
+<span class="line"><span style="color:#E1E4E8">        req.session.accessToken </span><span style="color:#F97583">=</span><span style="color:#E1E4E8"> newTokens.access_token;</span></span>
+<span class="line"><span style="color:#E1E4E8">        req.session.tokenTimestamp </span><span style="color:#F97583">=</span><span style="color:#E1E4E8"> Date.</span><span style="color:#B392F0">now</span><span style="color:#E1E4E8">();</span></span>
+<span class="line"><span style="color:#E1E4E8">    }</span></span>
+<span class="line"><span style="color:#E1E4E8">}</span></span></code></pre>
+<h3 id="4-forgetting-state-parameter">4. Forgetting State Parameter</h3>
+<p><strong>❌ Problem</strong>: CSRF attacks possible</p>
+<p><strong>Cause</strong>: No state validation</p>
+<p><strong>✅ Solution</strong>:</p>
+<pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8; overflow-x: auto; white-space: pre-wrap; word-wrap: break-word;" tabindex="0" data-language="javascript"><code><span class="line"><span style="color:#6A737D">// Generate state when starting auth</span></span>
+<span class="line"><span style="color:#F97583">const</span><span style="color:#79B8FF"> state</span><span style="color:#F97583"> =</span><span style="color:#E1E4E8"> crypto.</span><span style="color:#B392F0">randomBytes</span><span style="color:#E1E4E8">(</span><span style="color:#79B8FF">16</span><span style="color:#E1E4E8">).</span><span style="color:#B392F0">toString</span><span style="color:#E1E4E8">(</span><span style="color:#9ECBFF">'hex'</span><span style="color:#E1E4E8">);</span></span>
+<span class="line"><span style="color:#E1E4E8">req.session.oauthState </span><span style="color:#F97583">=</span><span style="color:#E1E4E8"> state;</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#F97583">const</span><span style="color:#79B8FF"> authUrl</span><span style="color:#F97583"> =</span><span style="color:#9ECBFF"> `https://developer.api.autodesk.com/authentication/v2/authorize?`</span><span style="color:#F97583"> +</span></span>
+<span class="line"><span style="color:#9ECBFF">    `state=${</span><span style="color:#E1E4E8">state</span><span style="color:#9ECBFF">}&#x26;`</span><span style="color:#F97583"> +</span><span style="color:#6A737D"> // Add state parameter</span></span>
+<span class="line"><span style="color:#9ECBFF">    `response_type=code&#x26;...`</span><span style="color:#E1E4E8">;</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#6A737D">// Validate state in callback</span></span>
+<span class="line"><span style="color:#E1E4E8">app.</span><span style="color:#B392F0">get</span><span style="color:#E1E4E8">(</span><span style="color:#9ECBFF">'/callback'</span><span style="color:#E1E4E8">, (</span><span style="color:#FFAB70">req</span><span style="color:#E1E4E8">, </span><span style="color:#FFAB70">res</span><span style="color:#E1E4E8">) </span><span style="color:#F97583">=></span><span style="color:#E1E4E8"> {</span></span>
+<span class="line"><span style="color:#F97583">    if</span><span style="color:#E1E4E8"> (req.query.state </span><span style="color:#F97583">!==</span><span style="color:#E1E4E8"> req.session.oauthState) {</span></span>
+<span class="line"><span style="color:#F97583">        return</span><span style="color:#E1E4E8"> res.</span><span style="color:#B392F0">redirect</span><span style="color:#E1E4E8">(</span><span style="color:#9ECBFF">'/?error=invalid_state'</span><span style="color:#E1E4E8">);</span></span>
+<span class="line"><span style="color:#E1E4E8">    }</span></span>
+<span class="line"><span style="color:#6A737D">    // Continue with token exchange...</span></span>
+<span class="line"><span style="color:#E1E4E8">});</span></span></code></pre>
+<hr>
+<h2 id="-testing-your-implementation">🎯 Testing Your Implementation</h2>
+<h3 id="1-test-the-authorization-url">1. Test the Authorization URL</h3>
+<p><strong>Manually visit</strong>:</p>
+<pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8; overflow-x: auto; white-space: pre-wrap; word-wrap: break-word;" tabindex="0" data-language="plaintext"><code><span class="line"><span>https://developer.api.autodesk.com/authentication/v2/authorize?response_type=code&#x26;client_id=YOUR_CLIENT_ID&#x26;redirect_uri=http%3A%2F%2Flocalhost%3A3000%2Fcallback&#x26;scope=data%3Aread%20data%3Awrite</span></span></code></pre>
+<p><strong>Expected</strong>: Autodesk login page loads</p>
+<h3 id="2-test-callback-handling">2. Test Callback Handling</h3>
+<p><strong>Mock callback</strong>:</p>
+<pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8; overflow-x: auto; white-space: pre-wrap; word-wrap: break-word;" tabindex="0" data-language="plaintext"><code><span class="line"><span>http://localhost:3000/callback?code=test123&#x26;state=abc</span></span></code></pre>
+<p><strong>Expected</strong>: Your callback handler receives the code</p>
+<h3 id="3-test-api-calls">3. Test API Calls</h3>
+<p><strong>With valid token</strong>:</p>
+<pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8; overflow-x: auto; white-space: pre-wrap; word-wrap: break-word;" tabindex="0" data-language="javascript"><code><span class="line"><span style="color:#B392F0">fetch</span><span style="color:#E1E4E8">(</span><span style="color:#9ECBFF">'/api/user-info'</span><span style="color:#E1E4E8">)</span></span>
+<span class="line"><span style="color:#E1E4E8">  .</span><span style="color:#B392F0">then</span><span style="color:#E1E4E8">(</span><span style="color:#FFAB70">r</span><span style="color:#F97583"> =></span><span style="color:#E1E4E8"> r.</span><span style="color:#B392F0">json</span><span style="color:#E1E4E8">())</span></span>
+<span class="line"><span style="color:#E1E4E8">  .</span><span style="color:#B392F0">then</span><span style="color:#E1E4E8">(</span><span style="color:#FFAB70">data</span><span style="color:#F97583"> =></span><span style="color:#E1E4E8"> console.</span><span style="color:#B392F0">log</span><span style="color:#E1E4E8">(data));</span></span></code></pre>
+<p><strong>Expected</strong>: User profile data returned</p>
+<hr>
+<h2 id="-raps-cli-alternative">💡 RAPS CLI Alternative</h2>
+<p><strong>Instead of implementing this yourself</strong>:</p>
+<pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8; overflow-x: auto; white-space: pre-wrap; word-wrap: break-word;" tabindex="0" data-language="bash"><code><span class="line"><span style="color:#6A737D"># RAPS handles the entire flow automatically</span></span>
+<span class="line"><span style="color:#B392F0">raps</span><span style="color:#9ECBFF"> auth</span><span style="color:#9ECBFF"> login</span><span style="color:#79B8FF"> --3legged</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#6A737D"># Check authentication status</span></span>
+<span class="line"><span style="color:#B392F0">raps</span><span style="color:#9ECBFF"> auth</span><span style="color:#9ECBFF"> status</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#6A737D"># Make authenticated API calls</span></span>
+<span class="line"><span style="color:#B392F0">raps</span><span style="color:#9ECBFF"> dm</span><span style="color:#9ECBFF"> projects</span></span></code></pre>
+<p><strong>Benefits of RAPS</strong>:</p>
+<ul>
+<li>✅ Automatic token refresh</li>
+<li>✅ Secure token storage</li>
+<li>✅ Built-in error handling</li>
+<li>✅ No callback URL setup needed</li>
+<li>✅ Works across all platforms</li>
+</ul>
+<hr>
+<h2 id="-related-resources">📚 Related Resources</h2>
+<h3 id="aps-documentation">APS Documentation</h3>
+<ul>
+<li><a href="https://aps.autodesk.com/en/docs/oauth/v2/tutorials/get-3-legged-token/">3-Legged OAuth Tutorial</a></li>
+<li><a href="https://tools.ietf.org/html/rfc6749">OAuth 2.0 Specification</a></li>
+</ul>
+<h3 id="other-raps-guides">Other RAPS Guides</h3>
+<ul>
+<li><a href="../acc-provisioning-checklist">ACC Provisioning Checklist</a> — Fix 403 errors</li>
+<li><a href="../token-refresh-patterns">Token Refresh Patterns</a> — Production-ready token management</li>
+</ul>
+<h3 id="tools">Tools</h3>
+<ul>
+<li><a href="../../tools/token-decoder">Token Decoder Tool</a> — Inspect your tokens</li>
+<li><a href="../../tools/token-estimator">Token Cost Estimator</a> — Calculate API costs</li>
+</ul>
+<hr>
+<h2 id="-still-confused">❓ Still Confused?</h2>
+<p><strong>Common questions</strong>:</p>
+<p><strong>Q</strong>: Why do I need both authorization code AND access token?
+<strong>A</strong>: Security. The authorization code proves user consent. The access token proves your app’s identity. Two-step verification prevents token theft.</p>
+<p><strong>Q</strong>: Can I skip the callback URL?
+<strong>A</strong>: No. It’s required by OAuth 2.0 spec. Even for mobile apps, you need a custom scheme callback.</p>
+<p><strong>Q</strong>: What if my callback URL changes?
+<strong>A</strong>: Update it in your APS app settings. Must match exactly or you’ll get <code>redirect_uri_mismatch</code>.</p>
+<p><strong>Q</strong>: How long do tokens last?
+<strong>A</strong>: Access tokens: 1 hour. Refresh tokens: 14 days. Plan accordingly.</p>
+<hr>
+<p><em>Last Updated: January 2026 | RAPS v4.2.1</em><br>
+<em>This guide eliminates 90% of OAuth implementation confusion</em></p> </div> <!-- Navigation --> <nav class="mt-12 pt-8 border-t border-gray-200" data-astro-cid-oolc5s6i> <div class="flex justify-between items-center" data-astro-cid-oolc5s6i> <a href="/guides" class="btn btn-secondary" data-astro-cid-oolc5s6i>
+← Back to Guides
+</a> <div class="flex space-x-4" data-astro-cid-oolc5s6i> <a href="/tools" class="btn btn-primary" data-astro-cid-oolc5s6i>
+Try Tools →
+</a> </div> </div> </nav> <!-- Help Section --> <div class="mt-8 bg-blue-50 rounded-lg p-6" data-astro-cid-oolc5s6i> <h3 class="font-semibold mb-2 text-blue-900" data-astro-cid-oolc5s6i>Need Help?</h3> <p class="text-sm text-blue-800 mb-4" data-astro-cid-oolc5s6i>
+Having trouble with this guide? Check our troubleshooting resources or use our interactive tools.
+</p> <div class="flex space-x-4" data-astro-cid-oolc5s6i> <a href="/guides?category=troubleshooting" class="text-blue-600 hover:underline text-sm" data-astro-cid-oolc5s6i>
+Troubleshooting Guides
+</a> <a href="/tools" class="text-blue-600 hover:underline text-sm" data-astro-cid-oolc5s6i>
+Interactive Tools
+</a> <a href="/articles" class="text-blue-600 hover:underline text-sm" data-astro-cid-oolc5s6i>
+Related Articles
+</a> </div> </div> </div> </article> <script type="module">document.addEventListener("DOMContentLoaded",function(){const o=document.getElementById("toc"),c=document.querySelectorAll(".prose h2, .prose h3");if(c.length===0){o.innerHTML='<p class="text-gray-500 italic">No sections found</p>';return}const t=document.createElement("ul");t.className="space-y-1",c.forEach((n,d)=>{const a=`heading-${d}`;n.id=a;const s=document.createElement("li"),e=document.createElement("a");e.href=`#${a}`,e.textContent=n.textContent,e.className=`block hover:text-raps-blue transition ${n.tagName==="H2"?"font-medium":"ml-4 text-gray-600"}`,s.appendChild(e),t.appendChild(s)}),o.appendChild(t)});</script>  </main> <footer class="bg-gray-50 border-t border-gray-200 mt-20" data-astro-cid-37fxchfa> <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12" data-astro-cid-37fxchfa> <div class="grid grid-cols-1 md:grid-cols-4 gap-8" data-astro-cid-37fxchfa> <div data-astro-cid-37fxchfa> <h3 class="font-semibold text-gray-900 mb-4" data-astro-cid-37fxchfa>Product</h3> <ul class="space-y-2" data-astro-cid-37fxchfa> <li data-astro-cid-37fxchfa><a href="/features" class="text-gray-600 hover:text-raps-blue" data-astro-cid-37fxchfa>Features</a></li> <li data-astro-cid-37fxchfa><a href="/pricing" class="text-gray-600 hover:text-raps-blue" data-astro-cid-37fxchfa>Pricing</a></li> <li data-astro-cid-37fxchfa><a href="/changelog" class="text-gray-600 hover:text-raps-blue" data-astro-cid-37fxchfa>Changelog</a></li> <li data-astro-cid-37fxchfa><a href="/roadmap" class="text-gray-600 hover:text-raps-blue" data-astro-cid-37fxchfa>Roadmap</a></li> </ul> </div> <div data-astro-cid-37fxchfa> <h3 class="font-semibold text-gray-900 mb-4" data-astro-cid-37fxchfa>Resources</h3> <ul class="space-y-2" data-astro-cid-37fxchfa> <li data-astro-cid-37fxchfa><a href="/docs" class="text-gray-600 hover:text-raps-blue" data-astro-cid-37fxchfa>Documentation</a></li> <li data-astro-cid-37fxchfa><a href="/guides" class="text-gray-600 hover:text-raps-blue" data-astro-cid-37fxchfa>Guides</a></li> <li data-astro-cid-37fxchfa><a href="/articles" class="text-gray-600 hover:text-raps-blue" data-astro-cid-37fxchfa>Articles</a></li> <li data-astro-cid-37fxchfa><a href="/tools" class="text-gray-600 hover:text-raps-blue" data-astro-cid-37fxchfa>Tools</a></li> </ul> </div> <div data-astro-cid-37fxchfa> <h3 class="font-semibold text-gray-900 mb-4" data-astro-cid-37fxchfa>Community</h3> <ul class="space-y-2" data-astro-cid-37fxchfa> <li data-astro-cid-37fxchfa><a href="https://github.com" class="text-gray-600 hover:text-raps-blue" data-astro-cid-37fxchfa>GitHub</a></li> <li data-astro-cid-37fxchfa><a href="https://discord.gg" class="text-gray-600 hover:text-raps-blue" data-astro-cid-37fxchfa>Discord</a></li> <li data-astro-cid-37fxchfa><a href="https://twitter.com" class="text-gray-600 hover:text-raps-blue" data-astro-cid-37fxchfa>Twitter</a></li> <li data-astro-cid-37fxchfa><a href="/blog" class="text-gray-600 hover:text-raps-blue" data-astro-cid-37fxchfa>Blog</a></li> </ul> </div> <div data-astro-cid-37fxchfa> <h3 class="font-semibold text-gray-900 mb-4" data-astro-cid-37fxchfa>Company</h3> <ul class="space-y-2" data-astro-cid-37fxchfa> <li data-astro-cid-37fxchfa><a href="/about" class="text-gray-600 hover:text-raps-blue" data-astro-cid-37fxchfa>About</a></li> <li data-astro-cid-37fxchfa><a href="/contact" class="text-gray-600 hover:text-raps-blue" data-astro-cid-37fxchfa>Contact</a></li> <li data-astro-cid-37fxchfa><a href="/privacy" class="text-gray-600 hover:text-raps-blue" data-astro-cid-37fxchfa>Privacy</a></li> <li data-astro-cid-37fxchfa><a href="/terms" class="text-gray-600 hover:text-raps-blue" data-astro-cid-37fxchfa>Terms</a></li> </ul> </div> </div> <div class="mt-8 pt-8 border-t border-gray-200" data-astro-cid-37fxchfa> <p class="text-center text-gray-600" data-astro-cid-37fxchfa>
+© 2026 RAPS CLI. Professional APS Automation Tools.
+</p> </div> </div> </footer> </body></html> 

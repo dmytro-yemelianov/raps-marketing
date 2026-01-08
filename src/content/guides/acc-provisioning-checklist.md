@@ -1,3 +1,12 @@
+---
+title: "BIM360/ACC Provisioning Checklist: Fix 403 Errors"
+description: "The #1 cause of APS API 403 errors — and how to fix them"
+category: "troubleshooting"
+difficulty: "beginner"
+readTime: 10
+order: 3
+---
+
 # BIM360/ACC Provisioning Checklist: Fix 403 Errors
 
 **The #1 cause of APS API 403 errors — and how to fix them**

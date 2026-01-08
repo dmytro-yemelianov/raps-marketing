@@ -1,6 +1,9 @@
 ---
 title: "APS Developer Cheat Sheet"
 description: "Single-page reference for Autodesk Platform Services APIs with RAPS shortcuts"
+category: "api"
+order: 1
+downloadUrl: "/pdfs/aps-cheatsheet.pdf"
 keywords: ["APS", "cheat sheet", "reference", "API", "endpoints", "Forge"]
 raps_commands: ["raps auth login", "raps dm projects", "raps translate", "raps oss upload"]
 raps_version: ">=4.2.0"

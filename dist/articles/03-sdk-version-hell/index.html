@@ -1,0 +1,149 @@
+<!DOCTYPE html><html lang="en" data-astro-cid-37fxchfa> <head><meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><link rel="icon" type="image/svg+xml" href="/favicon.svg"><meta name="generator" content="Astro v5.16.7"><!-- Primary Meta Tags --><title>SDK Version Hell: Why CAD Developers Rebuild Everything, Every Year | RAPS CLI</title><meta name="title" content="SDK Version Hell: Why CAD Developers Rebuild Everything, Every Year | RAPS CLI"><meta name="description" content="The annual ritual of breaking changes that costs millions in developer hours. SDK versioning disasters across all CAD platforms."><!-- Open Graph / Facebook --><meta property="og:type" content="website"><meta property="og:url" content="https://rapscli.xyz/articles/03-sdk-version-hell/"><meta property="og:title" content="SDK Version Hell: Why CAD Developers Rebuild Everything, Every Year | RAPS CLI"><meta property="og:description" content="The annual ritual of breaking changes that costs millions in developer hours. SDK versioning disasters across all CAD platforms."><meta property="og:image" content="https://rapscli.xyz/og-image.png"><!-- Twitter --><meta property="twitter:card" content="summary_large_image"><meta property="twitter:url" content="https://rapscli.xyz/articles/03-sdk-version-hell/"><meta property="twitter:title" content="SDK Version Hell: Why CAD Developers Rebuild Everything, Every Year | RAPS CLI"><meta property="twitter:description" content="The annual ritual of breaking changes that costs millions in developer hours. SDK versioning disasters across all CAD platforms."><meta property="twitter:image" content="https://rapscli.xyz/og-image.png"><!-- Canonical URL --><link rel="canonical" href="https://rapscli.xyz/articles/03-sdk-version-hell/"><!-- Fonts --><link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin><link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet"><style>html{scroll-behavior:smooth}body{font-family:Inter,system-ui,sans-serif}
+.prose[data-astro-cid-c7vabzjd]{color:#374151}.prose[data-astro-cid-c7vabzjd] h1[data-astro-cid-c7vabzjd],.prose[data-astro-cid-c7vabzjd] h2[data-astro-cid-c7vabzjd],.prose[data-astro-cid-c7vabzjd] h3[data-astro-cid-c7vabzjd],.prose[data-astro-cid-c7vabzjd] h4[data-astro-cid-c7vabzjd]{color:#111827}.prose[data-astro-cid-c7vabzjd] h2[data-astro-cid-c7vabzjd]{margin-top:2rem;margin-bottom:1rem;font-size:1.5rem;line-height:2rem;font-weight:700}.prose[data-astro-cid-c7vabzjd] h3[data-astro-cid-c7vabzjd]{margin-top:1.5rem;margin-bottom:.75rem;font-size:1.25rem;line-height:1.75rem;font-weight:600}.prose[data-astro-cid-c7vabzjd] p[data-astro-cid-c7vabzjd]{margin-bottom:1rem}.prose[data-astro-cid-c7vabzjd] ul[data-astro-cid-c7vabzjd],.prose[data-astro-cid-c7vabzjd] ol[data-astro-cid-c7vabzjd]{margin-bottom:1rem;margin-left:1.5rem}.prose[data-astro-cid-c7vabzjd] blockquote[data-astro-cid-c7vabzjd]{margin-top:1.5rem;margin-bottom:1.5rem;border-left-width:4px;--tw-border-opacity: 1;border-color:rgb(102 126 234 / var(--tw-border-opacity, 1));padding-left:1rem;font-style:italic}.prose[data-astro-cid-c7vabzjd] code[data-astro-cid-c7vabzjd]{border-radius:.25rem;--tw-bg-opacity: 1;background-color:rgb(243 244 246 / var(--tw-bg-opacity, 1));padding:.125rem .25rem;font-family:Consolas,Monaco,monospace;font-size:.875rem;line-height:1.25rem;--tw-text-opacity: 1;color:rgb(102 126 234 / var(--tw-text-opacity, 1))}.prose[data-astro-cid-c7vabzjd] pre[data-astro-cid-c7vabzjd]{margin-top:1.5rem;margin-bottom:1.5rem;overflow-x:auto;border-radius:.5rem;--tw-bg-opacity: 1;background-color:rgb(17 24 39 / var(--tw-bg-opacity, 1));padding:1rem;--tw-text-opacity: 1;color:rgb(243 244 246 / var(--tw-text-opacity, 1))}.prose[data-astro-cid-c7vabzjd] pre[data-astro-cid-c7vabzjd] code[data-astro-cid-c7vabzjd]{background-color:transparent;padding:0;--tw-text-opacity: 1;color:rgb(243 244 246 / var(--tw-text-opacity, 1))}.prose[data-astro-cid-c7vabzjd] a[data-astro-cid-c7vabzjd]{--tw-text-opacity: 1;color:rgb(102 126 234 / var(--tw-text-opacity, 1))}.prose[data-astro-cid-c7vabzjd] a[data-astro-cid-c7vabzjd]:hover{text-decoration-line:underline}.prose[data-astro-cid-c7vabzjd] table[data-astro-cid-c7vabzjd]{margin-top:1.5rem;margin-bottom:1.5rem;width:100%;border-collapse:collapse;border-width:1px;--tw-border-opacity: 1;border-color:rgb(209 213 219 / var(--tw-border-opacity, 1))}.prose[data-astro-cid-c7vabzjd] th[data-astro-cid-c7vabzjd],.prose[data-astro-cid-c7vabzjd] td[data-astro-cid-c7vabzjd]{border-width:1px;--tw-border-opacity: 1;border-color:rgb(209 213 219 / var(--tw-border-opacity, 1));padding:.5rem .75rem;text-align:left}.prose[data-astro-cid-c7vabzjd] th[data-astro-cid-c7vabzjd]{--tw-bg-opacity: 1;background-color:rgb(243 244 246 / var(--tw-bg-opacity, 1));font-weight:600}
+</style></head> <body class="min-h-screen bg-white" data-astro-cid-37fxchfa> <nav class="sticky top-0 z-50 bg-white/95 backdrop-blur border-b border-gray-200" data-astro-cid-37fxchfa> <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8" data-astro-cid-37fxchfa> <div class="flex justify-between items-center h-16" data-astro-cid-37fxchfa> <div class="flex items-center" data-astro-cid-37fxchfa> <a href="/" class="flex items-center space-x-2" data-astro-cid-37fxchfa> <span class="text-2xl font-bold bg-gradient-to-r from-raps-blue to-raps-purple bg-clip-text text-transparent" data-astro-cid-37fxchfa>
+RAPS
+</span> <span class="text-gray-500" data-astro-cid-37fxchfa>v4.2.1</span> </a> </div> <nav class="hidden md:flex items-center space-x-8" data-astro-cid-37fxchfa> <a href="/articles" class="text-gray-700 hover:text-raps-blue transition" data-astro-cid-37fxchfa>Articles</a> <a href="/guides" class="text-gray-700 hover:text-raps-blue transition" data-astro-cid-37fxchfa>Guides</a> <a href="/tools" class="text-gray-700 hover:text-raps-blue transition" data-astro-cid-37fxchfa>Tools</a> <a href="/pdfs" class="text-gray-700 hover:text-raps-blue transition" data-astro-cid-37fxchfa>PDFs</a> <a href="https://github.com/autodesk-platform-services/raps" class="text-gray-700 hover:text-raps-blue transition" data-astro-cid-37fxchfa>
+GitHub
+</a> <a href="https://github.com/autodesk-platform-services/raps/releases" class="px-4 py-2 bg-gradient-to-r from-raps-blue to-raps-purple text-white rounded-lg hover:shadow-lg transition" data-astro-cid-37fxchfa>
+Download
+</a> </nav> <button class="md:hidden p-2 rounded-lg hover:bg-gray-100" data-astro-cid-37fxchfa> <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" data-astro-cid-37fxchfa> <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16" data-astro-cid-37fxchfa></path> </svg> </button> </div> </div> </nav> <main data-astro-cid-37fxchfa>  <article class="content-container py-12" data-astro-cid-c7vabzjd> <div class="max-w-4xl mx-auto" data-astro-cid-c7vabzjd> <!-- Article Header --> <header class="mb-8" data-astro-cid-c7vabzjd> <div class="flex items-center text-sm text-gray-500 mb-4" data-astro-cid-c7vabzjd> <a href="/articles" class="hover:text-raps-blue" data-astro-cid-c7vabzjd>Articles</a> <span class="mx-2" data-astro-cid-c7vabzjd>→</span> <span data-astro-cid-c7vabzjd>Current</span> </div> <h1 class="text-4xl md:text-5xl font-bold mb-4" data-astro-cid-c7vabzjd> SDK Version Hell: Why CAD Developers Rebuild Everything, Every Year </h1> <p class="text-xl text-gray-600 mb-6" data-astro-cid-c7vabzjd> The annual ritual of breaking changes that costs millions in developer hours. SDK versioning disasters across all CAD platforms. </p> <div class="flex flex-wrap items-center gap-4 text-sm text-gray-500" data-astro-cid-c7vabzjd> <time datetime="2026-01-08T00:00:00.000Z" data-astro-cid-c7vabzjd> January 8, 2026 </time> <span data-astro-cid-c7vabzjd>•</span> <span data-astro-cid-c7vabzjd>By RAPS Team</span>  <span data-astro-cid-c7vabzjd>•</span> <span class="px-2 py-1 bg-gradient-to-r from-raps-blue to-raps-purple text-white text-xs rounded-full" data-astro-cid-c7vabzjd>
+Featured
+</span>  </div> <div class="flex flex-wrap gap-2 mt-4" data-astro-cid-c7vabzjd> <span class="text-xs bg-gray-100 text-gray-700 px-2 py-1 rounded" data-astro-cid-c7vabzjd> sdk </span><span class="text-xs bg-gray-100 text-gray-700 px-2 py-1 rounded" data-astro-cid-c7vabzjd> version-conflicts </span><span class="text-xs bg-gray-100 text-gray-700 px-2 py-1 rounded" data-astro-cid-c7vabzjd> cross-platform </span><span class="text-xs bg-gray-100 text-gray-700 px-2 py-1 rounded" data-astro-cid-c7vabzjd> breaking-changes </span><span class="text-xs bg-gray-100 text-gray-700 px-2 py-1 rounded" data-astro-cid-c7vabzjd> solidworks </span> </div> </header> <!-- Article Content --> <div class="prose prose-lg prose-gray max-w-none" data-astro-cid-c7vabzjd> <h1 id="sdk-version-hell-why-cad-developers-rebuild-everything-every-year">SDK Version Hell: Why CAD Developers Rebuild Everything, Every Year</h1>
+<h2 id="the-annual-ritual-of-breaking-changes-that-costs-millions-in-developer-hours">The Annual Ritual of Breaking Changes That Costs Millions in Developer Hours</h2>
+<p>Welcome to the special hell reserved for CAD API developers, where your perfectly working code from last year is guaranteed to break this year. Not because you did anything wrong, but because SDK versioning in the CAD world follows the “break everything annually” philosophy.</p>
+<h3 id="solidworks-the-interop-dll-nightmare-champion">SOLIDWORKS: The Interop DLL Nightmare Champion</h3>
+<p>SOLIDWORKS takes the crown for version compatibility disasters. Here’s what developers face:</p>
+<p><strong>The Annual Breaking Change Ritual</strong></p>
+<ul>
+<li>Every major version breaks interop DLLs</li>
+<li>Add-ins must be rebuilt for each release</li>
+<li>Running multiple SOLIDWORKS versions? Prepare for path management hell</li>
+</ul>
+<p><strong>Real Error Messages That Haunt Developers:</strong></p>
+<pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8; overflow-x: auto; white-space: pre-wrap; word-wrap: break-word;" tabindex="0" data-language="plaintext"><code><span class="line"><span>Error CS1705 Assembly 'AngelSix.SolidDna' uses </span></span>
+<span class="line"><span>'SolidWorks.Interop.swpublished, Version=26.0.1.1' </span></span>
+<span class="line"><span>which has a higher version than the referenced assembly</span></span></code></pre>
+<p><strong>The VBA 7.1 Apocalypse</strong>
+SOLIDWORKS 2021 SP2 introduced VBA 7.1, instantly breaking every existing macro:</p>
+<ul>
+<li>Earlier Installation Managers don’t recognize VBA 7.1 components</li>
+<li>Macros written pre-2021 simply stop working</li>
+<li>No backward compatibility</li>
+<li>No migration tools</li>
+</ul>
+<h3 id="ptc-creo-visual-studio-dependency-roulette">PTC Creo: Visual Studio Dependency Roulette</h3>
+<p>Creo Toolkit adds its own special flavor of version hell:</p>
+<ul>
+<li>Must recompile for <strong>each Creo version</strong></li>
+<li>Toolkit libraries have Visual Studio version dependencies</li>
+<li>“Always forward compatible but never backward”</li>
+<li>The GCRI plugin for backward compatibility? Dropped at Creo 7</li>
+</ul>
+<p>One developer’s summary: “If you’re on Creo 8, you can’t open Creo 9 files. Period.”</p>
+<h3 id="siemens-nx-the-six-month-breaking-change-cycle">Siemens NX: The Six-Month Breaking Change Cycle</h3>
+<p>While others break annually, NX innovates with <strong>six-month functional releases</strong>:</p>
+<ul>
+<li>“NX Open functionality may change”</li>
+<li>“New prerequisites may be needed”</li>
+<li>Critical bugs require community-maintained patches</li>
+<li>GitHub repos exist specifically to fix Teamcenter 12.2 SOA crashes</li>
+</ul>
+<h3 id="the-hidden-costs">The Hidden Costs</h3>
+<p><strong>Developer Time Tax</strong></p>
+<ul>
+<li>2-3 weeks annually rebuilding for new versions</li>
+<li>Testing across multiple versions</li>
+<li>Maintaining separate codebases</li>
+<li>Documentation updates for version-specific quirks</li>
+</ul>
+<p><strong>Enterprise Deployment Nightmares</strong></p>
+<ul>
+<li>Can’t upgrade until all add-ins are rebuilt</li>
+<li>Different departments on different versions</li>
+<li>Integration failures between version-mismatched systems</li>
+<li>Testing matrix grows exponentially</li>
+</ul>
+<h3 id="the-imodeldoc2-interface-700-members-of-confusion">The IModelDoc2 Interface: 700+ Members of Confusion</h3>
+<p>SOLIDWORKS’s <code>IModelDoc2</code> perfectly exemplifies the problem:</p>
+<ul>
+<li>Over 700 members split across extension objects</li>
+<li>“No real logic in the separation”</li>
+<li>Documentation doesn’t mention the split</li>
+<li>Version changes shuffle members randomly</li>
+</ul>
+<h3 id="why-this-validates-rapss-approach">Why This Validates RAPS’s Approach</h3>
+<p>RAPS’s architecture anticipates version conflicts:</p>
+<ul>
+<li>Workspace crates allow version-specific implementations</li>
+<li>Plugin system enables version-specific handlers</li>
+<li>CLI abstraction shields users from API changes</li>
+<li>Single binary works across multiple APS versions</li>
+</ul>
+<h3 id="the-market-reality">The Market Reality</h3>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<table><thead><tr><th>Platform</th><th>Breaking Change Frequency</th><th>Developer Impact</th></tr></thead><tbody><tr><td>SOLIDWORKS</td><td>Annual (100% breaking)</td><td>Rebuild everything</td></tr><tr><td>Creo</td><td>Per major version</td><td>Full recompilation</td></tr><tr><td>NX Open</td><td>6 months</td><td>Continuous updates</td></tr><tr><td>Revit/APS</td><td>Annual (partial)</td><td>Selective updates</td></tr></tbody></table>
+<h3 id="the-billion-dollar-opportunity">The Billion-Dollar Opportunity</h3>
+<p>Consider the math:</p>
+<ul>
+<li>100,000+ CAD API developers globally</li>
+<li>2-3 weeks annually on version updates</li>
+<li>$150/hour average developer cost</li>
+<li>= <strong>$600M+ in annual version compatibility costs</strong></li>
+</ul>
+<p>A tool that abstracts version differences could capture significant value from this waste.</p>
+<h3 id="competitive-intelligence">Competitive Intelligence</h3>
+<p><strong>Worst Offenders:</strong></p>
+<ol>
+<li>SOLIDWORKS - Complete interop breaks annually</li>
+<li>NX Open - Fastest breaking change cycle (6 months)</li>
+<li>Creo - No backward compatibility by design</li>
+</ol>
+<p><strong>Best (Least Worst):</strong></p>
+<ul>
+<li>Onshape - REST API provides more stability</li>
+<li>Cloud platforms - Can version endpoints separately</li>
+</ul>
+<h3 id="the-path-forward">The Path Forward</h3>
+<p>Version compatibility tools should:</p>
+<ol>
+<li>Detect SDK/interop mismatches before runtime</li>
+<li>Provide compatibility matrices</li>
+<li>Suggest specific version combinations</li>
+<li>Abstract API changes behind stable interfaces</li>
+<li>Maintain backward compatibility layers</li>
+</ol>
+<h3 id="whats-next">What’s Next?</h3>
+<p>Our next article dives into documentation disasters—where Windchill developers beg for “Hello World” examples, and NX documentation isn’t even installed by default.</p>
+<hr>
+<p><em>Part of our “Cross-Platform Developer Pain Points” series. Because when everyone has the same problem, it’s not a bug—it’s a market opportunity.</em></p> </div> <!-- Article Footer --> <footer class="mt-12 pt-8 border-t border-gray-200" data-astro-cid-c7vabzjd> <div class="grid md:grid-cols-2 gap-8" data-astro-cid-c7vabzjd> <div data-astro-cid-c7vabzjd> <h3 class="font-semibold mb-3" data-astro-cid-c7vabzjd>Share this article</h3> <div class="flex space-x-4" data-astro-cid-c7vabzjd> <a href="https://twitter.com/intent/tweet?text=SDK%20Version%20Hell%3A%20Why%20CAD%20Developers%20Rebuild%20Everything%2C%20Every%20Year&url=https%3A%2F%2Frapscli.xyz%2Farticles%2F03-sdk-version-hell%2F" target="_blank" class="text-gray-400 hover:text-blue-500" data-astro-cid-c7vabzjd> <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 24 24" data-astro-cid-c7vabzjd> <path d="M23.953 4.57a10 10 0 01-2.825.775 4.958 4.958 0 002.163-2.723c-.951.555-2.005.959-3.127 1.184a4.92 4.92 0 00-8.384 4.482C7.69 8.095 4.067 6.13 1.64 3.162a4.822 4.822 0 00-.666 2.475c0 1.71.87 3.213 2.188 4.096a4.904 4.904 0 01-2.228-.616v.06a4.923 4.923 0 003.946 4.827 4.996 4.996 0 01-2.212.085 4.936 4.936 0 004.604 3.417 9.867 9.867 0 01-6.102 2.105c-.39 0-.779-.023-1.17-.067a13.995 13.995 0 007.557 2.209c9.053 0 13.998-7.496 13.998-13.985 0-.21 0-.42-.015-.63A9.935 9.935 0 0024 4.59z" data-astro-cid-c7vabzjd></path> </svg> </a> <a href="https://www.linkedin.com/sharing/share-offsite/?url=https%3A%2F%2Frapscli.xyz%2Farticles%2F03-sdk-version-hell%2F" target="_blank" class="text-gray-400 hover:text-blue-700" data-astro-cid-c7vabzjd> <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 24 24" data-astro-cid-c7vabzjd> <path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433c-1.144 0-2.063-.926-2.063-2.065 0-1.138.92-2.063 2.063-2.063 1.14 0 2.064.925 2.064 2.063 0 1.139-.925 2.065-2.064 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z" data-astro-cid-c7vabzjd></path> </svg> </a> </div> </div> <div data-astro-cid-c7vabzjd> <h3 class="font-semibold mb-3" data-astro-cid-c7vabzjd>Related Resources</h3> <div class="space-y-2" data-astro-cid-c7vabzjd> <a href="/guides" class="block text-raps-blue hover:underline" data-astro-cid-c7vabzjd>Developer Guides</a> <a href="/tools" class="block text-raps-blue hover:underline" data-astro-cid-c7vabzjd>Interactive Tools</a> <a href="/pdfs" class="block text-raps-blue hover:underline" data-astro-cid-c7vabzjd>PDF Downloads</a> </div> </div> </div> </footer> </div> </article>  </main> <footer class="bg-gray-50 border-t border-gray-200 mt-20" data-astro-cid-37fxchfa> <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12" data-astro-cid-37fxchfa> <div class="grid grid-cols-1 md:grid-cols-4 gap-8" data-astro-cid-37fxchfa> <div data-astro-cid-37fxchfa> <h3 class="font-semibold text-gray-900 mb-4" data-astro-cid-37fxchfa>Product</h3> <ul class="space-y-2" data-astro-cid-37fxchfa> <li data-astro-cid-37fxchfa><a href="/features" class="text-gray-600 hover:text-raps-blue" data-astro-cid-37fxchfa>Features</a></li> <li data-astro-cid-37fxchfa><a href="/pricing" class="text-gray-600 hover:text-raps-blue" data-astro-cid-37fxchfa>Pricing</a></li> <li data-astro-cid-37fxchfa><a href="/changelog" class="text-gray-600 hover:text-raps-blue" data-astro-cid-37fxchfa>Changelog</a></li> <li data-astro-cid-37fxchfa><a href="/roadmap" class="text-gray-600 hover:text-raps-blue" data-astro-cid-37fxchfa>Roadmap</a></li> </ul> </div> <div data-astro-cid-37fxchfa> <h3 class="font-semibold text-gray-900 mb-4" data-astro-cid-37fxchfa>Resources</h3> <ul class="space-y-2" data-astro-cid-37fxchfa> <li data-astro-cid-37fxchfa><a href="/docs" class="text-gray-600 hover:text-raps-blue" data-astro-cid-37fxchfa>Documentation</a></li> <li data-astro-cid-37fxchfa><a href="/guides" class="text-gray-600 hover:text-raps-blue" data-astro-cid-37fxchfa>Guides</a></li> <li data-astro-cid-37fxchfa><a href="/articles" class="text-gray-600 hover:text-raps-blue" data-astro-cid-37fxchfa>Articles</a></li> <li data-astro-cid-37fxchfa><a href="/tools" class="text-gray-600 hover:text-raps-blue" data-astro-cid-37fxchfa>Tools</a></li> </ul> </div> <div data-astro-cid-37fxchfa> <h3 class="font-semibold text-gray-900 mb-4" data-astro-cid-37fxchfa>Community</h3> <ul class="space-y-2" data-astro-cid-37fxchfa> <li data-astro-cid-37fxchfa><a href="https://github.com" class="text-gray-600 hover:text-raps-blue" data-astro-cid-37fxchfa>GitHub</a></li> <li data-astro-cid-37fxchfa><a href="https://discord.gg" class="text-gray-600 hover:text-raps-blue" data-astro-cid-37fxchfa>Discord</a></li> <li data-astro-cid-37fxchfa><a href="https://twitter.com" class="text-gray-600 hover:text-raps-blue" data-astro-cid-37fxchfa>Twitter</a></li> <li data-astro-cid-37fxchfa><a href="/blog" class="text-gray-600 hover:text-raps-blue" data-astro-cid-37fxchfa>Blog</a></li> </ul> </div> <div data-astro-cid-37fxchfa> <h3 class="font-semibold text-gray-900 mb-4" data-astro-cid-37fxchfa>Company</h3> <ul class="space-y-2" data-astro-cid-37fxchfa> <li data-astro-cid-37fxchfa><a href="/about" class="text-gray-600 hover:text-raps-blue" data-astro-cid-37fxchfa>About</a></li> <li data-astro-cid-37fxchfa><a href="/contact" class="text-gray-600 hover:text-raps-blue" data-astro-cid-37fxchfa>Contact</a></li> <li data-astro-cid-37fxchfa><a href="/privacy" class="text-gray-600 hover:text-raps-blue" data-astro-cid-37fxchfa>Privacy</a></li> <li data-astro-cid-37fxchfa><a href="/terms" class="text-gray-600 hover:text-raps-blue" data-astro-cid-37fxchfa>Terms</a></li> </ul> </div> </div> <div class="mt-8 pt-8 border-t border-gray-200" data-astro-cid-37fxchfa> <p class="text-center text-gray-600" data-astro-cid-37fxchfa>
+© 2026 RAPS CLI. Professional APS Automation Tools.
+</p> </div> </div> </footer> </body></html> 

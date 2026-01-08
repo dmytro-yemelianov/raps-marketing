@@ -1,22 +1,10 @@
 ---
 title: "Forge to APS Migration Guide"
 description: "Complete guide for migrating from legacy Autodesk Forge APIs to modern Autodesk Platform Services (APS)"
-keywords: ["Forge", "APS", "migration", "API", "upgrade", "legacy", "Autodesk Platform Services"]
-raps_commands: ["raps auth migrate-from-forge", "raps config set", "raps auth login"]
-raps_version: ">=4.2.0"
-aps_apis:
-  authentication: "v2"
-  data_management: "v1"
-  model_derivative: "v2"
-  design_automation: "v3"
-  oss: "v2"
-forge_apis:
-  authentication: "v1" 
-  data_management: "v1"
-  model_derivative: "v2"
-  design_automation: "v2"
-last_verified: "January 2026"
-migration_deadline: "2026-12-31"
+category: "advanced"
+difficulty: "intermediate"
+readTime: 15
+order: 1
 ---
 
 # Forge to APS Migration Guide

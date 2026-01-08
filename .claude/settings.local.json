@@ -15,9 +15,14 @@
       "Bash(git rm:*)",
       "Bash(git checkout:*)",
       "Bash(mv:*)",
-      "Bash(true)"
+      "Bash(true)",
+      "Bash(git restore:*)",
+      "Bash(npm run build:*)"
     ],
     "deny": [],
-    "ask": []
+    "ask": [],
+    "additionalDirectories": [
+      "C:\\c\\github\\raps"
+    ]
   }
 }
