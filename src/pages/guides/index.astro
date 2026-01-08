@@ -1,0 +1,100 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import { getCollection } from 'astro:content';
+
+const guides = await getCollection('guides');
+const categories = {
+  'getting-started': 'Getting Started',
+  'authentication': 'Authentication',
+  'api': 'API Usage',
+  'advanced': 'Advanced Topics',
+  'troubleshooting': 'Troubleshooting',
+};
+
+const groupedGuides = guides.reduce((acc, guide) => {
+  const category = guide.data.category;
+  if (!acc[category]) acc[category] = [];
+  acc[category].push(guide);
+  return acc;
+}, {} as Record<string, typeof guides>);
+---
+
+<BaseLayout 
+  title="Developer Guides - Complete APS Documentation"
+  description="Comprehensive guides for Autodesk Platform Services development with RAPS CLI. From getting started to advanced workflows."
+>
+  <div class="hero-pattern py-12">
+    <div class="content-container">
+      <h1 class="text-4xl md:text-5xl font-bold text-center mb-4">
+        <span class="gradient-text">Developer Guides</span>
+      </h1>
+      <p class="text-xl text-gray-600 text-center max-w-3xl mx-auto">
+        Complete documentation for building professional APS integrations with RAPS CLI
+      </p>
+    </div>
+  </div>
+
+  <div class="content-container py-12">
+    {Object.entries(groupedGuides).map(([categoryKey, categoryGuides]) => (
+      <section class="mb-12">
+        <h2 class="text-2xl font-bold mb-6 flex items-center">
+          <span class="text-2xl mr-3">
+            {categoryKey === 'getting-started' && '🚀'}
+            {categoryKey === 'authentication' && '🔐'}
+            {categoryKey === 'api' && '⚡'}
+            {categoryKey === 'advanced' && '🔧'}
+            {categoryKey === 'troubleshooting' && '🔍'}
+          </span>
+          {categories[categoryKey as keyof typeof categories]}
+        </h2>
+        <div class="grid md:grid-cols-2 gap-6">
+          {categoryGuides.sort((a, b) => (a.data.order || 0) - (b.data.order || 0)).map((guide) => (
+            <article class="card p-6 hover:shadow-lg transition-shadow">
+              <div class="flex items-center justify-between mb-4">
+                <span class={`px-2 py-1 text-xs rounded-full ${
+                  guide.data.difficulty === 'beginner' ? 'bg-green-100 text-green-800' :
+                  guide.data.difficulty === 'intermediate' ? 'bg-yellow-100 text-yellow-800' :
+                  'bg-red-100 text-red-800'
+                }`}>
+                  {guide.data.difficulty}
+                </span>
+                {guide.data.readTime && (
+                  <span class="text-sm text-gray-500">
+                    {guide.data.readTime} min read
+                  </span>
+                )}
+              </div>
+              <h3 class="text-xl font-semibold mb-3 hover:text-raps-blue transition">
+                <a href={`/guides/${guide.slug}`}>
+                  {guide.data.title}
+                </a>
+              </h3>
+              <p class="text-gray-600 mb-4">
+                {guide.data.description}
+              </p>
+              <a 
+                href={`/guides/${guide.slug}`}
+                class="text-raps-blue font-semibold hover:underline"
+              >
+                Read Guide →
+              </a>
+            </article>
+          ))}
+        </div>
+      </section>
+    ))}
+
+    {guides.length === 0 && (
+      <div class="text-center py-12">
+        <div class="text-6xl mb-4">📚</div>
+        <h2 class="text-2xl font-semibold mb-4">Guides Coming Soon</h2>
+        <p class="text-gray-600 mb-6">
+          We're working on comprehensive guides covering all aspects of APS development.
+        </p>
+        <a href="/articles" class="btn btn-primary">
+          Read Articles Instead →
+        </a>
+      </div>
+    )}
+  </div>
+</BaseLayout>
