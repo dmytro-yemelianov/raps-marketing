@@ -1,0 +1,56 @@
+{
+  "$ref": "#/definitions/calendar",
+  "definitions": {
+    "calendar": {
+      "type": "object",
+      "properties": {
+        "title": {
+          "type": "string"
+        },
+        "description": {
+          "type": "string"
+        },
+        "calendarType": {
+          "type": "string",
+          "enum": [
+            "master",
+            "campaign",
+            "theme",
+            "integrated"
+          ]
+        },
+        "timeframe": {
+          "type": "string"
+        },
+        "lastUpdated": {
+          "anyOf": [
+            {
+              "type": "string",
+              "format": "date-time"
+            },
+            {
+              "type": "string",
+              "format": "date"
+            },
+            {
+              "type": "integer",
+              "format": "unix-time"
+            }
+          ]
+        },
+        "$schema": {
+          "type": "string"
+        }
+      },
+      "required": [
+        "title",
+        "description",
+        "calendarType",
+        "timeframe",
+        "lastUpdated"
+      ],
+      "additionalProperties": false
+    }
+  },
+  "$schema": "http://json-schema.org/draft-07/schema#"
+}

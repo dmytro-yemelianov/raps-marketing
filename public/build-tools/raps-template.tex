@@ -1,0 +1,243 @@
+% Professional RAPS PDF Template
+\documentclass[10pt,a4paper,oneside]{article}
+
+% Packages for enhanced PDF features
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
+\usepackage[english]{babel}
+\usepackage{geometry}
+\usepackage{fancyhdr}
+\usepackage{graphicx}
+\usepackage{xcolor}
+\usepackage{titlesec}
+\usepackage{tocloft}
+\usepackage{hyperref}
+\usepackage{bookmark}
+\usepackage{tikz}
+\usepackage{pgfplots}
+\usepackage{listings}
+\usepackage{booktabs}
+\usepackage{longtable}
+\usepackage{array}
+\usepackage{multirow}
+\usepackage{amsmath}
+\usepackage{amsfonts}
+\usepackage{amssymb}
+\usepackage{datetime2}
+\usepackage{lastpage}
+\usepackage{watermark}
+\usepackage[most]{tcolorbox}
+
+% Page setup
+\geometry{
+    a4paper,
+    top=1in,
+    bottom=1in,
+    left=0.75in,
+    right=0.75in,
+    footskip=0.5in
+}
+
+% RAPS color scheme
+\definecolor{rapsblue}{RGB}{102,126,234}
+\definecolor{rapspurple}{RGB}{118,75,162}
+\definecolor{rapsgreen}{RGB}{40,167,69}
+\definecolor{rapsgray}{RGB}{108,117,125}
+\definecolor{rapslight}{RGB}{248,249,250}
+
+% Configure hyperlinks
+\hypersetup{
+    colorlinks=true,
+    linkcolor=rapsblue,
+    urlcolor=rapsblue,
+    citecolor=rapsblue,
+    filecolor=rapsblue,
+    bookmarksopen=true,
+    bookmarksopenlevel=2,
+    bookmarksnumbered=true,
+    pdftitle={\@title},
+    pdfauthor={RAPS Development Team},
+    pdfsubject={Autodesk Platform Services (APS) Developer Resource},
+    pdfkeywords={APS, Autodesk, Platform Services, RAPS, CLI, API, Developer Tools},
+    pdfcreator={RAPS PDF Generator v1.2},
+    pdfproducer={RAPS Marketing Team}
+}
+
+% Watermark setup (subtle)
+\newwatermark*[
+    allpages,
+    color=gray!10,
+    angle=45,
+    scale=6,
+    xpos=-20,
+    ypos=20
+]{RAPS}
+
+% Header and footer setup
+\pagestyle{fancy}
+\fancyhf{}
+
+% Header
+\fancyhead[L]{\small\textcolor{rapsgray}{\@title}}
+\fancyhead[R]{\small\textcolor{rapsgray}{RAPS v\rapsversion}}
+
+% Footer
+\fancyfoot[L]{\small\textcolor{rapsgray}{Generated: \DTMnow}}
+\fancyfoot[C]{\small\textcolor{rapsgray}{rapscli.xyz}}
+\fancyfoot[R]{\small\textcolor{rapsgray}{Page \thepage\ of \pageref{LastPage}}}
+
+% Title page header/footer
+\fancypagestyle{plain}{
+    \fancyhf{}
+    \fancyfoot[C]{\small\textcolor{rapsgray}{rapscli.xyz}}
+    \fancyfoot[R]{\small\textcolor{rapsgray}{Page \thepage\ of \pageref{LastPage}}}
+}
+
+% Enhanced section styling
+\titleformat{\section}
+  {\Large\bfseries\color{rapsblue}}
+  {\thesection}{1em}{}
+
+\titleformat{\subsection}
+  {\large\bfseries\color{rapspurple}}
+  {\thesubsection}{1em}{}
+
+\titleformat{\subsubsection}
+  {\normalsize\bfseries\color{rapsgreen}}
+  {\thesubsubsection}{1em}{}
+
+% Multi-level TOC formatting
+\setcounter{tocdepth}{3}
+\setcounter{secnumdepth}{3}
+
+% TOC styling
+\renewcommand{\cftsecfont}{\bfseries\color{rapsblue}}
+\renewcommand{\cftsecpagefont}{\bfseries\color{rapsblue}}
+\renewcommand{\cftsubsecfont}{\color{rapspurple}}
+\renewcommand{\cftsubsecpagefont}{\color{rapspurple}}
+\renewcommand{\cftsubsubsecfont}{\small\color{rapsgreen}}
+\renewcommand{\cftsubsubsecpagefont}{\small\color{rapsgreen}}
+
+% Code block styling
+\lstdefinestyle{raps}{
+    backgroundcolor=\color{rapslight},
+    commentstyle=\color{rapsgreen},
+    keywordstyle=\color{rapsblue},
+    numberstyle=\tiny\color{rapsgray},
+    stringstyle=\color{rapspurple},
+    basicstyle=\ttfamily\footnotesize,
+    breakatwhitespace=false,
+    breaklines=true,
+    captionpos=b,
+    keepspaces=true,
+    numbers=left,
+    numbersep=5pt,
+    showspaces=false,
+    showstringspaces=false,
+    showtabs=false,
+    tabsize=2,
+    frame=single,
+    rulecolor=\color{rapsgray}
+}
+\lstset{style=raps}
+
+% Table styling
+\newcolumntype{L}[1]{>{\raggedright\arraybackslash}p{#1}}
+\newcolumntype{C}[1]{>{\centering\arraybackslash}p{#1}}
+\newcolumntype{R}[1]{>{\raggedleft\arraybackslash}p{#1}}
+
+% Custom boxes for tips and warnings
+\newtcolorbox{rapstip}{
+    colback=blue!5!white,
+    colframe=rapsblue,
+    title={\textbf{💡 RAPS CLI Tip}},
+    fonttitle=\bfseries,
+    titlerule=0pt,
+    arc=2mm,
+    left=3mm,
+    right=3mm,
+    top=2mm,
+    bottom=2mm
+}
+
+\newtcolorbox{rapswarning}{
+    colback=yellow!5!white,
+    colframe=orange,
+    title={\textbf{⚠️ Important Note}},
+    fonttitle=\bfseries,
+    titlerule=0pt,
+    arc=2mm,
+    left=3mm,
+    right=3mm,
+    top=2mm,
+    bottom=2mm
+}
+
+% Title page customization
+\makeatletter
+\def\@maketitle{%
+  \newpage
+  \null
+  \vskip 2em%
+  \begin{center}%
+  \let \footnote \thanks
+    % RAPS Logo placeholder (text-based)
+    {\color{rapsblue}\Huge\textbf{🌼 RAPS}}\\
+    \vskip 0.5em%
+    {\color{rapsgray}\large\textit{Rapeseed - APS CLI Automation}}\\
+    \vskip 2em%
+    {\color{rapsblue}\LARGE \@title \par}%
+    \vskip 1.5em%
+    {\color{rapsgray}\large \@subtitle \par}%
+    \vskip 2em%
+    {\color{rapspurple}\large Version: \rapsversion \par}%
+    \vskip 1em%
+    {\color{rapsgray}\normalsize Document Revision: \docrevision \par}%
+    \vskip 0.5em%
+    {\color{rapsgray}\normalsize Generated: \DTMnow \par}%
+    \vskip 3em%
+    % Professional footer
+    \begin{minipage}{0.8\textwidth}
+      \centering
+      \color{rapsgray}
+      \rule{\textwidth}{0.5pt}\\
+      \vskip 0.5em
+      \textbf{RAPS Development Team}\\
+      Autodesk Platform Services Automation\\
+      \texttt{rapscli.xyz} | \texttt{support@rapscli.xyz}\\
+      \vskip 0.5em
+      \rule{\textwidth}{0.5pt}
+    \end{minipage}
+  \end{center}%
+  \par
+  \vskip 1.5em}
+\makeatother
+
+% Document info variables (to be set by pandoc)
+\providecommand{\rapsversion}{4.2.1}
+\providecommand{\docrevision}{1.0}
+\providecommand{\subtitle}{Developer Resource Document}
+
+% Enhanced bullet points
+\renewcommand{\labelitemi}{{\color{rapsblue}•}}
+\renewcommand{\labelitemii}{{\color{rapspurple}◦}}
+\renewcommand{\labelitemiii}{{\color{rapsgreen}▪}}
+
+% Custom commands for consistent formatting
+\newcommand{\rapscmd}[1]{\texttt{\color{rapsblue}#1}}
+\newcommand{\rapsfile}[1]{\texttt{\color{rapspurple}#1}}
+\newcommand{\rapsurl}[1]{\href{#1}{\texttt{\color{rapsblue}#1}}}
+
+\begin{document}
+
+% Title page
+\maketitle
+\thispagestyle{plain}
+
+% Table of contents with better formatting
+\newpage
+\pdfbookmark[0]{Table of Contents}{toc}
+\tableofcontents
+\newpage
+
+% Main content starts here

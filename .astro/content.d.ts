@@ -173,13 +173,37 @@ declare module 'astro:content' {
 	};
 
 	type DataEntryMap = {
-		"articles": Record<string, {
+		"analytics": Record<string, {
+  id: string;
+  body?: string;
+  collection: "analytics";
+  data: any;
+  rendered?: RenderedContent;
+  filePath?: string;
+}>;
+"articles": Record<string, {
   id: string;
   render(): Render[".md"];
   slug: string;
   body: string;
   collection: "articles";
   data: InferEntrySchema<"articles">;
+  rendered?: RenderedContent;
+  filePath?: string;
+}>;
+"calendar": Record<string, {
+  id: string;
+  body?: string;
+  collection: "calendar";
+  data: any;
+  rendered?: RenderedContent;
+  filePath?: string;
+}>;
+"campaigns": Record<string, {
+  id: string;
+  body?: string;
+  collection: "campaigns";
+  data: any;
   rendered?: RenderedContent;
   filePath?: string;
 }>;
@@ -193,6 +217,14 @@ declare module 'astro:content' {
   rendered?: RenderedContent;
   filePath?: string;
 }>;
+"community": Record<string, {
+  id: string;
+  body?: string;
+  collection: "community";
+  data: any;
+  rendered?: RenderedContent;
+  filePath?: string;
+}>;
 "guides": Record<string, {
   id: string;
   render(): Render[".md"];
@@ -200,6 +232,40 @@ declare module 'astro:content' {
   body: string;
   collection: "guides";
   data: InferEntrySchema<"guides">;
+  rendered?: RenderedContent;
+  filePath?: string;
+}>;
+"press": Record<string, {
+  id: string;
+  body?: string;
+  collection: "press";
+  data: any;
+  rendered?: RenderedContent;
+  filePath?: string;
+}>;
+"recipes": Record<string, {
+  id: string;
+  render(): Render[".md"];
+  slug: string;
+  body: string;
+  collection: "recipes";
+  data: InferEntrySchema<"recipes">;
+  rendered?: RenderedContent;
+  filePath?: string;
+}>;
+"references": Record<string, {
+  id: string;
+  body?: string;
+  collection: "references";
+  data: any;
+  rendered?: RenderedContent;
+  filePath?: string;
+}>;
+"strategy": Record<string, {
+  id: string;
+  body?: string;
+  collection: "strategy";
+  data: any;
   rendered?: RenderedContent;
   filePath?: string;
 }>;

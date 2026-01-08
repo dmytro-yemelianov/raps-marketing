@@ -1,9 +1,9 @@
 ---
 title: "File Translation Disasters: When 7 Years Isn't Long Enough to Fix a Bug"
-description: "The cross-platform translation crisis that makes developers question their career choices. Seven years and counting for bug fixes."
+description: "The cross-platform translation crisis that makes developers question their career choices"
 publishDate: 2026-01-08
 author: "RAPS Team"
-tags: ["file-translation", "cross-platform", "bugs", "timeout-issues"]
+tags: ["translation", "file-formats", "cross-platform", "bugs", "onshape"]
 featured: true
 draft: false
 ---
