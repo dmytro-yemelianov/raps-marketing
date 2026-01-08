@@ -1,0 +1,313 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+---
+
+<BaseLayout 
+  title="APS Token Cost Estimator Tool"
+  description="Estimate API usage costs and token consumption for your APS integration workflows"
+>
+  <div class="content-container py-12">
+    <div class="max-w-4xl mx-auto">
+      <div class="text-center mb-8">
+        <h1 class="text-4xl font-bold gradient-text mb-4">
+          APS Token Cost Estimator
+        </h1>
+        <p class="text-lg text-gray-600">
+          Calculate API usage costs and estimate token consumption for your workflows
+        </p>
+      </div>
+
+      <div class="card p-8">
+        <div class="grid md:grid-cols-2 gap-8">
+          <!-- Input Section -->
+          <div>
+            <h2 class="text-2xl font-semibold mb-4">Workflow Configuration</h2>
+            <div class="space-y-6">
+              
+              <!-- File Processing -->
+              <div class="bg-gray-50 p-4 rounded-lg">
+                <h3 class="font-semibold mb-3">File Processing</h3>
+                <div class="space-y-3">
+                  <div>
+                    <label class="block text-sm font-medium text-gray-700 mb-1">Files per month:</label>
+                    <input type="number" id="files-count" value="100" class="w-full p-2 border rounded">
+                  </div>
+                  <div>
+                    <label class="block text-sm font-medium text-gray-700 mb-1">Average file size (MB):</label>
+                    <input type="number" id="file-size" value="10" class="w-full p-2 border rounded">
+                  </div>
+                  <div>
+                    <label class="flex items-center">
+                      <input type="checkbox" id="translation-enabled" checked class="mr-2">
+                      <span class="text-sm">Enable Model Derivative translation</span>
+                    </label>
+                  </div>
+                </div>
+              </div>
+
+              <!-- API Operations -->
+              <div class="bg-gray-50 p-4 rounded-lg">
+                <h3 class="font-semibold mb-3">API Operations</h3>
+                <div class="space-y-3">
+                  <div>
+                    <label class="block text-sm font-medium text-gray-700 mb-1">Data Management calls per file:</label>
+                    <input type="number" id="dm-calls" value="5" class="w-full p-2 border rounded">
+                  </div>
+                  <div>
+                    <label class="block text-sm font-medium text-gray-700 mb-1">Model Derivative calls per file:</label>
+                    <input type="number" id="md-calls" value="3" class="w-full p-2 border rounded">
+                  </div>
+                  <div>
+                    <label class="block text-sm font-medium text-gray-700 mb-1">Viewer sessions per file:</label>
+                    <input type="number" id="viewer-calls" value="10" class="w-full p-2 border rounded">
+                  </div>
+                </div>
+              </div>
+
+              <!-- User Activity -->
+              <div class="bg-gray-50 p-4 rounded-lg">
+                <h3 class="font-semibold mb-3">User Activity</h3>
+                <div class="space-y-3">
+                  <div>
+                    <label class="block text-sm font-medium text-gray-700 mb-1">Active users:</label>
+                    <input type="number" id="users-count" value="10" class="w-full p-2 border rounded">
+                  </div>
+                  <div>
+                    <label class="block text-sm font-medium text-gray-700 mb-1">Sessions per user per month:</label>
+                    <input type="number" id="sessions-count" value="20" class="w-full p-2 border rounded">
+                  </div>
+                </div>
+              </div>
+
+              <button id="calculate-btn" class="btn btn-primary w-full">
+                💰 Calculate Costs
+              </button>
+            </div>
+          </div>
+
+          <!-- Results Section -->
+          <div>
+            <h2 class="text-2xl font-semibold mb-4">Cost Estimation</h2>
+            <div id="cost-results" class="space-y-4">
+              <div class="text-gray-500 text-center py-8">
+                Configure your workflow and click "Calculate Costs"
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Pricing Reference -->
+        <div class="mt-12 bg-blue-50 rounded-lg p-6">
+          <h3 class="text-xl font-semibold mb-4 text-blue-800">APS Pricing Reference (2026)</h3>
+          <div class="grid md:grid-cols-4 gap-4 text-sm">
+            <div>
+              <h4 class="font-semibold mb-2">Data Management</h4>
+              <p class="text-gray-600">$0.02 per API call</p>
+            </div>
+            <div>
+              <h4 class="font-semibold mb-2">Model Derivative</h4>
+              <p class="text-gray-600">$0.05 per translation</p>
+            </div>
+            <div>
+              <h4 class="font-semibold mb-2">Viewer</h4>
+              <p class="text-gray-600">$0.01 per session</p>
+            </div>
+            <div>
+              <h4 class="font-semibold mb-2">Storage</h4>
+              <p class="text-gray-600">$0.10 per GB/month</p>
+            </div>
+          </div>
+          <div class="mt-4 text-xs text-gray-500">
+            * Estimated pricing for reference only. Check official APS pricing for current rates.
+          </div>
+        </div>
+
+        <!-- Usage Recommendations -->
+        <div class="mt-6 bg-green-50 rounded-lg p-6">
+          <h3 class="text-xl font-semibold mb-4 text-green-800">💡 Cost Optimization Tips</h3>
+          <div class="grid md:grid-cols-2 gap-6 text-sm">
+            <div>
+              <h4 class="font-semibold mb-2">Reduce API Calls</h4>
+              <ul class="space-y-1 text-gray-600">
+                <li>• Cache authentication tokens</li>
+                <li>• Batch multiple operations</li>
+                <li>• Use webhooks vs polling</li>
+                <li>• Implement proper retry logic</li>
+              </ul>
+            </div>
+            <div>
+              <h4 class="font-semibold mb-2">RAPS Benefits</h4>
+              <ul class="space-y-1 text-gray-600">
+                <li>• Automatic token management</li>
+                <li>• Built-in retry and error handling</li>
+                <li>• Efficient batch operations</li>
+                <li>• Local caching capabilities</li>
+              </ul>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Back Navigation -->
+      <div class="mt-8 text-center">
+        <a href="/tools" class="btn btn-secondary">
+          ← Back to Tools
+        </a>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    document.addEventListener('DOMContentLoaded', function() {
+      const calculateBtn = document.getElementById('calculate-btn');
+      const resultsDiv = document.getElementById('cost-results');
+
+      // Input elements
+      const filesCount = document.getElementById('files-count');
+      const fileSize = document.getElementById('file-size');
+      const translationEnabled = document.getElementById('translation-enabled');
+      const dmCalls = document.getElementById('dm-calls');
+      const mdCalls = document.getElementById('md-calls');
+      const viewerCalls = document.getElementById('viewer-calls');
+      const usersCount = document.getElementById('users-count');
+      const sessionsCount = document.getElementById('sessions-count');
+
+      // Pricing constants (estimated)
+      const PRICING = {
+        dataManagement: 0.02,      // per API call
+        modelDerivative: 0.05,     // per translation
+        viewer: 0.01,              // per session
+        storage: 0.10              // per GB/month
+      };
+
+      function calculateCosts() {
+        const files = parseInt(filesCount.value) || 0;
+        const avgFileSize = parseFloat(fileSize.value) || 0;
+        const enableTranslation = translationEnabled.checked;
+        const dmCallsPerFile = parseInt(dmCalls.value) || 0;
+        const mdCallsPerFile = parseInt(mdCalls.value) || 0;
+        const viewerCallsPerFile = parseInt(viewerCalls.value) || 0;
+        const users = parseInt(usersCount.value) || 0;
+        const sessions = parseInt(sessionsCount.value) || 0;
+
+        // Calculate monthly costs
+        const dmCost = files * dmCallsPerFile * PRICING.dataManagement;
+        const mdCost = enableTranslation ? files * mdCallsPerFile * PRICING.modelDerivative : 0;
+        const viewerCost = files * viewerCallsPerFile * PRICING.viewer;
+        const storageCost = (files * avgFileSize / 1024) * PRICING.storage; // Convert MB to GB
+
+        const totalMonthlyCost = dmCost + mdCost + viewerCost + storageCost;
+        const annualCost = totalMonthlyCost * 12;
+
+        // Calculate usage stats
+        const totalApiCalls = files * (dmCallsPerFile + (enableTranslation ? mdCallsPerFile : 0));
+        const totalSessions = users * sessions;
+        const totalStorage = files * avgFileSize / 1024; // GB
+
+        renderResults({
+          monthly: totalMonthlyCost,
+          annual: annualCost,
+          breakdown: {
+            dataManagement: dmCost,
+            modelDerivative: mdCost,
+            viewer: viewerCost,
+            storage: storageCost
+          },
+          usage: {
+            apiCalls: totalApiCalls,
+            sessions: totalSessions,
+            storage: totalStorage
+          }
+        });
+      }
+
+      function renderResults(data) {
+        const { monthly, annual, breakdown, usage } = data;
+        
+        resultsDiv.innerHTML = `
+          <!-- Cost Summary -->
+          <div class="bg-gradient-to-r from-raps-blue to-raps-purple text-white rounded-lg p-6">
+            <h3 class="text-lg font-semibold mb-4">💰 Cost Summary</h3>
+            <div class="grid grid-cols-2 gap-4">
+              <div>
+                <div class="text-2xl font-bold">$${monthly.toFixed(2)}</div>
+                <div class="text-sm opacity-90">per month</div>
+              </div>
+              <div>
+                <div class="text-2xl font-bold">$${annual.toFixed(2)}</div>
+                <div class="text-sm opacity-90">per year</div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Cost Breakdown -->
+          <div class="bg-white border rounded-lg p-6">
+            <h3 class="font-semibold mb-4">📊 Monthly Cost Breakdown</h3>
+            <div class="space-y-3">
+              <div class="flex justify-between">
+                <span>Data Management APIs:</span>
+                <span class="font-mono">$${breakdown.dataManagement.toFixed(2)}</span>
+              </div>
+              <div class="flex justify-between">
+                <span>Model Derivative:</span>
+                <span class="font-mono">$${breakdown.modelDerivative.toFixed(2)}</span>
+              </div>
+              <div class="flex justify-between">
+                <span>Viewer Sessions:</span>
+                <span class="font-mono">$${breakdown.viewer.toFixed(2)}</span>
+              </div>
+              <div class="flex justify-between">
+                <span>Storage:</span>
+                <span class="font-mono">$${breakdown.storage.toFixed(2)}</span>
+              </div>
+              <div class="border-t pt-2 flex justify-between font-semibold">
+                <span>Total:</span>
+                <span class="font-mono">$${monthly.toFixed(2)}</span>
+              </div>
+            </div>
+          </div>
+
+          <!-- Usage Statistics -->
+          <div class="bg-gray-50 rounded-lg p-6">
+            <h3 class="font-semibold mb-4">📈 Monthly Usage</h3>
+            <div class="grid grid-cols-3 gap-4 text-center text-sm">
+              <div>
+                <div class="text-2xl font-bold text-raps-blue">${usage.apiCalls.toLocaleString()}</div>
+                <div class="text-gray-600">API Calls</div>
+              </div>
+              <div>
+                <div class="text-2xl font-bold text-raps-blue">${usage.sessions.toLocaleString()}</div>
+                <div class="text-gray-600">Viewer Sessions</div>
+              </div>
+              <div>
+                <div class="text-2xl font-bold text-raps-blue">${usage.storage.toFixed(1)}</div>
+                <div class="text-gray-600">GB Storage</div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Cost Per File -->
+          <div class="bg-yellow-50 rounded-lg p-4">
+            <h4 class="font-semibold mb-2 text-orange-800">💡 Per-File Economics</h4>
+            <div class="text-sm text-orange-700">
+              <div>Cost per file: <strong>$${(monthly / parseInt(filesCount.value)).toFixed(3)}</strong></div>
+              <div>Annual cost per user: <strong>$${(annual / parseInt(usersCount.value)).toFixed(2)}</strong></div>
+            </div>
+          </div>
+        `;
+      }
+
+      calculateBtn.addEventListener('click', calculateCosts);
+      
+      // Auto-calculate on input changes
+      [filesCount, fileSize, dmCalls, mdCalls, viewerCalls, usersCount, sessionsCount].forEach(input => {
+        input.addEventListener('input', calculateCosts);
+      });
+      
+      translationEnabled.addEventListener('change', calculateCosts);
+
+      // Initial calculation
+      calculateCosts();
+    });
+  </script>
+</BaseLayout>

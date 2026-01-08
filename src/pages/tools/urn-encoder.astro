@@ -1,0 +1,245 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+---
+
+<BaseLayout 
+  title="APS URN Encoder/Decoder Tool"
+  description="Convert between regular identifiers and Base64-encoded URNs for APS Model Derivative API"
+>
+  <div class="content-container py-12">
+    <div class="max-w-4xl mx-auto">
+      <div class="text-center mb-8">
+        <h1 class="text-4xl font-bold gradient-text mb-4">
+          APS URN Encoder/Decoder
+        </h1>
+        <p class="text-lg text-gray-600">
+          Convert between regular identifiers and Base64-encoded URNs for Model Derivative API
+        </p>
+      </div>
+
+      <div class="card p-8">
+        <div class="grid md:grid-cols-2 gap-8">
+          <!-- Encoder Section -->
+          <div>
+            <h2 class="text-2xl font-semibold mb-4">Encode to URN</h2>
+            <div class="space-y-4">
+              <div>
+                <label class="block text-sm font-medium text-gray-700 mb-2">
+                  Object ID or File GUID:
+                </label>
+                <input 
+                  type="text" 
+                  id="object-id"
+                  class="w-full p-3 border border-gray-300 rounded-lg font-mono text-sm focus:ring-2 focus:ring-raps-blue focus:border-transparent"
+                  placeholder="urn:adsk.objects:os.object:bucket/objectKey"
+                />
+              </div>
+              
+              <button id="encode-btn" class="btn btn-primary w-full">
+                🔄 Encode to URN
+              </button>
+
+              <div class="bg-blue-50 p-4 rounded-lg">
+                <label class="block text-sm font-medium text-blue-800 mb-2">Encoded URN:</label>
+                <div id="encoded-output" class="font-mono text-sm bg-white p-3 rounded border min-h-[60px] break-all">
+                  Click "Encode" to see result
+                </div>
+                <button id="copy-encoded" class="mt-2 px-3 py-1 bg-raps-blue text-white text-sm rounded hover:opacity-90">
+                  Copy URN
+                </button>
+              </div>
+            </div>
+          </div>
+
+          <!-- Decoder Section -->
+          <div>
+            <h2 class="text-2xl font-semibold mb-4">Decode URN</h2>
+            <div class="space-y-4">
+              <div>
+                <label class="block text-sm font-medium text-gray-700 mb-2">
+                  Base64-encoded URN:
+                </label>
+                <input 
+                  type="text" 
+                  id="encoded-urn"
+                  class="w-full p-3 border border-gray-300 rounded-lg font-mono text-sm focus:ring-2 focus:ring-raps-blue focus:border-transparent"
+                  placeholder="dXJuOmFkc2sub2JqZWN0czpvcy5vYmplY3Q..."
+                />
+              </div>
+              
+              <button id="decode-btn" class="btn btn-primary w-full">
+                🔍 Decode URN
+              </button>
+
+              <div class="bg-green-50 p-4 rounded-lg">
+                <label class="block text-sm font-medium text-green-800 mb-2">Decoded Object ID:</label>
+                <div id="decoded-output" class="font-mono text-sm bg-white p-3 rounded border min-h-[60px] break-all">
+                  Click "Decode" to see result
+                </div>
+                <button id="copy-decoded" class="mt-2 px-3 py-1 bg-raps-blue text-white text-sm rounded hover:opacity-90">
+                  Copy Object ID
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Help Section -->
+        <div class="mt-12 bg-gray-50 rounded-lg p-6">
+          <h3 class="text-xl font-semibold mb-4">URN Format Guide</h3>
+          <div class="grid md:grid-cols-2 gap-6 text-sm">
+            <div>
+              <h4 class="font-semibold mb-2">Common URN Patterns</h4>
+              <ul class="space-y-2 text-gray-600">
+                <li><strong>OSS Object:</strong><br>
+                <code class="text-xs">urn:adsk.objects:os.object:bucket/object.dwg</code></li>
+                <li><strong>Data Management Item:</strong><br>
+                <code class="text-xs">urn:adsk.wipprod:dm.lineage:ABC123</code></li>
+                <li><strong>ACC Item:</strong><br>
+                <code class="text-xs">urn:adsk.wipprod:fs.file:vf.XYZ789</code></li>
+              </ul>
+            </div>
+            <div>
+              <h4 class="font-semibold mb-2">When to Use</h4>
+              <ul class="space-y-1 text-gray-600">
+                <li>• Model Derivative API calls</li>
+                <li>• Translation job requests</li>
+                <li>• Viewer initialization</li>
+                <li>• Webhook configurations</li>
+                <li>• Design Automation inputs</li>
+              </ul>
+            </div>
+          </div>
+          
+          <div class="mt-4 bg-yellow-50 p-4 rounded-lg">
+            <h4 class="font-semibold mb-2 text-orange-800">💡 RAPS Shortcut</h4>
+            <p class="text-sm text-orange-700 mb-2">
+              RAPS CLI can handle URN encoding/decoding automatically:
+            </p>
+            <code class="text-xs bg-gray-800 text-green-400 p-2 rounded block">
+              raps urn encode "urn:adsk.objects:os.object:bucket/file.dwg"<br>
+              raps urn decode "dXJuOmFkc2sub2JqZWN0czpvcy5vYmplY3Q6..."
+            </code>
+          </div>
+        </div>
+      </div>
+
+      <!-- Back Navigation -->
+      <div class="mt-8 text-center">
+        <a href="/tools" class="btn btn-secondary">
+          ← Back to Tools
+        </a>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    document.addEventListener('DOMContentLoaded', function() {
+      const objectIdInput = document.getElementById('object-id');
+      const encodedUrnInput = document.getElementById('encoded-urn');
+      const encodedOutput = document.getElementById('encoded-output');
+      const decodedOutput = document.getElementById('decoded-output');
+      const encodeBtn = document.getElementById('encode-btn');
+      const decodeBtn = document.getElementById('decode-btn');
+      const copyEncodedBtn = document.getElementById('copy-encoded');
+      const copyDecodedBtn = document.getElementById('copy-decoded');
+
+      function safeBase64Encode(str) {
+        try {
+          return btoa(str)
+            .replace(/\+/g, '-')
+            .replace(/\//g, '_')
+            .replace(/=/g, '');
+        } catch (error) {
+          throw new Error('Failed to encode: Invalid characters in input');
+        }
+      }
+
+      function safeBase64Decode(str) {
+        try {
+          // Add padding if needed
+          let base64 = str.replace(/-/g, '+').replace(/_/g, '/');
+          while (base64.length % 4) {
+            base64 += '=';
+          }
+          return atob(base64);
+        } catch (error) {
+          throw new Error('Failed to decode: Invalid Base64 string');
+        }
+      }
+
+      function encodeUrn() {
+        const objectId = objectIdInput.value.trim();
+        
+        if (!objectId) {
+          encodedOutput.innerHTML = '<span class="text-red-600">Please enter an Object ID</span>';
+          return;
+        }
+
+        try {
+          const encoded = safeBase64Encode(objectId);
+          encodedOutput.innerHTML = `<span class="text-green-600">${encoded}</span>`;
+        } catch (error) {
+          encodedOutput.innerHTML = `<span class="text-red-600">Error: ${error.message}</span>`;
+        }
+      }
+
+      function decodeUrn() {
+        const encodedUrn = encodedUrnInput.value.trim();
+        
+        if (!encodedUrn) {
+          decodedOutput.innerHTML = '<span class="text-red-600">Please enter an encoded URN</span>';
+          return;
+        }
+
+        try {
+          const decoded = safeBase64Decode(encodedUrn);
+          decodedOutput.innerHTML = `<span class="text-green-600">${decoded}</span>`;
+        } catch (error) {
+          decodedOutput.innerHTML = `<span class="text-red-600">Error: ${error.message}</span>`;
+        }
+      }
+
+      async function copyToClipboard(text, button) {
+        try {
+          await navigator.clipboard.writeText(text);
+          const originalText = button.textContent;
+          button.textContent = 'Copied!';
+          setTimeout(() => button.textContent = originalText, 2000);
+        } catch (err) {
+          console.error('Copy failed', err);
+        }
+      }
+
+      encodeBtn.addEventListener('click', encodeUrn);
+      decodeBtn.addEventListener('click', decodeUrn);
+
+      copyEncodedBtn.addEventListener('click', () => {
+        const text = encodedOutput.textContent;
+        if (text && !text.includes('Error') && !text.includes('Click')) {
+          copyToClipboard(text, copyEncodedBtn);
+        }
+      });
+
+      copyDecodedBtn.addEventListener('click', () => {
+        const text = decodedOutput.textContent;
+        if (text && !text.includes('Error') && !text.includes('Click')) {
+          copyToClipboard(text, copyDecodedBtn);
+        }
+      });
+
+      // Real-time encoding/decoding
+      objectIdInput.addEventListener('input', () => {
+        if (objectIdInput.value.trim()) {
+          encodeUrn();
+        }
+      });
+
+      encodedUrnInput.addEventListener('input', () => {
+        if (encodedUrnInput.value.trim()) {
+          decodeUrn();
+        }
+      });
+    });
+  </script>
+</BaseLayout>

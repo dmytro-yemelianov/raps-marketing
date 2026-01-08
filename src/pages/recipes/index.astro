@@ -13,7 +13,7 @@ const recipes = await getCollection('recipes');
     <div class="max-w-4xl mx-auto">
       <header class="mb-12">
         <h1 class="text-4xl md:text-5xl font-bold mb-4">
-          Developer Recipes
+          <span class="gradient-text">Developer Recipes</span>
         </h1>
         <p class="text-xl text-gray-600 mb-6">
           Step-by-step recipes for common APS workflows and tasks
@@ -22,7 +22,7 @@ const recipes = await getCollection('recipes');
 
       <div class="grid md:grid-cols-2 gap-8">
         {recipes.map((recipe) => (
-          <article class="bg-white rounded-lg border border-gray-200 hover:shadow-lg transition p-6">
+          <article class="card p-6">
             <h2 class="text-xl font-semibold mb-3">
               <a href={`/recipes/${recipe.slug}`} class="hover:text-raps-blue">
                 {recipe.data.title}
