@@ -108,7 +108,7 @@ export const PainPointMatrix: React.FC = () => {
   const [hoveredCell, setHoveredCell] = useState<{ row: number; col: string } | null>(null);
 
   const platforms = ['aps', 'onshape', 'solidworks', 'teamcenter', 'nxOpen'];
-  const platformNames = {
+  const platformNames: Record<string, string> = {
     aps: 'Autodesk APS',
     onshape: 'PTC Onshape',
     solidworks: 'SOLIDWORKS',

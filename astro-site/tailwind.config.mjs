@@ -4,21 +4,17 @@ export default {
   theme: {
     extend: {
       colors: {
-        raps: {
-          blue: '#667eea',
-          purple: '#764ba2',
-          green: '#28a745',
-          gray: '#6c757d',
-          light: '#f8f9fa',
-          dark: '#343a40',
-          error: '#dc3545',
-          warning: '#ffc107',
-        },
-        aps: {
-          primary: '#0696d7',
-          secondary: '#fdb714',
-          dark: '#1a1a1a',
-        },
+        'raps-blue': '#667eea',
+        'raps-purple': '#764ba2',
+        'raps-green': '#28a745',
+        'raps-gray': '#6c757d',
+        'raps-light': '#f8f9fa',
+        'raps-dark': '#343a40',
+        'raps-error': '#dc3545',
+        'raps-warning': '#ffc107',
+        'aps-primary': '#0696d7',
+        'aps-secondary': '#fdb714',
+        'aps-dark': '#1a1a1a',
       },
       fontFamily: {
         sans: ['Inter', 'system-ui', 'sans-serif'],
