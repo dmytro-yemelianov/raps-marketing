@@ -1,0 +1,18 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import { getEntry } from 'astro:content';
+
+const guide = await getEntry('guides', 'which-api-do-i-need');
+const { Content } = await guide.render();
+---
+
+<BaseLayout 
+  title="Which APS API Do I Need? - Decision Tree" 
+  description="Interactive decision tree to help developers choose the right Autodesk Platform Services API for their project. Covers authentication, use cases, and workflows."
+>
+  <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
+    <div class="prose prose-lg max-w-none">
+      <Content />
+    </div>
+  </div>
+</BaseLayout>

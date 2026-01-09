@@ -58,25 +58,82 @@ const canonicalURL = new URL(Astro.url.pathname, Astro.site);
               <span class="text-gray-500">v4.2.1</span>
             </a>
           </div>
-          <nav class="hidden md:flex items-center space-x-8">
-            <a href="/articles" class="text-gray-700 hover:text-raps-blue transition">Articles</a>
-            <a href="/guides" class="text-gray-700 hover:text-raps-blue transition">Guides</a>
-            <a href="/recipes" class="text-gray-700 hover:text-raps-blue transition">Recipes</a>
-            <a href="/tools" class="text-gray-700 hover:text-raps-blue transition">Tools</a>
-            <a href="/pdfs" class="text-gray-700 hover:text-raps-blue transition">PDFs</a>
+          <nav class="hidden md:flex items-center space-x-6">
+            <!-- Developer Dropdown -->
+            <div class="relative group">
+              <button class="text-gray-700 hover:text-raps-blue transition flex items-center">
+                Developer <span class="ml-1 text-xs">▼</span>
+              </button>
+              <div class="absolute top-full left-0 mt-2 w-64 bg-white shadow-lg rounded-lg opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all z-50">
+                <a href="/guides" class="block px-4 py-3 text-sm text-gray-700 hover:bg-gray-50 border-b border-gray-100">
+                  <div class="font-medium">📚 Guides</div>
+                  <div class="text-xs text-gray-500">Step-by-step tutorials</div>
+                </a>
+                <a href="/recipes" class="block px-4 py-3 text-sm text-gray-700 hover:bg-gray-50 border-b border-gray-100">
+                  <div class="font-medium">🍳 Recipes</div>
+                  <div class="text-xs text-gray-500">Common workflow patterns</div>
+                </a>
+                <a href="/tools" class="block px-4 py-3 text-sm text-gray-700 hover:bg-gray-50 border-b border-gray-100">
+                  <div class="font-medium">🛠️ Interactive Tools</div>
+                  <div class="text-xs text-gray-500">OAuth, URN, token helpers</div>
+                </a>
+                <a href="/resources" class="block px-4 py-3 text-sm text-gray-700 hover:bg-gray-50">
+                  <div class="font-medium">📖 Resources</div>
+                  <div class="text-xs text-gray-500">Cheat sheets & references</div>
+                </a>
+              </div>
+            </div>
+
+            <!-- Content Dropdown -->
+            <div class="relative group">
+              <button class="text-gray-700 hover:text-raps-blue transition flex items-center">
+                Content <span class="ml-1 text-xs">▼</span>
+              </button>
+              <div class="absolute top-full left-0 mt-2 w-56 bg-white shadow-lg rounded-lg opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all z-50">
+                <a href="/articles" class="block px-4 py-3 text-sm text-gray-700 hover:bg-gray-50 border-b border-gray-100">
+                  <div class="font-medium">✍️ Articles</div>
+                  <div class="text-xs text-gray-500">Technical deep-dives</div>
+                </a>
+                <a href="/pdfs" class="block px-4 py-3 text-sm text-gray-700 hover:bg-gray-50">
+                  <div class="font-medium">📄 PDFs</div>
+                  <div class="text-xs text-gray-500">Downloadable resources</div>
+                </a>
+              </div>
+            </div>
+
+            <!-- Strategy Dropdown (existing, just enhanced) -->
             <div class="relative group">
               <button class="text-gray-700 hover:text-raps-blue transition flex items-center">
                 Strategy <span class="ml-1 text-xs">▼</span>
               </button>
-              <div class="absolute top-full left-0 mt-2 w-48 bg-white shadow-lg rounded-lg opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all">
-                <a href="/analytics" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-50">📊 Analytics</a>
-                <a href="/campaigns" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-50">🎯 Campaigns</a>
-                <a href="/strategy" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-50">📋 Strategy</a>
-                <a href="/community" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-50">👥 Community</a>
-                <a href="/press" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-50">📰 Press</a>
-                <a href="/calendar" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-50">📅 Calendar</a>
+              <div class="absolute top-full left-0 mt-2 w-56 bg-white shadow-lg rounded-lg opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all z-50">
+                <a href="/campaigns" class="block px-4 py-3 text-sm text-gray-700 hover:bg-gray-50 border-b border-gray-100">
+                  <div class="font-medium">🎯 Campaigns</div>
+                  <div class="text-xs text-gray-500">Marketing initiatives</div>
+                </a>
+                <a href="/analytics" class="block px-4 py-3 text-sm text-gray-700 hover:bg-gray-50 border-b border-gray-100">
+                  <div class="font-medium">📊 Analytics</div>
+                  <div class="text-xs text-gray-500">Performance metrics</div>
+                </a>
+                <a href="/strategy" class="block px-4 py-3 text-sm text-gray-700 hover:bg-gray-50 border-b border-gray-100">
+                  <div class="font-medium">📋 Strategy</div>
+                  <div class="text-xs text-gray-500">Strategic planning</div>
+                </a>
+                <a href="/community" class="block px-4 py-3 text-sm text-gray-700 hover:bg-gray-50 border-b border-gray-100">
+                  <div class="font-medium">👥 Community</div>
+                  <div class="text-xs text-gray-500">Engagement plans</div>
+                </a>
+                <a href="/press" class="block px-4 py-3 text-sm text-gray-700 hover:bg-gray-50 border-b border-gray-100">
+                  <div class="font-medium">📰 Press</div>
+                  <div class="text-xs text-gray-500">Press releases</div>
+                </a>
+                <a href="/calendar" class="block px-4 py-3 text-sm text-gray-700 hover:bg-gray-50">
+                  <div class="font-medium">📅 Calendar</div>
+                  <div class="text-xs text-gray-500">Content schedule</div>
+                </a>
               </div>
             </div>
+
             <a href="https://github.com/autodesk-platform-services/raps" class="text-gray-700 hover:text-raps-blue transition">
               GitHub
             </a>
