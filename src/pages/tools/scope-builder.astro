@@ -1,0 +1,235 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+---
+
+<BaseLayout 
+  title="APS OAuth Scope Builder Tool"
+  description="Interactive tool to build and validate Autodesk Platform Services (APS) OAuth scope combinations"
+>
+  <div class="content-container py-12">
+    <div class="max-w-4xl mx-auto">
+      <div class="text-center mb-8">
+        <h1 class="text-4xl font-bold gradient-text mb-4">
+          APS OAuth Scope Builder
+        </h1>
+        <p class="text-lg text-gray-600">
+          Build and validate your Autodesk Platform Services OAuth scope combinations
+        </p>
+      </div>
+
+      <div class="card p-8">
+        <div id="scope-builder-app">
+          <div class="grid md:grid-cols-2 gap-8">
+            <!-- Scope Categories -->
+            <div>
+              <h2 class="text-2xl font-semibold mb-4">Select Required Scopes</h2>
+              <div class="space-y-4">
+                <div class="bg-gray-50 p-4 rounded-lg">
+                  <h3 class="font-semibold mb-2">Data Management</h3>
+                  <div class="space-y-2">
+                    <label class="flex items-center">
+                      <input type="checkbox" value="data:read" class="scope-checkbox mr-2">
+                      <span>data:read - Read files and metadata</span>
+                    </label>
+                    <label class="flex items-center">
+                      <input type="checkbox" value="data:write" class="scope-checkbox mr-2">
+                      <span>data:write - Create and modify files</span>
+                    </label>
+                    <label class="flex items-center">
+                      <input type="checkbox" value="data:create" class="scope-checkbox mr-2">
+                      <span>data:create - Create new files and folders</span>
+                    </label>
+                    <label class="flex items-center">
+                      <input type="checkbox" value="data:search" class="scope-checkbox mr-2">
+                      <span>data:search - Search across data</span>
+                    </label>
+                  </div>
+                </div>
+
+                <div class="bg-gray-50 p-4 rounded-lg">
+                  <h3 class="font-semibold mb-2">Model Derivative</h3>
+                  <div class="space-y-2">
+                    <label class="flex items-center">
+                      <input type="checkbox" value="viewables:read" class="scope-checkbox mr-2">
+                      <span>viewables:read - View models</span>
+                    </label>
+                    <label class="flex items-center">
+                      <input type="checkbox" value="code:all" class="scope-checkbox mr-2">
+                      <span>code:all - Extract geometry and metadata</span>
+                    </label>
+                  </div>
+                </div>
+
+                <div class="bg-gray-50 p-4 rounded-lg">
+                  <h3 class="font-semibold mb-2">Construction Cloud</h3>
+                  <div class="space-y-2">
+                    <label class="flex items-center">
+                      <input type="checkbox" value="account:read" class="scope-checkbox mr-2">
+                      <span>account:read - Access account information</span>
+                    </label>
+                    <label class="flex items-center">
+                      <input type="checkbox" value="account:write" class="scope-checkbox mr-2">
+                      <span>account:write - Modify account settings</span>
+                    </label>
+                  </div>
+                </div>
+
+                <div class="bg-gray-50 p-4 rounded-lg">
+                  <h3 class="font-semibold mb-2">User Profile</h3>
+                  <div class="space-y-2">
+                    <label class="flex items-center">
+                      <input type="checkbox" value="user-profile:read" class="scope-checkbox mr-2">
+                      <span>user-profile:read - Read user information</span>
+                    </label>
+                    <label class="flex items-center">
+                      <input type="checkbox" value="user:read" class="scope-checkbox mr-2">
+                      <span>user:read - Read user details</span>
+                    </label>
+                  </div>
+                </div>
+
+                <div class="bg-gray-50 p-4 rounded-lg">
+                  <h3 class="font-semibold mb-2">Object Storage Service</h3>
+                  <div class="space-y-2">
+                    <label class="flex items-center">
+                      <input type="checkbox" value="bucket:create" class="scope-checkbox mr-2">
+                      <span>bucket:create - Create storage buckets</span>
+                    </label>
+                    <label class="flex items-center">
+                      <input type="checkbox" value="bucket:read" class="scope-checkbox mr-2">
+                      <span>bucket:read - List and read buckets</span>
+                    </label>
+                    <label class="flex items-center">
+                      <input type="checkbox" value="bucket:update" class="scope-checkbox mr-2">
+                      <span>bucket:update - Modify bucket settings</span>
+                    </label>
+                    <label class="flex items-center">
+                      <input type="checkbox" value="bucket:delete" class="scope-checkbox mr-2">
+                      <span>bucket:delete - Delete buckets</span>
+                    </label>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <!-- Output -->
+            <div>
+              <h2 class="text-2xl font-semibold mb-4">Generated Scope String</h2>
+              <div class="space-y-4">
+                <div class="bg-gray-900 text-green-400 p-4 rounded-lg">
+                  <label class="block text-sm font-medium text-gray-200 mb-2">OAuth Scope Parameter:</label>
+                  <div id="scope-output" class="font-mono text-sm break-all">
+                    (Select scopes to generate)
+                  </div>
+                  <button id="copy-scopes" class="mt-2 px-3 py-1 bg-blue-600 text-white text-sm rounded hover:bg-blue-700">
+                    Copy to Clipboard
+                  </button>
+                </div>
+
+                <div class="bg-blue-50 p-4 rounded-lg">
+                  <h3 class="font-semibold mb-2">RAPS CLI Command</h3>
+                  <div id="raps-command" class="font-mono text-sm bg-gray-800 text-green-400 p-3 rounded">
+                    raps auth login --scopes "data:read"
+                  </div>
+                  <button id="copy-command" class="mt-2 px-3 py-1 bg-raps-blue text-white text-sm rounded hover:opacity-90">
+                    Copy Command
+                  </button>
+                </div>
+
+                <div class="bg-yellow-50 p-4 rounded-lg">
+                  <h3 class="font-semibold mb-2 text-orange-800">Usage Notes</h3>
+                  <ul class="text-sm text-orange-700 space-y-1">
+                    <li>• Use minimal scopes for better security</li>
+                    <li>• data:write includes data:read permissions</li>
+                    <li>• Test with sandbox data first</li>
+                    <li>• Some scopes require app approval</li>
+                  </ul>
+                </div>
+
+                <div class="bg-green-50 p-4 rounded-lg">
+                  <h3 class="font-semibold mb-2 text-green-800">Common Combinations</h3>
+                  <div class="space-y-2 text-sm">
+                    <button class="preset-btn block w-full text-left p-2 bg-white rounded border hover:bg-gray-50" 
+                            data-scopes="data:read viewables:read">
+                      📖 Read-Only Viewer
+                    </button>
+                    <button class="preset-btn block w-full text-left p-2 bg-white rounded border hover:bg-gray-50" 
+                            data-scopes="data:read data:write bucket:create bucket:read">
+                      💼 File Management
+                    </button>
+                    <button class="preset-btn block w-full text-left p-2 bg-white rounded border hover:bg-gray-50" 
+                            data-scopes="data:read data:write viewables:read code:all">
+                      🔧 Full Model Access
+                    </button>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    document.addEventListener('DOMContentLoaded', function() {
+      const checkboxes = document.querySelectorAll('.scope-checkbox');
+      const output = document.getElementById('scope-output');
+      const rapsCommand = document.getElementById('raps-command');
+      const copyBtn = document.getElementById('copy-scopes');
+      const copyCommandBtn = document.getElementById('copy-command');
+      const presetBtns = document.querySelectorAll('.preset-btn');
+
+      function updateOutput() {
+        const selectedScopes = Array.from(checkboxes)
+          .filter(cb => cb.checked)
+          .map(cb => cb.value);
+        
+        const scopeString = selectedScopes.join(' ');
+        output.textContent = scopeString || '(Select scopes to generate)';
+        rapsCommand.textContent = `raps auth login --scopes "${scopeString}"`;
+      }
+
+      function applyPreset(scopes) {
+        checkboxes.forEach(cb => {
+          cb.checked = scopes.includes(cb.value);
+        });
+        updateOutput();
+      }
+
+      checkboxes.forEach(cb => {
+        cb.addEventListener('change', updateOutput);
+      });
+
+      presetBtns.forEach(btn => {
+        btn.addEventListener('click', () => {
+          const scopes = btn.dataset.scopes.split(' ');
+          applyPreset(scopes);
+        });
+      });
+
+      copyBtn.addEventListener('click', async () => {
+        try {
+          await navigator.clipboard.writeText(output.textContent);
+          copyBtn.textContent = 'Copied!';
+          setTimeout(() => copyBtn.textContent = 'Copy to Clipboard', 2000);
+        } catch (err) {
+          console.error('Copy failed', err);
+        }
+      });
+
+      copyCommandBtn.addEventListener('click', async () => {
+        try {
+          await navigator.clipboard.writeText(rapsCommand.textContent);
+          copyCommandBtn.textContent = 'Copied!';
+          setTimeout(() => copyCommandBtn.textContent = 'Copy Command', 2000);
+        } catch (err) {
+          console.error('Copy failed', err);
+        }
+      });
+
+      // Initialize
+      updateOutput();
+    });
+  </script>
+</BaseLayout>

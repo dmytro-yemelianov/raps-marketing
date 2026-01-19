@@ -1,0 +1,111 @@
+---
+import { type CollectionEntry, getCollection } from 'astro:content';
+import BaseLayout from '../../layouts/BaseLayout.astro';
+
+export async function getStaticPaths() {
+  const recipes = await getCollection('recipes');
+  return recipes.map((recipe) => ({
+    params: { slug: recipe.slug },
+    props: recipe,
+  }));
+}
+
+type Props = CollectionEntry<'recipes'>;
+
+const recipe = Astro.props;
+const { Content } = await recipe.render();
+---
+
+<BaseLayout 
+  title={recipe.data.title}
+  description={recipe.data.description}
+>
+  <article class="content-container py-12">
+    <div class="max-w-4xl mx-auto">
+      <header class="mb-8">
+        <div class="flex items-center text-sm text-gray-500 mb-4">
+          <a href="/recipes" class="hover:text-raps-blue">Recipes</a>
+          <span class="mx-2">→</span>
+          <span>Current</span>
+        </div>
+        
+        <div class="flex items-center gap-4 mb-4">
+          <span class={`px-3 py-1 text-sm rounded-full ${
+            recipe.data.difficulty === 'beginner' ? 'bg-green-100 text-green-800' :
+            recipe.data.difficulty === 'intermediate' ? 'bg-yellow-100 text-yellow-800' :
+            'bg-red-100 text-red-800'
+          }`}>
+            {recipe.data.difficulty}
+          </span>
+          <span class="text-sm text-gray-500">
+            ⏱️ {recipe.data.estimatedTime}
+          </span>
+        </div>
+        
+        <h1 class="text-4xl md:text-5xl font-bold mb-4">
+          <span class="gradient-text">{recipe.data.title}</span>
+        </h1>
+        
+        <p class="text-xl text-gray-600 mb-6">
+          {recipe.data.description}
+        </p>
+      </header>
+
+      <div class="prose prose-lg prose-gray max-w-none">
+        <Content />
+      </div>
+
+      <nav class="mt-12 pt-8 border-t border-gray-200">
+        <a href="/recipes" class="btn btn-secondary">
+          ← Back to Recipes
+        </a>
+      </nav>
+    </div>
+  </article>
+</BaseLayout>
+
+<style>
+  .prose {
+    color: rgb(55 65 81);
+  }
+  
+  .prose h1, .prose h2, .prose h3, .prose h4 {
+    color: rgb(17 24 39);
+  }
+  
+  .prose h2 {
+    @apply text-2xl font-bold mt-8 mb-4;
+  }
+  
+  .prose h3 {
+    @apply text-xl font-semibold mt-6 mb-3;
+  }
+  
+  .prose p {
+    @apply mb-4;
+  }
+  
+  .prose ul, .prose ol {
+    @apply mb-4 ml-6;
+  }
+  
+  .prose blockquote {
+    @apply border-l-4 border-raps-blue bg-blue-50 pl-4 pr-4 py-2 my-6 italic;
+  }
+  
+  .prose code {
+    @apply bg-gray-100 text-raps-blue px-1 py-0.5 rounded text-sm font-mono;
+  }
+  
+  .prose pre {
+    @apply bg-gray-900 text-gray-100 rounded-lg p-4 overflow-x-auto my-6;
+  }
+  
+  .prose pre code {
+    @apply bg-transparent p-0 text-gray-100;
+  }
+  
+  .prose a {
+    @apply text-raps-blue hover:underline;
+  }
+</style>

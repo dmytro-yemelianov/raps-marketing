@@ -1,0 +1,24 @@
+{
+  "name": "raps-infographic-generator",
+  "version": "1.0.0",
+  "description": "Generate beautiful infographic PDFs for RAPS marketing materials",
+  "main": "generate-infographic-pdfs.js",
+  "scripts": {
+    "generate": "node generate-infographic-pdfs.js",
+    "install-deps": "npm install",
+    "test": "node -e \"console.log('Testing PDF generation...')\""
+  },
+  "dependencies": {
+    "puppeteer": "^21.0.0"
+  },
+  "devDependencies": {},
+  "keywords": [
+    "pdf",
+    "infographic",
+    "puppeteer",
+    "raps",
+    "marketing"
+  ],
+  "author": "RAPS Development Team",
+  "license": "Apache-2.0"
+}

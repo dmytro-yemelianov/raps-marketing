@@ -1,0 +1,251 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import '../../styles/global.css';
+import { readFile } from 'node:fs/promises';
+import path from 'node:path';
+
+// Get the session ID from the URL
+const { id } = Astro.params;
+
+// Session metadata
+const sessionsData: Record<string, {
+  title: string;
+  file: string;
+  color: string;
+  icon: string;
+  prev?: { id: string; title: string };
+  next?: { id: string; title: string };
+}> = {
+  '1257': {
+    title: 'AI Pair-Assistant for APS Operators: The End of Scripts?',
+    file: '1257-ai-pair-assistant.md',
+    color: 'from-purple-500 to-indigo-600',
+    icon: '🤖',
+    next: { id: '1258', title: 'Zero to Production' }
+  },
+  '1258': {
+    title: 'Zero to Production: Shipping an AI-Ready APS CLI in 30 Min',
+    file: '1258-zero-to-production.md',
+    color: 'from-blue-500 to-cyan-500',
+    icon: '🚀',
+    prev: { id: '1257', title: 'AI Pair-Assistant' },
+    next: { id: '1259', title: 'ACC at Enterprise Scale' }
+  },
+  '1259': {
+    title: 'ACC at Enterprise Scale: Automating the Impossible',
+    file: '1259-acc-enterprise-scale.md',
+    color: 'from-orange-500 to-red-500',
+    icon: '🏗️',
+    prev: { id: '1258', title: 'Zero to Production' }
+  }
+};
+
+const session = id ? sessionsData[id] : null;
+
+// Read and parse the markdown file
+let content = '';
+if (session) {
+  try {
+    // Use process.cwd() which is the raps-marketing root during dev/build
+    const mdPath = path.join(process.cwd(), 'devcon', session.file);
+    const rawContent = await readFile(mdPath, 'utf-8');
+    
+    // Remove the markdown code fence wrapper if present
+    content = rawContent.replace(/^````markdown\n?/, '').replace(/\n?````$/, '');
+  } catch (e) {
+    console.error('Error reading session file:', e);
+  }
+}
+
+// Simple markdown to HTML conversion for display
+function parseMarkdown(md: string): string {
+  let html = md;
+  
+  // Remove frontmatter if any
+  html = html.replace(/^---[\s\S]*?---\n?/, '');
+  
+  // Skip the first H1 (session title) since we show it in the hero
+  html = html.replace(/^# .+$/m, '');
+  
+  // Code blocks FIRST (before other processing to protect content)
+  html = html.replace(/```(\w+)?\n([\s\S]*?)```/g, (match, lang, code) => {
+    const escapedCode = code.replace(/</g, '&lt;').replace(/>/g, '&gt;').trim();
+    const langLabel = lang ? `<span class="absolute top-2 right-3 text-xs text-gray-500 font-mono">${lang}</span>` : '';
+    return `<div class="relative my-6"><pre class="bg-gray-900 text-gray-100 rounded-xl p-5 overflow-x-auto text-sm leading-relaxed font-mono">${langLabel}<code class="language-${lang || 'text'}">${escapedCode}</code></pre></div>`;
+  });
+  
+  // Headers with better visual hierarchy
+  html = html.replace(/^#### (.*$)/gm, '<h4 class="text-lg font-semibold mt-6 mb-3 text-gray-800">$1</h4>');
+  html = html.replace(/^### (.*$)/gm, '<h3 class="text-xl font-bold mt-8 mb-4 text-gray-800">$1</h3>');
+  html = html.replace(/^## (.*$)/gm, '<h2 class="text-2xl font-bold mt-12 mb-6 text-gray-900 pb-3 border-b-2 border-gray-200">$1</h2>');
+  
+  // Bold and italic
+  html = html.replace(/\*\*\*(.*?)\*\*\*/g, '<strong class="font-bold italic">$1</strong>');
+  html = html.replace(/\*\*(.*?)\*\*/g, '<strong class="font-semibold text-gray-900">$1</strong>');
+  html = html.replace(/(?<!\*)\*([^*]+)\*(?!\*)/g, '<em class="italic">$1</em>');
+  
+  // Inline code (after code blocks)
+  html = html.replace(/`([^`]+)`/g, '<code class="bg-gray-100 text-blue-700 px-1.5 py-0.5 rounded text-sm font-mono border border-gray-200">$1</code>');
+  
+  // Tables - improved parsing
+  const tableRegex = /\|(.+)\|\n\|[-|\s]+\|\n((?:\|.+\|\n?)+)/g;
+  html = html.replace(tableRegex, (match, headerRow, bodyRows) => {
+    const headers = headerRow.split('|').filter((c: string) => c.trim());
+    const headerCells = headers.map((h: string) => `<th class="bg-gray-50 border border-gray-200 px-4 py-3 text-left font-semibold text-gray-700">${h.trim()}</th>`).join('');
+    
+    const rows = bodyRows.trim().split('\n').map((row: string) => {
+      const cells = row.split('|').filter((c: string) => c.trim());
+      const cellsHtml = cells.map((c: string) => `<td class="border border-gray-200 px-4 py-3 text-gray-700">${c.trim()}</td>`).join('');
+      return `<tr class="hover:bg-gray-50 transition-colors">${cellsHtml}</tr>`;
+    }).join('');
+    
+    return `<div class="my-6 overflow-x-auto rounded-lg border border-gray-200"><table class="w-full border-collapse text-sm"><thead><tr>${headerCells}</tr></thead><tbody>${rows}</tbody></table></div>`;
+  });
+  
+  // Checkbox lists - wrap in ul
+  html = html.replace(/((?:^- \[[x ]\] .+$\n?)+)/gm, (match) => {
+    const items = match.replace(/^- \[x\] (.+)$/gm, '<li class="flex items-start gap-3 py-1"><span class="text-green-500 mt-0.5">✓</span><span>$1</span></li>')
+                       .replace(/^- \[ \] (.+)$/gm, '<li class="flex items-start gap-3 py-1 text-gray-400"><span class="mt-0.5">○</span><span>$1</span></li>');
+    return `<ul class="my-4 space-y-1">${items}</ul>`;
+  });
+  
+  // Numbered lists - wrap in ol
+  html = html.replace(/((?:^\d+\. .+$\n?)+)/gm, (match) => {
+    const items = match.replace(/^\d+\. (.+)$/gm, '<li class="ml-6 mb-2 text-gray-700">$1</li>');
+    return `<ol class="my-4 list-decimal list-outside space-y-2">${items}</ol>`;
+  });
+  
+  // Bullet lists - wrap in ul
+  html = html.replace(/((?:^- (?!\[).+$\n?)+)/gm, (match) => {
+    const items = match.replace(/^- (.+)$/gm, '<li class="ml-6 mb-2 text-gray-700">$1</li>');
+    return `<ul class="my-4 list-disc list-outside space-y-2">${items}</ul>`;
+  });
+  
+  // Images - must be before links
+  html = html.replace(/!\[([^\]]*)\]\(([^)]+)\)/g, '<figure class="my-8"><img src="$2" alt="$1" class="w-full rounded-xl shadow-lg" loading="lazy" /><figcaption class="text-center text-sm text-gray-500 mt-2">$1</figcaption></figure>');
+
+  // Links with better styling
+  html = html.replace(/\[([^\]]+)\]\(([^)]+)\)/g, '<a href="$2" class="text-blue-600 hover:text-blue-800 underline decoration-blue-300 hover:decoration-blue-600 transition-colors" target="_blank" rel="noopener">$1</a>');
+  
+  // Paragraphs - wrap text blocks that aren't already wrapped
+  const blocks = html.split('\n\n');
+  html = blocks.map(block => {
+    const trimmed = block.trim();
+    if (!trimmed) return '';
+    // Skip if already an HTML element
+    if (trimmed.match(/^<(h[1-6]|pre|div|table|ul|ol|li|blockquote|section)/)) return trimmed;
+    // Skip if it's just whitespace or empty
+    if (!trimmed.replace(/<[^>]*>/g, '').trim()) return trimmed;
+    return `<p class="mb-5 text-gray-700 leading-relaxed text-base">${trimmed.replace(/\n/g, ' ')}</p>`;
+  }).join('\n\n');
+  
+  return html;
+}
+
+const htmlContent = content ? parseMarkdown(content) : '<p>Session content not found.</p>';
+
+export function getStaticPaths() {
+  return [
+    { params: { id: '1257' } },
+    { params: { id: '1258' } },
+    { params: { id: '1259' } }
+  ];
+}
+---
+
+<BaseLayout 
+  title={session?.title || 'DevCon Session'} 
+  description={`DevCon 2026 session: ${session?.title}`}
+>
+  {session ? (
+    <>
+      <!-- Hero -->
+      <section class={`bg-gradient-to-r ${session.color} text-white py-12`}>
+        <div class="content-container">
+          <div class="max-w-5xl mx-auto">
+            <a href="/devcon" class="inline-flex items-center gap-2 text-white/80 hover:text-white mb-4 text-sm transition-colors">
+              ← Back to all sessions
+            </a>
+            <div class="flex items-start gap-5">
+              <span class="text-5xl drop-shadow-lg">{session.icon}</span>
+              <div>
+                <div class="flex items-center gap-3 mb-3">
+                  <span class="text-sm font-mono bg-white/20 backdrop-blur px-3 py-1 rounded-full">
+                    Session {id}
+                  </span>
+                  <span class="text-sm bg-white/10 backdrop-blur px-3 py-1 rounded-full">
+                    30-minute deep dive
+                  </span>
+                </div>
+                <h1 class="text-3xl md:text-4xl font-bold leading-tight">{session.title}</h1>
+                <p class="mt-3 text-white/80 text-lg">Speaker: Dmytro Yemelianov</p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- Content -->
+      <section class="py-12 bg-white">
+        <div class="content-container">
+          <div class="max-w-5xl mx-auto">
+            <article class="session-content" set:html={htmlContent} />
+          </div>
+        </div>
+      </section>
+
+      <!-- Navigation -->
+      <section class="py-8 bg-gray-50 border-t border-gray-200">
+        <div class="content-container">
+          <div class="max-w-5xl mx-auto flex justify-between items-center">
+            {session.prev ? (
+              <a href={`/devcon/${session.prev.id}`} class="flex items-center gap-2 text-gray-600 hover:text-blue-600 transition-colors group">
+                <span class="group-hover:-translate-x-1 transition-transform">←</span>
+                <span>{session.prev.title}</span>
+              </a>
+            ) : <span />}
+            <a href="/devcon" class="text-sm text-gray-500 hover:text-blue-600 transition-colors">
+              All Sessions
+            </a>
+            {session.next ? (
+              <a href={`/devcon/${session.next.id}`} class="flex items-center gap-2 text-gray-600 hover:text-blue-600 transition-colors group">
+                <span>{session.next.title}</span>
+                <span class="group-hover:translate-x-1 transition-transform">→</span>
+              </a>
+            ) : <span />}
+          </div>
+        </div>
+      </section>
+    </>
+  ) : (
+    <section class="py-20">
+      <div class="content-container text-center">
+        <h1 class="text-3xl font-bold mb-4">Session Not Found</h1>
+        <p class="text-gray-600 mb-8">The requested session could not be found.</p>
+        <a href="/devcon" class="btn btn-primary">View All Sessions</a>
+      </div>
+    </section>
+  )}
+</BaseLayout>
+
+<style>
+  .session-content :global(h2) {
+    scroll-margin-top: 100px;
+  }
+  
+  .session-content :global(pre) {
+    box-shadow: 0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1);
+  }
+  
+  .session-content :global(table) {
+    box-shadow: 0 1px 3px 0 rgb(0 0 0 / 0.1), 0 1px 2px -1px rgb(0 0 0 / 0.1);
+  }
+  
+  .session-content :global(code) {
+    word-break: break-word;
+  }
+  
+  .session-content :global(pre code) {
+    word-break: normal;
+  }
+</style>

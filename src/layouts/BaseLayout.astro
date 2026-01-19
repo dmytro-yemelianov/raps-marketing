@@ -1,0 +1,218 @@
+---
+import '../styles/global.css';
+
+export interface Props {
+  title: string;
+  description?: string;
+  image?: string;
+}
+
+const { title, description = 'RAPS - Professional CLI for Autodesk Platform Services', image = '/og-image.png' } = Astro.props;
+const canonicalURL = new URL(Astro.url.pathname, Astro.site);
+---
+
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <meta name="generator" content={Astro.generator} />
+    
+    <!-- Primary Meta Tags -->
+    <title>{title} | RAPS CLI</title>
+    <meta name="title" content={`${title} | RAPS CLI`} />
+    <meta name="description" content={description} />
+    
+    <!-- Open Graph / Facebook -->
+    <meta property="og:type" content="website" />
+    <meta property="og:url" content={canonicalURL} />
+    <meta property="og:title" content={`${title} | RAPS CLI`} />
+    <meta property="og:description" content={description} />
+    <meta property="og:image" content={new URL(image, Astro.site)} />
+    
+    <!-- Twitter -->
+    <meta property="twitter:card" content="summary_large_image" />
+    <meta property="twitter:url" content={canonicalURL} />
+    <meta property="twitter:title" content={`${title} | RAPS CLI`} />
+    <meta property="twitter:description" content={description} />
+    <meta property="twitter:image" content={new URL(image, Astro.site)} />
+    
+    <!-- Canonical URL -->
+    <link rel="canonical" href={canonicalURL} />
+    
+    <!-- Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet" />
+  </head>
+  <body class="min-h-screen bg-white">
+    <nav class="sticky top-0 z-50 bg-white/95 backdrop-blur border-b border-gray-200">
+      <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div class="flex justify-between items-center h-16">
+          <div class="flex items-center">
+            <a href="/" class="flex items-center space-x-2">
+              <span class="text-2xl font-bold bg-gradient-to-r from-raps-blue to-raps-purple bg-clip-text text-transparent">
+                RAPS
+              </span>
+              <span class="text-gray-500">v4.2.1</span>
+            </a>
+          </div>
+          <nav class="hidden md:flex items-center space-x-6">
+            <!-- Developer Dropdown -->
+            <div class="relative group">
+              <button class="text-gray-700 hover:text-raps-blue transition flex items-center">
+                Developer <span class="ml-1 text-xs">▼</span>
+              </button>
+              <div class="absolute top-full left-0 mt-2 w-64 bg-white shadow-lg rounded-lg opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all z-50">
+                <a href="/guides" class="block px-4 py-3 text-sm text-gray-700 hover:bg-gray-50 border-b border-gray-100">
+                  <div class="font-medium">📚 Guides</div>
+                  <div class="text-xs text-gray-500">Step-by-step tutorials</div>
+                </a>
+                <a href="/recipes" class="block px-4 py-3 text-sm text-gray-700 hover:bg-gray-50 border-b border-gray-100">
+                  <div class="font-medium">🍳 Recipes</div>
+                  <div class="text-xs text-gray-500">Common workflow patterns</div>
+                </a>
+                <a href="/tools" class="block px-4 py-3 text-sm text-gray-700 hover:bg-gray-50 border-b border-gray-100">
+                  <div class="font-medium">🛠️ Interactive Tools</div>
+                  <div class="text-xs text-gray-500">OAuth, URN, token helpers</div>
+                </a>
+                <a href="/resources" class="block px-4 py-3 text-sm text-gray-700 hover:bg-gray-50">
+                  <div class="font-medium">📖 Resources</div>
+                  <div class="text-xs text-gray-500">Cheat sheets & references</div>
+                </a>
+              </div>
+            </div>
+
+            <!-- Content Dropdown -->
+            <div class="relative group">
+              <button class="text-gray-700 hover:text-raps-blue transition flex items-center">
+                Content <span class="ml-1 text-xs">▼</span>
+              </button>
+              <div class="absolute top-full left-0 mt-2 w-56 bg-white shadow-lg rounded-lg opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all z-50">
+                <a href="/articles" class="block px-4 py-3 text-sm text-gray-700 hover:bg-gray-50 border-b border-gray-100">
+                  <div class="font-medium">✍️ Articles</div>
+                  <div class="text-xs text-gray-500">Technical deep-dives</div>
+                </a>
+                <a href="/pdfs" class="block px-4 py-3 text-sm text-gray-700 hover:bg-gray-50">
+                  <div class="font-medium">📄 PDFs</div>
+                  <div class="text-xs text-gray-500">Downloadable resources</div>
+                </a>
+              </div>
+            </div>
+
+            <!-- Strategy Dropdown (existing, just enhanced) -->
+            <div class="relative group">
+              <button class="text-gray-700 hover:text-raps-blue transition flex items-center">
+                Strategy <span class="ml-1 text-xs">▼</span>
+              </button>
+              <div class="absolute top-full left-0 mt-2 w-56 bg-white shadow-lg rounded-lg opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all z-50">
+                <a href="/campaigns" class="block px-4 py-3 text-sm text-gray-700 hover:bg-gray-50 border-b border-gray-100">
+                  <div class="font-medium">🎯 Campaigns</div>
+                  <div class="text-xs text-gray-500">Marketing initiatives</div>
+                </a>
+                <a href="/analytics" class="block px-4 py-3 text-sm text-gray-700 hover:bg-gray-50 border-b border-gray-100">
+                  <div class="font-medium">📊 Analytics</div>
+                  <div class="text-xs text-gray-500">Performance metrics</div>
+                </a>
+                <a href="/strategy" class="block px-4 py-3 text-sm text-gray-700 hover:bg-gray-50 border-b border-gray-100">
+                  <div class="font-medium">📋 Strategy</div>
+                  <div class="text-xs text-gray-500">Strategic planning</div>
+                </a>
+                <a href="/community" class="block px-4 py-3 text-sm text-gray-700 hover:bg-gray-50 border-b border-gray-100">
+                  <div class="font-medium">👥 Community</div>
+                  <div class="text-xs text-gray-500">Engagement plans</div>
+                </a>
+                <a href="/press" class="block px-4 py-3 text-sm text-gray-700 hover:bg-gray-50 border-b border-gray-100">
+                  <div class="font-medium">📰 Press</div>
+                  <div class="text-xs text-gray-500">Press releases</div>
+                </a>
+                <a href="/calendar" class="block px-4 py-3 text-sm text-gray-700 hover:bg-gray-50">
+                  <div class="font-medium">📅 Calendar</div>
+                  <div class="text-xs text-gray-500">Content schedule</div>
+                </a>
+              </div>
+            </div>
+
+            <a href="https://github.com/autodesk-platform-services/raps" class="text-gray-700 hover:text-raps-blue transition">
+              GitHub
+            </a>
+            <a 
+              href="https://github.com/autodesk-platform-services/raps/releases" 
+              class="px-4 py-2 bg-gradient-to-r from-raps-blue to-raps-purple text-white rounded-lg hover:shadow-lg transition"
+            >
+              Download
+            </a>
+          </nav>
+          <button class="md:hidden p-2 rounded-lg hover:bg-gray-100">
+            <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"></path>
+            </svg>
+          </button>
+        </div>
+      </div>
+    </nav>
+    
+    <main>
+      <slot />
+    </main>
+    
+    <footer class="bg-gray-50 border-t border-gray-200 mt-20">
+      <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
+        <div class="grid grid-cols-1 md:grid-cols-4 gap-8">
+          <div>
+            <h3 class="font-semibold text-gray-900 mb-4">Product</h3>
+            <ul class="space-y-2">
+              <li><a href="/features" class="text-gray-600 hover:text-raps-blue">Features</a></li>
+              <li><a href="/pricing" class="text-gray-600 hover:text-raps-blue">Pricing</a></li>
+              <li><a href="/changelog" class="text-gray-600 hover:text-raps-blue">Changelog</a></li>
+              <li><a href="/roadmap" class="text-gray-600 hover:text-raps-blue">Roadmap</a></li>
+            </ul>
+          </div>
+          <div>
+            <h3 class="font-semibold text-gray-900 mb-4">Resources</h3>
+            <ul class="space-y-2">
+              <li><a href="/docs" class="text-gray-600 hover:text-raps-blue">Documentation</a></li>
+              <li><a href="/guides" class="text-gray-600 hover:text-raps-blue">Guides</a></li>
+              <li><a href="/articles" class="text-gray-600 hover:text-raps-blue">Articles</a></li>
+              <li><a href="/tools" class="text-gray-600 hover:text-raps-blue">Tools</a></li>
+            </ul>
+          </div>
+          <div>
+            <h3 class="font-semibold text-gray-900 mb-4">Community</h3>
+            <ul class="space-y-2">
+              <li><a href="https://github.com" class="text-gray-600 hover:text-raps-blue">GitHub</a></li>
+              <li><a href="https://discord.gg" class="text-gray-600 hover:text-raps-blue">Discord</a></li>
+              <li><a href="https://twitter.com" class="text-gray-600 hover:text-raps-blue">Twitter</a></li>
+              <li><a href="/blog" class="text-gray-600 hover:text-raps-blue">Blog</a></li>
+            </ul>
+          </div>
+          <div>
+            <h3 class="font-semibold text-gray-900 mb-4">Company</h3>
+            <ul class="space-y-2">
+              <li><a href="/about" class="text-gray-600 hover:text-raps-blue">About</a></li>
+              <li><a href="/contact" class="text-gray-600 hover:text-raps-blue">Contact</a></li>
+              <li><a href="/privacy" class="text-gray-600 hover:text-raps-blue">Privacy</a></li>
+              <li><a href="/terms" class="text-gray-600 hover:text-raps-blue">Terms</a></li>
+            </ul>
+          </div>
+        </div>
+        <div class="mt-8 pt-8 border-t border-gray-200">
+          <p class="text-center text-gray-600">
+            © 2026 RAPS CLI. Professional APS Automation Tools.
+          </p>
+        </div>
+      </div>
+    </footer>
+  </body>
+</html>
+
+<style>
+  html {
+    scroll-behavior: smooth;
+  }
+  
+  body {
+    font-family: 'Inter', system-ui, sans-serif;
+  }
+</style>

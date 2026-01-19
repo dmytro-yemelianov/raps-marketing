@@ -1,0 +1,131 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+---
+
+<BaseLayout 
+  title="Developer Tools - Interactive APS Utilities"
+  description="Free interactive tools for Autodesk Platform Services development. Build OAuth scopes, decode tokens, estimate costs, and debug translations."
+>
+  <div class="hero-pattern py-12">
+    <div class="content-container">
+      <h1 class="text-4xl md:text-5xl font-bold text-center mb-4">
+        <span class="gradient-text">Developer Tools</span>
+      </h1>
+      <p class="text-xl text-gray-600 text-center max-w-3xl mx-auto">
+        Free interactive tools to accelerate your Autodesk Platform Services development workflow
+      </p>
+    </div>
+  </div>
+
+  <div class="content-container py-12">
+    <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
+      <a href="/tools/scope-builder" class="card p-6 hover:shadow-xl transition-all group">
+        <div class="text-4xl mb-4 group-hover:scale-110 transition-transform">🔐</div>
+        <h3 class="text-xl font-semibold mb-2 group-hover:text-raps-blue transition">
+          OAuth Scope Builder
+        </h3>
+        <p class="text-gray-600 mb-4">
+          Interactive tool to build and validate APS OAuth scope combinations with preset templates.
+        </p>
+        <div class="text-raps-blue font-semibold">
+          Build Scopes →
+        </div>
+      </a>
+
+      <a href="/tools/token-decoder" class="card p-6 hover:shadow-xl transition-all group">
+        <div class="text-4xl mb-4 group-hover:scale-110 transition-transform">🔍</div>
+        <h3 class="text-xl font-semibold mb-2 group-hover:text-raps-blue transition">
+          Token Decoder
+        </h3>
+        <p class="text-gray-600 mb-4">
+          Decode and inspect JWT tokens from APS authentication. View claims, expiration, and scopes.
+        </p>
+        <div class="text-raps-blue font-semibold">
+          Decode Tokens →
+        </div>
+      </a>
+
+      <a href="/tools/token-estimator" class="card p-6 hover:shadow-xl transition-all group">
+        <div class="text-4xl mb-4 group-hover:scale-110 transition-transform">💰</div>
+        <h3 class="text-xl font-semibold mb-2 group-hover:text-raps-blue transition">
+          Token Cost Estimator
+        </h3>
+        <p class="text-gray-600 mb-4">
+          Estimate API usage costs and token consumption for your APS integration workflows.
+        </p>
+        <div class="text-raps-blue font-semibold">
+          Calculate Costs →
+        </div>
+      </a>
+
+      <a href="/tools/urn-encoder" class="card p-6 hover:shadow-xl transition-all group">
+        <div class="text-4xl mb-4 group-hover:scale-110 transition-transform">🔄</div>
+        <h3 class="text-xl font-semibold mb-2 group-hover:text-raps-blue transition">
+          URN Encoder/Decoder
+        </h3>
+        <p class="text-gray-600 mb-4">
+          Convert between regular identifiers and Base64-encoded URNs for Model Derivative API.
+        </p>
+        <div class="text-raps-blue font-semibold">
+          Encode URNs →
+        </div>
+      </a>
+
+      <a href="/tools/translation-debugger" class="card p-6 hover:shadow-xl transition-all group">
+        <div class="text-4xl mb-4 group-hover:scale-110 transition-transform">🔧</div>
+        <h3 class="text-xl font-semibold mb-2 group-hover:text-raps-blue transition">
+          Translation Debugger
+        </h3>
+        <p class="text-gray-600 mb-4">
+          Debug file translation issues, check job status, and analyze conversion problems.
+        </p>
+        <div class="text-raps-blue font-semibold">
+          Debug Translations →
+        </div>
+      </a>
+
+      <div class="card p-6 bg-gradient-to-r from-raps-blue to-raps-purple text-white">
+        <div class="text-4xl mb-4">🤖</div>
+        <h3 class="text-xl font-semibold mb-2">
+          AI-Powered RAPS
+        </h3>
+        <p class="mb-4 opacity-90">
+          Use Claude, Copilot, or Cursor with our MCP server for intelligent APS automation.
+        </p>
+        <a href="/guides/mcp-setup" class="font-semibold hover:underline">
+          Setup Guide →
+        </a>
+      </div>
+    </div>
+
+    <div class="mt-16 bg-gray-50 rounded-2xl p-8">
+      <h2 class="text-2xl font-bold text-center mb-6">Why Use These Tools?</h2>
+      <div class="grid md:grid-cols-3 gap-6 text-center">
+        <div>
+          <div class="text-3xl mb-2">⚡</div>
+          <h3 class="font-semibold mb-1">Faster Development</h3>
+          <p class="text-sm text-gray-600">Skip manual token building and debugging</p>
+        </div>
+        <div>
+          <div class="text-3xl mb-2">🔒</div>
+          <h3 class="font-semibold mb-1">Client-Side Only</h3>
+          <p class="text-sm text-gray-600">Your tokens never leave your browser</p>
+        </div>
+        <div>
+          <div class="text-3xl mb-2">📱</div>
+          <h3 class="font-semibold mb-1">Always Available</h3>
+          <p class="text-sm text-gray-600">Works offline, no installation needed</p>
+        </div>
+      </div>
+    </div>
+
+    <div class="mt-12 text-center">
+      <p class="text-gray-600 mb-4">
+        These tools complement RAPS CLI for a complete APS development experience
+      </p>
+      <a href="/guides/quickstart" class="btn btn-primary">
+        Get Started with RAPS →
+      </a>
+    </div>
+  </div>
+</BaseLayout>

@@ -1,0 +1,129 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+---
+
+<BaseLayout 
+  title="Developer Resources" 
+  description="Comprehensive resources for Autodesk Platform Services development. Cheat sheets, API decision trees, error codes, and best practices for APS developers."
+>
+  <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
+    <!-- Header -->
+    <div class="mb-12">
+      <h1 class="text-4xl font-bold text-gray-900 mb-4">Developer Resources</h1>
+      <p class="text-xl text-gray-600">Everything you need to master Autodesk Platform Services development</p>
+    </div>
+
+    <!-- Quick Access Section -->
+    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mb-12">
+      <a href="/resources/aps-cheatsheet" class="group bg-white rounded-xl p-6 shadow-sm hover:shadow-lg transition-all border border-gray-200">
+        <div class="flex items-start space-x-4">
+          <span class="text-3xl">📋</span>
+          <div>
+            <h3 class="font-semibold text-lg text-gray-900 group-hover:text-raps-blue transition">APS Cheat Sheet</h3>
+            <p class="text-sm text-gray-600 mt-1">Single-page API reference with RAPS shortcuts</p>
+          </div>
+        </div>
+      </a>
+
+      <a href="/resources/api-decision-tree" class="group bg-white rounded-xl p-6 shadow-sm hover:shadow-lg transition-all border border-gray-200">
+        <div class="flex items-start space-x-4">
+          <span class="text-3xl">🎯</span>
+          <div>
+            <h3 class="font-semibold text-lg text-gray-900 group-hover:text-raps-blue transition">API Decision Tree</h3>
+            <p class="text-sm text-gray-600 mt-1">Find the right API for your use case</p>
+          </div>
+        </div>
+      </a>
+
+      <a href="/resources/error-codes" class="group bg-white rounded-xl p-6 shadow-sm hover:shadow-lg transition-all border border-gray-200">
+        <div class="flex items-start space-x-4">
+          <span class="text-3xl">⚠️</span>
+          <div>
+            <h3 class="font-semibold text-lg text-gray-900 group-hover:text-raps-blue transition">Error Codes</h3>
+            <p class="text-sm text-gray-600 mt-1">Complete error reference with solutions</p>
+          </div>
+        </div>
+      </a>
+    </div>
+
+    <!-- Categories -->
+    <div class="space-y-12">
+      <!-- Quick References -->
+      <section>
+        <h2 class="text-2xl font-bold text-gray-900 mb-6 border-b pb-2">📚 Quick References</h2>
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+          <a href="/resources/aps-cheatsheet" class="flex items-center justify-between p-4 bg-gray-50 rounded-lg hover:bg-gray-100 transition">
+            <div>
+              <h3 class="font-medium text-gray-900">APS Cheat Sheet</h3>
+              <p class="text-sm text-gray-600">OAuth, endpoints, scopes, error codes</p>
+            </div>
+            <span class="text-gray-400">→</span>
+          </a>
+          <a href="/resources/oauth-scopes" class="flex items-center justify-between p-4 bg-gray-50 rounded-lg hover:bg-gray-100 transition">
+            <div>
+              <h3 class="font-medium text-gray-900">OAuth Scopes Guide</h3>
+              <p class="text-sm text-gray-600">Complete scope requirements by API</p>
+            </div>
+            <span class="text-gray-400">→</span>
+          </a>
+        </div>
+      </section>
+
+      <!-- Troubleshooting -->
+      <section>
+        <h2 class="text-2xl font-bold text-gray-900 mb-6 border-b pb-2">🔧 Troubleshooting</h2>
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+          <a href="/resources/error-codes" class="flex items-center justify-between p-4 bg-gray-50 rounded-lg hover:bg-gray-100 transition">
+            <div>
+              <h3 class="font-medium text-gray-900">Error Codes Reference</h3>
+              <p class="text-sm text-gray-600">Detailed explanations and solutions</p>
+            </div>
+            <span class="text-gray-400">→</span>
+          </a>
+          <a href="/resources/api-decision-tree" class="flex items-center justify-between p-4 bg-gray-50 rounded-lg hover:bg-gray-100 transition">
+            <div>
+              <h3 class="font-medium text-gray-900">Which API Do I Need?</h3>
+              <p class="text-sm text-gray-600">Interactive decision tree guide</p>
+            </div>
+            <span class="text-gray-400">→</span>
+          </a>
+        </div>
+      </section>
+
+      <!-- Cross-Platform Development -->
+      <section>
+        <h2 class="text-2xl font-bold text-gray-900 mb-6 border-b pb-2">🌐 Cross-Platform Development</h2>
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+          <a href="/resources/cross-platform-pain-points" class="flex items-center justify-between p-4 bg-gray-50 rounded-lg hover:bg-gray-100 transition">
+            <div>
+              <h3 class="font-medium text-gray-900">Developer Pain Points</h3>
+              <p class="text-sm text-gray-600">Common challenges and solutions</p>
+            </div>
+            <span class="text-gray-400">→</span>
+          </a>
+          <a href="/resources/workflow-recipes" class="flex items-center justify-between p-4 bg-gray-50 rounded-lg hover:bg-gray-100 transition">
+            <div>
+              <h3 class="font-medium text-gray-900">Workflow Recipes</h3>
+              <p class="text-sm text-gray-600">Complete workflows with RAPS</p>
+            </div>
+            <span class="text-gray-400">→</span>
+          </a>
+        </div>
+      </section>
+    </div>
+
+    <!-- Call to Action -->
+    <div class="mt-12 bg-gradient-to-r from-raps-blue to-raps-purple rounded-xl p-8 text-white">
+      <h2 class="text-2xl font-bold mb-4">Ready to streamline your APS development?</h2>
+      <p class="mb-6 opacity-90">Get RAPS and turn complex API operations into simple commands.</p>
+      <div class="flex flex-wrap gap-4">
+        <a href="/tools" class="px-6 py-3 bg-white text-raps-blue rounded-lg font-medium hover:shadow-lg transition">
+          Try Interactive Tools
+        </a>
+        <a href="https://github.com/autodesk-platform-services/raps" class="px-6 py-3 bg-white/10 text-white rounded-lg font-medium hover:bg-white/20 transition">
+          Get RAPS CLI
+        </a>
+      </div>
+    </div>
+  </div>
+</BaseLayout>

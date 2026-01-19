@@ -1,0 +1,238 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+---
+
+<BaseLayout 
+  title="APS JWT Token Decoder Tool"
+  description="Interactive tool to decode and analyze Autodesk Platform Services (APS) JWT authentication tokens"
+>
+  <div class="content-container py-12">
+    <div class="max-w-4xl mx-auto">
+      <div class="text-center mb-8">
+        <h1 class="text-4xl font-bold gradient-text mb-4">
+          APS JWT Token Decoder
+        </h1>
+        <p class="text-lg text-gray-600">
+          Decode and analyze your Autodesk Platform Services JWT authentication tokens
+        </p>
+      </div>
+
+      <div class="card p-8">
+        <div class="grid md:grid-cols-2 gap-8">
+          <!-- Token Input -->
+          <div>
+            <h2 class="text-2xl font-semibold mb-4">Token Input</h2>
+            <div class="space-y-4">
+              <div>
+                <label class="block text-sm font-medium text-gray-700 mb-2">
+                  Paste your JWT token:
+                </label>
+                <textarea 
+                  id="token-input" 
+                  class="w-full h-32 p-3 border border-gray-300 rounded-lg font-mono text-sm resize-none focus:ring-2 focus:ring-raps-blue focus:border-transparent"
+                  placeholder="eyJhbGciOiJSUzI1NiIsImtpZCI6Ik..."
+                ></textarea>
+              </div>
+              
+              <button id="decode-btn" class="btn btn-primary w-full">
+                🔍 Decode Token
+              </button>
+
+              <div class="bg-yellow-50 p-4 rounded-lg">
+                <h3 class="font-semibold mb-2 text-orange-800">🔒 Privacy Notice</h3>
+                <p class="text-sm text-orange-700">
+                  All decoding happens in your browser. Tokens are never sent to any server.
+                </p>
+              </div>
+            </div>
+          </div>
+
+          <!-- Decoded Output -->
+          <div>
+            <h2 class="text-2xl font-semibold mb-4">Decoded Information</h2>
+            <div id="decoded-output" class="space-y-4">
+              <div class="text-gray-500 text-center py-8">
+                Enter a token to see decoded information
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Token Structure Reference -->
+        <div class="mt-12 bg-gray-50 rounded-lg p-6">
+          <h3 class="text-xl font-semibold mb-4">APS Token Structure</h3>
+          <div class="grid md:grid-cols-3 gap-4 text-sm">
+            <div>
+              <h4 class="font-semibold mb-2">Header</h4>
+              <ul class="space-y-1 text-gray-600">
+                <li>• Algorithm (alg)</li>
+                <li>• Key ID (kid)</li>
+                <li>• Token type (typ)</li>
+              </ul>
+            </div>
+            <div>
+              <h4 class="font-semibold mb-2">Payload</h4>
+              <ul class="space-y-1 text-gray-600">
+                <li>• User ID (userid)</li>
+                <li>• Client ID (client_id)</li>
+                <li>• Scopes (scope)</li>
+                <li>• Expiration (exp)</li>
+              </ul>
+            </div>
+            <div>
+              <h4 class="font-semibold mb-2">Signature</h4>
+              <ul class="space-y-1 text-gray-600">
+                <li>• RSA256 signature</li>
+                <li>• Validates authenticity</li>
+                <li>• Cannot be verified client-side</li>
+              </ul>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Back Navigation -->
+      <div class="mt-8 text-center">
+        <a href="/tools" class="btn btn-secondary">
+          ← Back to Tools
+        </a>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    document.addEventListener('DOMContentLoaded', function() {
+      const tokenInput = document.getElementById('token-input');
+      const decodeBtn = document.getElementById('decode-btn');
+      const output = document.getElementById('decoded-output');
+
+      function decodeJWT(token) {
+        try {
+          // Remove whitespace and validate basic structure
+          const cleanToken = token.trim();
+          const parts = cleanToken.split('.');
+          
+          if (parts.length !== 3) {
+            throw new Error('Invalid JWT format. Expected 3 parts separated by dots.');
+          }
+
+          const [headerB64, payloadB64, signature] = parts;
+          
+          // Decode header and payload
+          const header = JSON.parse(atob(headerB64.replace(/-/g, '+').replace(/_/g, '/')));
+          const payload = JSON.parse(atob(payloadB64.replace(/-/g, '+').replace(/_/g, '/')));
+          
+          return { header, payload, signature, valid: true };
+        } catch (error) {
+          return { error: error.message, valid: false };
+        }
+      }
+
+      function formatTimestamp(timestamp) {
+        if (!timestamp) return 'Not specified';
+        const date = new Date(timestamp * 1000);
+        const now = new Date();
+        const isExpired = date < now;
+        
+        return `${date.toLocaleString()} ${isExpired ? '(⚠️ EXPIRED)' : '(✅ Valid)'}`;
+      }
+
+      function renderDecodedToken(decoded) {
+        if (!decoded.valid) {
+          return `
+            <div class="bg-red-50 border border-red-200 rounded-lg p-4">
+              <h3 class="font-semibold text-red-800 mb-2">❌ Decoding Error</h3>
+              <p class="text-red-700">${decoded.error}</p>
+            </div>
+          `;
+        }
+
+        const { header, payload } = decoded;
+        
+        return `
+          <div class="space-y-4">
+            <!-- Header -->
+            <div class="bg-blue-50 border border-blue-200 rounded-lg p-4">
+              <h3 class="font-semibold text-blue-800 mb-2">🏷️ Header</h3>
+              <div class="font-mono text-sm bg-white p-3 rounded border">
+                <pre>${JSON.stringify(header, null, 2)}</pre>
+              </div>
+            </div>
+            
+            <!-- Payload -->
+            <div class="bg-green-50 border border-green-200 rounded-lg p-4">
+              <h3 class="font-semibold text-green-800 mb-2">📦 Payload</h3>
+              <div class="grid md:grid-cols-2 gap-4 mb-3">
+                <div>
+                  <strong>Client ID:</strong><br>
+                  <span class="font-mono text-sm">${payload.client_id || 'Not specified'}</span>
+                </div>
+                <div>
+                  <strong>User ID:</strong><br>
+                  <span class="font-mono text-sm">${payload.userid || payload.sub || 'Not specified'}</span>
+                </div>
+                <div>
+                  <strong>Issued At:</strong><br>
+                  <span class="text-sm">${formatTimestamp(payload.iat)}</span>
+                </div>
+                <div>
+                  <strong>Expires At:</strong><br>
+                  <span class="text-sm">${formatTimestamp(payload.exp)}</span>
+                </div>
+              </div>
+              
+              ${payload.scope ? `
+                <div class="mb-3">
+                  <strong>Scopes:</strong><br>
+                  <div class="flex flex-wrap gap-1 mt-1">
+                    ${payload.scope.split(' ').map(scope => 
+                      `<span class="px-2 py-1 bg-blue-100 text-blue-800 text-xs rounded">${scope}</span>`
+                    ).join('')}
+                  </div>
+                </div>
+              ` : ''}
+              
+              <details class="mt-3">
+                <summary class="cursor-pointer text-sm font-medium">View Full Payload</summary>
+                <div class="font-mono text-sm bg-white p-3 rounded border mt-2">
+                  <pre>${JSON.stringify(payload, null, 2)}</pre>
+                </div>
+              </details>
+            </div>
+            
+            <!-- Signature -->
+            <div class="bg-gray-50 border border-gray-200 rounded-lg p-4">
+              <h3 class="font-semibold text-gray-800 mb-2">🔐 Signature</h3>
+              <p class="text-sm text-gray-600 mb-2">
+                Signature verification requires the public key and cannot be done client-side.
+              </p>
+              <div class="font-mono text-xs bg-white p-3 rounded border break-all">
+                ${decoded.signature}
+              </div>
+            </div>
+          </div>
+        `;
+      }
+
+      function handleDecode() {
+        const token = tokenInput.value.trim();
+        
+        if (!token) {
+          output.innerHTML = '<div class="text-gray-500 text-center py-8">Please enter a token</div>';
+          return;
+        }
+
+        const decoded = decodeJWT(token);
+        output.innerHTML = renderDecodedToken(decoded);
+      }
+
+      decodeBtn.addEventListener('click', handleDecode);
+      
+      tokenInput.addEventListener('input', () => {
+        if (tokenInput.value.trim()) {
+          handleDecode();
+        }
+      });
+    });
+  </script>
+</BaseLayout>

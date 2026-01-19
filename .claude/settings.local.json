@@ -1,0 +1,33 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(mkdir:*)",
+      "Bash(git add:*)",
+      "Bash(git commit:*)",
+      "Bash(git push:*)",
+      "Bash(python:*)",
+      "Bash(pdflatex:*)",
+      "Bash(xelatex:*)",
+      "Bash(cp:*)",
+      "Bash(find:*)",
+      "Bash(rm:*)",
+      "Bash(npm create:*)",
+      "Bash(git rm:*)",
+      "Bash(git checkout:*)",
+      "Bash(mv:*)",
+      "Bash(true)",
+      "Bash(git restore:*)",
+      "Bash(npm run build:*)",
+      "Bash(dir /A \"C:\\github\\raps\\raps-marketing\\public\\pdfs\\*.pdf\")",
+      "mcp__sequential-thinking__sequentialthinking",
+      "Bash(node:*)",
+      "Bash(dir /A \"pdfs\\*.pdf\")",
+      "mcp__browsermcp__browser_navigate"
+    ],
+    "deny": [],
+    "ask": [],
+    "additionalDirectories": [
+      "C:\\c\\github\\raps"
+    ]
+  }
+}

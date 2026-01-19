@@ -1,0 +1,41 @@
+{
+  "$ref": "#/definitions/cheatsheets",
+  "definitions": {
+    "cheatsheets": {
+      "type": "object",
+      "properties": {
+        "title": {
+          "type": "string"
+        },
+        "description": {
+          "type": "string"
+        },
+        "category": {
+          "type": "string",
+          "enum": [
+            "api",
+            "cli",
+            "authentication",
+            "workflows"
+          ]
+        },
+        "order": {
+          "type": "number"
+        },
+        "downloadUrl": {
+          "type": "string"
+        },
+        "$schema": {
+          "type": "string"
+        }
+      },
+      "required": [
+        "title",
+        "description",
+        "category"
+      ],
+      "additionalProperties": false
+    }
+  },
+  "$schema": "http://json-schema.org/draft-07/schema#"
+}

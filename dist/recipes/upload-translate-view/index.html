@@ -1,0 +1,512 @@
+<!DOCTYPE html><html lang="en" data-astro-cid-37fxchfa> <head><meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><link rel="icon" type="image/svg+xml" href="/favicon.svg"><meta name="generator" content="Astro v5.16.7"><!-- Primary Meta Tags --><title>Upload → Translate → View Workflow Recipe | RAPS CLI</title><meta name="title" content="Upload → Translate → View Workflow Recipe | RAPS CLI"><meta name="description" content="Complete step-by-step recipe for uploading CAD files, translating them, and viewing in browser"><!-- Open Graph / Facebook --><meta property="og:type" content="website"><meta property="og:url" content="https://rapscli.xyz/recipes/upload-translate-view/"><meta property="og:title" content="Upload → Translate → View Workflow Recipe | RAPS CLI"><meta property="og:description" content="Complete step-by-step recipe for uploading CAD files, translating them, and viewing in browser"><meta property="og:image" content="https://rapscli.xyz/og-image.png"><!-- Twitter --><meta property="twitter:card" content="summary_large_image"><meta property="twitter:url" content="https://rapscli.xyz/recipes/upload-translate-view/"><meta property="twitter:title" content="Upload → Translate → View Workflow Recipe | RAPS CLI"><meta property="twitter:description" content="Complete step-by-step recipe for uploading CAD files, translating them, and viewing in browser"><meta property="twitter:image" content="https://rapscli.xyz/og-image.png"><!-- Canonical URL --><link rel="canonical" href="https://rapscli.xyz/recipes/upload-translate-view/"><!-- Fonts --><link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin><link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet"><link rel="stylesheet" href="/_astro/_slug_.LJOPbm0E.css">
+<style>.prose[data-astro-cid-z3wdsy7t]{color:#374151}.prose[data-astro-cid-z3wdsy7t] h1[data-astro-cid-z3wdsy7t],.prose[data-astro-cid-z3wdsy7t] h2[data-astro-cid-z3wdsy7t],.prose[data-astro-cid-z3wdsy7t] h3[data-astro-cid-z3wdsy7t],.prose[data-astro-cid-z3wdsy7t] h4[data-astro-cid-z3wdsy7t]{color:#111827}.prose[data-astro-cid-z3wdsy7t] h2[data-astro-cid-z3wdsy7t]{margin-top:2rem;margin-bottom:1rem;font-size:1.5rem;line-height:2rem;font-weight:700}.prose[data-astro-cid-z3wdsy7t] h3[data-astro-cid-z3wdsy7t]{margin-top:1.5rem;margin-bottom:.75rem;font-size:1.25rem;line-height:1.75rem;font-weight:600}.prose[data-astro-cid-z3wdsy7t] p[data-astro-cid-z3wdsy7t]{margin-bottom:1rem}.prose[data-astro-cid-z3wdsy7t] ul[data-astro-cid-z3wdsy7t],.prose[data-astro-cid-z3wdsy7t] ol[data-astro-cid-z3wdsy7t]{margin-bottom:1rem;margin-left:1.5rem}.prose[data-astro-cid-z3wdsy7t] blockquote[data-astro-cid-z3wdsy7t]{margin-top:1.5rem;margin-bottom:1.5rem;border-left-width:4px;--tw-border-opacity: 1;border-color:rgb(102 126 234 / var(--tw-border-opacity, 1));--tw-bg-opacity: 1;background-color:rgb(239 246 255 / var(--tw-bg-opacity, 1));padding:.5rem 1rem;font-style:italic}.prose[data-astro-cid-z3wdsy7t] code[data-astro-cid-z3wdsy7t]{border-radius:.25rem;--tw-bg-opacity: 1;background-color:rgb(243 244 246 / var(--tw-bg-opacity, 1));padding:.125rem .25rem;font-family:Consolas,Monaco,monospace;font-size:.875rem;line-height:1.25rem;--tw-text-opacity: 1;color:rgb(102 126 234 / var(--tw-text-opacity, 1))}.prose[data-astro-cid-z3wdsy7t] pre[data-astro-cid-z3wdsy7t]{margin-top:1.5rem;margin-bottom:1.5rem;overflow-x:auto;border-radius:.5rem;--tw-bg-opacity: 1;background-color:rgb(17 24 39 / var(--tw-bg-opacity, 1));padding:1rem;--tw-text-opacity: 1;color:rgb(243 244 246 / var(--tw-text-opacity, 1))}.prose[data-astro-cid-z3wdsy7t] pre[data-astro-cid-z3wdsy7t] code[data-astro-cid-z3wdsy7t]{background-color:transparent;padding:0;--tw-text-opacity: 1;color:rgb(243 244 246 / var(--tw-text-opacity, 1))}.prose[data-astro-cid-z3wdsy7t] a[data-astro-cid-z3wdsy7t]{--tw-text-opacity: 1;color:rgb(102 126 234 / var(--tw-text-opacity, 1))}.prose[data-astro-cid-z3wdsy7t] a[data-astro-cid-z3wdsy7t]:hover{text-decoration-line:underline}
+</style></head> <body class="min-h-screen bg-white" data-astro-cid-37fxchfa> <nav class="sticky top-0 z-50 bg-white/95 backdrop-blur border-b border-gray-200" data-astro-cid-37fxchfa> <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8" data-astro-cid-37fxchfa> <div class="flex justify-between items-center h-16" data-astro-cid-37fxchfa> <div class="flex items-center" data-astro-cid-37fxchfa> <a href="/" class="flex items-center space-x-2" data-astro-cid-37fxchfa> <span class="text-2xl font-bold bg-gradient-to-r from-raps-blue to-raps-purple bg-clip-text text-transparent" data-astro-cid-37fxchfa>
+RAPS
+</span> <span class="text-gray-500" data-astro-cid-37fxchfa>v4.2.1</span> </a> </div> <nav class="hidden md:flex items-center space-x-8" data-astro-cid-37fxchfa> <a href="/articles" class="text-gray-700 hover:text-raps-blue transition" data-astro-cid-37fxchfa>Articles</a> <a href="/guides" class="text-gray-700 hover:text-raps-blue transition" data-astro-cid-37fxchfa>Guides</a> <a href="/recipes" class="text-gray-700 hover:text-raps-blue transition" data-astro-cid-37fxchfa>Recipes</a> <a href="/tools" class="text-gray-700 hover:text-raps-blue transition" data-astro-cid-37fxchfa>Tools</a> <a href="/pdfs" class="text-gray-700 hover:text-raps-blue transition" data-astro-cid-37fxchfa>PDFs</a> <div class="relative group" data-astro-cid-37fxchfa> <button class="text-gray-700 hover:text-raps-blue transition flex items-center" data-astro-cid-37fxchfa>
+Strategy <span class="ml-1 text-xs" data-astro-cid-37fxchfa>▼</span> </button> <div class="absolute top-full left-0 mt-2 w-48 bg-white shadow-lg rounded-lg opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all" data-astro-cid-37fxchfa> <a href="/analytics" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-50" data-astro-cid-37fxchfa>📊 Analytics</a> <a href="/campaigns" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-50" data-astro-cid-37fxchfa>🎯 Campaigns</a> <a href="/strategy" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-50" data-astro-cid-37fxchfa>📋 Strategy</a> <a href="/community" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-50" data-astro-cid-37fxchfa>👥 Community</a> <a href="/press" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-50" data-astro-cid-37fxchfa>📰 Press</a> <a href="/calendar" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-50" data-astro-cid-37fxchfa>📅 Calendar</a> </div> </div> <a href="https://github.com/autodesk-platform-services/raps" class="text-gray-700 hover:text-raps-blue transition" data-astro-cid-37fxchfa>
+GitHub
+</a> <a href="https://github.com/autodesk-platform-services/raps/releases" class="px-4 py-2 bg-gradient-to-r from-raps-blue to-raps-purple text-white rounded-lg hover:shadow-lg transition" data-astro-cid-37fxchfa>
+Download
+</a> </nav> <button class="md:hidden p-2 rounded-lg hover:bg-gray-100" data-astro-cid-37fxchfa> <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" data-astro-cid-37fxchfa> <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16" data-astro-cid-37fxchfa></path> </svg> </button> </div> </div> </nav> <main data-astro-cid-37fxchfa>  <article class="content-container py-12" data-astro-cid-z3wdsy7t> <div class="max-w-4xl mx-auto" data-astro-cid-z3wdsy7t> <header class="mb-8" data-astro-cid-z3wdsy7t> <div class="flex items-center text-sm text-gray-500 mb-4" data-astro-cid-z3wdsy7t> <a href="/recipes" class="hover:text-raps-blue" data-astro-cid-z3wdsy7t>Recipes</a> <span class="mx-2" data-astro-cid-z3wdsy7t>→</span> <span data-astro-cid-z3wdsy7t>Current</span> </div> <div class="flex items-center gap-4 mb-4" data-astro-cid-z3wdsy7t> <span class="px-3 py-1 text-sm rounded-full bg-green-100 text-green-800" data-astro-cid-z3wdsy7t> beginner </span> <span class="text-sm text-gray-500" data-astro-cid-z3wdsy7t>
+⏱️ 10 minutes </span> </div> <h1 class="text-4xl md:text-5xl font-bold mb-4" data-astro-cid-z3wdsy7t> <span class="gradient-text" data-astro-cid-z3wdsy7t>Upload → Translate → View Workflow Recipe</span> </h1> <p class="text-xl text-gray-600 mb-6" data-astro-cid-z3wdsy7t> Complete step-by-step recipe for uploading CAD files, translating them, and viewing in browser </p> </header> <div class="prose prose-lg prose-gray max-w-none" data-astro-cid-z3wdsy7t> <h1 id="upload--translate--view-workflow-recipe">Upload → Translate → View Workflow Recipe</h1>
+<p><strong>Complete recipe for the most common APS workflow: upload a CAD file, translate it to web-viewable format, and display in browser</strong></p>
+<hr>
+<h2 id="goal">Goal</h2>
+<p>Transform a CAD file (<code>.dwg</code>, <code>.rvt</code>, <code>.ipt</code>, etc.) into a 3D model viewable in any web browser.</p>
+<p><strong>What you’ll achieve:</strong></p>
+<ul>
+<li>Upload CAD files to cloud storage</li>
+<li>Convert files to web-optimized 3D format (SVF2)</li>
+<li>Display interactive 3D models in browser</li>
+<li>Extract model properties and metadata</li>
+</ul>
+<hr>
+<h2 id="prerequisites">Prerequisites</h2>
+<h3 id="required-tools">Required Tools</h3>
+<ul>
+<li>✅ <strong>RAPS CLI</strong> v4.2.0+ installed</li>
+<li>✅ <strong>Autodesk Developer Account</strong> with app credentials</li>
+<li>✅ <strong>CAD file</strong> to test with (<code>.dwg</code>, <code>.rvt</code>, <code>.ipt</code>, <code>.f3d</code>, etc.)</li>
+<li>✅ <strong>Modern web browser</strong> (Chrome, Firefox, Safari, Edge)</li>
+</ul>
+<h3 id="required-scopes">Required Scopes</h3>
+<pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8; overflow-x: auto; white-space: pre-wrap; word-wrap: break-word;" tabindex="0" data-language="bash"><code><span class="line"><span style="color:#6A737D"># Authentication scopes needed for this workflow</span></span>
+<span class="line"><span style="color:#B392F0">data:read</span><span style="color:#9ECBFF"> bucket:read</span><span style="color:#9ECBFF"> bucket:create</span><span style="color:#9ECBFF"> viewables:read</span></span></code></pre>
+<h3 id="files-used-in-this-recipe">Files Used in This Recipe</h3>
+<ul>
+<li><code>model.rvt</code> - Sample Revit file (replace with your CAD file)</li>
+<li><code>my-bucket</code> - Bucket name (replace with your unique bucket name)</li>
+</ul>
+<hr>
+<h2 id="the-manual-way-50-lines-of-code">The Manual Way (50+ Lines of Code)</h2>
+<p>To appreciate what RAPS does, here’s the manual approach:</p>
+<details>
+<summary>🔍 Click to see manual implementation (JavaScript example)</summary>
+<pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8; overflow-x: auto; white-space: pre-wrap; word-wrap: break-word;" tabindex="0" data-language="javascript"><code><span class="line"><span style="color:#F97583">const</span><span style="color:#79B8FF"> axios</span><span style="color:#F97583"> =</span><span style="color:#B392F0"> require</span><span style="color:#E1E4E8">(</span><span style="color:#9ECBFF">'axios'</span><span style="color:#E1E4E8">);</span></span>
+<span class="line"><span style="color:#F97583">const</span><span style="color:#79B8FF"> fs</span><span style="color:#F97583"> =</span><span style="color:#B392F0"> require</span><span style="color:#E1E4E8">(</span><span style="color:#9ECBFF">'fs'</span><span style="color:#E1E4E8">);</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#6A737D">// Step 1: Get access token</span></span>
+<span class="line"><span style="color:#F97583">async</span><span style="color:#F97583"> function</span><span style="color:#B392F0"> getToken</span><span style="color:#E1E4E8">() {</span></span>
+<span class="line"><span style="color:#F97583">  const</span><span style="color:#79B8FF"> response</span><span style="color:#F97583"> =</span><span style="color:#F97583"> await</span><span style="color:#E1E4E8"> axios.</span><span style="color:#B392F0">post</span><span style="color:#E1E4E8">(</span></span>
+<span class="line"><span style="color:#9ECBFF">    'https://developer.api.autodesk.com/authentication/v2/token'</span><span style="color:#E1E4E8">,</span></span>
+<span class="line"><span style="color:#F97583">    new</span><span style="color:#B392F0"> URLSearchParams</span><span style="color:#E1E4E8">({</span></span>
+<span class="line"><span style="color:#E1E4E8">      client_id: process.env.</span><span style="color:#79B8FF">APS_CLIENT_ID</span><span style="color:#E1E4E8">,</span></span>
+<span class="line"><span style="color:#E1E4E8">      client_secret: process.env.</span><span style="color:#79B8FF">APS_CLIENT_SECRET</span><span style="color:#E1E4E8">,</span></span>
+<span class="line"><span style="color:#E1E4E8">      grant_type: </span><span style="color:#9ECBFF">'client_credentials'</span><span style="color:#E1E4E8">,</span></span>
+<span class="line"><span style="color:#E1E4E8">      scope: </span><span style="color:#9ECBFF">'bucket:read bucket:create data:read viewables:read'</span></span>
+<span class="line"><span style="color:#E1E4E8">    }),</span></span>
+<span class="line"><span style="color:#E1E4E8">    { headers: { </span><span style="color:#9ECBFF">'Content-Type'</span><span style="color:#E1E4E8">: </span><span style="color:#9ECBFF">'application/x-www-form-urlencoded'</span><span style="color:#E1E4E8"> }}</span></span>
+<span class="line"><span style="color:#E1E4E8">  );</span></span>
+<span class="line"><span style="color:#F97583">  return</span><span style="color:#E1E4E8"> response.data.access_token;</span></span>
+<span class="line"><span style="color:#E1E4E8">}</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#6A737D">// Step 2: Create bucket</span></span>
+<span class="line"><span style="color:#F97583">async</span><span style="color:#F97583"> function</span><span style="color:#B392F0"> createBucket</span><span style="color:#E1E4E8">(</span><span style="color:#FFAB70">token</span><span style="color:#E1E4E8">, </span><span style="color:#FFAB70">bucketKey</span><span style="color:#E1E4E8">) {</span></span>
+<span class="line"><span style="color:#F97583">  try</span><span style="color:#E1E4E8"> {</span></span>
+<span class="line"><span style="color:#F97583">    await</span><span style="color:#E1E4E8"> axios.</span><span style="color:#B392F0">post</span><span style="color:#E1E4E8">(</span></span>
+<span class="line"><span style="color:#9ECBFF">      'https://developer.api.autodesk.com/oss/v2/buckets'</span><span style="color:#E1E4E8">,</span></span>
+<span class="line"><span style="color:#E1E4E8">      {</span></span>
+<span class="line"><span style="color:#E1E4E8">        bucketKey: bucketKey,</span></span>
+<span class="line"><span style="color:#E1E4E8">        policyKey: </span><span style="color:#9ECBFF">'transient'</span></span>
+<span class="line"><span style="color:#E1E4E8">      },</span></span>
+<span class="line"><span style="color:#E1E4E8">      { headers: { Authorization: </span><span style="color:#9ECBFF">`Bearer ${</span><span style="color:#E1E4E8">token</span><span style="color:#9ECBFF">}`</span><span style="color:#E1E4E8"> }}</span></span>
+<span class="line"><span style="color:#E1E4E8">    );</span></span>
+<span class="line"><span style="color:#E1E4E8">  } </span><span style="color:#F97583">catch</span><span style="color:#E1E4E8"> (error) {</span></span>
+<span class="line"><span style="color:#F97583">    if</span><span style="color:#E1E4E8"> (error.response?.status </span><span style="color:#F97583">!==</span><span style="color:#79B8FF"> 409</span><span style="color:#E1E4E8">) </span><span style="color:#F97583">throw</span><span style="color:#E1E4E8"> error; </span><span style="color:#6A737D">// Ignore if exists</span></span>
+<span class="line"><span style="color:#E1E4E8">  }</span></span>
+<span class="line"><span style="color:#E1E4E8">}</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#6A737D">// Step 3: Upload file</span></span>
+<span class="line"><span style="color:#F97583">async</span><span style="color:#F97583"> function</span><span style="color:#B392F0"> uploadFile</span><span style="color:#E1E4E8">(</span><span style="color:#FFAB70">token</span><span style="color:#E1E4E8">, </span><span style="color:#FFAB70">bucketKey</span><span style="color:#E1E4E8">, </span><span style="color:#FFAB70">fileName</span><span style="color:#E1E4E8">, </span><span style="color:#FFAB70">fileData</span><span style="color:#E1E4E8">) {</span></span>
+<span class="line"><span style="color:#F97583">  const</span><span style="color:#79B8FF"> response</span><span style="color:#F97583"> =</span><span style="color:#F97583"> await</span><span style="color:#E1E4E8"> axios.</span><span style="color:#B392F0">put</span><span style="color:#E1E4E8">(</span></span>
+<span class="line"><span style="color:#9ECBFF">    `https://developer.api.autodesk.com/oss/v2/buckets/${</span><span style="color:#E1E4E8">bucketKey</span><span style="color:#9ECBFF">}/objects/${</span><span style="color:#E1E4E8">fileName</span><span style="color:#9ECBFF">}`</span><span style="color:#E1E4E8">,</span></span>
+<span class="line"><span style="color:#E1E4E8">    fileData,</span></span>
+<span class="line"><span style="color:#E1E4E8">    {</span></span>
+<span class="line"><span style="color:#E1E4E8">      headers: {</span></span>
+<span class="line"><span style="color:#E1E4E8">        Authorization: </span><span style="color:#9ECBFF">`Bearer ${</span><span style="color:#E1E4E8">token</span><span style="color:#9ECBFF">}`</span><span style="color:#E1E4E8">,</span></span>
+<span class="line"><span style="color:#9ECBFF">        'Content-Type'</span><span style="color:#E1E4E8">: </span><span style="color:#9ECBFF">'application/octet-stream'</span></span>
+<span class="line"><span style="color:#E1E4E8">      }</span></span>
+<span class="line"><span style="color:#E1E4E8">    }</span></span>
+<span class="line"><span style="color:#E1E4E8">  );</span></span>
+<span class="line"><span style="color:#F97583">  return</span><span style="color:#E1E4E8"> response.data.objectId;</span></span>
+<span class="line"><span style="color:#E1E4E8">}</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#6A737D">// Step 4: Start translation</span></span>
+<span class="line"><span style="color:#F97583">async</span><span style="color:#F97583"> function</span><span style="color:#B392F0"> startTranslation</span><span style="color:#E1E4E8">(</span><span style="color:#FFAB70">token</span><span style="color:#E1E4E8">, </span><span style="color:#FFAB70">urn</span><span style="color:#E1E4E8">) {</span></span>
+<span class="line"><span style="color:#F97583">  const</span><span style="color:#79B8FF"> response</span><span style="color:#F97583"> =</span><span style="color:#F97583"> await</span><span style="color:#E1E4E8"> axios.</span><span style="color:#B392F0">post</span><span style="color:#E1E4E8">(</span></span>
+<span class="line"><span style="color:#9ECBFF">    'https://developer.api.autodesk.com/modelderivative/v2/designdata/job'</span><span style="color:#E1E4E8">,</span></span>
+<span class="line"><span style="color:#E1E4E8">    {</span></span>
+<span class="line"><span style="color:#E1E4E8">      input: { urn: urn },</span></span>
+<span class="line"><span style="color:#E1E4E8">      output: {</span></span>
+<span class="line"><span style="color:#E1E4E8">        formats: [{</span></span>
+<span class="line"><span style="color:#E1E4E8">          type: </span><span style="color:#9ECBFF">'svf2'</span><span style="color:#E1E4E8">,</span></span>
+<span class="line"><span style="color:#E1E4E8">          views: [</span><span style="color:#9ECBFF">'2d'</span><span style="color:#E1E4E8">, </span><span style="color:#9ECBFF">'3d'</span><span style="color:#E1E4E8">]</span></span>
+<span class="line"><span style="color:#E1E4E8">        }]</span></span>
+<span class="line"><span style="color:#E1E4E8">      }</span></span>
+<span class="line"><span style="color:#E1E4E8">    },</span></span>
+<span class="line"><span style="color:#E1E4E8">    { headers: { Authorization: </span><span style="color:#9ECBFF">`Bearer ${</span><span style="color:#E1E4E8">token</span><span style="color:#9ECBFF">}`</span><span style="color:#E1E4E8"> }}</span></span>
+<span class="line"><span style="color:#E1E4E8">  );</span></span>
+<span class="line"><span style="color:#F97583">  return</span><span style="color:#E1E4E8"> response.data.urn;</span></span>
+<span class="line"><span style="color:#E1E4E8">}</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#6A737D">// Step 5: Poll for completion</span></span>
+<span class="line"><span style="color:#F97583">async</span><span style="color:#F97583"> function</span><span style="color:#B392F0"> waitForTranslation</span><span style="color:#E1E4E8">(</span><span style="color:#FFAB70">token</span><span style="color:#E1E4E8">, </span><span style="color:#FFAB70">urn</span><span style="color:#E1E4E8">) {</span></span>
+<span class="line"><span style="color:#F97583">  while</span><span style="color:#E1E4E8"> (</span><span style="color:#79B8FF">true</span><span style="color:#E1E4E8">) {</span></span>
+<span class="line"><span style="color:#F97583">    const</span><span style="color:#79B8FF"> response</span><span style="color:#F97583"> =</span><span style="color:#F97583"> await</span><span style="color:#E1E4E8"> axios.</span><span style="color:#B392F0">get</span><span style="color:#E1E4E8">(</span></span>
+<span class="line"><span style="color:#9ECBFF">      `https://developer.api.autodesk.com/modelderivative/v2/designdata/${</span><span style="color:#E1E4E8">urn</span><span style="color:#9ECBFF">}/manifest`</span><span style="color:#E1E4E8">,</span></span>
+<span class="line"><span style="color:#E1E4E8">      { headers: { Authorization: </span><span style="color:#9ECBFF">`Bearer ${</span><span style="color:#E1E4E8">token</span><span style="color:#9ECBFF">}`</span><span style="color:#E1E4E8"> }}</span></span>
+<span class="line"><span style="color:#E1E4E8">    );</span></span>
+<span class="line"><span style="color:#E1E4E8">    </span></span>
+<span class="line"><span style="color:#F97583">    if</span><span style="color:#E1E4E8"> (response.data.status </span><span style="color:#F97583">===</span><span style="color:#9ECBFF"> 'success'</span><span style="color:#E1E4E8">) </span><span style="color:#F97583">return</span><span style="color:#79B8FF"> true</span><span style="color:#E1E4E8">;</span></span>
+<span class="line"><span style="color:#F97583">    if</span><span style="color:#E1E4E8"> (response.data.status </span><span style="color:#F97583">===</span><span style="color:#9ECBFF"> 'failed'</span><span style="color:#E1E4E8">) </span><span style="color:#F97583">throw</span><span style="color:#F97583"> new</span><span style="color:#B392F0"> Error</span><span style="color:#E1E4E8">(</span><span style="color:#9ECBFF">'Translation failed'</span><span style="color:#E1E4E8">);</span></span>
+<span class="line"><span style="color:#E1E4E8">    </span></span>
+<span class="line"><span style="color:#F97583">    await</span><span style="color:#F97583"> new</span><span style="color:#79B8FF"> Promise</span><span style="color:#E1E4E8">(</span><span style="color:#FFAB70">resolve</span><span style="color:#F97583"> =></span><span style="color:#B392F0"> setTimeout</span><span style="color:#E1E4E8">(resolve, </span><span style="color:#79B8FF">5000</span><span style="color:#E1E4E8">)); </span><span style="color:#6A737D">// Wait 5 seconds</span></span>
+<span class="line"><span style="color:#E1E4E8">  }</span></span>
+<span class="line"><span style="color:#E1E4E8">}</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#6A737D">// Step 6: Generate viewer HTML</span></span>
+<span class="line"><span style="color:#F97583">function</span><span style="color:#B392F0"> generateViewerHTML</span><span style="color:#E1E4E8">(</span><span style="color:#FFAB70">urn</span><span style="color:#E1E4E8">, </span><span style="color:#FFAB70">token</span><span style="color:#E1E4E8">) {</span></span>
+<span class="line"><span style="color:#F97583">  return</span><span style="color:#9ECBFF"> `</span></span>
+<span class="line"><span style="color:#9ECBFF">    &#x3C;!DOCTYPE html></span></span>
+<span class="line"><span style="color:#9ECBFF">    &#x3C;html></span></span>
+<span class="line"><span style="color:#9ECBFF">    &#x3C;head></span></span>
+<span class="line"><span style="color:#9ECBFF">      &#x3C;script src="https://developer.api.autodesk.com/modelderivative/v2/viewers/7.*/viewer3D.min.js">&#x3C;/script></span></span>
+<span class="line"><span style="color:#9ECBFF">    &#x3C;/head></span></span>
+<span class="line"><span style="color:#9ECBFF">    &#x3C;body></span></span>
+<span class="line"><span style="color:#9ECBFF">      &#x3C;div id="forgeViewer" style="width: 100%; height: 500px;">&#x3C;/div></span></span>
+<span class="line"><span style="color:#9ECBFF">      &#x3C;script></span></span>
+<span class="line"><span style="color:#9ECBFF">        const options = {</span></span>
+<span class="line"><span style="color:#9ECBFF">          env: 'AutodeskProduction',</span></span>
+<span class="line"><span style="color:#9ECBFF">          api: 'derivativeV2',</span></span>
+<span class="line"><span style="color:#9ECBFF">          getAccessToken: function(onTokenReady) {</span></span>
+<span class="line"><span style="color:#9ECBFF">            onTokenReady('${</span><span style="color:#E1E4E8">token</span><span style="color:#9ECBFF">}', 3600);</span></span>
+<span class="line"><span style="color:#9ECBFF">          }</span></span>
+<span class="line"><span style="color:#9ECBFF">        };</span></span>
+<span class="line"><span style="color:#9ECBFF">        </span></span>
+<span class="line"><span style="color:#9ECBFF">        Autodesk.Viewing.Initializer(options, function() {</span></span>
+<span class="line"><span style="color:#9ECBFF">          const viewer = new Autodesk.Viewing.GuiViewer3D(</span></span>
+<span class="line"><span style="color:#9ECBFF">            document.getElementById('forgeViewer')</span></span>
+<span class="line"><span style="color:#9ECBFF">          );</span></span>
+<span class="line"><span style="color:#9ECBFF">          viewer.start();</span></span>
+<span class="line"><span style="color:#9ECBFF">          viewer.loadDocumentNode(viewer, '${</span><span style="color:#E1E4E8">urn</span><span style="color:#9ECBFF">}');</span></span>
+<span class="line"><span style="color:#9ECBFF">        });</span></span>
+<span class="line"><span style="color:#9ECBFF">      &#x3C;/script></span></span>
+<span class="line"><span style="color:#9ECBFF">    &#x3C;/body></span></span>
+<span class="line"><span style="color:#9ECBFF">    &#x3C;/html></span></span>
+<span class="line"><span style="color:#9ECBFF">  `</span><span style="color:#E1E4E8">;</span></span>
+<span class="line"><span style="color:#E1E4E8">}</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#6A737D">// Main workflow (6 steps, error handling, base64 encoding...)</span></span>
+<span class="line"><span style="color:#F97583">async</span><span style="color:#F97583"> function</span><span style="color:#B392F0"> main</span><span style="color:#E1E4E8">() {</span></span>
+<span class="line"><span style="color:#F97583">  try</span><span style="color:#E1E4E8"> {</span></span>
+<span class="line"><span style="color:#E1E4E8">    console.</span><span style="color:#B392F0">log</span><span style="color:#E1E4E8">(</span><span style="color:#9ECBFF">'1. Getting access token...'</span><span style="color:#E1E4E8">);</span></span>
+<span class="line"><span style="color:#F97583">    const</span><span style="color:#79B8FF"> token</span><span style="color:#F97583"> =</span><span style="color:#F97583"> await</span><span style="color:#B392F0"> getToken</span><span style="color:#E1E4E8">();</span></span>
+<span class="line"><span style="color:#E1E4E8">    </span></span>
+<span class="line"><span style="color:#E1E4E8">    console.</span><span style="color:#B392F0">log</span><span style="color:#E1E4E8">(</span><span style="color:#9ECBFF">'2. Creating bucket...'</span><span style="color:#E1E4E8">);</span></span>
+<span class="line"><span style="color:#F97583">    const</span><span style="color:#79B8FF"> bucketKey</span><span style="color:#F97583"> =</span><span style="color:#9ECBFF"> 'my-bucket-'</span><span style="color:#F97583"> +</span><span style="color:#E1E4E8"> Date.</span><span style="color:#B392F0">now</span><span style="color:#E1E4E8">();</span></span>
+<span class="line"><span style="color:#F97583">    await</span><span style="color:#B392F0"> createBucket</span><span style="color:#E1E4E8">(token, bucketKey);</span></span>
+<span class="line"><span style="color:#E1E4E8">    </span></span>
+<span class="line"><span style="color:#E1E4E8">    console.</span><span style="color:#B392F0">log</span><span style="color:#E1E4E8">(</span><span style="color:#9ECBFF">'3. Uploading file...'</span><span style="color:#E1E4E8">);</span></span>
+<span class="line"><span style="color:#F97583">    const</span><span style="color:#79B8FF"> fileData</span><span style="color:#F97583"> =</span><span style="color:#E1E4E8"> fs.</span><span style="color:#B392F0">readFileSync</span><span style="color:#E1E4E8">(</span><span style="color:#9ECBFF">'./model.rvt'</span><span style="color:#E1E4E8">);</span></span>
+<span class="line"><span style="color:#F97583">    const</span><span style="color:#79B8FF"> objectId</span><span style="color:#F97583"> =</span><span style="color:#F97583"> await</span><span style="color:#B392F0"> uploadFile</span><span style="color:#E1E4E8">(token, bucketKey, </span><span style="color:#9ECBFF">'model.rvt'</span><span style="color:#E1E4E8">, fileData);</span></span>
+<span class="line"><span style="color:#E1E4E8">    </span></span>
+<span class="line"><span style="color:#E1E4E8">    console.</span><span style="color:#B392F0">log</span><span style="color:#E1E4E8">(</span><span style="color:#9ECBFF">'4. Starting translation...'</span><span style="color:#E1E4E8">);</span></span>
+<span class="line"><span style="color:#F97583">    const</span><span style="color:#79B8FF"> urn</span><span style="color:#F97583"> =</span><span style="color:#E1E4E8"> Buffer.</span><span style="color:#B392F0">from</span><span style="color:#E1E4E8">(</span><span style="color:#9ECBFF">`urn:adsk.objects:os.object:${</span><span style="color:#E1E4E8">bucketKey</span><span style="color:#9ECBFF">}:model.rvt`</span><span style="color:#E1E4E8">)</span></span>
+<span class="line"><span style="color:#E1E4E8">                     .</span><span style="color:#B392F0">toString</span><span style="color:#E1E4E8">(</span><span style="color:#9ECBFF">'base64'</span><span style="color:#E1E4E8">).</span><span style="color:#B392F0">replace</span><span style="color:#E1E4E8">(</span><span style="color:#9ECBFF">/</span><span style="color:#85E89D;font-weight:bold">\+</span><span style="color:#9ECBFF">/</span><span style="color:#F97583">g</span><span style="color:#E1E4E8">, </span><span style="color:#9ECBFF">'-'</span><span style="color:#E1E4E8">).</span><span style="color:#B392F0">replace</span><span style="color:#E1E4E8">(</span><span style="color:#9ECBFF">/</span><span style="color:#85E89D;font-weight:bold">\/</span><span style="color:#9ECBFF">/</span><span style="color:#F97583">g</span><span style="color:#E1E4E8">, </span><span style="color:#9ECBFF">'_'</span><span style="color:#E1E4E8">).</span><span style="color:#B392F0">replace</span><span style="color:#E1E4E8">(</span><span style="color:#9ECBFF">/</span><span style="color:#DBEDFF">=</span><span style="color:#9ECBFF">/</span><span style="color:#F97583">g</span><span style="color:#E1E4E8">, </span><span style="color:#9ECBFF">''</span><span style="color:#E1E4E8">);</span></span>
+<span class="line"><span style="color:#F97583">    await</span><span style="color:#B392F0"> startTranslation</span><span style="color:#E1E4E8">(token, urn);</span></span>
+<span class="line"><span style="color:#E1E4E8">    </span></span>
+<span class="line"><span style="color:#E1E4E8">    console.</span><span style="color:#B392F0">log</span><span style="color:#E1E4E8">(</span><span style="color:#9ECBFF">'5. Waiting for translation...'</span><span style="color:#E1E4E8">);</span></span>
+<span class="line"><span style="color:#F97583">    await</span><span style="color:#B392F0"> waitForTranslation</span><span style="color:#E1E4E8">(token, urn);</span></span>
+<span class="line"><span style="color:#E1E4E8">    </span></span>
+<span class="line"><span style="color:#E1E4E8">    console.</span><span style="color:#B392F0">log</span><span style="color:#E1E4E8">(</span><span style="color:#9ECBFF">'6. Generating viewer...'</span><span style="color:#E1E4E8">);</span></span>
+<span class="line"><span style="color:#F97583">    const</span><span style="color:#79B8FF"> html</span><span style="color:#F97583"> =</span><span style="color:#B392F0"> generateViewerHTML</span><span style="color:#E1E4E8">(urn, token);</span></span>
+<span class="line"><span style="color:#E1E4E8">    fs.</span><span style="color:#B392F0">writeFileSync</span><span style="color:#E1E4E8">(</span><span style="color:#9ECBFF">'./viewer.html'</span><span style="color:#E1E4E8">, html);</span></span>
+<span class="line"><span style="color:#E1E4E8">    </span></span>
+<span class="line"><span style="color:#E1E4E8">    console.</span><span style="color:#B392F0">log</span><span style="color:#E1E4E8">(</span><span style="color:#9ECBFF">'✅ Complete! Open viewer.html in browser'</span><span style="color:#E1E4E8">);</span></span>
+<span class="line"><span style="color:#E1E4E8">  } </span><span style="color:#F97583">catch</span><span style="color:#E1E4E8"> (error) {</span></span>
+<span class="line"><span style="color:#E1E4E8">    console.</span><span style="color:#B392F0">error</span><span style="color:#E1E4E8">(</span><span style="color:#9ECBFF">'❌ Error:'</span><span style="color:#E1E4E8">, error.message);</span></span>
+<span class="line"><span style="color:#E1E4E8">  }</span></span>
+<span class="line"><span style="color:#E1E4E8">}</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#B392F0">main</span><span style="color:#E1E4E8">();</span></span></code></pre>
+<p><strong>That’s 120+ lines of code with incomplete error handling!</strong></p>
+</details>
+<hr>
+<h2 id="the-raps-way-5-commands">The RAPS Way (5 Commands)</h2>
+<h3 id="step-1-authenticate">Step 1: Authenticate</h3>
+<pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8; overflow-x: auto; white-space: pre-wrap; word-wrap: break-word;" tabindex="0" data-language="bash"><code><span class="line"><span style="color:#6A737D"># One-time setup: login with required scopes</span></span>
+<span class="line"><span style="color:#B392F0">raps</span><span style="color:#9ECBFF"> auth</span><span style="color:#9ECBFF"> login</span><span style="color:#79B8FF"> --scopes</span><span style="color:#9ECBFF"> bucket:read,bucket:create,data:read,viewables:read</span></span></code></pre>
+<p><strong>What happens:</strong></p>
+<ul>
+<li>Opens browser for OAuth flow</li>
+<li>Saves credentials securely to system keyring</li>
+<li>Validates scopes work correctly</li>
+</ul>
+<h3 id="step-2-create-storage-bucket">Step 2: Create Storage Bucket</h3>
+<pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8; overflow-x: auto; white-space: pre-wrap; word-wrap: break-word;" tabindex="0" data-language="bash"><code><span class="line"><span style="color:#6A737D"># Create a bucket for your files (bucket names must be globally unique)</span></span>
+<span class="line"><span style="color:#B392F0">raps</span><span style="color:#9ECBFF"> bucket</span><span style="color:#9ECBFF"> create</span><span style="color:#9ECBFF"> my-bucket-</span><span style="color:#E1E4E8">$(</span><span style="color:#B392F0">date</span><span style="color:#9ECBFF"> +%s</span><span style="color:#E1E4E8">)</span></span></code></pre>
+<p><strong>What happens:</strong></p>
+<ul>
+<li>Creates a new Object Storage Service (OSS) bucket</li>
+<li>Handles naming conflicts automatically</li>
+<li>Sets appropriate retention policies</li>
+</ul>
+<h3 id="step-3-upload-your-cad-file">Step 3: Upload Your CAD File</h3>
+<pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8; overflow-x: auto; white-space: pre-wrap; word-wrap: break-word;" tabindex="0" data-language="bash"><code><span class="line"><span style="color:#6A737D"># Upload file to bucket</span></span>
+<span class="line"><span style="color:#B392F0">raps</span><span style="color:#9ECBFF"> oss</span><span style="color:#9ECBFF"> upload</span><span style="color:#9ECBFF"> model.rvt</span><span style="color:#9ECBFF"> my-bucket-</span><span style="color:#E1E4E8">$(</span><span style="color:#B392F0">date</span><span style="color:#9ECBFF"> +%s</span><span style="color:#E1E4E8">)</span></span></code></pre>
+<p><strong>What happens:</strong></p>
+<ul>
+<li>Uploads file with progress indicator</li>
+<li>Validates file integrity</li>
+<li>Returns the file’s URN for translation</li>
+</ul>
+<h3 id="step-4-translate-to-web-format">Step 4: Translate to Web Format</h3>
+<pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8; overflow-x: auto; white-space: pre-wrap; word-wrap: break-word;" tabindex="0" data-language="bash"><code><span class="line"><span style="color:#6A737D"># Start translation job (using SVF2 for best performance)</span></span>
+<span class="line"><span style="color:#B392F0">raps</span><span style="color:#9ECBFF"> translate</span><span style="color:#E1E4E8"> $(</span><span style="color:#B392F0">raps</span><span style="color:#9ECBFF"> urn</span><span style="color:#9ECBFF"> encode</span><span style="color:#9ECBFF"> "urn:adsk.objects:os.object:my-bucket-1234567890:model.rvt"</span><span style="color:#E1E4E8">) </span><span style="color:#79B8FF">--formats</span><span style="color:#9ECBFF"> svf2</span><span style="color:#79B8FF"> --wait</span></span></code></pre>
+<p><strong>What happens:</strong></p>
+<ul>
+<li>Encodes URN correctly (handles base64 URL-safe encoding)</li>
+<li>Submits translation job to Model Derivative service</li>
+<li>Polls for completion automatically with <code>--wait</code> flag</li>
+<li>Shows progress updates during translation</li>
+</ul>
+<h3 id="step-5-view-in-browser">Step 5: View in Browser</h3>
+<pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8; overflow-x: auto; white-space: pre-wrap; word-wrap: break-word;" tabindex="0" data-language="bash"><code><span class="line"><span style="color:#6A737D"># Generate and open viewer</span></span>
+<span class="line"><span style="color:#B392F0">raps</span><span style="color:#9ECBFF"> view</span><span style="color:#E1E4E8"> $(</span><span style="color:#B392F0">raps</span><span style="color:#9ECBFF"> urn</span><span style="color:#9ECBFF"> encode</span><span style="color:#9ECBFF"> "urn:adsk.objects:os.object:my-bucket-1234567890:model.rvt"</span><span style="color:#E1E4E8">)</span></span></code></pre>
+<p><strong>What happens:</strong></p>
+<ul>
+<li>Generates HTML viewer with embedded 3D model</li>
+<li>Handles authentication token injection</li>
+<li>Opens browser automatically</li>
+<li>Provides interactive 3D navigation</li>
+</ul>
+<hr>
+<h2 id="complete-one-liner-workflow">Complete One-Liner Workflow</h2>
+<p>Once authenticated, the entire workflow can be done in one command:</p>
+<pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8; overflow-x: auto; white-space: pre-wrap; word-wrap: break-word;" tabindex="0" data-language="bash"><code><span class="line"><span style="color:#6A737D"># Upload, translate, and view in one command</span></span>
+<span class="line"><span style="color:#B392F0">raps</span><span style="color:#9ECBFF"> workflow</span><span style="color:#9ECBFF"> upload-translate-view</span><span style="color:#9ECBFF"> model.rvt</span><span style="color:#79B8FF"> --bucket</span><span style="color:#9ECBFF"> my-project-bucket</span></span></code></pre>
+<p><strong>What this does:</strong></p>
+<ol>
+<li>Creates bucket if needed</li>
+<li>Uploads the file</li>
+<li>Starts translation to SVF2</li>
+<li>Waits for completion</li>
+<li>Opens browser viewer</li>
+</ol>
+<hr>
+<h2 id="workflow-variations">Workflow Variations</h2>
+<h3 id="batch-processing-multiple-files">Batch Processing Multiple Files</h3>
+<pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8; overflow-x: auto; white-space: pre-wrap; word-wrap: break-word;" tabindex="0" data-language="bash"><code><span class="line"><span style="color:#6A737D"># Upload and translate multiple files</span></span>
+<span class="line"><span style="color:#B392F0">raps</span><span style="color:#9ECBFF"> workflow</span><span style="color:#9ECBFF"> batch-translate</span><span style="color:#79B8FF"> *</span><span style="color:#9ECBFF">.dwg</span><span style="color:#79B8FF"> --bucket</span><span style="color:#9ECBFF"> cad-drawings</span><span style="color:#79B8FF"> --formats</span><span style="color:#9ECBFF"> svf2,pdf</span><span style="color:#79B8FF"> --parallel</span><span style="color:#79B8FF"> 3</span></span></code></pre>
+<h3 id="extract-properties-only">Extract Properties Only</h3>
+<pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8; overflow-x: auto; white-space: pre-wrap; word-wrap: break-word;" tabindex="0" data-language="bash"><code><span class="line"><span style="color:#6A737D"># Get model metadata without viewing</span></span>
+<span class="line"><span style="color:#B392F0">raps</span><span style="color:#9ECBFF"> translate</span><span style="color:#F97583"> &#x3C;</span><span style="color:#9ECBFF">ur</span><span style="color:#E1E4E8">n</span><span style="color:#F97583">></span><span style="color:#79B8FF"> --formats</span><span style="color:#9ECBFF"> properties</span><span style="color:#79B8FF"> --output</span><span style="color:#9ECBFF"> metadata.json</span></span></code></pre>
+<h3 id="custom-translation-formats">Custom Translation Formats</h3>
+<pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8; overflow-x: auto; white-space: pre-wrap; word-wrap: break-word;" tabindex="0" data-language="bash"><code><span class="line"><span style="color:#6A737D"># Translate to multiple formats for different uses</span></span>
+<span class="line"><span style="color:#B392F0">raps</span><span style="color:#9ECBFF"> translate</span><span style="color:#F97583"> &#x3C;</span><span style="color:#9ECBFF">ur</span><span style="color:#E1E4E8">n</span><span style="color:#F97583">></span><span style="color:#79B8FF"> --formats</span><span style="color:#9ECBFF"> svf2,stl,obj,pdf</span><span style="color:#79B8FF"> --wait</span></span></code></pre>
+<h3 id="webhook-integration">Webhook Integration</h3>
+<pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8; overflow-x: auto; white-space: pre-wrap; word-wrap: break-word;" tabindex="0" data-language="bash"><code><span class="line"><span style="color:#6A737D"># Set up webhook to get notified when translations complete</span></span>
+<span class="line"><span style="color:#B392F0">raps</span><span style="color:#9ECBFF"> webhook</span><span style="color:#9ECBFF"> create</span><span style="color:#79B8FF"> --event</span><span style="color:#9ECBFF"> extraction.finished</span><span style="color:#79B8FF"> --callback</span><span style="color:#9ECBFF"> https://your-app.com/webhook</span></span></code></pre>
+<hr>
+<h2 id="troubleshooting-common-issues">Troubleshooting Common Issues</h2>
+<h3 id="issue-1-bucket-already-exists-error">Issue 1: “Bucket already exists” Error</h3>
+<p><strong>Problem:</strong> Bucket name conflicts<br>
+<strong>Solution:</strong> Use timestamps or UUIDs in bucket names</p>
+<pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8; overflow-x: auto; white-space: pre-wrap; word-wrap: break-word;" tabindex="0" data-language="bash"><code><span class="line"><span style="color:#6A737D"># Add timestamp to ensure uniqueness</span></span>
+<span class="line"><span style="color:#E1E4E8">BUCKET_NAME</span><span style="color:#F97583">=</span><span style="color:#9ECBFF">"my-project-$(</span><span style="color:#B392F0">date</span><span style="color:#9ECBFF"> +%s)"</span></span>
+<span class="line"><span style="color:#B392F0">raps</span><span style="color:#9ECBFF"> bucket</span><span style="color:#9ECBFF"> create</span><span style="color:#E1E4E8"> $BUCKET_NAME</span></span></code></pre>
+<h3 id="issue-2-translation-fails">Issue 2: Translation Fails</h3>
+<p><strong>Problem:</strong> Unsupported file format or corrupted file<br>
+<strong>Solution:</strong> Check file and format support</p>
+<pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8; overflow-x: auto; white-space: pre-wrap; word-wrap: break-word;" tabindex="0" data-language="bash"><code><span class="line"><span style="color:#6A737D"># Check translation status with details</span></span>
+<span class="line"><span style="color:#B392F0">raps</span><span style="color:#9ECBFF"> translate</span><span style="color:#9ECBFF"> status</span><span style="color:#F97583"> &#x3C;</span><span style="color:#9ECBFF">ur</span><span style="color:#E1E4E8">n</span><span style="color:#F97583">></span><span style="color:#79B8FF"> --verbose</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#6A737D"># Retry with different format</span></span>
+<span class="line"><span style="color:#B392F0">raps</span><span style="color:#9ECBFF"> translate</span><span style="color:#F97583"> &#x3C;</span><span style="color:#9ECBFF">ur</span><span style="color:#E1E4E8">n</span><span style="color:#F97583">></span><span style="color:#79B8FF"> --formats</span><span style="color:#9ECBFF"> svf</span><span style="color:#79B8FF"> --retry</span></span></code></pre>
+<h3 id="issue-3-viewer-shows-loading-forever">Issue 3: Viewer Shows “Loading…” Forever</h3>
+<p><strong>Problem:</strong> Translation not complete or token expired<br>
+<strong>Solution:</strong> Check translation status and refresh auth</p>
+<pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8; overflow-x: auto; white-space: pre-wrap; word-wrap: break-word;" tabindex="0" data-language="bash"><code><span class="line"><span style="color:#6A737D"># Verify translation completed successfully</span></span>
+<span class="line"><span style="color:#B392F0">raps</span><span style="color:#9ECBFF"> translate</span><span style="color:#9ECBFF"> status</span><span style="color:#F97583"> &#x3C;</span><span style="color:#9ECBFF">ur</span><span style="color:#E1E4E8">n</span><span style="color:#F97583">></span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#6A737D"># Refresh authentication if needed</span></span>
+<span class="line"><span style="color:#B392F0">raps</span><span style="color:#9ECBFF"> auth</span><span style="color:#9ECBFF"> refresh</span></span></code></pre>
+<h3 id="issue-4-file-upload-fails">Issue 4: File Upload Fails</h3>
+<p><strong>Problem:</strong> File too large or network issues<br>
+<strong>Solution:</strong> Check file size and use resumable upload</p>
+<pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8; overflow-x: auto; white-space: pre-wrap; word-wrap: break-word;" tabindex="0" data-language="bash"><code><span class="line"><span style="color:#6A737D"># Check file size (max 100MB for standard upload)</span></span>
+<span class="line"><span style="color:#B392F0">ls</span><span style="color:#79B8FF"> -lh</span><span style="color:#9ECBFF"> model.rvt</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#6A737D"># Use chunked upload for large files</span></span>
+<span class="line"><span style="color:#B392F0">raps</span><span style="color:#9ECBFF"> oss</span><span style="color:#9ECBFF"> upload</span><span style="color:#9ECBFF"> model.rvt</span><span style="color:#9ECBFF"> my-bucket</span><span style="color:#79B8FF"> --chunked</span><span style="color:#79B8FF"> --chunk-size</span><span style="color:#9ECBFF"> 10MB</span></span></code></pre>
+<h3 id="issue-5-permission-denied">Issue 5: Permission Denied</h3>
+<p><strong>Problem:</strong> Missing required scopes<br>
+<strong>Solution:</strong> Re-authenticate with correct scopes</p>
+<pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8; overflow-x: auto; white-space: pre-wrap; word-wrap: break-word;" tabindex="0" data-language="bash"><code><span class="line"><span style="color:#6A737D"># Check current scopes</span></span>
+<span class="line"><span style="color:#B392F0">raps</span><span style="color:#9ECBFF"> auth</span><span style="color:#9ECBFF"> status</span><span style="color:#79B8FF"> --scopes</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#6A737D"># Re-login with required scopes</span></span>
+<span class="line"><span style="color:#B392F0">raps</span><span style="color:#9ECBFF"> auth</span><span style="color:#9ECBFF"> login</span><span style="color:#79B8FF"> --scopes</span><span style="color:#9ECBFF"> bucket:read,bucket:create,data:read,viewables:read</span></span></code></pre>
+<hr>
+<h2 id="performance-tips">Performance Tips</h2>
+<h3 id="1-use-svf2-format">1. Use SVF2 Format</h3>
+<p>SVF2 loads 50% faster than legacy SVF format:</p>
+<pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8; overflow-x: auto; white-space: pre-wrap; word-wrap: break-word;" tabindex="0" data-language="bash"><code><span class="line"><span style="color:#6A737D"># Always prefer SVF2 for new projects</span></span>
+<span class="line"><span style="color:#B392F0">raps</span><span style="color:#9ECBFF"> translate</span><span style="color:#F97583"> &#x3C;</span><span style="color:#9ECBFF">ur</span><span style="color:#E1E4E8">n</span><span style="color:#F97583">></span><span style="color:#79B8FF"> --formats</span><span style="color:#9ECBFF"> svf2</span></span></code></pre>
+<h3 id="2-pre-create-buckets">2. Pre-create Buckets</h3>
+<p>Create buckets once, reuse many times:</p>
+<pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8; overflow-x: auto; white-space: pre-wrap; word-wrap: break-word;" tabindex="0" data-language="bash"><code><span class="line"><span style="color:#6A737D"># Create project bucket</span></span>
+<span class="line"><span style="color:#B392F0">raps</span><span style="color:#9ECBFF"> bucket</span><span style="color:#9ECBFF"> create</span><span style="color:#9ECBFF"> my-project-models</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#6A737D"># Upload multiple files to same bucket</span></span>
+<span class="line"><span style="color:#B392F0">raps</span><span style="color:#9ECBFF"> oss</span><span style="color:#9ECBFF"> upload</span><span style="color:#9ECBFF"> model1.rvt</span><span style="color:#9ECBFF"> my-project-models</span></span>
+<span class="line"><span style="color:#B392F0">raps</span><span style="color:#9ECBFF"> oss</span><span style="color:#9ECBFF"> upload</span><span style="color:#9ECBFF"> model2.dwg</span><span style="color:#9ECBFF"> my-project-models</span></span></code></pre>
+<h3 id="3-batch-operations">3. Batch Operations</h3>
+<p>Process multiple files efficiently:</p>
+<pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8; overflow-x: auto; white-space: pre-wrap; word-wrap: break-word;" tabindex="0" data-language="bash"><code><span class="line"><span style="color:#6A737D"># Parallel uploads (faster than sequential)</span></span>
+<span class="line"><span style="color:#B392F0">raps</span><span style="color:#9ECBFF"> oss</span><span style="color:#9ECBFF"> upload-batch</span><span style="color:#79B8FF"> *</span><span style="color:#9ECBFF">.rvt</span><span style="color:#79B8FF"> --bucket</span><span style="color:#9ECBFF"> my-models</span><span style="color:#79B8FF"> --parallel</span><span style="color:#79B8FF"> 5</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#6A737D"># Batch translation with progress</span></span>
+<span class="line"><span style="color:#B392F0">raps</span><span style="color:#9ECBFF"> translate-batch</span><span style="color:#79B8FF"> --bucket</span><span style="color:#9ECBFF"> my-models</span><span style="color:#79B8FF"> --formats</span><span style="color:#9ECBFF"> svf2</span><span style="color:#79B8FF"> --parallel</span><span style="color:#79B8FF"> 3</span></span></code></pre>
+<h3 id="4-monitor-translation-queue">4. Monitor Translation Queue</h3>
+<p>Large files can take time to translate:</p>
+<pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8; overflow-x: auto; white-space: pre-wrap; word-wrap: break-word;" tabindex="0" data-language="bash"><code><span class="line"><span style="color:#6A737D"># Start translation without waiting</span></span>
+<span class="line"><span style="color:#B392F0">raps</span><span style="color:#9ECBFF"> translate</span><span style="color:#F97583"> &#x3C;</span><span style="color:#9ECBFF">ur</span><span style="color:#E1E4E8">n</span><span style="color:#F97583">></span><span style="color:#79B8FF"> --formats</span><span style="color:#9ECBFF"> svf2</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#6A737D"># Check status later</span></span>
+<span class="line"><span style="color:#B392F0">raps</span><span style="color:#9ECBFF"> translate</span><span style="color:#9ECBFF"> status</span><span style="color:#F97583"> &#x3C;</span><span style="color:#9ECBFF">ur</span><span style="color:#E1E4E8">n</span><span style="color:#F97583">></span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#6A737D"># Get notified when done (if webhooks set up)</span></span>
+<span class="line"><span style="color:#B392F0">raps</span><span style="color:#9ECBFF"> translate</span><span style="color:#F97583"> &#x3C;</span><span style="color:#9ECBFF">ur</span><span style="color:#E1E4E8">n</span><span style="color:#F97583">></span><span style="color:#79B8FF"> --notify-webhook</span><span style="color:#9ECBFF"> https://your-app.com/done</span></span></code></pre>
+<hr>
+<h2 id="advanced-scenarios">Advanced Scenarios</h2>
+<h3 id="scenario-1-assembly-files-with-dependencies">Scenario 1: Assembly Files with Dependencies</h3>
+<p>For CAD assemblies with multiple linked files:</p>
+<pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8; overflow-x: auto; white-space: pre-wrap; word-wrap: break-word;" tabindex="0" data-language="bash"><code><span class="line"><span style="color:#6A737D"># Upload all related files to same bucket</span></span>
+<span class="line"><span style="color:#B392F0">raps</span><span style="color:#9ECBFF"> oss</span><span style="color:#9ECBFF"> upload</span><span style="color:#9ECBFF"> main-assembly.iam</span><span style="color:#9ECBFF"> my-project</span></span>
+<span class="line"><span style="color:#B392F0">raps</span><span style="color:#9ECBFF"> oss</span><span style="color:#9ECBFF"> upload</span><span style="color:#9ECBFF"> part1.ipt</span><span style="color:#9ECBFF"> my-project</span><span style="color:#E1E4E8">  </span></span>
+<span class="line"><span style="color:#B392F0">raps</span><span style="color:#9ECBFF"> oss</span><span style="color:#9ECBFF"> upload</span><span style="color:#9ECBFF"> part2.ipt</span><span style="color:#9ECBFF"> my-project</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#6A737D"># Translate main assembly (will find dependencies automatically)</span></span>
+<span class="line"><span style="color:#B392F0">raps</span><span style="color:#9ECBFF"> translate</span><span style="color:#E1E4E8"> $(</span><span style="color:#B392F0">raps</span><span style="color:#9ECBFF"> urn</span><span style="color:#9ECBFF"> encode</span><span style="color:#9ECBFF"> "urn:adsk.objects:os.object:my-project:main-assembly.iam"</span><span style="color:#E1E4E8">) </span><span style="color:#79B8FF">--formats</span><span style="color:#9ECBFF"> svf2</span></span></code></pre>
+<h3 id="scenario-2-password-protected-files">Scenario 2: Password-Protected Files</h3>
+<p>For encrypted/password-protected CAD files:</p>
+<pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8; overflow-x: auto; white-space: pre-wrap; word-wrap: break-word;" tabindex="0" data-language="bash"><code><span class="line"><span style="color:#6A737D"># Include password in translation request</span></span>
+<span class="line"><span style="color:#B392F0">raps</span><span style="color:#9ECBFF"> translate</span><span style="color:#F97583"> &#x3C;</span><span style="color:#9ECBFF">ur</span><span style="color:#E1E4E8">n</span><span style="color:#F97583">></span><span style="color:#79B8FF"> --formats</span><span style="color:#9ECBFF"> svf2</span><span style="color:#79B8FF"> --password</span><span style="color:#9ECBFF"> "your-file-password"</span></span></code></pre>
+<h3 id="scenario-3-custom-viewer-integration">Scenario 3: Custom Viewer Integration</h3>
+<p>Generate embeddable viewer code for your website:</p>
+<pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8; overflow-x: auto; white-space: pre-wrap; word-wrap: break-word;" tabindex="0" data-language="bash"><code><span class="line"><span style="color:#6A737D"># Generate viewer HTML with custom options</span></span>
+<span class="line"><span style="color:#B392F0">raps</span><span style="color:#9ECBFF"> view</span><span style="color:#F97583"> &#x3C;</span><span style="color:#9ECBFF">ur</span><span style="color:#E1E4E8">n</span><span style="color:#F97583">></span><span style="color:#79B8FF"> --generate-embed</span><span style="color:#79B8FF"> --width</span><span style="color:#79B8FF"> 800</span><span style="color:#79B8FF"> --height</span><span style="color:#79B8FF"> 600</span><span style="color:#79B8FF"> --toolbar</span><span style="color:#9ECBFF"> minimal</span><span style="color:#F97583"> ></span><span style="color:#9ECBFF"> embed.html</span></span></code></pre>
+<h3 id="scenario-4-region-specific-deployment">Scenario 4: Region-Specific Deployment</h3>
+<p>For EMEA data residency requirements:</p>
+<pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8; overflow-x: auto; white-space: pre-wrap; word-wrap: break-word;" tabindex="0" data-language="bash"><code><span class="line"><span style="color:#6A737D"># Configure for European data centers</span></span>
+<span class="line"><span style="color:#B392F0">raps</span><span style="color:#9ECBFF"> config</span><span style="color:#9ECBFF"> set</span><span style="color:#9ECBFF"> region</span><span style="color:#9ECBFF"> emea</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#6A737D"># All subsequent operations use EMEA endpoints</span></span>
+<span class="line"><span style="color:#B392F0">raps</span><span style="color:#9ECBFF"> bucket</span><span style="color:#9ECBFF"> create</span><span style="color:#9ECBFF"> eu-project-models</span><span style="color:#79B8FF"> --region</span><span style="color:#9ECBFF"> emea</span></span></code></pre>
+<hr>
+<h2 id="cost-optimization">Cost Optimization</h2>
+<h3 id="understanding-aps-pricing">Understanding APS Pricing</h3>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<table><thead><tr><th>Operation</th><th>Cost Factor</th><th>RAPS Optimization</th></tr></thead><tbody><tr><td><strong>OSS Storage</strong></td><td>Per GB per month</td><td>Auto-cleanup old files</td></tr><tr><td><strong>Translation</strong></td><td>Per job</td><td>Batch processing</td></tr><tr><td><strong>Viewer</strong></td><td>Per view session</td><td>Token reuse</td></tr><tr><td><strong>API Calls</strong></td><td>Per request</td><td>Request batching</td></tr></tbody></table>
+<h3 id="cost-saving-tips">Cost-Saving Tips</h3>
+<pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8; overflow-x: auto; white-space: pre-wrap; word-wrap: break-word;" tabindex="0" data-language="bash"><code><span class="line"><span style="color:#6A737D"># Enable automatic cleanup of old translations</span></span>
+<span class="line"><span style="color:#B392F0">raps</span><span style="color:#9ECBFF"> config</span><span style="color:#9ECBFF"> set</span><span style="color:#9ECBFF"> cleanup.auto-delete-derivatives</span><span style="color:#79B8FF"> true</span></span>
+<span class="line"><span style="color:#B392F0">raps</span><span style="color:#9ECBFF"> config</span><span style="color:#9ECBFF"> set</span><span style="color:#9ECBFF"> cleanup.retention-days</span><span style="color:#79B8FF"> 30</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#6A737D"># Use transient buckets for temporary files</span></span>
+<span class="line"><span style="color:#B392F0">raps</span><span style="color:#9ECBFF"> bucket</span><span style="color:#9ECBFF"> create</span><span style="color:#9ECBFF"> temp-bucket</span><span style="color:#79B8FF"> --policy</span><span style="color:#9ECBFF"> transient</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#6A737D"># Monitor usage</span></span>
+<span class="line"><span style="color:#B392F0">raps</span><span style="color:#9ECBFF"> usage</span><span style="color:#9ECBFF"> report</span><span style="color:#79B8FF"> --period</span><span style="color:#9ECBFF"> last-month</span></span></code></pre>
+<hr>
+<h2 id="integration-examples">Integration Examples</h2>
+<h3 id="web-application-integration">Web Application Integration</h3>
+<pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8; overflow-x: auto; white-space: pre-wrap; word-wrap: break-word;" tabindex="0" data-language="javascript"><code><span class="line"><span style="color:#6A737D">// In your Node.js app</span></span>
+<span class="line"><span style="color:#F97583">const</span><span style="color:#E1E4E8"> { </span><span style="color:#79B8FF">exec</span><span style="color:#E1E4E8"> } </span><span style="color:#F97583">=</span><span style="color:#B392F0"> require</span><span style="color:#E1E4E8">(</span><span style="color:#9ECBFF">'child_process'</span><span style="color:#E1E4E8">);</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#6A737D">// Upload and translate via RAPS</span></span>
+<span class="line"><span style="color:#F97583">function</span><span style="color:#B392F0"> processCADFile</span><span style="color:#E1E4E8">(</span><span style="color:#FFAB70">filePath</span><span style="color:#E1E4E8">, </span><span style="color:#FFAB70">bucketName</span><span style="color:#E1E4E8">) {</span></span>
+<span class="line"><span style="color:#F97583">  return</span><span style="color:#F97583"> new</span><span style="color:#79B8FF"> Promise</span><span style="color:#E1E4E8">((</span><span style="color:#FFAB70">resolve</span><span style="color:#E1E4E8">, </span><span style="color:#FFAB70">reject</span><span style="color:#E1E4E8">) </span><span style="color:#F97583">=></span><span style="color:#E1E4E8"> {</span></span>
+<span class="line"><span style="color:#F97583">    const</span><span style="color:#79B8FF"> cmd</span><span style="color:#F97583"> =</span><span style="color:#9ECBFF"> `raps workflow upload-translate-view "${</span><span style="color:#E1E4E8">filePath</span><span style="color:#9ECBFF">}" --bucket ${</span><span style="color:#E1E4E8">bucketName</span><span style="color:#9ECBFF">} --output-urn`</span><span style="color:#E1E4E8">;</span></span>
+<span class="line"><span style="color:#E1E4E8">    </span></span>
+<span class="line"><span style="color:#B392F0">    exec</span><span style="color:#E1E4E8">(cmd, (</span><span style="color:#FFAB70">error</span><span style="color:#E1E4E8">, </span><span style="color:#FFAB70">stdout</span><span style="color:#E1E4E8">, </span><span style="color:#FFAB70">stderr</span><span style="color:#E1E4E8">) </span><span style="color:#F97583">=></span><span style="color:#E1E4E8"> {</span></span>
+<span class="line"><span style="color:#F97583">      if</span><span style="color:#E1E4E8"> (error) </span><span style="color:#B392F0">reject</span><span style="color:#E1E4E8">(error);</span></span>
+<span class="line"><span style="color:#F97583">      else</span><span style="color:#B392F0"> resolve</span><span style="color:#E1E4E8">(stdout.</span><span style="color:#B392F0">trim</span><span style="color:#E1E4E8">()); </span><span style="color:#6A737D">// Returns URN for viewer</span></span>
+<span class="line"><span style="color:#E1E4E8">    });</span></span>
+<span class="line"><span style="color:#E1E4E8">  });</span></span>
+<span class="line"><span style="color:#E1E4E8">}</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#6A737D">// Use in your route</span></span>
+<span class="line"><span style="color:#E1E4E8">app.</span><span style="color:#B392F0">post</span><span style="color:#E1E4E8">(</span><span style="color:#9ECBFF">'/upload-model'</span><span style="color:#E1E4E8">, </span><span style="color:#F97583">async</span><span style="color:#E1E4E8"> (</span><span style="color:#FFAB70">req</span><span style="color:#E1E4E8">, </span><span style="color:#FFAB70">res</span><span style="color:#E1E4E8">) </span><span style="color:#F97583">=></span><span style="color:#E1E4E8"> {</span></span>
+<span class="line"><span style="color:#F97583">  try</span><span style="color:#E1E4E8"> {</span></span>
+<span class="line"><span style="color:#F97583">    const</span><span style="color:#79B8FF"> urn</span><span style="color:#F97583"> =</span><span style="color:#F97583"> await</span><span style="color:#B392F0"> processCADFile</span><span style="color:#E1E4E8">(req.file.path, </span><span style="color:#9ECBFF">'user-models'</span><span style="color:#E1E4E8">);</span></span>
+<span class="line"><span style="color:#E1E4E8">    res.</span><span style="color:#B392F0">json</span><span style="color:#E1E4E8">({ urn, viewerUrl: </span><span style="color:#9ECBFF">`/viewer?urn=${</span><span style="color:#E1E4E8">urn</span><span style="color:#9ECBFF">}`</span><span style="color:#E1E4E8"> });</span></span>
+<span class="line"><span style="color:#E1E4E8">  } </span><span style="color:#F97583">catch</span><span style="color:#E1E4E8"> (error) {</span></span>
+<span class="line"><span style="color:#E1E4E8">    res.</span><span style="color:#B392F0">status</span><span style="color:#E1E4E8">(</span><span style="color:#79B8FF">500</span><span style="color:#E1E4E8">).</span><span style="color:#B392F0">json</span><span style="color:#E1E4E8">({ error: error.message });</span></span>
+<span class="line"><span style="color:#E1E4E8">  }</span></span>
+<span class="line"><span style="color:#E1E4E8">});</span></span></code></pre>
+<h3 id="cicd-pipeline-integration">CI/CD Pipeline Integration</h3>
+<pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8; overflow-x: auto; white-space: pre-wrap; word-wrap: break-word;" tabindex="0" data-language="yaml"><code><span class="line"><span style="color:#6A737D"># GitHub Actions example</span></span>
+<span class="line"><span style="color:#85E89D">name</span><span style="color:#E1E4E8">: </span><span style="color:#9ECBFF">Process CAD Models</span></span>
+<span class="line"><span style="color:#79B8FF">on</span><span style="color:#E1E4E8">:</span></span>
+<span class="line"><span style="color:#85E89D">  push</span><span style="color:#E1E4E8">:</span></span>
+<span class="line"><span style="color:#85E89D">    paths</span><span style="color:#E1E4E8">: [</span><span style="color:#9ECBFF">'models/**'</span><span style="color:#E1E4E8">]</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#85E89D">jobs</span><span style="color:#E1E4E8">:</span></span>
+<span class="line"><span style="color:#85E89D">  translate</span><span style="color:#E1E4E8">:</span></span>
+<span class="line"><span style="color:#85E89D">    runs-on</span><span style="color:#E1E4E8">: </span><span style="color:#9ECBFF">ubuntu-latest</span></span>
+<span class="line"><span style="color:#85E89D">    steps</span><span style="color:#E1E4E8">:</span></span>
+<span class="line"><span style="color:#E1E4E8">      - </span><span style="color:#85E89D">uses</span><span style="color:#E1E4E8">: </span><span style="color:#9ECBFF">actions/checkout@v3</span></span>
+<span class="line"><span style="color:#E1E4E8">      </span></span>
+<span class="line"><span style="color:#E1E4E8">      - </span><span style="color:#85E89D">name</span><span style="color:#E1E4E8">: </span><span style="color:#9ECBFF">Install RAPS</span></span>
+<span class="line"><span style="color:#85E89D">        run</span><span style="color:#E1E4E8">: </span><span style="color:#9ECBFF">curl -sSL https://rapscli.xyz/install.sh | sh</span></span>
+<span class="line"><span style="color:#E1E4E8">        </span></span>
+<span class="line"><span style="color:#E1E4E8">      - </span><span style="color:#85E89D">name</span><span style="color:#E1E4E8">: </span><span style="color:#9ECBFF">Authenticate</span></span>
+<span class="line"><span style="color:#85E89D">        run</span><span style="color:#E1E4E8">: </span><span style="color:#9ECBFF">raps auth login --client-id ${{ secrets.APS_CLIENT_ID }} --client-secret ${{ secrets.APS_CLIENT_SECRET }}</span></span>
+<span class="line"><span style="color:#E1E4E8">        </span></span>
+<span class="line"><span style="color:#E1E4E8">      - </span><span style="color:#85E89D">name</span><span style="color:#E1E4E8">: </span><span style="color:#9ECBFF">Process changed models</span></span>
+<span class="line"><span style="color:#85E89D">        run</span><span style="color:#E1E4E8">: </span><span style="color:#F97583">|</span></span>
+<span class="line"><span style="color:#9ECBFF">          for file in $(git diff --name-only HEAD~1 | grep '\.rvt$'); do</span></span>
+<span class="line"><span style="color:#9ECBFF">            echo "Processing $file..."</span></span>
+<span class="line"><span style="color:#9ECBFF">            raps workflow upload-translate-view "$file" --bucket ci-models</span></span>
+<span class="line"><span style="color:#9ECBFF">          done</span></span></code></pre>
+<hr>
+<h2 id="next-steps">Next Steps</h2>
+<h3 id="once-youve-mastered-this-workflow">Once you’ve mastered this workflow:</h3>
+<ol>
+<li>
+<p><strong>🎯 Try other recipes:</strong></p>
+<ul>
+<li><a href="./extract-properties.md">Extract Properties Recipe</a></li>
+<li><a href="./batch-translate.md">Batch Processing Recipe</a></li>
+<li><a href="./webhook-setup.md">Webhook Integration Recipe</a></li>
+</ul>
+</li>
+<li>
+<p><strong>📚 Learn advanced features:</strong></p>
+<ul>
+<li>Custom viewer extensions</li>
+<li>Property filtering and search</li>
+<li>Real-time collaboration</li>
+</ul>
+</li>
+<li>
+<p><strong>🚀 Scale your application:</strong></p>
+<ul>
+<li>Load balancing translation jobs</li>
+<li>Caching strategies</li>
+<li>Error recovery patterns</li>
+</ul>
+</li>
+</ol>
+<h3 id="resources">Resources</h3>
+<ul>
+<li><strong>RAPS Documentation:</strong> <a href="https://rapscli.xyz/docs/">rapscli.xyz/docs</a></li>
+<li><strong>APS Viewer SDK:</strong> <a href="https://aps.autodesk.com/developer/documentation">aps.autodesk.com/developer/documentation</a></li>
+<li><strong>Community Support:</strong> <a href="https://discord.gg/raps-community">discord.gg/raps-community</a></li>
+</ul>
+<hr>
+<p><strong>💡 Pro Tip:</strong> Save time by creating aliases for common workflows:</p>
+<pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8; overflow-x: auto; white-space: pre-wrap; word-wrap: break-word;" tabindex="0" data-language="bash"><code><span class="line"><span style="color:#6A737D"># Add to your .bashrc or .zshrc</span></span>
+<span class="line"><span style="color:#F97583">alias</span><span style="color:#E1E4E8"> translate-view</span><span style="color:#F97583">=</span><span style="color:#9ECBFF">'raps workflow upload-translate-view'</span></span>
+<span class="line"><span style="color:#F97583">alias</span><span style="color:#E1E4E8"> quick-upload</span><span style="color:#F97583">=</span><span style="color:#9ECBFF">'raps oss upload'</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#6A737D"># Then use like:</span></span>
+<span class="line"><span style="color:#B392F0">translate-view</span><span style="color:#9ECBFF"> my-model.rvt</span><span style="color:#79B8FF"> --bucket</span><span style="color:#9ECBFF"> project-alpha</span></span></code></pre>
+<hr>
+<p><em>Last verified: January 2026 | RAPS v4.2.1 | APS APIs: OSS v2, Model Derivative v2, Viewer v7</em><br>
+<em>This recipe works with all major CAD formats. For format-specific notes, see the <a href="../references/supported-formats.md">APS Format Support Guide</a>.</em></p> </div> <nav class="mt-12 pt-8 border-t border-gray-200" data-astro-cid-z3wdsy7t> <a href="/recipes" class="btn btn-secondary" data-astro-cid-z3wdsy7t>
+← Back to Recipes
+</a> </nav> </div> </article>  </main> <footer class="bg-gray-50 border-t border-gray-200 mt-20" data-astro-cid-37fxchfa> <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12" data-astro-cid-37fxchfa> <div class="grid grid-cols-1 md:grid-cols-4 gap-8" data-astro-cid-37fxchfa> <div data-astro-cid-37fxchfa> <h3 class="font-semibold text-gray-900 mb-4" data-astro-cid-37fxchfa>Product</h3> <ul class="space-y-2" data-astro-cid-37fxchfa> <li data-astro-cid-37fxchfa><a href="/features" class="text-gray-600 hover:text-raps-blue" data-astro-cid-37fxchfa>Features</a></li> <li data-astro-cid-37fxchfa><a href="/pricing" class="text-gray-600 hover:text-raps-blue" data-astro-cid-37fxchfa>Pricing</a></li> <li data-astro-cid-37fxchfa><a href="/changelog" class="text-gray-600 hover:text-raps-blue" data-astro-cid-37fxchfa>Changelog</a></li> <li data-astro-cid-37fxchfa><a href="/roadmap" class="text-gray-600 hover:text-raps-blue" data-astro-cid-37fxchfa>Roadmap</a></li> </ul> </div> <div data-astro-cid-37fxchfa> <h3 class="font-semibold text-gray-900 mb-4" data-astro-cid-37fxchfa>Resources</h3> <ul class="space-y-2" data-astro-cid-37fxchfa> <li data-astro-cid-37fxchfa><a href="/docs" class="text-gray-600 hover:text-raps-blue" data-astro-cid-37fxchfa>Documentation</a></li> <li data-astro-cid-37fxchfa><a href="/guides" class="text-gray-600 hover:text-raps-blue" data-astro-cid-37fxchfa>Guides</a></li> <li data-astro-cid-37fxchfa><a href="/articles" class="text-gray-600 hover:text-raps-blue" data-astro-cid-37fxchfa>Articles</a></li> <li data-astro-cid-37fxchfa><a href="/tools" class="text-gray-600 hover:text-raps-blue" data-astro-cid-37fxchfa>Tools</a></li> </ul> </div> <div data-astro-cid-37fxchfa> <h3 class="font-semibold text-gray-900 mb-4" data-astro-cid-37fxchfa>Community</h3> <ul class="space-y-2" data-astro-cid-37fxchfa> <li data-astro-cid-37fxchfa><a href="https://github.com" class="text-gray-600 hover:text-raps-blue" data-astro-cid-37fxchfa>GitHub</a></li> <li data-astro-cid-37fxchfa><a href="https://discord.gg" class="text-gray-600 hover:text-raps-blue" data-astro-cid-37fxchfa>Discord</a></li> <li data-astro-cid-37fxchfa><a href="https://twitter.com" class="text-gray-600 hover:text-raps-blue" data-astro-cid-37fxchfa>Twitter</a></li> <li data-astro-cid-37fxchfa><a href="/blog" class="text-gray-600 hover:text-raps-blue" data-astro-cid-37fxchfa>Blog</a></li> </ul> </div> <div data-astro-cid-37fxchfa> <h3 class="font-semibold text-gray-900 mb-4" data-astro-cid-37fxchfa>Company</h3> <ul class="space-y-2" data-astro-cid-37fxchfa> <li data-astro-cid-37fxchfa><a href="/about" class="text-gray-600 hover:text-raps-blue" data-astro-cid-37fxchfa>About</a></li> <li data-astro-cid-37fxchfa><a href="/contact" class="text-gray-600 hover:text-raps-blue" data-astro-cid-37fxchfa>Contact</a></li> <li data-astro-cid-37fxchfa><a href="/privacy" class="text-gray-600 hover:text-raps-blue" data-astro-cid-37fxchfa>Privacy</a></li> <li data-astro-cid-37fxchfa><a href="/terms" class="text-gray-600 hover:text-raps-blue" data-astro-cid-37fxchfa>Terms</a></li> </ul> </div> </div> <div class="mt-8 pt-8 border-t border-gray-200" data-astro-cid-37fxchfa> <p class="text-center text-gray-600" data-astro-cid-37fxchfa>
+© 2026 RAPS CLI. Professional APS Automation Tools.
+</p> </div> </div> </footer> </body></html> 

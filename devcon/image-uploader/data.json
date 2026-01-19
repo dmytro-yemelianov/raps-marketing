@@ -1,0 +1,134 @@
+{
+  "articles": [
+    {
+      "id": "1257",
+      "title": "AI Pair-Assistant for APS Operators",
+      "subtitle": "The End of Scripts?",
+      "filename": "1257-ai-pair-assistant",
+      "themes": ["AI", "MCP", "Natural Language", "Developer Tools"],
+      "prompts": [
+        {
+          "id": "hero",
+          "name": "Hero Image",
+          "description": "Main presentation slide banner",
+          "prompt": "Professional tech conference presentation slide hero image. A developer at a modern workstation with dual monitors. One monitor shows an AI chat interface with code suggestions, the other shows a 3D building model (BIM). Holographic UI elements float between screens showing API calls and data flows. Dark theme with cyan and green accent colors. Corporate professional style. Text overlay: \"AI Pair-Assistant\" and \"Autodesk DevCon\" logo in corner. 16:9 aspect ratio."
+        },
+        {
+          "id": "conversation",
+          "name": "Conversation Flow",
+          "description": "Shows AI-human dialogue for APS operations",
+          "prompt": "Clean minimalist illustration showing a conversation flow between a human and AI assistant. Chat bubbles on left show natural language questions like 'Create a bucket for my project' and 'Check translation status'. On right side, visual representations of APS operations: cloud storage buckets, 3D model icons, progress indicators. Connected by flowing lines. Dark background with glowing cyan and purple accents. Modern tech aesthetic. Text: 'Talk to Your Cloud' and small 'Autodesk DevCon' watermark. 16:9 ratio."
+        },
+        {
+          "id": "mcp-diagram",
+          "name": "MCP Architecture",
+          "description": "Technical diagram showing MCP connection",
+          "prompt": "Technical architecture diagram style illustration. Center shows 'MCP Server' as a glowing hub. On left: AI assistant icons (Claude, Cursor IDE) connected with arrows. On right: APS API icons (buckets, files, 3D models, buildings). Data flows visualized as particle streams. Circuit board pattern background. Dark theme with neon green connection lines. Clean, corporate infographic style. Labels: 'AI Assistants', 'MCP Protocol', 'APS APIs'. Small 'Autodesk DevCon 2026' badge. 16:9 aspect ratio."
+        },
+        {
+          "id": "before-after",
+          "name": "Before/After Comparison",
+          "description": "Shows old way vs new AI-assisted way",
+          "prompt": "Split screen comparison image. LEFT side labeled 'Before': frustrated developer surrounded by browser tabs, documentation, Postman, cluttered desk, red/orange stressed colors, clock showing 11 PM. RIGHT side labeled 'After': calm developer with single AI chat window, 3D building model displayed, green/cyan peaceful colors, coffee cup steaming. Clean modern illustration style. Dark background. Text: 'The Future of APS Development'. Autodesk DevCon branding. 16:9 ratio."
+        }
+      ]
+    },
+    {
+      "id": "1258",
+      "title": "Zero to Production",
+      "subtitle": "Shipping an AI-Ready APS CLI in 30 Min",
+      "filename": "1258-zero-to-production",
+      "themes": ["CLI", "Speedrun", "Developer Tools", "Installation"],
+      "prompts": [
+        {
+          "id": "hero",
+          "name": "Hero Image",
+          "description": "Main presentation slide with rocket/speed theme",
+          "prompt": "Professional tech conference presentation slide hero image. A stylized terminal/CLI interface in the center with a rocket ship launching from it. Multiple floating terminal windows showing commands like 'raps auth login', 'raps bucket create', progress bars at 100%. Speed lines and motion blur effects suggesting rapid deployment. Dark theme with neon green and cyan terminal colors. Text overlay: 'Zero to Production' in bold, 'Speedrun' subtitle, and 'Autodesk DevCon' logo. 16:9 aspect ratio."
+        },
+        {
+          "id": "speedrun",
+          "name": "Speedrun Timer",
+          "description": "Gaming speedrun aesthetic with timer",
+          "prompt": "Gaming speedrun stream overlay aesthetic. Large digital timer showing '00:30:00' in the corner. Terminal window in center showing CLI commands being typed rapidly with green text. Split indicators showing completed stages: 'Install ✓', 'Configure ✓', 'Auth ✓', 'Upload ✓', 'Translate ✓'. Pixel art elements mixed with modern UI. Purple and green neon colors. Twitch/gaming stream vibe. Text: 'Zero to Production Speedrun'. Autodesk DevCon badge. 16:9 ratio."
+        },
+        {
+          "id": "installation",
+          "name": "Multi-Platform Install",
+          "description": "Shows multiple installation methods",
+          "prompt": "Clean infographic showing 6 installation paths converging to center. Icons for: npm (red), pip (blue), Homebrew (yellow beer mug), Scoop (blue bucket), Cargo (orange crab), curl/bash (green terminal). All arrows pointing to central 'raps' logo. Package manager logos floating in space. Dark gradient background with subtle grid. Modern flat design with slight 3D depth. Text: 'Choose Your Adventure'. Autodesk DevCon 2026 watermark. 16:9 aspect ratio."
+        },
+        {
+          "id": "workflow",
+          "name": "CLI Workflow",
+          "description": "Shows the command flow from install to production",
+          "prompt": "Horizontal workflow diagram with 5 connected stages. Stage 1: Download icon with 'Install'. Stage 2: Key icon with 'Configure'. Stage 3: Lock icon with 'Authenticate'. Stage 4: Cloud upload icon with 'Upload & Translate'. Stage 5: Rocket icon with 'Production'. Connected by glowing progress line. Each stage has small terminal snippet below it. Dark theme with gradient from blue (start) to green (end). Futuristic tech style. Text: 'From Zero to Hero'. Autodesk DevCon logo. 16:9 ratio."
+        }
+      ]
+    },
+    {
+      "id": "1259",
+      "title": "ACC at Enterprise Scale",
+      "subtitle": "Automating the Impossible",
+      "filename": "1259-acc-enterprise-scale",
+      "themes": ["Enterprise", "Automation", "Bulk Operations", "ACC"],
+      "prompts": [
+        {
+          "id": "hero",
+          "name": "Hero Image",
+          "description": "Enterprise scale with world map and projects",
+          "prompt": "Professional tech conference presentation slide hero image. A large enterprise control center dashboard showing multiple construction projects on a world map. Automated workflow pipelines visualized as flowing data streams connecting different ACC modules (Issues, RFIs, Submittals). Robot arms or automation icons managing multiple project cards simultaneously. Dark theme with orange and blue enterprise colors. Scale indicators showing '10,000+ users' and '500+ projects'. Text overlay: 'ACC at Enterprise Scale' and 'Autodesk DevCon' logo. 16:9 aspect ratio."
+        },
+        {
+          "id": "bulk-ops",
+          "name": "Bulk Operations",
+          "description": "Shows mass parallel operations",
+          "prompt": "Visual representation of bulk operations at scale. Central command terminal with ripple effects spreading outward to hundreds of small project icons arranged in a grid. Each project icon briefly lights up green as it's processed. Progress counter showing '127/127 projects updated'. Particle effects suggesting data flow. Dark background with matrix-style falling code elements. Orange and teal accent colors. Text: 'One Command. 127 Projects. 2 Minutes.' Autodesk DevCon branding. 16:9 ratio."
+        },
+        {
+          "id": "time-savings",
+          "name": "ROI / Time Savings",
+          "description": "Before/after time comparison",
+          "prompt": "Dramatic comparison infographic. LEFT: Hourglass nearly empty, stressed stick figure clicking repeatedly, clock showing many hours, red warning colors, text '6-10 hours'. RIGHT: Hourglass full, relaxed figure with coffee, clock showing 2 minutes, green success colors, text '2 minutes'. Large arrow between them labeled 'Automation'. Calculator showing '$540K/year saved' at bottom. Clean corporate infographic style. Dark background. Text: 'The Math That Matters'. Autodesk DevCon 2026. 16:9 ratio."
+        },
+        {
+          "id": "acc-modules",
+          "name": "ACC Module Coverage",
+          "description": "Shows all ACC modules supported",
+          "prompt": "Hexagonal honeycomb arrangement of ACC module icons. Each hexagon contains an icon and label: Issues (warning triangle), RFIs (question mark), Submittals (document stack), Checklists (checkbox), Assets (barcode), Account Admin (users group). All hexagons connected by glowing lines to central 'raps CLI' hub. Dark theme with Autodesk orange accents. Clean flat design with subtle gradients. Badge showing '35+ MCP Tools'. Text: 'Complete ACC Coverage'. Autodesk DevCon logo. 16:9 aspect ratio."
+        }
+      ]
+    }
+  ],
+  "outputFormats": [
+    {
+      "id": "hero",
+      "suffix": "-hero",
+      "description": "Main hero/banner image for the article"
+    },
+    {
+      "id": "social",
+      "suffix": "-social",
+      "description": "Social media thumbnail (LinkedIn, Twitter)"
+    },
+    {
+      "id": "diagram",
+      "suffix": "-diagram",
+      "description": "Technical diagram or infographic"
+    }
+  ],
+  "brandGuidelines": {
+    "colors": {
+      "primary": "#00d4aa",
+      "secondary": "#ffd700",
+      "accent": "#ff6b35",
+      "background": "#1a1a2e"
+    },
+    "requiredElements": [
+      "Autodesk DevCon branding",
+      "16:9 aspect ratio",
+      "Dark theme preferred",
+      "Professional/corporate style"
+    ]
+  }
+}

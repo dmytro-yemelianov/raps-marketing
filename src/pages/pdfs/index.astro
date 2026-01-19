@@ -1,0 +1,170 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+
+const pdfs = [
+  {
+    title: 'APS Developer Cheatsheet',
+    description: 'Quick reference for Autodesk Platform Services APIs, authentication, and common workflows',
+    filename: 'aps-cheatsheet.pdf',
+    pages: 5,
+    category: 'Reference',
+    icon: '📋'
+  },
+  {
+    title: 'APS Error Codes Reference',
+    description: 'Comprehensive guide to APS error codes with explanations and solutions',
+    filename: 'aps-error-codes-reference.pdf',
+    pages: 12,
+    category: 'Troubleshooting',
+    icon: '🔍'
+  },
+  {
+    title: 'APS OAuth Scopes Reference',
+    description: 'Complete reference for OAuth scopes and permissions in the Autodesk Platform Services',
+    filename: 'aps-oauth-scopes-reference.pdf',
+    pages: 8,
+    category: 'Authentication',
+    icon: '🔐'
+  },
+  {
+    title: 'Forge to APS Migration Guide',
+    description: 'Step-by-step guide for migrating from Forge to Autodesk Platform Services',
+    filename: 'forge-to-aps-migration-guide.pdf',
+    pages: 16,
+    category: 'Migration',
+    icon: '🔄'
+  },
+  {
+    title: 'RAPS Developer Quickstart',
+    description: 'Get started with RAPS CLI in minutes. Installation, configuration, and first API calls',
+    filename: 'raps-developer-quickstart.pdf',
+    pages: 10,
+    category: 'Getting Started',
+    icon: '🚀'
+  }
+];
+
+const categories = {
+  'Getting Started': pdfs.filter(pdf => pdf.category === 'Getting Started'),
+  'Reference': pdfs.filter(pdf => pdf.category === 'Reference'),
+  'Authentication': pdfs.filter(pdf => pdf.category === 'Authentication'),
+  'Migration': pdfs.filter(pdf => pdf.category === 'Migration'),
+  'Troubleshooting': pdfs.filter(pdf => pdf.category === 'Troubleshooting'),
+};
+---
+
+<BaseLayout 
+  title="PDF Resources - Downloadable APS Documentation"
+  description="Free downloadable PDF guides for Autodesk Platform Services development. Cheatsheets, references, and migration guides."
+>
+  <div class="hero-pattern py-12">
+    <div class="content-container">
+      <h1 class="text-4xl md:text-5xl font-bold text-center mb-4">
+        <span class="gradient-text">PDF Resources</span>
+      </h1>
+      <p class="text-xl text-gray-600 text-center max-w-3xl mx-auto">
+        Downloadable guides, references, and cheatsheets for APS development
+      </p>
+    </div>
+  </div>
+
+  <div class="content-container py-12">
+    <!-- Featured Downloads -->
+    <section class="mb-16">
+      <h2 class="text-2xl font-bold mb-8 text-center">Most Popular Downloads</h2>
+      <div class="grid md:grid-cols-2 gap-8">
+        {pdfs.filter(pdf => ['aps-cheatsheet.pdf', 'raps-developer-quickstart.pdf'].includes(pdf.filename)).map(pdf => (
+          <div class="card p-6 bg-gradient-to-r from-raps-blue to-raps-purple text-white">
+            <div class="flex items-start justify-between mb-4">
+              <div class="text-4xl">{pdf.icon}</div>
+              <span class="bg-white/20 backdrop-blur px-2 py-1 text-sm rounded">
+                {pdf.pages} pages
+              </span>
+            </div>
+            <h3 class="text-xl font-semibold mb-2">
+              {pdf.title}
+            </h3>
+            <p class="mb-4 opacity-90">
+              {pdf.description}
+            </p>
+            <div class="flex items-center justify-between">
+              <span class="text-sm opacity-75">{pdf.category}</span>
+              <a 
+                href={`/pdfs/${pdf.filename}`}
+                download
+                class="btn bg-white text-raps-blue hover:bg-gray-100"
+              >
+                Download PDF
+              </a>
+            </div>
+          </div>
+        ))}
+      </div>
+    </section>
+
+    <!-- All PDFs by Category -->
+    {Object.entries(categories).filter(([_, categoryPdfs]) => categoryPdfs.length > 0).map(([categoryName, categoryPdfs]) => (
+      <section class="mb-12">
+        <h2 class="text-2xl font-bold mb-6">{categoryName}</h2>
+        <div class="space-y-4">
+          {categoryPdfs.map(pdf => (
+            <div class="card p-6 hover:shadow-lg transition-shadow">
+              <div class="flex items-center justify-between">
+                <div class="flex items-center space-x-4">
+                  <div class="text-3xl">{pdf.icon}</div>
+                  <div>
+                    <h3 class="text-lg font-semibold mb-1">{pdf.title}</h3>
+                    <p class="text-gray-600 text-sm mb-2">{pdf.description}</p>
+                    <span class="text-xs text-gray-500">{pdf.pages} pages • PDF</span>
+                  </div>
+                </div>
+                <a 
+                  href={`/pdfs/${pdf.filename}`}
+                  download
+                  class="btn btn-primary"
+                >
+                  Download
+                </a>
+              </div>
+            </div>
+          ))}
+        </div>
+      </section>
+    ))}
+
+    <!-- Usage Tips -->
+    <div class="bg-blue-50 rounded-2xl p-8 mt-16">
+      <h2 class="text-2xl font-bold text-center mb-6">How to Use These Resources</h2>
+      <div class="grid md:grid-cols-3 gap-6 text-center">
+        <div>
+          <div class="text-3xl mb-2">📱</div>
+          <h3 class="font-semibold mb-1">Mobile Friendly</h3>
+          <p class="text-sm text-gray-600">Optimized for reading on phones and tablets</p>
+        </div>
+        <div>
+          <div class="text-3xl mb-2">🖨️</div>
+          <h3 class="font-semibold mb-1">Print Ready</h3>
+          <p class="text-sm text-gray-600">High-quality layouts perfect for printing</p>
+        </div>
+        <div>
+          <div class="text-3xl mb-2">🔄</div>
+          <h3 class="font-semibold mb-1">Always Updated</h3>
+          <p class="text-sm text-gray-600">Regenerated automatically with latest information</p>
+        </div>
+      </div>
+    </div>
+
+    <!-- CTA -->
+    <div class="text-center mt-12">
+      <p class="text-gray-600 mb-4">
+        Need help getting started with RAPS CLI?
+      </p>
+      <a href="/guides/quickstart" class="btn btn-primary mr-4">
+        View Online Guide
+      </a>
+      <a href="/tools" class="btn btn-secondary">
+        Try Interactive Tools
+      </a>
+    </div>
+  </div>
+</BaseLayout>

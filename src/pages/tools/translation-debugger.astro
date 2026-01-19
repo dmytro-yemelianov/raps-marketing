@@ -1,0 +1,348 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+---
+
+<BaseLayout 
+  title="APS Translation Debugger Tool"
+  description="Debug file translation issues, check job status, and analyze Model Derivative conversion problems"
+>
+  <div class="content-container py-12">
+    <div class="max-w-4xl mx-auto">
+      <div class="text-center mb-8">
+        <h1 class="text-4xl font-bold gradient-text mb-4">
+          APS Translation Debugger
+        </h1>
+        <p class="text-lg text-gray-600">
+          Debug file translation issues and analyze Model Derivative conversion problems
+        </p>
+      </div>
+
+      <div class="card p-8">
+        <div class="grid md:grid-cols-2 gap-8">
+          <!-- Input Section -->
+          <div>
+            <h2 class="text-2xl font-semibold mb-4">Translation Job Info</h2>
+            <div class="space-y-4">
+              <div>
+                <label class="block text-sm font-medium text-gray-700 mb-2">
+                  Encoded URN or Object ID:
+                </label>
+                <textarea 
+                  id="urn-input" 
+                  class="w-full h-24 p-3 border border-gray-300 rounded-lg font-mono text-sm resize-none focus:ring-2 focus:ring-raps-blue focus:border-transparent"
+                  placeholder="dXJuOmFkc2sub2JqZWN0czpvcy5vYmplY3Q6... or urn:adsk.objects:os.object:bucket/file.dwg"
+                ></textarea>
+              </div>
+              
+              <div>
+                <label class="block text-sm font-medium text-gray-700 mb-2">
+                  Access Token (optional for debugging):
+                </label>
+                <input 
+                  type="password" 
+                  id="token-input"
+                  class="w-full p-3 border border-gray-300 rounded-lg font-mono text-sm focus:ring-2 focus:ring-raps-blue focus:border-transparent"
+                  placeholder="eyJhbGciOiJSUzI1NiIsImtpZCI6Ik..."
+                />
+              </div>
+              
+              <button id="debug-btn" class="btn btn-primary w-full">
+                🔧 Debug Translation
+              </button>
+
+              <div class="bg-blue-50 p-4 rounded-lg">
+                <h3 class="font-semibold mb-2 text-blue-800">🛠️ Debug Without Token</h3>
+                <p class="text-sm text-blue-700">
+                  This tool can analyze URN format and provide debugging guidance even without an access token.
+                </p>
+              </div>
+            </div>
+          </div>
+
+          <!-- Results Section -->
+          <div>
+            <h2 class="text-2xl font-semibold mb-4">Debug Results</h2>
+            <div id="debug-results" class="space-y-4">
+              <div class="text-gray-500 text-center py-8">
+                Enter a URN or Object ID to start debugging
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Common Issues Reference -->
+        <div class="mt-12 bg-red-50 rounded-lg p-6">
+          <h3 class="text-xl font-semibold mb-4 text-red-800">🚨 Common Translation Issues</h3>
+          <div class="grid md:grid-cols-2 gap-6 text-sm">
+            <div>
+              <h4 class="font-semibold mb-2">File Format Issues</h4>
+              <ul class="space-y-1 text-gray-600">
+                <li>• <strong>Unsupported format:</strong> Check APS supported formats list</li>
+                <li>• <strong>Corrupted file:</strong> Try opening locally first</li>
+                <li>• <strong>Password protected:</strong> Remove password before upload</li>
+                <li>• <strong>File too large:</strong> Check size limits (5GB for most formats)</li>
+              </ul>
+            </div>
+            <div>
+              <h4 class="font-semibold mb-2">API Issues</h4>
+              <ul class="space-y-1 text-gray-600">
+                <li>• <strong>Invalid URN:</strong> Ensure proper Base64 encoding</li>
+                <li>• <strong>Missing scopes:</strong> Require viewables:read + code:all</li>
+                <li>• <strong>Token expired:</strong> Refresh authentication</li>
+                <li>• <strong>Rate limiting:</strong> Implement retry with backoff</li>
+              </ul>
+            </div>
+          </div>
+        </div>
+
+        <!-- Status Codes Reference -->
+        <div class="mt-6 bg-gray-50 rounded-lg p-6">
+          <h3 class="text-xl font-semibold mb-4">📋 Translation Status Codes</h3>
+          <div class="grid md:grid-cols-2 gap-6 text-sm">
+            <div>
+              <h4 class="font-semibold mb-2">Success States</h4>
+              <ul class="space-y-1">
+                <li><code class="bg-green-100 text-green-800 px-1 rounded">inprogress</code> - Translation running</li>
+                <li><code class="bg-green-100 text-green-800 px-1 rounded">success</code> - Completed successfully</li>
+                <li><code class="bg-green-100 text-green-800 px-1 rounded">complete</code> - All derivatives ready</li>
+              </ul>
+            </div>
+            <div>
+              <h4 class="font-semibold mb-2">Error States</h4>
+              <ul class="space-y-1">
+                <li><code class="bg-red-100 text-red-800 px-1 rounded">failed</code> - Translation failed</li>
+                <li><code class="bg-red-100 text-red-800 px-1 rounded">timeout</code> - Operation timed out</li>
+                <li><code class="bg-yellow-100 text-yellow-800 px-1 rounded">partial</code> - Some derivatives failed</li>
+              </ul>
+            </div>
+          </div>
+        </div>
+
+        <!-- RAPS Integration -->
+        <div class="mt-6 bg-green-50 rounded-lg p-6">
+          <h3 class="text-xl font-semibold mb-4 text-green-800">🤖 Debug with RAPS CLI</h3>
+          <div class="space-y-2 text-sm">
+            <p class="text-green-700 mb-3">
+              RAPS provides comprehensive debugging tools:
+            </p>
+            <div class="font-mono text-xs bg-gray-800 text-green-400 p-3 rounded space-y-1">
+              <div># Check translation status</div>
+              <div>raps translate status YOUR_URN</div>
+              <div></div>
+              <div># Get detailed manifest</div>
+              <div>raps translate manifest YOUR_URN --verbose</div>
+              <div></div>
+              <div># Debug with retry and logging</div>
+              <div>raps translate YOUR_URN --debug --retry 3</div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Back Navigation -->
+      <div class="mt-8 text-center">
+        <a href="/tools" class="btn btn-secondary">
+          ← Back to Tools
+        </a>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    document.addEventListener('DOMContentLoaded', function() {
+      const urnInput = document.getElementById('urn-input');
+      const tokenInput = document.getElementById('token-input');
+      const debugBtn = document.getElementById('debug-btn');
+      const resultsDiv = document.getElementById('debug-results');
+
+      function isValidBase64(str) {
+        try {
+          return btoa(atob(str)) === str;
+        } catch (err) {
+          return false;
+        }
+      }
+
+      function isValidUrn(str) {
+        const urnPattern = /^urn:adsk\./;
+        return urnPattern.test(str);
+      }
+
+      function decodeUrn(encoded) {
+        try {
+          // Handle URL-safe base64
+          let base64 = encoded.replace(/-/g, '+').replace(/_/g, '/');
+          while (base64.length % 4) {
+            base64 += '=';
+          }
+          return atob(base64);
+        } catch (error) {
+          return null;
+        }
+      }
+
+      function analyzeUrn(input) {
+        const analysis = {
+          original: input.trim(),
+          isEncoded: false,
+          isValidUrn: false,
+          decoded: null,
+          issues: [],
+          recommendations: []
+        };
+
+        if (!input.trim()) {
+          analysis.issues.push('No URN provided');
+          return analysis;
+        }
+
+        // Check if input is Base64 encoded
+        if (!input.startsWith('urn:')) {
+          analysis.isEncoded = true;
+          const decoded = decodeUrn(input);
+          
+          if (decoded) {
+            analysis.decoded = decoded;
+            if (isValidUrn(decoded)) {
+              analysis.isValidUrn = true;
+            } else {
+              analysis.issues.push('Decoded URN does not match expected format');
+            }
+          } else {
+            analysis.issues.push('Invalid Base64 encoding');
+            analysis.recommendations.push('Verify the URN is properly encoded');
+          }
+        } else {
+          // Input appears to be a plain URN
+          analysis.decoded = input;
+          if (isValidUrn(input)) {
+            analysis.isValidUrn = true;
+          } else {
+            analysis.issues.push('URN format appears invalid');
+          }
+        }
+
+        // Additional validation
+        if (analysis.decoded) {
+          if (!analysis.decoded.includes('objects:os.object:') && 
+              !analysis.decoded.includes('wipprod:') && 
+              !analysis.decoded.includes('fs.file:')) {
+            analysis.issues.push('URN type may not support translation');
+            analysis.recommendations.push('Ensure URN points to a translatable file type');
+          }
+
+          if (analysis.decoded.length > 500) {
+            analysis.issues.push('URN unusually long - may indicate corruption');
+          }
+        }
+
+        return analysis;
+      }
+
+      function renderDebugResults(analysis, hasToken) {
+        const { original, isEncoded, isValidUrn, decoded, issues, recommendations } = analysis;
+        
+        let html = `
+          <!-- URN Analysis -->
+          <div class="bg-white border rounded-lg p-4">
+            <h3 class="font-semibold mb-3 flex items-center">
+              ${isValidUrn ? '✅' : '❌'} URN Analysis
+            </h3>
+            <div class="space-y-2 text-sm">
+              <div><strong>Format:</strong> ${isEncoded ? 'Base64 Encoded' : 'Plain URN'}</div>
+              <div><strong>Valid URN:</strong> ${isValidUrn ? 'Yes' : 'No'}</div>
+              ${decoded ? `<div><strong>Decoded:</strong><br><code class="text-xs break-all">${decoded}</code></div>` : ''}
+            </div>
+          </div>
+        `;
+
+        if (issues.length > 0) {
+          html += `
+            <div class="bg-red-50 border border-red-200 rounded-lg p-4">
+              <h3 class="font-semibold mb-3 text-red-800">⚠️ Issues Found</h3>
+              <ul class="space-y-1 text-sm text-red-700">
+                ${issues.map(issue => `<li>• ${issue}</li>`).join('')}
+              </ul>
+            </div>
+          `;
+        }
+
+        if (recommendations.length > 0) {
+          html += `
+            <div class="bg-yellow-50 border border-yellow-200 rounded-lg p-4">
+              <h3 class="font-semibold mb-3 text-yellow-800">💡 Recommendations</h3>
+              <ul class="space-y-1 text-sm text-yellow-700">
+                ${recommendations.map(rec => `<li>• ${rec}</li>`).join('')}
+              </ul>
+            </div>
+          `;
+        }
+
+        if (isValidUrn) {
+          html += `
+            <div class="bg-green-50 border border-green-200 rounded-lg p-4">
+              <h3 class="font-semibold mb-3 text-green-800">✅ Next Steps</h3>
+              <div class="space-y-2 text-sm text-green-700">
+                <p><strong>API Endpoint:</strong></p>
+                <code class="block text-xs bg-white p-2 rounded">GET /modelderivative/v2/designdata/${isEncoded ? original : btoa(original).replace(/=/g, '')}/manifest</code>
+                
+                <p class="pt-2"><strong>Required Scopes:</strong></p>
+                <div class="flex flex-wrap gap-1">
+                  <span class="px-2 py-1 bg-blue-100 text-blue-800 text-xs rounded">viewables:read</span>
+                  <span class="px-2 py-1 bg-blue-100 text-blue-800 text-xs rounded">data:read</span>
+                </div>
+                
+                ${!hasToken ? `
+                <p class="pt-2"><strong>With RAPS:</strong></p>
+                <code class="block text-xs bg-gray-800 text-green-400 p-2 rounded">raps translate status "${decoded || original}"</code>
+                ` : ''}
+              </div>
+            </div>
+          `;
+        }
+
+        if (!hasToken) {
+          html += `
+            <div class="bg-blue-50 border border-blue-200 rounded-lg p-4">
+              <h3 class="font-semibold mb-3 text-blue-800">🔑 Live Testing</h3>
+              <p class="text-sm text-blue-700 mb-2">
+                To test actual translation status, provide an access token above or use RAPS CLI:
+              </p>
+              <code class="block text-xs bg-gray-800 text-green-400 p-2 rounded">
+                raps auth login --scopes "viewables:read data:read"<br>
+                raps translate status "${decoded || original}"
+              </code>
+            </div>
+          `;
+        }
+
+        resultsDiv.innerHTML = html;
+      }
+
+      function performDebug() {
+        const urn = urnInput.value.trim();
+        const token = tokenInput.value.trim();
+
+        if (!urn) {
+          resultsDiv.innerHTML = '<div class="text-red-600 text-center py-8">Please enter a URN or Object ID</div>';
+          return;
+        }
+
+        const analysis = analyzeUrn(urn);
+        renderDebugResults(analysis, !!token);
+
+        // If token is provided, could make actual API calls here
+        // For now, we just provide debugging guidance
+      }
+
+      debugBtn.addEventListener('click', performDebug);
+      
+      // Auto-debug on URN input
+      urnInput.addEventListener('input', () => {
+        if (urnInput.value.trim()) {
+          performDebug();
+        }
+      });
+    });
+  </script>
+</BaseLayout>

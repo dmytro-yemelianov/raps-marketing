@@ -1,0 +1,892 @@
+<!DOCTYPE html><html lang="en" data-astro-cid-37fxchfa> <head><meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><link rel="icon" type="image/svg+xml" href="/favicon.svg"><meta name="generator" content="Astro v5.16.7"><!-- Primary Meta Tags --><title>Forge to APS Migration Guide | RAPS CLI</title><meta name="title" content="Forge to APS Migration Guide | RAPS CLI"><meta name="description" content="Complete guide for migrating from legacy Autodesk Forge APIs to modern Autodesk Platform Services (APS)"><!-- Open Graph / Facebook --><meta property="og:type" content="website"><meta property="og:url" content="https://rapscli.xyz/guides/forge-to-aps-migration/"><meta property="og:title" content="Forge to APS Migration Guide | RAPS CLI"><meta property="og:description" content="Complete guide for migrating from legacy Autodesk Forge APIs to modern Autodesk Platform Services (APS)"><meta property="og:image" content="https://rapscli.xyz/og-image.png"><!-- Twitter --><meta property="twitter:card" content="summary_large_image"><meta property="twitter:url" content="https://rapscli.xyz/guides/forge-to-aps-migration/"><meta property="twitter:title" content="Forge to APS Migration Guide | RAPS CLI"><meta property="twitter:description" content="Complete guide for migrating from legacy Autodesk Forge APIs to modern Autodesk Platform Services (APS)"><meta property="twitter:image" content="https://rapscli.xyz/og-image.png"><!-- Canonical URL --><link rel="canonical" href="https://rapscli.xyz/guides/forge-to-aps-migration/"><!-- Fonts --><link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin><link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet"><link rel="stylesheet" href="/_astro/_slug_.LJOPbm0E.css">
+<style>.prose[data-astro-cid-oolc5s6i]{color:#374151}.prose[data-astro-cid-oolc5s6i] h1[data-astro-cid-oolc5s6i],.prose[data-astro-cid-oolc5s6i] h2[data-astro-cid-oolc5s6i],.prose[data-astro-cid-oolc5s6i] h3[data-astro-cid-oolc5s6i],.prose[data-astro-cid-oolc5s6i] h4[data-astro-cid-oolc5s6i]{color:#111827}.prose[data-astro-cid-oolc5s6i] h2[data-astro-cid-oolc5s6i]{margin-top:2rem;margin-bottom:1rem;scroll-margin-top:5rem;font-size:1.5rem;line-height:2rem;font-weight:700}.prose[data-astro-cid-oolc5s6i] h3[data-astro-cid-oolc5s6i]{margin-top:1.5rem;margin-bottom:.75rem;scroll-margin-top:5rem;font-size:1.25rem;line-height:1.75rem;font-weight:600}.prose[data-astro-cid-oolc5s6i] p[data-astro-cid-oolc5s6i]{margin-bottom:1rem}.prose[data-astro-cid-oolc5s6i] ul[data-astro-cid-oolc5s6i],.prose[data-astro-cid-oolc5s6i] ol[data-astro-cid-oolc5s6i]{margin-bottom:1rem;margin-left:1.5rem}.prose[data-astro-cid-oolc5s6i] li[data-astro-cid-oolc5s6i]{margin-bottom:.25rem}.prose[data-astro-cid-oolc5s6i] blockquote[data-astro-cid-oolc5s6i]{margin-top:1.5rem;margin-bottom:1.5rem;border-left-width:4px;--tw-border-opacity: 1;border-color:rgb(102 126 234 / var(--tw-border-opacity, 1));--tw-bg-opacity: 1;background-color:rgb(239 246 255 / var(--tw-bg-opacity, 1));padding:.5rem 1rem;font-style:italic}.prose[data-astro-cid-oolc5s6i] code[data-astro-cid-oolc5s6i]{border-radius:.25rem;--tw-bg-opacity: 1;background-color:rgb(243 244 246 / var(--tw-bg-opacity, 1));padding:.125rem .25rem;font-family:Consolas,Monaco,monospace;font-size:.875rem;line-height:1.25rem;--tw-text-opacity: 1;color:rgb(102 126 234 / var(--tw-text-opacity, 1))}.prose[data-astro-cid-oolc5s6i] pre[data-astro-cid-oolc5s6i]{margin-top:1.5rem;margin-bottom:1.5rem;overflow-x:auto;border-radius:.5rem;--tw-bg-opacity: 1;background-color:rgb(17 24 39 / var(--tw-bg-opacity, 1));padding:1rem;--tw-text-opacity: 1;color:rgb(243 244 246 / var(--tw-text-opacity, 1))}.prose[data-astro-cid-oolc5s6i] pre[data-astro-cid-oolc5s6i] code[data-astro-cid-oolc5s6i]{background-color:transparent;padding:0;--tw-text-opacity: 1;color:rgb(243 244 246 / var(--tw-text-opacity, 1))}.prose[data-astro-cid-oolc5s6i] a[data-astro-cid-oolc5s6i]{--tw-text-opacity: 1;color:rgb(102 126 234 / var(--tw-text-opacity, 1))}.prose[data-astro-cid-oolc5s6i] a[data-astro-cid-oolc5s6i]:hover{text-decoration-line:underline}.prose[data-astro-cid-oolc5s6i] table[data-astro-cid-oolc5s6i]{margin-top:1.5rem;margin-bottom:1.5rem;width:100%;border-collapse:collapse;border-width:1px;--tw-border-opacity: 1;border-color:rgb(209 213 219 / var(--tw-border-opacity, 1))}.prose[data-astro-cid-oolc5s6i] th[data-astro-cid-oolc5s6i],.prose[data-astro-cid-oolc5s6i] td[data-astro-cid-oolc5s6i]{border-width:1px;--tw-border-opacity: 1;border-color:rgb(209 213 219 / var(--tw-border-opacity, 1));padding:.5rem .75rem;text-align:left}.prose[data-astro-cid-oolc5s6i] th[data-astro-cid-oolc5s6i]{--tw-bg-opacity: 1;background-color:rgb(243 244 246 / var(--tw-bg-opacity, 1));font-weight:600}.prose[data-astro-cid-oolc5s6i] img[data-astro-cid-oolc5s6i]{margin-top:1.5rem;margin-bottom:1.5rem;border-radius:.5rem;--tw-shadow: 0 4px 6px -1px rgb(0 0 0 / .1), 0 2px 4px -2px rgb(0 0 0 / .1);--tw-shadow-colored: 0 4px 6px -1px var(--tw-shadow-color), 0 2px 4px -2px var(--tw-shadow-color);box-shadow:var(--tw-ring-offset-shadow, 0 0 #0000),var(--tw-ring-shadow, 0 0 #0000),var(--tw-shadow)}
+</style></head> <body class="min-h-screen bg-white" data-astro-cid-37fxchfa> <nav class="sticky top-0 z-50 bg-white/95 backdrop-blur border-b border-gray-200" data-astro-cid-37fxchfa> <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8" data-astro-cid-37fxchfa> <div class="flex justify-between items-center h-16" data-astro-cid-37fxchfa> <div class="flex items-center" data-astro-cid-37fxchfa> <a href="/" class="flex items-center space-x-2" data-astro-cid-37fxchfa> <span class="text-2xl font-bold bg-gradient-to-r from-raps-blue to-raps-purple bg-clip-text text-transparent" data-astro-cid-37fxchfa>
+RAPS
+</span> <span class="text-gray-500" data-astro-cid-37fxchfa>v4.2.1</span> </a> </div> <nav class="hidden md:flex items-center space-x-8" data-astro-cid-37fxchfa> <a href="/articles" class="text-gray-700 hover:text-raps-blue transition" data-astro-cid-37fxchfa>Articles</a> <a href="/guides" class="text-gray-700 hover:text-raps-blue transition" data-astro-cid-37fxchfa>Guides</a> <a href="/recipes" class="text-gray-700 hover:text-raps-blue transition" data-astro-cid-37fxchfa>Recipes</a> <a href="/tools" class="text-gray-700 hover:text-raps-blue transition" data-astro-cid-37fxchfa>Tools</a> <a href="/pdfs" class="text-gray-700 hover:text-raps-blue transition" data-astro-cid-37fxchfa>PDFs</a> <div class="relative group" data-astro-cid-37fxchfa> <button class="text-gray-700 hover:text-raps-blue transition flex items-center" data-astro-cid-37fxchfa>
+Strategy <span class="ml-1 text-xs" data-astro-cid-37fxchfa>▼</span> </button> <div class="absolute top-full left-0 mt-2 w-48 bg-white shadow-lg rounded-lg opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all" data-astro-cid-37fxchfa> <a href="/analytics" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-50" data-astro-cid-37fxchfa>📊 Analytics</a> <a href="/campaigns" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-50" data-astro-cid-37fxchfa>🎯 Campaigns</a> <a href="/strategy" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-50" data-astro-cid-37fxchfa>📋 Strategy</a> <a href="/community" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-50" data-astro-cid-37fxchfa>👥 Community</a> <a href="/press" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-50" data-astro-cid-37fxchfa>📰 Press</a> <a href="/calendar" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-50" data-astro-cid-37fxchfa>📅 Calendar</a> </div> </div> <a href="https://github.com/autodesk-platform-services/raps" class="text-gray-700 hover:text-raps-blue transition" data-astro-cid-37fxchfa>
+GitHub
+</a> <a href="https://github.com/autodesk-platform-services/raps/releases" class="px-4 py-2 bg-gradient-to-r from-raps-blue to-raps-purple text-white rounded-lg hover:shadow-lg transition" data-astro-cid-37fxchfa>
+Download
+</a> </nav> <button class="md:hidden p-2 rounded-lg hover:bg-gray-100" data-astro-cid-37fxchfa> <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" data-astro-cid-37fxchfa> <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16" data-astro-cid-37fxchfa></path> </svg> </button> </div> </div> </nav> <main data-astro-cid-37fxchfa>  <article class="content-container py-12" data-astro-cid-oolc5s6i> <div class="max-w-4xl mx-auto" data-astro-cid-oolc5s6i> <!-- Guide Header --> <header class="mb-8" data-astro-cid-oolc5s6i> <div class="flex items-center text-sm text-gray-500 mb-4" data-astro-cid-oolc5s6i> <a href="/guides" class="hover:text-raps-blue" data-astro-cid-oolc5s6i>Guides</a> <span class="mx-2" data-astro-cid-oolc5s6i>→</span> <span class="capitalize" data-astro-cid-oolc5s6i>advanced</span> <span class="mx-2" data-astro-cid-oolc5s6i>→</span> <span data-astro-cid-oolc5s6i>Current</span> </div> <div class="flex items-center gap-4 mb-4" data-astro-cid-oolc5s6i> <span class="px-3 py-1 text-sm rounded-full bg-yellow-100 text-yellow-800" data-astro-cid-oolc5s6i> intermediate </span> <span class="text-sm text-gray-500" data-astro-cid-oolc5s6i> 15 min read
+</span> </div> <h1 class="text-4xl md:text-5xl font-bold mb-4" data-astro-cid-oolc5s6i> Forge to APS Migration Guide </h1> <p class="text-xl text-gray-600 mb-6" data-astro-cid-oolc5s6i> Complete guide for migrating from legacy Autodesk Forge APIs to modern Autodesk Platform Services (APS) </p> </header> <!-- Table of Contents (if content has headings) --> <nav class="bg-gray-50 rounded-lg p-6 mb-8" data-astro-cid-oolc5s6i> <h2 class="text-lg font-semibold mb-4 flex items-center" data-astro-cid-oolc5s6i> <span class="text-2xl mr-2" data-astro-cid-oolc5s6i>📋</span>
+Table of Contents
+</h2> <div id="toc" class="text-sm" data-astro-cid-oolc5s6i> <!-- TOC will be populated by JavaScript --> </div> </nav> <!-- Guide Content --> <div class="prose prose-lg prose-gray max-w-none" data-astro-cid-oolc5s6i> <h1 id="forge-to-aps-migration-guide">Forge to APS Migration Guide</h1>
+<p><strong>Complete step-by-step guide for migrating from legacy Autodesk Forge APIs to modern Autodesk Platform Services (APS)</strong></p>
+<blockquote>
+<p>⚠️ <strong>Important:</strong> Forge APIs are being phased out. New applications should use APS APIs. Existing Forge applications must migrate by December 31, 2026.</p>
+</blockquote>
+<hr>
+<h2 id="migration-overview">Migration Overview</h2>
+<h3 id="whats-changing">What’s Changing</h3>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<table><thead><tr><th>Aspect</th><th>Forge (Legacy)</th><th>APS (Current)</th><th>Impact</th></tr></thead><tbody><tr><td><strong>Base URL</strong></td><td><code>developer.api.autodesk.com</code></td><td><code>developer.api.autodesk.com</code></td><td>No change</td></tr><tr><td><strong>Branding</strong></td><td>”Forge"</td><td>"Autodesk Platform Services”</td><td>Marketing/docs only</td></tr><tr><td><strong>API Endpoints</strong></td><td>Mixed versions</td><td>Standardized versions</td><td>Some endpoints updated</td></tr><tr><td><strong>Authentication</strong></td><td>OAuth 2.0</td><td>OAuth 2.0</td><td>Scope format changes</td></tr><tr><td><strong>SDKs</strong></td><td>Forge SDKs</td><td>APS SDKs</td><td>Package names changed</td></tr><tr><td><strong>Documentation</strong></td><td>forge.autodesk.com</td><td>aps.autodesk.com</td><td>New doc site</td></tr></tbody></table>
+<h3 id="what-stays-the-same">What Stays the Same</h3>
+<p>✅ <strong>OAuth 2.0 flow</strong> - Same authentication mechanism<br>
+✅ <strong>Core API functionality</strong> - Same capabilities<br>
+✅ <strong>File formats</strong> - Same supported formats<br>
+✅ <strong>Data structure</strong> - Same JSON responses<br>
+✅ <strong>Rate limits</strong> - Same throttling rules</p>
+<hr>
+<h2 id="api-endpoint-migration">API Endpoint Migration</h2>
+<h3 id="authentication-api">Authentication API</h3>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<table><thead><tr><th>Forge Endpoint</th><th>APS Endpoint</th><th>Status</th><th>Notes</th></tr></thead><tbody><tr><td><code>/authentication/v1/authenticate</code></td><td><code>/authentication/v2/token</code></td><td>✅ <strong>Updated</strong></td><td>New version required</td></tr><tr><td><code>/authentication/v1/authorize</code></td><td><code>/authentication/v2/authorize</code></td><td>✅ <strong>Updated</strong></td><td>New version required</td></tr></tbody></table>
+<p><strong>Migration Steps:</strong></p>
+<ol>
+<li>Update endpoint URLs to use <code>/v2/</code> instead of <code>/v1/</code></li>
+<li>Update scope format (see OAuth Scopes section)</li>
+<li>Handle new response structure</li>
+</ol>
+<p><strong>RAPS Migration:</strong></p>
+<pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8; overflow-x: auto; white-space: pre-wrap; word-wrap: break-word;" tabindex="0" data-language="bash"><code><span class="line"><span style="color:#6A737D"># Old Forge authentication</span></span>
+<span class="line"><span style="color:#B392F0">curl</span><span style="color:#79B8FF"> -X</span><span style="color:#9ECBFF"> POST</span><span style="color:#9ECBFF"> "https://developer.api.autodesk.com/authentication/v1/authenticate"</span><span style="color:#79B8FF"> \</span></span>
+<span class="line"><span style="color:#79B8FF">  -H</span><span style="color:#9ECBFF"> "Content-Type: application/x-www-form-urlencoded"</span><span style="color:#79B8FF"> \</span></span>
+<span class="line"><span style="color:#79B8FF">  -d</span><span style="color:#9ECBFF"> "client_id=</span><span style="color:#E1E4E8">$CLIENT_ID</span><span style="color:#9ECBFF">&#x26;client_secret=</span><span style="color:#E1E4E8">$CLIENT_SECRET</span><span style="color:#9ECBFF">&#x26;grant_type=client_credentials&#x26;scope=data:read"</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#6A737D"># With RAPS (handles APS v2 automatically)</span></span>
+<span class="line"><span style="color:#B392F0">raps</span><span style="color:#9ECBFF"> auth</span><span style="color:#9ECBFF"> login</span><span style="color:#79B8FF"> --scopes</span><span style="color:#9ECBFF"> data:read</span></span></code></pre>
+<h3 id="data-management-api">Data Management API</h3>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<table><thead><tr><th>Forge Endpoint</th><th>APS Endpoint</th><th>Status</th><th>Notes</th></tr></thead><tbody><tr><td><code>/project/v1/*</code></td><td><code>/project/v1/*</code></td><td>✅ <strong>No change</strong></td><td>Same endpoints</td></tr><tr><td><code>/data/v1/*</code></td><td><code>/data/v1/*</code></td><td>✅ <strong>No change</strong></td><td>Same endpoints</td></tr></tbody></table>
+<p><strong>Migration Steps:</strong></p>
+<ul>
+<li>✅ No changes required for Data Management API endpoints</li>
+<li>Update authentication to use v2 tokens</li>
+</ul>
+<h3 id="model-derivative-api">Model Derivative API</h3>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<table><thead><tr><th>Forge Endpoint</th><th>APS Endpoint</th><th>Status</th><th>Notes</th></tr></thead><tbody><tr><td><code>/modelderivative/v2/*</code></td><td><code>/modelderivative/v2/*</code></td><td>✅ <strong>No change</strong></td><td>Same endpoints</td></tr></tbody></table>
+<p><strong>Migration Steps:</strong></p>
+<ul>
+<li>✅ No changes required for Model Derivative API endpoints</li>
+<li>Update authentication to use v2 tokens</li>
+</ul>
+<h3 id="object-storage-service-oss">Object Storage Service (OSS)</h3>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<table><thead><tr><th>Forge Endpoint</th><th>APS Endpoint</th><th>Status</th><th>Notes</th></tr></thead><tbody><tr><td><code>/oss/v2/*</code></td><td><code>/oss/v2/*</code></td><td>✅ <strong>No change</strong></td><td>Same endpoints</td></tr></tbody></table>
+<p><strong>Migration Steps:</strong></p>
+<ul>
+<li>✅ No changes required for OSS API endpoints</li>
+<li>Update authentication to use v2 tokens</li>
+</ul>
+<h3 id="design-automation-api">Design Automation API</h3>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<table><thead><tr><th>Forge Endpoint</th><th>APS Endpoint</th><th>Status</th><th>Notes</th></tr></thead><tbody><tr><td><code>/da/us-east/v2/*</code></td><td><code>/da/us-east/v3/*</code></td><td>⚠️ <strong>Updated</strong></td><td>Version bump required</td></tr></tbody></table>
+<p><strong>Migration Steps:</strong></p>
+<ol>
+<li>Update endpoint URLs to use <code>/v3/</code> instead of <code>/v2/</code></li>
+<li>Review breaking changes in v3 API</li>
+<li>Update WorkItem and Activity definitions</li>
+</ol>
+<p><strong>RAPS Migration:</strong></p>
+<pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8; overflow-x: auto; white-space: pre-wrap; word-wrap: break-word;" tabindex="0" data-language="bash"><code><span class="line"><span style="color:#6A737D"># Check current DA API version</span></span>
+<span class="line"><span style="color:#B392F0">raps</span><span style="color:#9ECBFF"> da</span><span style="color:#9ECBFF"> engines</span><span style="color:#79B8FF"> --version</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#6A737D"># RAPS automatically uses DA v3</span></span>
+<span class="line"><span style="color:#B392F0">raps</span><span style="color:#9ECBFF"> da</span><span style="color:#9ECBFF"> create-activity</span><span style="color:#9ECBFF"> MyActivity</span><span style="color:#79B8FF"> --engine</span><span style="color:#9ECBFF"> Autodesk.AutoCAD+24</span></span></code></pre>
+<hr>
+<h2 id="oauth-scopes-migration">OAuth Scopes Migration</h2>
+<h3 id="scope-format-changes">Scope Format Changes</h3>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<table><thead><tr><th>Forge Scope (v1)</th><th>APS Scope (v2)</th><th>Notes</th></tr></thead><tbody><tr><td><code>data:read</code></td><td><code>data:read</code></td><td>✅ No change</td></tr><tr><td><code>data:write</code></td><td><code>data:write</code></td><td>✅ No change</td></tr><tr><td><code>data:create</code></td><td><code>data:create</code></td><td>✅ No change</td></tr><tr><td><code>bucket:read</code></td><td><code>bucket:read</code></td><td>✅ No change</td></tr><tr><td><code>bucket:create</code></td><td><code>bucket:create</code></td><td>✅ No change</td></tr><tr><td><code>bucket:delete</code></td><td><code>bucket:delete</code></td><td>✅ No change</td></tr><tr><td><code>code:all</code></td><td><code>code:all</code></td><td>✅ No change</td></tr><tr><td><code>viewables:read</code></td><td><code>viewables:read</code></td><td>✅ No change</td></tr><tr><td><code>account:read</code></td><td><code>account:read</code></td><td>✅ No change</td></tr><tr><td><code>account:write</code></td><td><code>account:write</code></td><td>✅ No change</td></tr></tbody></table>
+<p><strong>Good News:</strong> OAuth scopes are identical between Forge and APS! No changes needed.</p>
+<h3 id="token-structure">Token Structure</h3>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<table><thead><tr><th>Aspect</th><th>Forge</th><th>APS</th><th>Migration Required?</th></tr></thead><tbody><tr><td><strong>Token format</strong></td><td>JWT</td><td>JWT</td><td>✅ No</td></tr><tr><td><strong>Expiration</strong></td><td>3600 seconds</td><td>3600 seconds</td><td>✅ No</td></tr><tr><td><strong>Refresh tokens</strong></td><td>Supported</td><td>Supported</td><td>✅ No</td></tr><tr><td><strong>Scope validation</strong></td><td>Same</td><td>Same</td><td>✅ No</td></tr></tbody></table>
+<hr>
+<h2 id="sdk-migration">SDK Migration</h2>
+<h3 id="javascriptnodejs">JavaScript/Node.js</h3>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<table><thead><tr><th>Forge Package</th><th>APS Package</th><th>Install Command</th></tr></thead><tbody><tr><td><code>forge-apis</code></td><td><code>autodesk-aps-sdk</code></td><td><code>npm install autodesk-aps-sdk</code></td></tr><tr><td><code>forge-data-management</code></td><td><code>@aps/data-management</code></td><td><code>npm install @aps/data-management</code></td></tr></tbody></table>
+<p><strong>Code Changes:</strong></p>
+<pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8; overflow-x: auto; white-space: pre-wrap; word-wrap: break-word;" tabindex="0" data-language="javascript"><code><span class="line"><span style="color:#6A737D">// Old Forge SDK</span></span>
+<span class="line"><span style="color:#F97583">const</span><span style="color:#79B8FF"> ForgeSDK</span><span style="color:#F97583"> =</span><span style="color:#B392F0"> require</span><span style="color:#E1E4E8">(</span><span style="color:#9ECBFF">'forge-apis'</span><span style="color:#E1E4E8">);</span></span>
+<span class="line"><span style="color:#F97583">const</span><span style="color:#79B8FF"> forgeApi</span><span style="color:#F97583"> =</span><span style="color:#F97583"> new</span><span style="color:#E1E4E8"> ForgeSDK.</span><span style="color:#B392F0">AuthClientTwoLegged</span><span style="color:#E1E4E8">(clientId, clientSecret, scopes);</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#6A737D">// New APS SDK</span></span>
+<span class="line"><span style="color:#F97583">const</span><span style="color:#79B8FF"> APS</span><span style="color:#F97583"> =</span><span style="color:#B392F0"> require</span><span style="color:#E1E4E8">(</span><span style="color:#9ECBFF">'autodesk-aps-sdk'</span><span style="color:#E1E4E8">);</span></span>
+<span class="line"><span style="color:#F97583">const</span><span style="color:#79B8FF"> apsApi</span><span style="color:#F97583"> =</span><span style="color:#F97583"> new</span><span style="color:#79B8FF"> APS</span><span style="color:#E1E4E8">.</span><span style="color:#B392F0">AuthenticationClient</span><span style="color:#E1E4E8">(clientId, clientSecret, scopes);</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#6A737D">// With RAPS (no SDK needed for prototyping)</span></span>
+<span class="line"><span style="color:#6A737D">// raps auth login &#x26;&#x26; raps dm projects</span></span></code></pre>
+<h3 id="net">.NET</h3>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<table><thead><tr><th>Forge Package</th><th>APS Package</th><th>Install Command</th></tr></thead><tbody><tr><td><code>Autodesk.Forge</code></td><td><code>Autodesk.APS.SDK</code></td><td><code>dotnet add package Autodesk.APS.SDK</code></td></tr></tbody></table>
+<h3 id="python">Python</h3>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<table><thead><tr><th>Forge Package</th><th>APS Package</th><th>Install Command</th></tr></thead><tbody><tr><td><code>forge-python-wrapper</code></td><td><code>autodesk-aps-python</code></td><td><code>pip install autodesk-aps-python</code></td></tr></tbody></table>
+<h3 id="java">Java</h3>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<table><thead><tr><th>Forge Package</th><th>APS Package</th><th>Install Command</th></tr></thead><tbody><tr><td><code>forge-java-sdk</code></td><td><code>aps-java-sdk</code></td><td>Maven/Gradle dependency update</td></tr></tbody></table>
+<hr>
+<h2 id="documentation-migration">Documentation Migration</h2>
+<h3 id="url-changes">URL Changes</h3>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<table><thead><tr><th>Forge Resource</th><th>APS Resource</th><th>Notes</th></tr></thead><tbody><tr><td><code>forge.autodesk.com</code></td><td><code>aps.autodesk.com</code></td><td>Main documentation</td></tr><tr><td><code>learnforge.autodesk.io</code></td><td><code>tutorials.autodesk.io</code></td><td>Tutorials moved</td></tr><tr><td><code>forge-tutorials.autodesk.io</code></td><td><code>tutorials.autodesk.io/tutorials/</code></td><td>Path updated</td></tr><tr><td>GitHub: <code>autodesk-forge/*</code></td><td>GitHub: <code>autodesk-platform-services/*</code></td><td>Repo organization</td></tr></tbody></table>
+<h3 id="postman-collections">Postman Collections</h3>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<table><thead><tr><th>Collection</th><th>Forge</th><th>APS</th></tr></thead><tbody><tr><td><strong>Download</strong></td><td><a href="https://github.com/Autodesk-Forge/forge-api-postman-collection">Forge Postman</a></td><td><a href="https://github.com/autodesk-platform-services/aps-api-postman-collection">APS Postman</a></td></tr><tr><td><strong>Base URL</strong></td><td>Variable: <code>{{forge_base_url}}</code></td><td>Variable: <code>{{aps_base_url}}</code></td></tr></tbody></table>
+<hr>
+<h2 id="migration-checklist">Migration Checklist</h2>
+<h3 id="phase-1-assessment-week-1">Phase 1: Assessment (Week 1)</h3>
+<ul class="contains-task-list">
+<li class="task-list-item">
+<p><input type="checkbox" disabled> <strong>Audit current Forge usage</strong></p>
+<ul class="contains-task-list">
+<li class="task-list-item"><input type="checkbox" disabled> List all APIs currently used</li>
+<li class="task-list-item"><input type="checkbox" disabled> Identify authentication flows</li>
+<li class="task-list-item"><input type="checkbox" disabled> Document current scopes</li>
+<li class="task-list-item"><input type="checkbox" disabled> List SDK dependencies</li>
+</ul>
+</li>
+<li class="task-list-item">
+<p><input type="checkbox" disabled> <strong>Check compatibility</strong></p>
+<ul class="contains-task-list">
+<li class="task-list-item"><input type="checkbox" disabled> Review API version requirements</li>
+<li class="task-list-item"><input type="checkbox" disabled> Verify scope requirements unchanged</li>
+<li class="task-list-item"><input type="checkbox" disabled> Test current tokens with APS endpoints</li>
+</ul>
+</li>
+<li class="task-list-item">
+<p><input type="checkbox" disabled> <strong>Plan migration timeline</strong></p>
+<ul class="contains-task-list">
+<li class="task-list-item"><input type="checkbox" disabled> Prioritize critical applications</li>
+<li class="task-list-item"><input type="checkbox" disabled> Schedule testing phases</li>
+<li class="task-list-item"><input type="checkbox" disabled> Plan rollback strategy</li>
+</ul>
+</li>
+</ul>
+<p><strong>RAPS Assessment:</strong></p>
+<pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8; overflow-x: auto; white-space: pre-wrap; word-wrap: break-word;" tabindex="0" data-language="bash"><code><span class="line"><span style="color:#6A737D"># Test current setup compatibility</span></span>
+<span class="line"><span style="color:#B392F0">raps</span><span style="color:#9ECBFF"> auth</span><span style="color:#9ECBFF"> migrate-assessment</span><span style="color:#79B8FF"> --forge-credentials</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#6A737D"># Generate migration report</span></span>
+<span class="line"><span style="color:#B392F0">raps</span><span style="color:#9ECBFF"> migrate</span><span style="color:#9ECBFF"> plan</span><span style="color:#79B8FF"> --current-apis</span><span style="color:#9ECBFF"> forge</span><span style="color:#79B8FF"> --target-apis</span><span style="color:#9ECBFF"> aps</span></span></code></pre>
+<h3 id="phase-2-development-environment-week-2">Phase 2: Development Environment (Week 2)</h3>
+<ul class="contains-task-list">
+<li class="task-list-item">
+<p><input type="checkbox" disabled> <strong>Update development environment</strong></p>
+<ul class="contains-task-list">
+<li class="task-list-item"><input type="checkbox" disabled> Install new APS SDKs</li>
+<li class="task-list-item"><input type="checkbox" disabled> Update base URLs to use APS endpoints</li>
+<li class="task-list-item"><input type="checkbox" disabled> Update authentication to v2</li>
+<li class="task-list-item"><input type="checkbox" disabled> Test with development credentials</li>
+</ul>
+</li>
+<li class="task-list-item">
+<p><input type="checkbox" disabled> <strong>Code changes</strong></p>
+<ul class="contains-task-list">
+<li class="task-list-item"><input type="checkbox" disabled> Update package dependencies</li>
+<li class="task-list-item"><input type="checkbox" disabled> Replace Forge SDK calls with APS equivalents</li>
+<li class="task-list-item"><input type="checkbox" disabled> Update error handling for new responses</li>
+<li class="task-list-item"><input type="checkbox" disabled> Update logging and monitoring</li>
+</ul>
+</li>
+</ul>
+<p><strong>RAPS Development Testing:</strong></p>
+<pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8; overflow-x: auto; white-space: pre-wrap; word-wrap: break-word;" tabindex="0" data-language="bash"><code><span class="line"><span style="color:#6A737D"># Set up APS development profile</span></span>
+<span class="line"><span style="color:#B392F0">raps</span><span style="color:#9ECBFF"> config</span><span style="color:#9ECBFF"> create-profile</span><span style="color:#9ECBFF"> dev-aps</span></span>
+<span class="line"><span style="color:#B392F0">raps</span><span style="color:#9ECBFF"> auth</span><span style="color:#9ECBFF"> login</span><span style="color:#79B8FF"> --profile</span><span style="color:#9ECBFF"> dev-aps</span><span style="color:#79B8FF"> --scopes</span><span style="color:#9ECBFF"> data:read,data:write,viewables:read</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#6A737D"># Test common workflows</span></span>
+<span class="line"><span style="color:#B392F0">raps</span><span style="color:#9ECBFF"> dm</span><span style="color:#9ECBFF"> projects</span><span style="color:#79B8FF"> --profile</span><span style="color:#9ECBFF"> dev-aps</span></span>
+<span class="line"><span style="color:#B392F0">raps</span><span style="color:#9ECBFF"> translate</span><span style="color:#F97583"> &#x3C;</span><span style="color:#9ECBFF">test-ur</span><span style="color:#E1E4E8">n</span><span style="color:#F97583">></span><span style="color:#79B8FF"> --profile</span><span style="color:#9ECBFF"> dev-aps</span><span style="color:#79B8FF"> --formats</span><span style="color:#9ECBFF"> svf2</span></span></code></pre>
+<h3 id="phase-3-testing-week-3">Phase 3: Testing (Week 3)</h3>
+<ul class="contains-task-list">
+<li class="task-list-item">
+<p><input type="checkbox" disabled> <strong>Functional testing</strong></p>
+<ul class="contains-task-list">
+<li class="task-list-item"><input type="checkbox" disabled> Test all API operations</li>
+<li class="task-list-item"><input type="checkbox" disabled> Verify authentication flows</li>
+<li class="task-list-item"><input type="checkbox" disabled> Test error handling</li>
+<li class="task-list-item"><input type="checkbox" disabled> Performance benchmarking</li>
+</ul>
+</li>
+<li class="task-list-item">
+<p><input type="checkbox" disabled> <strong>Integration testing</strong></p>
+<ul class="contains-task-list">
+<li class="task-list-item"><input type="checkbox" disabled> End-to-end workflow testing</li>
+<li class="task-list-item"><input type="checkbox" disabled> Third-party integration validation</li>
+<li class="task-list-item"><input type="checkbox" disabled> User acceptance testing</li>
+</ul>
+</li>
+</ul>
+<h3 id="phase-4-production-migration-week-4">Phase 4: Production Migration (Week 4)</h3>
+<ul class="contains-task-list">
+<li class="task-list-item">
+<p><input type="checkbox" disabled> <strong>Production deployment</strong></p>
+<ul class="contains-task-list">
+<li class="task-list-item"><input type="checkbox" disabled> Update production environment</li>
+<li class="task-list-item"><input type="checkbox" disabled> Switch API endpoints</li>
+<li class="task-list-item"><input type="checkbox" disabled> Monitor application health</li>
+<li class="task-list-item"><input type="checkbox" disabled> Validate data integrity</li>
+</ul>
+</li>
+<li class="task-list-item">
+<p><input type="checkbox" disabled> <strong>Post-migration</strong></p>
+<ul class="contains-task-list">
+<li class="task-list-item"><input type="checkbox" disabled> Remove Forge SDK dependencies</li>
+<li class="task-list-item"><input type="checkbox" disabled> Update documentation</li>
+<li class="task-list-item"><input type="checkbox" disabled> Train support team</li>
+<li class="task-list-item"><input type="checkbox" disabled> Monitor for issues</li>
+</ul>
+</li>
+</ul>
+<hr>
+<h2 id="common-migration-issues">Common Migration Issues</h2>
+<h3 id="1-authentication-token-issues">1. Authentication Token Issues</h3>
+<p><strong>Problem:</strong> Forge v1 tokens not working with APS<br>
+<strong>Solution:</strong> Update to Authentication API v2</p>
+<pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8; overflow-x: auto; white-space: pre-wrap; word-wrap: break-word;" tabindex="0" data-language="bash"><code><span class="line"><span style="color:#6A737D"># Check current token compatibility</span></span>
+<span class="line"><span style="color:#B392F0">raps</span><span style="color:#9ECBFF"> auth</span><span style="color:#9ECBFF"> diagnose</span><span style="color:#79B8FF"> --check-aps-compatibility</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#6A737D"># Migrate authentication</span></span>
+<span class="line"><span style="color:#B392F0">raps</span><span style="color:#9ECBFF"> auth</span><span style="color:#9ECBFF"> migrate-from-forge</span><span style="color:#79B8FF"> --update-endpoints</span></span></code></pre>
+<h3 id="2-sdk-breaking-changes">2. SDK Breaking Changes</h3>
+<p><strong>Problem:</strong> Method names changed in new SDKs<br>
+<strong>Solution:</strong> Update method calls according to new SDK documentation</p>
+<pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8; overflow-x: auto; white-space: pre-wrap; word-wrap: break-word;" tabindex="0" data-language="javascript"><code><span class="line"><span style="color:#6A737D">// Old Forge method</span></span>
+<span class="line"><span style="color:#E1E4E8">forgeApi.</span><span style="color:#B392F0">authenticate</span><span style="color:#E1E4E8">().</span><span style="color:#B392F0">then</span><span style="color:#E1E4E8">(</span><span style="color:#FFAB70">token</span><span style="color:#F97583"> =></span><span style="color:#E1E4E8"> { </span><span style="color:#F97583">...</span><span style="color:#E1E4E8"> });</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#6A737D">// New APS method  </span></span>
+<span class="line"><span style="color:#E1E4E8">apsApi.</span><span style="color:#B392F0">getAccessToken</span><span style="color:#E1E4E8">().</span><span style="color:#B392F0">then</span><span style="color:#E1E4E8">(</span><span style="color:#FFAB70">token</span><span style="color:#F97583"> =></span><span style="color:#E1E4E8"> { </span><span style="color:#F97583">...</span><span style="color:#E1E4E8"> });</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#6A737D">// Or skip SDKs entirely</span></span>
+<span class="line"><span style="color:#6A737D">// raps auth login &#x26;&#x26; raps &#x3C;command></span></span></code></pre>
+<h3 id="3-design-automation-v3-changes">3. Design Automation v3 Changes</h3>
+<p><strong>Problem:</strong> DA v2 Activities not compatible with v3<br>
+<strong>Solution:</strong> Recreate Activities using v3 format</p>
+<pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8; overflow-x: auto; white-space: pre-wrap; word-wrap: break-word;" tabindex="0" data-language="bash"><code><span class="line"><span style="color:#6A737D"># List existing DA v2 activities</span></span>
+<span class="line"><span style="color:#B392F0">raps</span><span style="color:#9ECBFF"> da</span><span style="color:#9ECBFF"> list-legacy-activities</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#6A737D"># Migrate to v3 format</span></span>
+<span class="line"><span style="color:#B392F0">raps</span><span style="color:#9ECBFF"> da</span><span style="color:#9ECBFF"> migrate-activity</span><span style="color:#F97583"> &#x3C;</span><span style="color:#9ECBFF">activity-nam</span><span style="color:#E1E4E8">e</span><span style="color:#F97583">></span><span style="color:#79B8FF"> --from-v2</span><span style="color:#79B8FF"> --to-v3</span></span></code></pre>
+<h3 id="4-url-reference-updates">4. URL Reference Updates</h3>
+<p><strong>Problem:</strong> Hardcoded Forge URLs in application<br>
+<strong>Solution:</strong> Update to APS URLs</p>
+<pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8; overflow-x: auto; white-space: pre-wrap; word-wrap: break-word;" tabindex="0" data-language="javascript"><code><span class="line"><span style="color:#6A737D">// Update base URLs</span></span>
+<span class="line"><span style="color:#F97583">const</span><span style="color:#79B8FF"> OLD_BASE</span><span style="color:#F97583"> =</span><span style="color:#9ECBFF"> 'https://forge.autodesk.com'</span><span style="color:#E1E4E8">;</span></span>
+<span class="line"><span style="color:#F97583">const</span><span style="color:#79B8FF"> NEW_BASE</span><span style="color:#F97583"> =</span><span style="color:#9ECBFF"> 'https://aps.autodesk.com'</span><span style="color:#E1E4E8">;</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#6A737D">// Better: Use configurable base URL</span></span>
+<span class="line"><span style="color:#F97583">const</span><span style="color:#79B8FF"> baseUrl</span><span style="color:#F97583"> =</span><span style="color:#E1E4E8"> process.env.</span><span style="color:#79B8FF">APS_BASE_URL</span><span style="color:#F97583"> ||</span><span style="color:#9ECBFF"> 'https://aps.autodesk.com'</span><span style="color:#E1E4E8">;</span></span></code></pre>
+<hr>
+<h2 id="performance-considerations">Performance Considerations</h2>
+<h3 id="api-rate-limits">API Rate Limits</h3>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<table><thead><tr><th>API</th><th>Forge Limits</th><th>APS Limits</th><th>Change</th></tr></thead><tbody><tr><td>Authentication</td><td>500/min</td><td>500/min</td><td>✅ Same</td></tr><tr><td>Data Management</td><td>100/min</td><td>100/min</td><td>✅ Same</td></tr><tr><td>Model Derivative</td><td>20 concurrent</td><td>20 concurrent</td><td>✅ Same</td></tr><tr><td>OSS</td><td>500/min</td><td>500/min</td><td>✅ Same</td></tr><tr><td>Design Automation</td><td>50 concurrent</td><td>50 concurrent</td><td>✅ Same</td></tr></tbody></table>
+<p><strong>No performance impact expected</strong> from Forge to APS migration.</p>
+<h3 id="caching-strategy">Caching Strategy</h3>
+<ul>
+<li>✅ <strong>Authentication tokens:</strong> Same caching strategy</li>
+<li>✅ <strong>API responses:</strong> Same response format, no caching changes</li>
+<li>✅ <strong>Rate limiting:</strong> Same rate limiting logic</li>
+</ul>
+<hr>
+<h2 id="testing-your-migration">Testing Your Migration</h2>
+<h3 id="compatibility-testing">Compatibility Testing</h3>
+<pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8; overflow-x: auto; white-space: pre-wrap; word-wrap: break-word;" tabindex="0" data-language="bash"><code><span class="line"><span style="color:#6A737D"># Test APS authentication</span></span>
+<span class="line"><span style="color:#B392F0">raps</span><span style="color:#9ECBFF"> auth</span><span style="color:#9ECBFF"> login</span><span style="color:#79B8FF"> --scopes</span><span style="color:#9ECBFF"> data:read,viewables:read</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#6A737D"># Test core operations</span></span>
+<span class="line"><span style="color:#B392F0">raps</span><span style="color:#9ECBFF"> dm</span><span style="color:#9ECBFF"> projects</span><span style="color:#79B8FF"> --limit</span><span style="color:#79B8FF"> 1</span></span>
+<span class="line"><span style="color:#B392F0">raps</span><span style="color:#9ECBFF"> bucket</span><span style="color:#9ECBFF"> list</span><span style="color:#79B8FF"> --limit</span><span style="color:#79B8FF"> 1</span></span>
+<span class="line"><span style="color:#B392F0">raps</span><span style="color:#9ECBFF"> translate</span><span style="color:#9ECBFF"> status</span><span style="color:#F97583"> &#x3C;</span><span style="color:#9ECBFF">test-ur</span><span style="color:#E1E4E8">n</span><span style="color:#F97583">></span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#6A737D"># Compare Forge vs APS responses</span></span>
+<span class="line"><span style="color:#B392F0">raps</span><span style="color:#9ECBFF"> compare-apis</span><span style="color:#79B8FF"> --forge-token</span><span style="color:#F97583"> &#x3C;</span><span style="color:#9ECBFF">old-toke</span><span style="color:#E1E4E8">n</span><span style="color:#F97583">></span><span style="color:#79B8FF"> --aps-token</span><span style="color:#F97583"> &#x3C;</span><span style="color:#9ECBFF">new-toke</span><span style="color:#E1E4E8">n</span><span style="color:#F97583">></span><span style="color:#79B8FF"> --endpoint</span><span style="color:#9ECBFF"> /oss/v2/buckets</span></span></code></pre>
+<h3 id="regression-testing">Regression Testing</h3>
+<ol>
+<li>
+<p><strong>API Response Validation</strong></p>
+<ul>
+<li>Compare JSON structure between Forge and APS</li>
+<li>Verify all fields present</li>
+<li>Test error responses</li>
+</ul>
+</li>
+<li>
+<p><strong>Workflow Testing</strong></p>
+<ul>
+<li>Upload → Translate → View pipeline</li>
+<li>Authentication → API call chains</li>
+<li>Webhook event handling</li>
+</ul>
+</li>
+<li>
+<p><strong>Performance Testing</strong></p>
+<ul>
+<li>Compare response times</li>
+<li>Test under load</li>
+<li>Monitor memory usage</li>
+</ul>
+</li>
+</ol>
+<hr>
+<h2 id="post-migration-cleanup">Post-Migration Cleanup</h2>
+<h3 id="remove-legacy-dependencies">Remove Legacy Dependencies</h3>
+<pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8; overflow-x: auto; white-space: pre-wrap; word-wrap: break-word;" tabindex="0" data-language="bash"><code><span class="line"><span style="color:#6A737D"># JavaScript/Node.js</span></span>
+<span class="line"><span style="color:#B392F0">npm</span><span style="color:#9ECBFF"> uninstall</span><span style="color:#9ECBFF"> forge-apis</span></span>
+<span class="line"><span style="color:#B392F0">npm</span><span style="color:#9ECBFF"> uninstall</span><span style="color:#9ECBFF"> forge-data-management</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#6A737D"># Python</span></span>
+<span class="line"><span style="color:#B392F0">pip</span><span style="color:#9ECBFF"> uninstall</span><span style="color:#9ECBFF"> forge-python-wrapper</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#6A737D"># .NET</span></span>
+<span class="line"><span style="color:#B392F0">dotnet</span><span style="color:#9ECBFF"> remove</span><span style="color:#9ECBFF"> package</span><span style="color:#9ECBFF"> Autodesk.Forge</span></span></code></pre>
+<h3 id="update-documentation">Update Documentation</h3>
+<ul class="contains-task-list">
+<li class="task-list-item"><input type="checkbox" disabled> Update API documentation references</li>
+<li class="task-list-item"><input type="checkbox" disabled> Change Forge → APS in user-facing text</li>
+<li class="task-list-item"><input type="checkbox" disabled> Update code examples</li>
+<li class="task-list-item"><input type="checkbox" disabled> Update support documentation</li>
+</ul>
+<h3 id="monitor-migration-success">Monitor Migration Success</h3>
+<pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8; overflow-x: auto; white-space: pre-wrap; word-wrap: break-word;" tabindex="0" data-language="bash"><code><span class="line"><span style="color:#6A737D"># Check migration status</span></span>
+<span class="line"><span style="color:#B392F0">raps</span><span style="color:#9ECBFF"> migration</span><span style="color:#9ECBFF"> status</span><span style="color:#79B8FF"> --report</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#6A737D"># Monitor API usage</span></span>
+<span class="line"><span style="color:#B392F0">raps</span><span style="color:#9ECBFF"> logs</span><span style="color:#79B8FF"> --api-calls</span><span style="color:#79B8FF"> --since-migration</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#6A737D"># Validate all systems operational</span></span>
+<span class="line"><span style="color:#B392F0">raps</span><span style="color:#9ECBFF"> health</span><span style="color:#9ECBFF"> check</span><span style="color:#79B8FF"> --comprehensive</span></span></code></pre>
+<hr>
+<h2 id="migration-timeline-examples">Migration Timeline Examples</h2>
+<h3 id="simple-application-1-2-apis">Simple Application (1-2 APIs)</h3>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<table><thead><tr><th>Week</th><th>Tasks</th><th>Effort</th></tr></thead><tbody><tr><td><strong>Week 1</strong></td><td>Assessment, planning</td><td>2-4 hours</td></tr><tr><td><strong>Week 2</strong></td><td>Code changes, testing</td><td>4-8 hours</td></tr><tr><td><strong>Week 3</strong></td><td>Production deployment</td><td>2-4 hours</td></tr></tbody></table>
+<h3 id="complex-application-multiple-apis">Complex Application (Multiple APIs)</h3>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<table><thead><tr><th>Week</th><th>Tasks</th><th>Effort</th></tr></thead><tbody><tr><td><strong>Week 1-2</strong></td><td>Assessment, planning</td><td>8-16 hours</td></tr><tr><td><strong>Week 3-4</strong></td><td>Code changes, unit testing</td><td>16-32 hours</td></tr><tr><td><strong>Week 5</strong></td><td>Integration testing</td><td>8-16 hours</td></tr><tr><td><strong>Week 6</strong></td><td>Production deployment, monitoring</td><td>4-8 hours</td></tr></tbody></table>
+<h3 id="enterprise-application">Enterprise Application</h3>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<table><thead><tr><th>Month</th><th>Phase</th><th>Tasks</th></tr></thead><tbody><tr><td><strong>Month 1</strong></td><td>Planning</td><td>Full audit, stakeholder alignment</td></tr><tr><td><strong>Month 2</strong></td><td>Development</td><td>Code changes, CI/CD updates</td></tr><tr><td><strong>Month 3</strong></td><td>Testing</td><td>Comprehensive testing, user training</td></tr><tr><td><strong>Month 4</strong></td><td>Migration</td><td>Phased rollout, monitoring</td></tr></tbody></table>
+<hr>
+<h2 id="getting-help">Getting Help</h2>
+<h3 id="migration-support-resources">Migration Support Resources</h3>
+<ol>
+<li>
+<p><strong>Official Documentation</strong></p>
+<ul>
+<li><a href="https://aps.autodesk.com/en/docs/oauth/v2/developers_guide/migration/">APS Migration Guide</a></li>
+<li><a href="https://aps.autodesk.com/en/docs/oauth/v2/developers_guide/migration/breaking-changes/">API Breaking Changes</a></li>
+</ul>
+</li>
+<li>
+<p><strong>Community Support</strong></p>
+<ul>
+<li><a href="https://forums.autodesk.com/t5/platform-services/bd-p/42">APS Developer Forum</a></li>
+<li><a href="https://discord.gg/raps-community">RAPS Discord</a></li>
+<li><a href="https://stackoverflow.com/questions/tagged/autodesk-platform-services">Stack Overflow: autodesk-platform-services</a></li>
+</ul>
+</li>
+<li>
+<p><strong>Migration Tools</strong></p>
+<pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8; overflow-x: auto; white-space: pre-wrap; word-wrap: break-word;" tabindex="0" data-language="bash"><code><span class="line"><span style="color:#6A737D"># RAPS migration utilities</span></span>
+<span class="line"><span style="color:#B392F0">raps</span><span style="color:#9ECBFF"> migrate</span><span style="color:#79B8FF"> --help</span></span>
+<span class="line"><span style="color:#B392F0">raps</span><span style="color:#9ECBFF"> auth</span><span style="color:#9ECBFF"> migrate-from-forge</span></span>
+<span class="line"><span style="color:#B392F0">raps</span><span style="color:#9ECBFF"> compare-apis</span><span style="color:#79B8FF"> --forge-vs-aps</span></span></code></pre>
+</li>
+</ol>
+<h3 id="professional-migration-services">Professional Migration Services</h3>
+<p>For complex enterprise migrations, consider:</p>
+<ul>
+<li>Autodesk Professional Services</li>
+<li>Certified Autodesk Partners</li>
+<li>Independent APS consultants</li>
+</ul>
+<hr>
+<h2 id="faq">FAQ</h2>
+<p><strong>Q: Do I have to migrate immediately?</strong><br>
+A: No, but Forge APIs will be sunset December 31, 2026. Plan your migration well in advance.</p>
+<p><strong>Q: Will my existing Forge tokens work with APS?</strong><br>
+A: Forge v1 tokens will not work with APS v2 endpoints. You need to update to v2 authentication.</p>
+<p><strong>Q: Are there any breaking changes in API responses?</strong><br>
+A: Most API responses are identical. The main change is authentication (v1 → v2).</p>
+<p><strong>Q: Can I use both Forge and APS during migration?</strong><br>
+A: Yes, you can run both in parallel during your migration period.</p>
+<p><strong>Q: Does RAPS work with both Forge and APS?</strong><br>
+A: RAPS uses APS APIs by default, but can be configured for backward compatibility during migration.</p>
+<p><strong>Q: What happens if I don’t migrate by the deadline?</strong><br>
+A: Forge APIs will be shut down, breaking your application. Migration is mandatory.</p>
+<hr>
+<p><strong>💡 Pro Tip:</strong> Use RAPS CLI to simplify your migration. Instead of updating complex SDK code, many operations can be replaced with simple <code>raps</code> commands, reducing migration effort significantly.</p>
+<hr>
+<p><em>Last updated: January 2026 | Migration deadline: December 31, 2026</em><br>
+<em>This guide covers the most common migration scenarios. For complex cases, consult the <a href="https://aps.autodesk.com/en/docs/oauth/v2/developers_guide/migration/">official APS migration documentation</a>.</em></p> </div> <!-- Navigation --> <nav class="mt-12 pt-8 border-t border-gray-200" data-astro-cid-oolc5s6i> <div class="flex justify-between items-center" data-astro-cid-oolc5s6i> <a href="/guides" class="btn btn-secondary" data-astro-cid-oolc5s6i>
+← Back to Guides
+</a> <div class="flex space-x-4" data-astro-cid-oolc5s6i> <a href="/tools" class="btn btn-primary" data-astro-cid-oolc5s6i>
+Try Tools →
+</a> </div> </div> </nav> <!-- Help Section --> <div class="mt-8 bg-blue-50 rounded-lg p-6" data-astro-cid-oolc5s6i> <h3 class="font-semibold mb-2 text-blue-900" data-astro-cid-oolc5s6i>Need Help?</h3> <p class="text-sm text-blue-800 mb-4" data-astro-cid-oolc5s6i>
+Having trouble with this guide? Check our troubleshooting resources or use our interactive tools.
+</p> <div class="flex space-x-4" data-astro-cid-oolc5s6i> <a href="/guides?category=troubleshooting" class="text-blue-600 hover:underline text-sm" data-astro-cid-oolc5s6i>
+Troubleshooting Guides
+</a> <a href="/tools" class="text-blue-600 hover:underline text-sm" data-astro-cid-oolc5s6i>
+Interactive Tools
+</a> <a href="/articles" class="text-blue-600 hover:underline text-sm" data-astro-cid-oolc5s6i>
+Related Articles
+</a> </div> </div> </div> </article> <script type="module">document.addEventListener("DOMContentLoaded",function(){const o=document.getElementById("toc"),c=document.querySelectorAll(".prose h2, .prose h3");if(c.length===0){o.innerHTML='<p class="text-gray-500 italic">No sections found</p>';return}const t=document.createElement("ul");t.className="space-y-1",c.forEach((n,d)=>{const a=`heading-${d}`;n.id=a;const s=document.createElement("li"),e=document.createElement("a");e.href=`#${a}`,e.textContent=n.textContent,e.className=`block hover:text-raps-blue transition ${n.tagName==="H2"?"font-medium":"ml-4 text-gray-600"}`,s.appendChild(e),t.appendChild(s)}),o.appendChild(t)});</script>  </main> <footer class="bg-gray-50 border-t border-gray-200 mt-20" data-astro-cid-37fxchfa> <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12" data-astro-cid-37fxchfa> <div class="grid grid-cols-1 md:grid-cols-4 gap-8" data-astro-cid-37fxchfa> <div data-astro-cid-37fxchfa> <h3 class="font-semibold text-gray-900 mb-4" data-astro-cid-37fxchfa>Product</h3> <ul class="space-y-2" data-astro-cid-37fxchfa> <li data-astro-cid-37fxchfa><a href="/features" class="text-gray-600 hover:text-raps-blue" data-astro-cid-37fxchfa>Features</a></li> <li data-astro-cid-37fxchfa><a href="/pricing" class="text-gray-600 hover:text-raps-blue" data-astro-cid-37fxchfa>Pricing</a></li> <li data-astro-cid-37fxchfa><a href="/changelog" class="text-gray-600 hover:text-raps-blue" data-astro-cid-37fxchfa>Changelog</a></li> <li data-astro-cid-37fxchfa><a href="/roadmap" class="text-gray-600 hover:text-raps-blue" data-astro-cid-37fxchfa>Roadmap</a></li> </ul> </div> <div data-astro-cid-37fxchfa> <h3 class="font-semibold text-gray-900 mb-4" data-astro-cid-37fxchfa>Resources</h3> <ul class="space-y-2" data-astro-cid-37fxchfa> <li data-astro-cid-37fxchfa><a href="/docs" class="text-gray-600 hover:text-raps-blue" data-astro-cid-37fxchfa>Documentation</a></li> <li data-astro-cid-37fxchfa><a href="/guides" class="text-gray-600 hover:text-raps-blue" data-astro-cid-37fxchfa>Guides</a></li> <li data-astro-cid-37fxchfa><a href="/articles" class="text-gray-600 hover:text-raps-blue" data-astro-cid-37fxchfa>Articles</a></li> <li data-astro-cid-37fxchfa><a href="/tools" class="text-gray-600 hover:text-raps-blue" data-astro-cid-37fxchfa>Tools</a></li> </ul> </div> <div data-astro-cid-37fxchfa> <h3 class="font-semibold text-gray-900 mb-4" data-astro-cid-37fxchfa>Community</h3> <ul class="space-y-2" data-astro-cid-37fxchfa> <li data-astro-cid-37fxchfa><a href="https://github.com" class="text-gray-600 hover:text-raps-blue" data-astro-cid-37fxchfa>GitHub</a></li> <li data-astro-cid-37fxchfa><a href="https://discord.gg" class="text-gray-600 hover:text-raps-blue" data-astro-cid-37fxchfa>Discord</a></li> <li data-astro-cid-37fxchfa><a href="https://twitter.com" class="text-gray-600 hover:text-raps-blue" data-astro-cid-37fxchfa>Twitter</a></li> <li data-astro-cid-37fxchfa><a href="/blog" class="text-gray-600 hover:text-raps-blue" data-astro-cid-37fxchfa>Blog</a></li> </ul> </div> <div data-astro-cid-37fxchfa> <h3 class="font-semibold text-gray-900 mb-4" data-astro-cid-37fxchfa>Company</h3> <ul class="space-y-2" data-astro-cid-37fxchfa> <li data-astro-cid-37fxchfa><a href="/about" class="text-gray-600 hover:text-raps-blue" data-astro-cid-37fxchfa>About</a></li> <li data-astro-cid-37fxchfa><a href="/contact" class="text-gray-600 hover:text-raps-blue" data-astro-cid-37fxchfa>Contact</a></li> <li data-astro-cid-37fxchfa><a href="/privacy" class="text-gray-600 hover:text-raps-blue" data-astro-cid-37fxchfa>Privacy</a></li> <li data-astro-cid-37fxchfa><a href="/terms" class="text-gray-600 hover:text-raps-blue" data-astro-cid-37fxchfa>Terms</a></li> </ul> </div> </div> <div class="mt-8 pt-8 border-t border-gray-200" data-astro-cid-37fxchfa> <p class="text-center text-gray-600" data-astro-cid-37fxchfa>
+© 2026 RAPS CLI. Professional APS Automation Tools.
+</p> </div> </div> </footer> </body></html> 

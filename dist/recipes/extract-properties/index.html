@@ -1,0 +1,525 @@
+<!DOCTYPE html><html lang="en" data-astro-cid-37fxchfa> <head><meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><link rel="icon" type="image/svg+xml" href="/favicon.svg"><meta name="generator" content="Astro v5.16.7"><!-- Primary Meta Tags --><title>Extract Model Properties Recipe | RAPS CLI</title><meta name="title" content="Extract Model Properties Recipe | RAPS CLI"><meta name="description" content="Step-by-step guide to extracting metadata, properties, and geometry data from CAD models using APS"><!-- Open Graph / Facebook --><meta property="og:type" content="website"><meta property="og:url" content="https://rapscli.xyz/recipes/extract-properties/"><meta property="og:title" content="Extract Model Properties Recipe | RAPS CLI"><meta property="og:description" content="Step-by-step guide to extracting metadata, properties, and geometry data from CAD models using APS"><meta property="og:image" content="https://rapscli.xyz/og-image.png"><!-- Twitter --><meta property="twitter:card" content="summary_large_image"><meta property="twitter:url" content="https://rapscli.xyz/recipes/extract-properties/"><meta property="twitter:title" content="Extract Model Properties Recipe | RAPS CLI"><meta property="twitter:description" content="Step-by-step guide to extracting metadata, properties, and geometry data from CAD models using APS"><meta property="twitter:image" content="https://rapscli.xyz/og-image.png"><!-- Canonical URL --><link rel="canonical" href="https://rapscli.xyz/recipes/extract-properties/"><!-- Fonts --><link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin><link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet"><link rel="stylesheet" href="/_astro/_slug_.LJOPbm0E.css">
+<style>.prose[data-astro-cid-z3wdsy7t]{color:#374151}.prose[data-astro-cid-z3wdsy7t] h1[data-astro-cid-z3wdsy7t],.prose[data-astro-cid-z3wdsy7t] h2[data-astro-cid-z3wdsy7t],.prose[data-astro-cid-z3wdsy7t] h3[data-astro-cid-z3wdsy7t],.prose[data-astro-cid-z3wdsy7t] h4[data-astro-cid-z3wdsy7t]{color:#111827}.prose[data-astro-cid-z3wdsy7t] h2[data-astro-cid-z3wdsy7t]{margin-top:2rem;margin-bottom:1rem;font-size:1.5rem;line-height:2rem;font-weight:700}.prose[data-astro-cid-z3wdsy7t] h3[data-astro-cid-z3wdsy7t]{margin-top:1.5rem;margin-bottom:.75rem;font-size:1.25rem;line-height:1.75rem;font-weight:600}.prose[data-astro-cid-z3wdsy7t] p[data-astro-cid-z3wdsy7t]{margin-bottom:1rem}.prose[data-astro-cid-z3wdsy7t] ul[data-astro-cid-z3wdsy7t],.prose[data-astro-cid-z3wdsy7t] ol[data-astro-cid-z3wdsy7t]{margin-bottom:1rem;margin-left:1.5rem}.prose[data-astro-cid-z3wdsy7t] blockquote[data-astro-cid-z3wdsy7t]{margin-top:1.5rem;margin-bottom:1.5rem;border-left-width:4px;--tw-border-opacity: 1;border-color:rgb(102 126 234 / var(--tw-border-opacity, 1));--tw-bg-opacity: 1;background-color:rgb(239 246 255 / var(--tw-bg-opacity, 1));padding:.5rem 1rem;font-style:italic}.prose[data-astro-cid-z3wdsy7t] code[data-astro-cid-z3wdsy7t]{border-radius:.25rem;--tw-bg-opacity: 1;background-color:rgb(243 244 246 / var(--tw-bg-opacity, 1));padding:.125rem .25rem;font-family:Consolas,Monaco,monospace;font-size:.875rem;line-height:1.25rem;--tw-text-opacity: 1;color:rgb(102 126 234 / var(--tw-text-opacity, 1))}.prose[data-astro-cid-z3wdsy7t] pre[data-astro-cid-z3wdsy7t]{margin-top:1.5rem;margin-bottom:1.5rem;overflow-x:auto;border-radius:.5rem;--tw-bg-opacity: 1;background-color:rgb(17 24 39 / var(--tw-bg-opacity, 1));padding:1rem;--tw-text-opacity: 1;color:rgb(243 244 246 / var(--tw-text-opacity, 1))}.prose[data-astro-cid-z3wdsy7t] pre[data-astro-cid-z3wdsy7t] code[data-astro-cid-z3wdsy7t]{background-color:transparent;padding:0;--tw-text-opacity: 1;color:rgb(243 244 246 / var(--tw-text-opacity, 1))}.prose[data-astro-cid-z3wdsy7t] a[data-astro-cid-z3wdsy7t]{--tw-text-opacity: 1;color:rgb(102 126 234 / var(--tw-text-opacity, 1))}.prose[data-astro-cid-z3wdsy7t] a[data-astro-cid-z3wdsy7t]:hover{text-decoration-line:underline}
+</style></head> <body class="min-h-screen bg-white" data-astro-cid-37fxchfa> <nav class="sticky top-0 z-50 bg-white/95 backdrop-blur border-b border-gray-200" data-astro-cid-37fxchfa> <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8" data-astro-cid-37fxchfa> <div class="flex justify-between items-center h-16" data-astro-cid-37fxchfa> <div class="flex items-center" data-astro-cid-37fxchfa> <a href="/" class="flex items-center space-x-2" data-astro-cid-37fxchfa> <span class="text-2xl font-bold bg-gradient-to-r from-raps-blue to-raps-purple bg-clip-text text-transparent" data-astro-cid-37fxchfa>
+RAPS
+</span> <span class="text-gray-500" data-astro-cid-37fxchfa>v4.2.1</span> </a> </div> <nav class="hidden md:flex items-center space-x-8" data-astro-cid-37fxchfa> <a href="/articles" class="text-gray-700 hover:text-raps-blue transition" data-astro-cid-37fxchfa>Articles</a> <a href="/guides" class="text-gray-700 hover:text-raps-blue transition" data-astro-cid-37fxchfa>Guides</a> <a href="/recipes" class="text-gray-700 hover:text-raps-blue transition" data-astro-cid-37fxchfa>Recipes</a> <a href="/tools" class="text-gray-700 hover:text-raps-blue transition" data-astro-cid-37fxchfa>Tools</a> <a href="/pdfs" class="text-gray-700 hover:text-raps-blue transition" data-astro-cid-37fxchfa>PDFs</a> <div class="relative group" data-astro-cid-37fxchfa> <button class="text-gray-700 hover:text-raps-blue transition flex items-center" data-astro-cid-37fxchfa>
+Strategy <span class="ml-1 text-xs" data-astro-cid-37fxchfa>▼</span> </button> <div class="absolute top-full left-0 mt-2 w-48 bg-white shadow-lg rounded-lg opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all" data-astro-cid-37fxchfa> <a href="/analytics" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-50" data-astro-cid-37fxchfa>📊 Analytics</a> <a href="/campaigns" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-50" data-astro-cid-37fxchfa>🎯 Campaigns</a> <a href="/strategy" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-50" data-astro-cid-37fxchfa>📋 Strategy</a> <a href="/community" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-50" data-astro-cid-37fxchfa>👥 Community</a> <a href="/press" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-50" data-astro-cid-37fxchfa>📰 Press</a> <a href="/calendar" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-50" data-astro-cid-37fxchfa>📅 Calendar</a> </div> </div> <a href="https://github.com/autodesk-platform-services/raps" class="text-gray-700 hover:text-raps-blue transition" data-astro-cid-37fxchfa>
+GitHub
+</a> <a href="https://github.com/autodesk-platform-services/raps/releases" class="px-4 py-2 bg-gradient-to-r from-raps-blue to-raps-purple text-white rounded-lg hover:shadow-lg transition" data-astro-cid-37fxchfa>
+Download
+</a> </nav> <button class="md:hidden p-2 rounded-lg hover:bg-gray-100" data-astro-cid-37fxchfa> <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" data-astro-cid-37fxchfa> <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16" data-astro-cid-37fxchfa></path> </svg> </button> </div> </div> </nav> <main data-astro-cid-37fxchfa>  <article class="content-container py-12" data-astro-cid-z3wdsy7t> <div class="max-w-4xl mx-auto" data-astro-cid-z3wdsy7t> <header class="mb-8" data-astro-cid-z3wdsy7t> <div class="flex items-center text-sm text-gray-500 mb-4" data-astro-cid-z3wdsy7t> <a href="/recipes" class="hover:text-raps-blue" data-astro-cid-z3wdsy7t>Recipes</a> <span class="mx-2" data-astro-cid-z3wdsy7t>→</span> <span data-astro-cid-z3wdsy7t>Current</span> </div> <div class="flex items-center gap-4 mb-4" data-astro-cid-z3wdsy7t> <span class="px-3 py-1 text-sm rounded-full bg-yellow-100 text-yellow-800" data-astro-cid-z3wdsy7t> intermediate </span> <span class="text-sm text-gray-500" data-astro-cid-z3wdsy7t>
+⏱️ 15 minutes </span> </div> <h1 class="text-4xl md:text-5xl font-bold mb-4" data-astro-cid-z3wdsy7t> <span class="gradient-text" data-astro-cid-z3wdsy7t>Extract Model Properties Recipe</span> </h1> <p class="text-xl text-gray-600 mb-6" data-astro-cid-z3wdsy7t> Step-by-step guide to extracting metadata, properties, and geometry data from CAD models using APS </p> </header> <div class="prose prose-lg prose-gray max-w-none" data-astro-cid-z3wdsy7t> <h1 id="extract-model-properties-recipe">Extract Model Properties Recipe</h1>
+<p><strong>Complete guide to extracting metadata, properties, and geometry data from CAD models without viewing them</strong></p>
+<hr>
+<h2 id="goal">Goal</h2>
+<p>Extract structured data from CAD models (BIM properties, geometry info, material data, etc.) for analysis, reporting, or integration with other systems.</p>
+<p><strong>What you’ll achieve:</strong></p>
+<ul>
+<li>Extract element properties (doors, windows, walls, etc.)</li>
+<li>Get model metadata (units, coordinate systems, etc.)</li>
+<li>Export structured data to JSON, CSV, or database</li>
+<li>Filter and search properties programmatically</li>
+</ul>
+<hr>
+<h2 id="prerequisites">Prerequisites</h2>
+<h3 id="required-tools">Required Tools</h3>
+<ul>
+<li>✅ <strong>RAPS CLI</strong> v4.2.0+ installed</li>
+<li>✅ <strong>Autodesk Developer Account</strong> with app credentials</li>
+<li>✅ <strong>CAD file</strong> uploaded to APS (any supported format)</li>
+</ul>
+<h3 id="required-scopes">Required Scopes</h3>
+<pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8; overflow-x: auto; white-space: pre-wrap; word-wrap: break-word;" tabindex="0" data-language="bash"><code><span class="line"><span style="color:#6A737D"># Authentication scopes needed</span></span>
+<span class="line"><span style="color:#B392F0">data:read</span><span style="color:#9ECBFF"> viewables:read</span></span></code></pre>
+<h3 id="understanding-property-extraction">Understanding Property Extraction</h3>
+<p>APS Model Derivative API extracts properties in these formats:</p>
+<ul>
+<li><strong>Metadata</strong> - High-level model information</li>
+<li><strong>Properties</strong> - Element-by-element detailed properties</li>
+<li><strong>Hierarchy</strong> - Model structure and relationships</li>
+</ul>
+<hr>
+<h2 id="the-manual-way-complex-api-navigation">The Manual Way (Complex API Navigation)</h2>
+<details>
+<summary>🔍 Click to see manual property extraction (40+ API calls)</summary>
+<pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8; overflow-x: auto; white-space: pre-wrap; word-wrap: break-word;" tabindex="0" data-language="javascript"><code><span class="line"><span style="color:#F97583">const</span><span style="color:#79B8FF"> axios</span><span style="color:#F97583"> =</span><span style="color:#B392F0"> require</span><span style="color:#E1E4E8">(</span><span style="color:#9ECBFF">'axios'</span><span style="color:#E1E4E8">);</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#6A737D">// 1. Get model manifest</span></span>
+<span class="line"><span style="color:#F97583">async</span><span style="color:#F97583"> function</span><span style="color:#B392F0"> getManifest</span><span style="color:#E1E4E8">(</span><span style="color:#FFAB70">token</span><span style="color:#E1E4E8">, </span><span style="color:#FFAB70">urn</span><span style="color:#E1E4E8">) {</span></span>
+<span class="line"><span style="color:#F97583">  const</span><span style="color:#79B8FF"> response</span><span style="color:#F97583"> =</span><span style="color:#F97583"> await</span><span style="color:#E1E4E8"> axios.</span><span style="color:#B392F0">get</span><span style="color:#E1E4E8">(</span></span>
+<span class="line"><span style="color:#9ECBFF">    `https://developer.api.autodesk.com/modelderivative/v2/designdata/${</span><span style="color:#E1E4E8">urn</span><span style="color:#9ECBFF">}/manifest`</span><span style="color:#E1E4E8">,</span></span>
+<span class="line"><span style="color:#E1E4E8">    { headers: { Authorization: </span><span style="color:#9ECBFF">`Bearer ${</span><span style="color:#E1E4E8">token</span><span style="color:#9ECBFF">}`</span><span style="color:#E1E4E8"> }}</span></span>
+<span class="line"><span style="color:#E1E4E8">  );</span></span>
+<span class="line"><span style="color:#F97583">  return</span><span style="color:#E1E4E8"> response.data;</span></span>
+<span class="line"><span style="color:#E1E4E8">}</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#6A737D">// 2. Find metadata viewable</span></span>
+<span class="line"><span style="color:#F97583">function</span><span style="color:#B392F0"> findMetadataViewable</span><span style="color:#E1E4E8">(</span><span style="color:#FFAB70">manifest</span><span style="color:#E1E4E8">) {</span></span>
+<span class="line"><span style="color:#F97583">  for</span><span style="color:#E1E4E8"> (</span><span style="color:#F97583">const</span><span style="color:#79B8FF"> derivative</span><span style="color:#F97583"> of</span><span style="color:#E1E4E8"> manifest.derivatives) {</span></span>
+<span class="line"><span style="color:#F97583">    for</span><span style="color:#E1E4E8"> (</span><span style="color:#F97583">const</span><span style="color:#79B8FF"> child</span><span style="color:#F97583"> of</span><span style="color:#E1E4E8"> derivative.children </span><span style="color:#F97583">||</span><span style="color:#E1E4E8"> []) {</span></span>
+<span class="line"><span style="color:#F97583">      if</span><span style="color:#E1E4E8"> (child.role </span><span style="color:#F97583">===</span><span style="color:#9ECBFF"> 'Autodesk.CloudPlatform.PropertyDatabase'</span><span style="color:#E1E4E8">) {</span></span>
+<span class="line"><span style="color:#F97583">        return</span><span style="color:#E1E4E8"> child.guid;</span></span>
+<span class="line"><span style="color:#E1E4E8">      }</span></span>
+<span class="line"><span style="color:#E1E4E8">    }</span></span>
+<span class="line"><span style="color:#E1E4E8">  }</span></span>
+<span class="line"><span style="color:#F97583">  throw</span><span style="color:#F97583"> new</span><span style="color:#B392F0"> Error</span><span style="color:#E1E4E8">(</span><span style="color:#9ECBFF">'No metadata viewable found'</span><span style="color:#E1E4E8">);</span></span>
+<span class="line"><span style="color:#E1E4E8">}</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#6A737D">// 3. Get model metadata</span></span>
+<span class="line"><span style="color:#F97583">async</span><span style="color:#F97583"> function</span><span style="color:#B392F0"> getMetadata</span><span style="color:#E1E4E8">(</span><span style="color:#FFAB70">token</span><span style="color:#E1E4E8">, </span><span style="color:#FFAB70">urn</span><span style="color:#E1E4E8">, </span><span style="color:#FFAB70">guid</span><span style="color:#E1E4E8">) {</span></span>
+<span class="line"><span style="color:#F97583">  const</span><span style="color:#79B8FF"> response</span><span style="color:#F97583"> =</span><span style="color:#F97583"> await</span><span style="color:#E1E4E8"> axios.</span><span style="color:#B392F0">get</span><span style="color:#E1E4E8">(</span></span>
+<span class="line"><span style="color:#9ECBFF">    `https://developer.api.autodesk.com/modelderivative/v2/designdata/${</span><span style="color:#E1E4E8">urn</span><span style="color:#9ECBFF">}/metadata/${</span><span style="color:#E1E4E8">guid</span><span style="color:#9ECBFF">}`</span><span style="color:#E1E4E8">,</span></span>
+<span class="line"><span style="color:#E1E4E8">    { headers: { Authorization: </span><span style="color:#9ECBFF">`Bearer ${</span><span style="color:#E1E4E8">token</span><span style="color:#9ECBFF">}`</span><span style="color:#E1E4E8"> }}</span></span>
+<span class="line"><span style="color:#E1E4E8">  );</span></span>
+<span class="line"><span style="color:#F97583">  return</span><span style="color:#E1E4E8"> response.data;</span></span>
+<span class="line"><span style="color:#E1E4E8">}</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#6A737D">// 4. Get object tree</span></span>
+<span class="line"><span style="color:#F97583">async</span><span style="color:#F97583"> function</span><span style="color:#B392F0"> getObjectTree</span><span style="color:#E1E4E8">(</span><span style="color:#FFAB70">token</span><span style="color:#E1E4E8">, </span><span style="color:#FFAB70">urn</span><span style="color:#E1E4E8">, </span><span style="color:#FFAB70">guid</span><span style="color:#E1E4E8">) {</span></span>
+<span class="line"><span style="color:#F97583">  const</span><span style="color:#79B8FF"> response</span><span style="color:#F97583"> =</span><span style="color:#F97583"> await</span><span style="color:#E1E4E8"> axios.</span><span style="color:#B392F0">get</span><span style="color:#E1E4E8">(</span></span>
+<span class="line"><span style="color:#9ECBFF">    `https://developer.api.autodesk.com/modelderivative/v2/designdata/${</span><span style="color:#E1E4E8">urn</span><span style="color:#9ECBFF">}/metadata/${</span><span style="color:#E1E4E8">guid</span><span style="color:#9ECBFF">}/objects`</span><span style="color:#E1E4E8">,</span></span>
+<span class="line"><span style="color:#E1E4E8">    { headers: { Authorization: </span><span style="color:#9ECBFF">`Bearer ${</span><span style="color:#E1E4E8">token</span><span style="color:#9ECBFF">}`</span><span style="color:#E1E4E8"> }}</span></span>
+<span class="line"><span style="color:#E1E4E8">  );</span></span>
+<span class="line"><span style="color:#F97583">  return</span><span style="color:#E1E4E8"> response.data;</span></span>
+<span class="line"><span style="color:#E1E4E8">}</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#6A737D">// 5. Get properties for each object (paginated)</span></span>
+<span class="line"><span style="color:#F97583">async</span><span style="color:#F97583"> function</span><span style="color:#B392F0"> getAllProperties</span><span style="color:#E1E4E8">(</span><span style="color:#FFAB70">token</span><span style="color:#E1E4E8">, </span><span style="color:#FFAB70">urn</span><span style="color:#E1E4E8">, </span><span style="color:#FFAB70">guid</span><span style="color:#E1E4E8">) {</span></span>
+<span class="line"><span style="color:#F97583">  let</span><span style="color:#E1E4E8"> allProperties </span><span style="color:#F97583">=</span><span style="color:#E1E4E8"> [];</span></span>
+<span class="line"><span style="color:#F97583">  let</span><span style="color:#E1E4E8"> hasMore </span><span style="color:#F97583">=</span><span style="color:#79B8FF"> true</span><span style="color:#E1E4E8">;</span></span>
+<span class="line"><span style="color:#F97583">  let</span><span style="color:#E1E4E8"> offset </span><span style="color:#F97583">=</span><span style="color:#79B8FF"> 0</span><span style="color:#E1E4E8">;</span></span>
+<span class="line"><span style="color:#F97583">  const</span><span style="color:#79B8FF"> pageSize</span><span style="color:#F97583"> =</span><span style="color:#79B8FF"> 1000</span><span style="color:#E1E4E8">;</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#F97583">  while</span><span style="color:#E1E4E8"> (hasMore) {</span></span>
+<span class="line"><span style="color:#F97583">    const</span><span style="color:#79B8FF"> response</span><span style="color:#F97583"> =</span><span style="color:#F97583"> await</span><span style="color:#E1E4E8"> axios.</span><span style="color:#B392F0">get</span><span style="color:#E1E4E8">(</span></span>
+<span class="line"><span style="color:#9ECBFF">      `https://developer.api.autodesk.com/modelderivative/v2/designdata/${</span><span style="color:#E1E4E8">urn</span><span style="color:#9ECBFF">}/metadata/${</span><span style="color:#E1E4E8">guid</span><span style="color:#9ECBFF">}/properties`</span><span style="color:#E1E4E8">,</span></span>
+<span class="line"><span style="color:#E1E4E8">      {</span></span>
+<span class="line"><span style="color:#E1E4E8">        headers: { Authorization: </span><span style="color:#9ECBFF">`Bearer ${</span><span style="color:#E1E4E8">token</span><span style="color:#9ECBFF">}`</span><span style="color:#E1E4E8"> },</span></span>
+<span class="line"><span style="color:#E1E4E8">        params: { offset, limit: pageSize }</span></span>
+<span class="line"><span style="color:#E1E4E8">      }</span></span>
+<span class="line"><span style="color:#E1E4E8">    );</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#E1E4E8">    allProperties </span><span style="color:#F97583">=</span><span style="color:#E1E4E8"> allProperties.</span><span style="color:#B392F0">concat</span><span style="color:#E1E4E8">(response.data.collection);</span></span>
+<span class="line"><span style="color:#E1E4E8">    hasMore </span><span style="color:#F97583">=</span><span style="color:#E1E4E8"> response.data.collection.</span><span style="color:#79B8FF">length</span><span style="color:#F97583"> ===</span><span style="color:#E1E4E8"> pageSize;</span></span>
+<span class="line"><span style="color:#E1E4E8">    offset </span><span style="color:#F97583">+=</span><span style="color:#E1E4E8"> pageSize;</span></span>
+<span class="line"><span style="color:#E1E4E8">  }</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#F97583">  return</span><span style="color:#E1E4E8"> allProperties;</span></span>
+<span class="line"><span style="color:#E1E4E8">}</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#6A737D">// 6. Process and structure data</span></span>
+<span class="line"><span style="color:#F97583">function</span><span style="color:#B392F0"> processProperties</span><span style="color:#E1E4E8">(</span><span style="color:#FFAB70">properties</span><span style="color:#E1E4E8">, </span><span style="color:#FFAB70">metadata</span><span style="color:#E1E4E8">) {</span></span>
+<span class="line"><span style="color:#F97583">  const</span><span style="color:#79B8FF"> structured</span><span style="color:#F97583"> =</span><span style="color:#E1E4E8"> {</span></span>
+<span class="line"><span style="color:#E1E4E8">    modelInfo: metadata,</span></span>
+<span class="line"><span style="color:#E1E4E8">    elements: [],</span></span>
+<span class="line"><span style="color:#E1E4E8">    summary: {</span></span>
+<span class="line"><span style="color:#E1E4E8">      totalElements: </span><span style="color:#79B8FF">0</span><span style="color:#E1E4E8">,</span></span>
+<span class="line"><span style="color:#E1E4E8">      elementTypes: {},</span></span>
+<span class="line"><span style="color:#E1E4E8">      materials: </span><span style="color:#F97583">new</span><span style="color:#B392F0"> Set</span><span style="color:#E1E4E8">(),</span></span>
+<span class="line"><span style="color:#E1E4E8">      levels: </span><span style="color:#F97583">new</span><span style="color:#B392F0"> Set</span><span style="color:#E1E4E8">()</span></span>
+<span class="line"><span style="color:#E1E4E8">    }</span></span>
+<span class="line"><span style="color:#E1E4E8">  };</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#F97583">  for</span><span style="color:#E1E4E8"> (</span><span style="color:#F97583">const</span><span style="color:#79B8FF"> prop</span><span style="color:#F97583"> of</span><span style="color:#E1E4E8"> properties) {</span></span>
+<span class="line"><span style="color:#F97583">    const</span><span style="color:#79B8FF"> element</span><span style="color:#F97583"> =</span><span style="color:#E1E4E8"> {</span></span>
+<span class="line"><span style="color:#E1E4E8">      dbId: prop.objectid,</span></span>
+<span class="line"><span style="color:#E1E4E8">      properties: {}</span></span>
+<span class="line"><span style="color:#E1E4E8">    };</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#6A737D">    // Process property groups</span></span>
+<span class="line"><span style="color:#F97583">    for</span><span style="color:#E1E4E8"> (</span><span style="color:#F97583">const</span><span style="color:#79B8FF"> group</span><span style="color:#F97583"> of</span><span style="color:#E1E4E8"> prop.properties) {</span></span>
+<span class="line"><span style="color:#F97583">      for</span><span style="color:#E1E4E8"> (</span><span style="color:#F97583">const</span><span style="color:#E1E4E8"> [</span><span style="color:#79B8FF">key</span><span style="color:#E1E4E8">, </span><span style="color:#79B8FF">value</span><span style="color:#E1E4E8">] </span><span style="color:#F97583">of</span><span style="color:#E1E4E8"> Object.</span><span style="color:#B392F0">entries</span><span style="color:#E1E4E8">(group.properties)) {</span></span>
+<span class="line"><span style="color:#E1E4E8">        element.properties[key] </span><span style="color:#F97583">=</span><span style="color:#E1E4E8"> value;</span></span>
+<span class="line"><span style="color:#E1E4E8">        </span></span>
+<span class="line"><span style="color:#6A737D">        // Track materials and levels</span></span>
+<span class="line"><span style="color:#F97583">        if</span><span style="color:#E1E4E8"> (key.</span><span style="color:#B392F0">toLowerCase</span><span style="color:#E1E4E8">().</span><span style="color:#B392F0">includes</span><span style="color:#E1E4E8">(</span><span style="color:#9ECBFF">'material'</span><span style="color:#E1E4E8">)) {</span></span>
+<span class="line"><span style="color:#E1E4E8">          structured.summary.materials.</span><span style="color:#B392F0">add</span><span style="color:#E1E4E8">(value);</span></span>
+<span class="line"><span style="color:#E1E4E8">        }</span></span>
+<span class="line"><span style="color:#F97583">        if</span><span style="color:#E1E4E8"> (key.</span><span style="color:#B392F0">toLowerCase</span><span style="color:#E1E4E8">().</span><span style="color:#B392F0">includes</span><span style="color:#E1E4E8">(</span><span style="color:#9ECBFF">'level'</span><span style="color:#E1E4E8">)) {</span></span>
+<span class="line"><span style="color:#E1E4E8">          structured.summary.levels.</span><span style="color:#B392F0">add</span><span style="color:#E1E4E8">(value);</span></span>
+<span class="line"><span style="color:#E1E4E8">        }</span></span>
+<span class="line"><span style="color:#E1E4E8">      }</span></span>
+<span class="line"><span style="color:#E1E4E8">    }</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#E1E4E8">    structured.elements.</span><span style="color:#B392F0">push</span><span style="color:#E1E4E8">(element);</span></span>
+<span class="line"><span style="color:#E1E4E8">    </span></span>
+<span class="line"><span style="color:#6A737D">    // Track element types</span></span>
+<span class="line"><span style="color:#F97583">    const</span><span style="color:#79B8FF"> category</span><span style="color:#F97583"> =</span><span style="color:#E1E4E8"> element.properties.Category </span><span style="color:#F97583">||</span><span style="color:#9ECBFF"> 'Unknown'</span><span style="color:#E1E4E8">;</span></span>
+<span class="line"><span style="color:#E1E4E8">    structured.summary.elementTypes[category] </span><span style="color:#F97583">=</span><span style="color:#E1E4E8"> </span></span>
+<span class="line"><span style="color:#E1E4E8">      (structured.summary.elementTypes[category] </span><span style="color:#F97583">||</span><span style="color:#79B8FF"> 0</span><span style="color:#E1E4E8">) </span><span style="color:#F97583">+</span><span style="color:#79B8FF"> 1</span><span style="color:#E1E4E8">;</span></span>
+<span class="line"><span style="color:#E1E4E8">  }</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#E1E4E8">  structured.summary.totalElements </span><span style="color:#F97583">=</span><span style="color:#E1E4E8"> structured.elements.</span><span style="color:#79B8FF">length</span><span style="color:#E1E4E8">;</span></span>
+<span class="line"><span style="color:#E1E4E8">  structured.summary.materials </span><span style="color:#F97583">=</span><span style="color:#E1E4E8"> Array.</span><span style="color:#B392F0">from</span><span style="color:#E1E4E8">(structured.summary.materials);</span></span>
+<span class="line"><span style="color:#E1E4E8">  structured.summary.levels </span><span style="color:#F97583">=</span><span style="color:#E1E4E8"> Array.</span><span style="color:#B392F0">from</span><span style="color:#E1E4E8">(structured.summary.levels);</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#F97583">  return</span><span style="color:#E1E4E8"> structured;</span></span>
+<span class="line"><span style="color:#E1E4E8">}</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#6A737D">// Main workflow</span></span>
+<span class="line"><span style="color:#F97583">async</span><span style="color:#F97583"> function</span><span style="color:#B392F0"> extractProperties</span><span style="color:#E1E4E8">(</span><span style="color:#FFAB70">token</span><span style="color:#E1E4E8">, </span><span style="color:#FFAB70">urn</span><span style="color:#E1E4E8">) {</span></span>
+<span class="line"><span style="color:#E1E4E8">  console.</span><span style="color:#B392F0">log</span><span style="color:#E1E4E8">(</span><span style="color:#9ECBFF">'Getting manifest...'</span><span style="color:#E1E4E8">);</span></span>
+<span class="line"><span style="color:#F97583">  const</span><span style="color:#79B8FF"> manifest</span><span style="color:#F97583"> =</span><span style="color:#F97583"> await</span><span style="color:#B392F0"> getManifest</span><span style="color:#E1E4E8">(token, urn);</span></span>
+<span class="line"><span style="color:#E1E4E8">  </span></span>
+<span class="line"><span style="color:#E1E4E8">  console.</span><span style="color:#B392F0">log</span><span style="color:#E1E4E8">(</span><span style="color:#9ECBFF">'Finding metadata viewable...'</span><span style="color:#E1E4E8">);</span></span>
+<span class="line"><span style="color:#F97583">  const</span><span style="color:#79B8FF"> metadataGuid</span><span style="color:#F97583"> =</span><span style="color:#B392F0"> findMetadataViewable</span><span style="color:#E1E4E8">(manifest);</span></span>
+<span class="line"><span style="color:#E1E4E8">  </span></span>
+<span class="line"><span style="color:#E1E4E8">  console.</span><span style="color:#B392F0">log</span><span style="color:#E1E4E8">(</span><span style="color:#9ECBFF">'Getting model metadata...'</span><span style="color:#E1E4E8">);</span></span>
+<span class="line"><span style="color:#F97583">  const</span><span style="color:#79B8FF"> metadata</span><span style="color:#F97583"> =</span><span style="color:#F97583"> await</span><span style="color:#B392F0"> getMetadata</span><span style="color:#E1E4E8">(token, urn, metadataGuid);</span></span>
+<span class="line"><span style="color:#E1E4E8">  </span></span>
+<span class="line"><span style="color:#E1E4E8">  console.</span><span style="color:#B392F0">log</span><span style="color:#E1E4E8">(</span><span style="color:#9ECBFF">'Getting object tree...'</span><span style="color:#E1E4E8">);</span></span>
+<span class="line"><span style="color:#F97583">  const</span><span style="color:#79B8FF"> objectTree</span><span style="color:#F97583"> =</span><span style="color:#F97583"> await</span><span style="color:#B392F0"> getObjectTree</span><span style="color:#E1E4E8">(token, urn, metadataGuid);</span></span>
+<span class="line"><span style="color:#E1E4E8">  </span></span>
+<span class="line"><span style="color:#E1E4E8">  console.</span><span style="color:#B392F0">log</span><span style="color:#E1E4E8">(</span><span style="color:#9ECBFF">'Extracting all properties...'</span><span style="color:#E1E4E8">);</span></span>
+<span class="line"><span style="color:#F97583">  const</span><span style="color:#79B8FF"> properties</span><span style="color:#F97583"> =</span><span style="color:#F97583"> await</span><span style="color:#B392F0"> getAllProperties</span><span style="color:#E1E4E8">(token, urn, metadataGuid);</span></span>
+<span class="line"><span style="color:#E1E4E8">  </span></span>
+<span class="line"><span style="color:#E1E4E8">  console.</span><span style="color:#B392F0">log</span><span style="color:#E1E4E8">(</span><span style="color:#9ECBFF">'Processing data...'</span><span style="color:#E1E4E8">);</span></span>
+<span class="line"><span style="color:#F97583">  const</span><span style="color:#79B8FF"> structured</span><span style="color:#F97583"> =</span><span style="color:#B392F0"> processProperties</span><span style="color:#E1E4E8">(properties, metadata);</span></span>
+<span class="line"><span style="color:#E1E4E8">  </span></span>
+<span class="line"><span style="color:#F97583">  return</span><span style="color:#E1E4E8"> structured;</span></span>
+<span class="line"><span style="color:#E1E4E8">}</span></span></code></pre>
+<p><strong>That’s complex pagination, GUID navigation, and data processing!</strong></p>
+</details>
+<hr>
+<h2 id="the-raps-way-3-commands">The RAPS Way (3 Commands)</h2>
+<h3 id="step-1-get-model-metadata">Step 1: Get Model Metadata</h3>
+<pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8; overflow-x: auto; white-space: pre-wrap; word-wrap: break-word;" tabindex="0" data-language="bash"><code><span class="line"><span style="color:#6A737D"># Extract high-level model information</span></span>
+<span class="line"><span style="color:#B392F0">raps</span><span style="color:#9ECBFF"> translate</span><span style="color:#9ECBFF"> metadata</span><span style="color:#F97583"> &#x3C;</span><span style="color:#9ECBFF">ur</span><span style="color:#E1E4E8">n</span><span style="color:#F97583">></span></span></code></pre>
+<p><strong>Output example:</strong></p>
+<pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8; overflow-x: auto; white-space: pre-wrap; word-wrap: break-word;" tabindex="0" data-language="json"><code><span class="line"><span style="color:#E1E4E8">{</span></span>
+<span class="line"><span style="color:#79B8FF">  "metadata"</span><span style="color:#E1E4E8">: {</span></span>
+<span class="line"><span style="color:#79B8FF">    "name"</span><span style="color:#E1E4E8">: </span><span style="color:#9ECBFF">"Office Building"</span><span style="color:#E1E4E8">,</span></span>
+<span class="line"><span style="color:#79B8FF">    "guid"</span><span style="color:#E1E4E8">: </span><span style="color:#9ECBFF">"12345678-1234-5678-9abc-123456789012"</span><span style="color:#E1E4E8">,</span></span>
+<span class="line"><span style="color:#79B8FF">    "role"</span><span style="color:#E1E4E8">: </span><span style="color:#9ECBFF">"3D"</span><span style="color:#E1E4E8">,</span></span>
+<span class="line"><span style="color:#79B8FF">    "units"</span><span style="color:#E1E4E8">: </span><span style="color:#9ECBFF">"feet"</span><span style="color:#E1E4E8">,</span></span>
+<span class="line"><span style="color:#79B8FF">    "up_vector"</span><span style="color:#E1E4E8">: [</span><span style="color:#79B8FF">0</span><span style="color:#E1E4E8">, </span><span style="color:#79B8FF">0</span><span style="color:#E1E4E8">, </span><span style="color:#79B8FF">1</span><span style="color:#E1E4E8">],</span></span>
+<span class="line"><span style="color:#79B8FF">    "front_vector"</span><span style="color:#E1E4E8">: [</span><span style="color:#79B8FF">0</span><span style="color:#E1E4E8">, </span><span style="color:#79B8FF">1</span><span style="color:#E1E4E8">, </span><span style="color:#79B8FF">0</span><span style="color:#E1E4E8">],</span></span>
+<span class="line"><span style="color:#79B8FF">    "world_bounding_box"</span><span style="color:#E1E4E8">: {</span></span>
+<span class="line"><span style="color:#79B8FF">      "min"</span><span style="color:#E1E4E8">: [</span><span style="color:#79B8FF">-50</span><span style="color:#E1E4E8">, </span><span style="color:#79B8FF">-30</span><span style="color:#E1E4E8">, </span><span style="color:#79B8FF">0</span><span style="color:#E1E4E8">],</span></span>
+<span class="line"><span style="color:#79B8FF">      "max"</span><span style="color:#E1E4E8">: [</span><span style="color:#79B8FF">50</span><span style="color:#E1E4E8">, </span><span style="color:#79B8FF">30</span><span style="color:#E1E4E8">, </span><span style="color:#79B8FF">20</span><span style="color:#E1E4E8">]</span></span>
+<span class="line"><span style="color:#E1E4E8">    }</span></span>
+<span class="line"><span style="color:#E1E4E8">  }</span></span>
+<span class="line"><span style="color:#E1E4E8">}</span></span></code></pre>
+<h3 id="step-2-extract-all-properties">Step 2: Extract All Properties</h3>
+<pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8; overflow-x: auto; white-space: pre-wrap; word-wrap: break-word;" tabindex="0" data-language="bash"><code><span class="line"><span style="color:#6A737D"># Extract detailed element properties to JSON file</span></span>
+<span class="line"><span style="color:#B392F0">raps</span><span style="color:#9ECBFF"> translate</span><span style="color:#9ECBFF"> properties</span><span style="color:#F97583"> &#x3C;</span><span style="color:#9ECBFF">ur</span><span style="color:#E1E4E8">n</span><span style="color:#F97583">></span><span style="color:#79B8FF"> --output</span><span style="color:#9ECBFF"> properties.json</span><span style="color:#79B8FF"> --format</span><span style="color:#9ECBFF"> detailed</span></span></code></pre>
+<p><strong>What happens:</strong></p>
+<ul>
+<li>Finds metadata viewable automatically</li>
+<li>Downloads all properties with pagination handling</li>
+<li>Structures data by element type</li>
+<li>Saves to structured JSON format</li>
+</ul>
+<h3 id="step-3-generate-summary-report">Step 3: Generate Summary Report</h3>
+<pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8; overflow-x: auto; white-space: pre-wrap; word-wrap: break-word;" tabindex="0" data-language="bash"><code><span class="line"><span style="color:#6A737D"># Create human-readable summary</span></span>
+<span class="line"><span style="color:#B392F0">raps</span><span style="color:#9ECBFF"> translate</span><span style="color:#9ECBFF"> properties</span><span style="color:#F97583"> &#x3C;</span><span style="color:#9ECBFF">ur</span><span style="color:#E1E4E8">n</span><span style="color:#F97583">></span><span style="color:#79B8FF"> --summary</span><span style="color:#79B8FF"> --output</span><span style="color:#9ECBFF"> summary.csv</span></span></code></pre>
+<p><strong>Output example (CSV):</strong></p>
+<pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8; overflow-x: auto; white-space: pre-wrap; word-wrap: break-word;" tabindex="0" data-language="csv"><code><span class="line"><span style="color:#E1E4E8">Element_Type,</span><span style="color:#F97583">Count,</span><span style="color:#B392F0">Average_Area,</span><span style="color:#6A737D">Total_Volume,</span><span style="color:#9ECBFF">Common_Materials</span></span>
+<span class="line"><span style="color:#E1E4E8">Wall,</span><span style="color:#F97583">45,</span><span style="color:#B392F0">120.5,</span><span style="color:#6A737D">2850.0,</span><span style="color:#9ECBFF">"Concrete, Gypsum Board"</span></span>
+<span class="line"><span style="color:#E1E4E8">Door,</span><span style="color:#F97583">12,</span><span style="color:#B392F0">21.0,</span><span style="color:#6A737D">0.0,</span><span style="color:#9ECBFF">"Wood, Steel"</span></span>
+<span class="line"><span style="color:#E1E4E8">Window,</span><span style="color:#F97583">18,</span><span style="color:#B392F0">15.5,</span><span style="color:#6A737D">0.0,</span><span style="color:#9ECBFF">"Glass, Aluminum"</span></span></code></pre>
+<hr>
+<h2 id="extraction-workflows-by-file-type">Extraction Workflows by File Type</h2>
+<h3 id="bim-models-revit-archicad-ifc">BIM Models (Revit, ArchiCAD, IFC)</h3>
+<pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8; overflow-x: auto; white-space: pre-wrap; word-wrap: break-word;" tabindex="0" data-language="bash"><code><span class="line"><span style="color:#6A737D"># Extract BIM-specific data</span></span>
+<span class="line"><span style="color:#B392F0">raps</span><span style="color:#9ECBFF"> translate</span><span style="color:#9ECBFF"> properties</span><span style="color:#F97583"> &#x3C;</span><span style="color:#9ECBFF">rvt_ur</span><span style="color:#E1E4E8">n</span><span style="color:#F97583">></span><span style="color:#79B8FF"> --filter-type</span><span style="color:#9ECBFF"> "Walls,Doors,Windows,Floors"</span><span style="color:#79B8FF"> --include-materials</span><span style="color:#79B8FF"> --include-levels</span></span></code></pre>
+<p><strong>Typical BIM Properties:</strong></p>
+<ul>
+<li>Element categories (Walls, Doors, Windows, etc.)</li>
+<li>Material assignments</li>
+<li>Level/Floor associations</li>
+<li>Room/Space assignments</li>
+<li>Phasing information</li>
+<li>Type vs Instance parameters</li>
+</ul>
+<h3 id="mechanical-cad-inventor-solidworks">Mechanical CAD (Inventor, SolidWorks)</h3>
+<pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8; overflow-x: auto; white-space: pre-wrap; word-wrap: break-word;" tabindex="0" data-language="bash"><code><span class="line"><span style="color:#6A737D"># Extract mechanical properties</span></span>
+<span class="line"><span style="color:#B392F0">raps</span><span style="color:#9ECBFF"> translate</span><span style="color:#9ECBFF"> properties</span><span style="color:#F97583"> &#x3C;</span><span style="color:#9ECBFF">ipt_ur</span><span style="color:#E1E4E8">n</span><span style="color:#F97583">></span><span style="color:#79B8FF"> --filter-type</span><span style="color:#9ECBFF"> "Parts,Assemblies"</span><span style="color:#79B8FF"> --include-mass</span><span style="color:#79B8FF"> --include-materials</span></span></code></pre>
+<p><strong>Typical Mechanical Properties:</strong></p>
+<ul>
+<li>Part mass and volume</li>
+<li>Material specifications</li>
+<li>Assembly relationships</li>
+<li>Custom iProperties/parameters</li>
+<li>Manufacturing data</li>
+</ul>
+<h3 id="civilinfrastructure-civil-3d-infraworks">Civil/Infrastructure (Civil 3D, InfraWorks)</h3>
+<pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8; overflow-x: auto; white-space: pre-wrap; word-wrap: break-word;" tabindex="0" data-language="bash"><code><span class="line"><span style="color:#6A737D"># Extract civil engineering data</span></span>
+<span class="line"><span style="color:#B392F0">raps</span><span style="color:#9ECBFF"> translate</span><span style="color:#9ECBFF"> properties</span><span style="color:#F97583"> &#x3C;</span><span style="color:#9ECBFF">dwg_ur</span><span style="color:#E1E4E8">n</span><span style="color:#F97583">></span><span style="color:#79B8FF"> --filter-type</span><span style="color:#9ECBFF"> "Alignments,Surfaces,Corridors"</span><span style="color:#79B8FF"> --include-elevation</span></span></code></pre>
+<p><strong>Typical Civil Properties:</strong></p>
+<ul>
+<li>Survey points and elevations</li>
+<li>Alignment parameters</li>
+<li>Surface definitions</li>
+<li>Corridor assemblies</li>
+<li>Pipe networks</li>
+</ul>
+<hr>
+<h2 id="filtering-and-searching-properties">Filtering and Searching Properties</h2>
+<h3 id="filter-by-element-type">Filter by Element Type</h3>
+<pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8; overflow-x: auto; white-space: pre-wrap; word-wrap: break-word;" tabindex="0" data-language="bash"><code><span class="line"><span style="color:#6A737D"># Only extract doors and windows</span></span>
+<span class="line"><span style="color:#B392F0">raps</span><span style="color:#9ECBFF"> translate</span><span style="color:#9ECBFF"> properties</span><span style="color:#F97583"> &#x3C;</span><span style="color:#9ECBFF">ur</span><span style="color:#E1E4E8">n</span><span style="color:#F97583">></span><span style="color:#79B8FF"> --filter-category</span><span style="color:#9ECBFF"> "Doors,Windows"</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#6A737D"># Exclude structural elements</span></span>
+<span class="line"><span style="color:#B392F0">raps</span><span style="color:#9ECBFF"> translate</span><span style="color:#9ECBFF"> properties</span><span style="color:#F97583"> &#x3C;</span><span style="color:#9ECBFF">ur</span><span style="color:#E1E4E8">n</span><span style="color:#F97583">></span><span style="color:#79B8FF"> --exclude-category</span><span style="color:#9ECBFF"> "Structural Framing,Structural Columns"</span></span></code></pre>
+<h3 id="filter-by-property-values">Filter by Property Values</h3>
+<pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8; overflow-x: auto; white-space: pre-wrap; word-wrap: break-word;" tabindex="0" data-language="bash"><code><span class="line"><span style="color:#6A737D"># Only elements with specific material</span></span>
+<span class="line"><span style="color:#B392F0">raps</span><span style="color:#9ECBFF"> translate</span><span style="color:#9ECBFF"> properties</span><span style="color:#F97583"> &#x3C;</span><span style="color:#9ECBFF">ur</span><span style="color:#E1E4E8">n</span><span style="color:#F97583">></span><span style="color:#79B8FF"> --filter-property</span><span style="color:#9ECBFF"> "Material=Concrete"</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#6A737D"># Elements above certain level</span></span>
+<span class="line"><span style="color:#B392F0">raps</span><span style="color:#9ECBFF"> translate</span><span style="color:#9ECBFF"> properties</span><span style="color:#F97583"> &#x3C;</span><span style="color:#9ECBFF">ur</span><span style="color:#E1E4E8">n</span><span style="color:#F97583">></span><span style="color:#79B8FF"> --filter-property</span><span style="color:#9ECBFF"> "Level=Level 2,Level 3"</span></span></code></pre>
+<h3 id="custom-property-queries">Custom Property Queries</h3>
+<pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8; overflow-x: auto; white-space: pre-wrap; word-wrap: break-word;" tabindex="0" data-language="bash"><code><span class="line"><span style="color:#6A737D"># Advanced filtering with queries</span></span>
+<span class="line"><span style="color:#B392F0">raps</span><span style="color:#9ECBFF"> translate</span><span style="color:#9ECBFF"> properties</span><span style="color:#F97583"> &#x3C;</span><span style="color:#9ECBFF">ur</span><span style="color:#E1E4E8">n</span><span style="color:#F97583">></span><span style="color:#79B8FF"> --query</span><span style="color:#9ECBFF"> "Area > 100 AND Material CONTAINS 'Steel'"</span></span></code></pre>
+<hr>
+<h2 id="output-formats">Output Formats</h2>
+<h3 id="1-detailed-json-default">1. Detailed JSON (Default)</h3>
+<pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8; overflow-x: auto; white-space: pre-wrap; word-wrap: break-word;" tabindex="0" data-language="bash"><code><span class="line"><span style="color:#B392F0">raps</span><span style="color:#9ECBFF"> translate</span><span style="color:#9ECBFF"> properties</span><span style="color:#F97583"> &#x3C;</span><span style="color:#9ECBFF">ur</span><span style="color:#E1E4E8">n</span><span style="color:#F97583">></span><span style="color:#79B8FF"> --output</span><span style="color:#9ECBFF"> model_data.json</span></span></code></pre>
+<p>Structure:</p>
+<pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8; overflow-x: auto; white-space: pre-wrap; word-wrap: break-word;" tabindex="0" data-language="json"><code><span class="line"><span style="color:#E1E4E8">{</span></span>
+<span class="line"><span style="color:#79B8FF">  "modelInfo"</span><span style="color:#E1E4E8">: { </span><span style="color:#FDAEB7;font-style:italic">...</span><span style="color:#E1E4E8"> },</span></span>
+<span class="line"><span style="color:#79B8FF">  "elements"</span><span style="color:#E1E4E8">: [</span></span>
+<span class="line"><span style="color:#E1E4E8">    {</span></span>
+<span class="line"><span style="color:#79B8FF">      "dbId"</span><span style="color:#E1E4E8">: </span><span style="color:#79B8FF">123</span><span style="color:#E1E4E8">,</span></span>
+<span class="line"><span style="color:#79B8FF">      "category"</span><span style="color:#E1E4E8">: </span><span style="color:#9ECBFF">"Walls"</span><span style="color:#E1E4E8">,</span></span>
+<span class="line"><span style="color:#79B8FF">      "properties"</span><span style="color:#E1E4E8">: {</span></span>
+<span class="line"><span style="color:#79B8FF">        "Name"</span><span style="color:#E1E4E8">: </span><span style="color:#9ECBFF">"Interior Wall - Generic"</span><span style="color:#E1E4E8">,</span></span>
+<span class="line"><span style="color:#79B8FF">        "Area"</span><span style="color:#E1E4E8">: </span><span style="color:#79B8FF">120.5</span><span style="color:#E1E4E8">,</span></span>
+<span class="line"><span style="color:#79B8FF">        "Volume"</span><span style="color:#E1E4E8">: </span><span style="color:#79B8FF">15.2</span><span style="color:#E1E4E8">,</span></span>
+<span class="line"><span style="color:#79B8FF">        "Material"</span><span style="color:#E1E4E8">: </span><span style="color:#9ECBFF">"Gypsum Board"</span><span style="color:#E1E4E8">,</span></span>
+<span class="line"><span style="color:#79B8FF">        "Level"</span><span style="color:#E1E4E8">: </span><span style="color:#9ECBFF">"Level 1"</span></span>
+<span class="line"><span style="color:#E1E4E8">      }</span></span>
+<span class="line"><span style="color:#E1E4E8">    }</span></span>
+<span class="line"><span style="color:#E1E4E8">  ],</span></span>
+<span class="line"><span style="color:#79B8FF">  "summary"</span><span style="color:#E1E4E8">: { </span><span style="color:#FDAEB7;font-style:italic">...</span><span style="color:#E1E4E8"> }</span></span>
+<span class="line"><span style="color:#E1E4E8">}</span></span></code></pre>
+<h3 id="2-flat-csv">2. Flat CSV</h3>
+<pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8; overflow-x: auto; white-space: pre-wrap; word-wrap: break-word;" tabindex="0" data-language="bash"><code><span class="line"><span style="color:#B392F0">raps</span><span style="color:#9ECBFF"> translate</span><span style="color:#9ECBFF"> properties</span><span style="color:#F97583"> &#x3C;</span><span style="color:#9ECBFF">ur</span><span style="color:#E1E4E8">n</span><span style="color:#F97583">></span><span style="color:#79B8FF"> --format</span><span style="color:#9ECBFF"> csv</span><span style="color:#79B8FF"> --output</span><span style="color:#9ECBFF"> elements.csv</span></span></code></pre>
+<p>Structure:</p>
+<pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8; overflow-x: auto; white-space: pre-wrap; word-wrap: break-word;" tabindex="0" data-language="csv"><code><span class="line"><span style="color:#E1E4E8">dbId,</span><span style="color:#F97583">Category,</span><span style="color:#B392F0">Name,</span><span style="color:#6A737D">Area,</span><span style="color:#9ECBFF">Volume,</span><span style="color:#FFAB70">Material,</span><span style="color:#79B8FF">Level</span></span>
+<span class="line"><span style="color:#E1E4E8">123,</span><span style="color:#F97583">Walls,</span><span style="color:#B392F0">Interior Wall - Generic,</span><span style="color:#6A737D">120.5,</span><span style="color:#9ECBFF">15.2,</span><span style="color:#FFAB70">Gypsum Board,</span><span style="color:#79B8FF">Level 1</span></span>
+<span class="line"><span style="color:#E1E4E8">124,</span><span style="color:#F97583">Doors,</span><span style="color:#B392F0">Door - Single,</span><span style="color:#6A737D">21.0,</span><span style="color:#9ECBFF">0.0,</span><span style="color:#FFAB70">Wood,</span><span style="color:#79B8FF">Level 1</span></span></code></pre>
+<h3 id="3-excel-workbook">3. Excel Workbook</h3>
+<pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8; overflow-x: auto; white-space: pre-wrap; word-wrap: break-word;" tabindex="0" data-language="bash"><code><span class="line"><span style="color:#B392F0">raps</span><span style="color:#9ECBFF"> translate</span><span style="color:#9ECBFF"> properties</span><span style="color:#F97583"> &#x3C;</span><span style="color:#9ECBFF">ur</span><span style="color:#E1E4E8">n</span><span style="color:#F97583">></span><span style="color:#79B8FF"> --format</span><span style="color:#9ECBFF"> xlsx</span><span style="color:#79B8FF"> --output</span><span style="color:#9ECBFF"> model_data.xlsx</span><span style="color:#79B8FF"> --include-charts</span></span></code></pre>
+<p>Creates workbook with:</p>
+<ul>
+<li><strong>Elements</strong> sheet - All property data</li>
+<li><strong>Summary</strong> sheet - Counts and totals by category</li>
+<li><strong>Materials</strong> sheet - Material usage analysis</li>
+<li><strong>Charts</strong> sheet - Visual summaries</li>
+</ul>
+<h3 id="4-database-integration">4. Database Integration</h3>
+<pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8; overflow-x: auto; white-space: pre-wrap; word-wrap: break-word;" tabindex="0" data-language="bash"><code><span class="line"><span style="color:#6A737D"># Insert directly into PostgreSQL</span></span>
+<span class="line"><span style="color:#B392F0">raps</span><span style="color:#9ECBFF"> translate</span><span style="color:#9ECBFF"> properties</span><span style="color:#F97583"> &#x3C;</span><span style="color:#9ECBFF">ur</span><span style="color:#E1E4E8">n</span><span style="color:#F97583">></span><span style="color:#79B8FF"> --to-database</span><span style="color:#9ECBFF"> "postgresql://user:pass@localhost:5432/models"</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#6A737D"># Insert into SQLite for local analysis</span></span>
+<span class="line"><span style="color:#B392F0">raps</span><span style="color:#9ECBFF"> translate</span><span style="color:#9ECBFF"> properties</span><span style="color:#F97583"> &#x3C;</span><span style="color:#9ECBFF">ur</span><span style="color:#E1E4E8">n</span><span style="color:#F97583">></span><span style="color:#79B8FF"> --to-database</span><span style="color:#9ECBFF"> "sqlite:///models.db"</span></span></code></pre>
+<hr>
+<h2 id="advanced-property-analysis">Advanced Property Analysis</h2>
+<h3 id="material-quantity-takeoff">Material Quantity Takeoff</h3>
+<pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8; overflow-x: auto; white-space: pre-wrap; word-wrap: break-word;" tabindex="0" data-language="bash"><code><span class="line"><span style="color:#6A737D"># Generate material quantities report</span></span>
+<span class="line"><span style="color:#B392F0">raps</span><span style="color:#9ECBFF"> translate</span><span style="color:#9ECBFF"> properties</span><span style="color:#F97583"> &#x3C;</span><span style="color:#9ECBFF">ur</span><span style="color:#E1E4E8">n</span><span style="color:#F97583">></span><span style="color:#79B8FF"> --analyze</span><span style="color:#9ECBFF"> materials</span><span style="color:#79B8FF"> --group-by</span><span style="color:#9ECBFF"> "Material,Level"</span><span style="color:#79B8FF"> --calc</span><span style="color:#9ECBFF"> "sum(Volume),sum(Area)"</span></span></code></pre>
+<p>Output:</p>
+<pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8; overflow-x: auto; white-space: pre-wrap; word-wrap: break-word;" tabindex="0" data-language="json"><code><span class="line"><span style="color:#E1E4E8">{</span></span>
+<span class="line"><span style="color:#79B8FF">  "materialAnalysis"</span><span style="color:#E1E4E8">: [</span></span>
+<span class="line"><span style="color:#E1E4E8">    {</span></span>
+<span class="line"><span style="color:#79B8FF">      "material"</span><span style="color:#E1E4E8">: </span><span style="color:#9ECBFF">"Concrete"</span><span style="color:#E1E4E8">,</span></span>
+<span class="line"><span style="color:#79B8FF">      "level"</span><span style="color:#E1E4E8">: </span><span style="color:#9ECBFF">"Level 1"</span><span style="color:#E1E4E8">,</span></span>
+<span class="line"><span style="color:#79B8FF">      "totalVolume"</span><span style="color:#E1E4E8">: </span><span style="color:#79B8FF">1250.5</span><span style="color:#E1E4E8">,</span></span>
+<span class="line"><span style="color:#79B8FF">      "totalArea"</span><span style="color:#E1E4E8">: </span><span style="color:#79B8FF">2850.0</span><span style="color:#E1E4E8">,</span></span>
+<span class="line"><span style="color:#79B8FF">      "elementCount"</span><span style="color:#E1E4E8">: </span><span style="color:#79B8FF">25</span></span>
+<span class="line"><span style="color:#E1E4E8">    }</span></span>
+<span class="line"><span style="color:#E1E4E8">  ]</span></span>
+<span class="line"><span style="color:#E1E4E8">}</span></span></code></pre>
+<h3 id="cost-estimation-integration">Cost Estimation Integration</h3>
+<pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8; overflow-x: auto; white-space: pre-wrap; word-wrap: break-word;" tabindex="0" data-language="bash"><code><span class="line"><span style="color:#6A737D"># Extract data with cost parameters</span></span>
+<span class="line"><span style="color:#B392F0">raps</span><span style="color:#9ECBFF"> translate</span><span style="color:#9ECBFF"> properties</span><span style="color:#F97583"> &#x3C;</span><span style="color:#9ECBFF">ur</span><span style="color:#E1E4E8">n</span><span style="color:#F97583">></span><span style="color:#79B8FF"> --include-cost-params</span><span style="color:#79B8FF"> --apply-rates</span><span style="color:#9ECBFF"> "rates.json"</span></span></code></pre>
+<p>Where <code>rates.json</code> contains:</p>
+<pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8; overflow-x: auto; white-space: pre-wrap; word-wrap: break-word;" tabindex="0" data-language="json"><code><span class="line"><span style="color:#E1E4E8">{</span></span>
+<span class="line"><span style="color:#79B8FF">  "materialRates"</span><span style="color:#E1E4E8">: {</span></span>
+<span class="line"><span style="color:#79B8FF">    "Concrete"</span><span style="color:#E1E4E8">: { </span><span style="color:#79B8FF">"unit"</span><span style="color:#E1E4E8">: </span><span style="color:#9ECBFF">"cubic_foot"</span><span style="color:#E1E4E8">, </span><span style="color:#79B8FF">"rate"</span><span style="color:#E1E4E8">: </span><span style="color:#79B8FF">0.12</span><span style="color:#E1E4E8"> },</span></span>
+<span class="line"><span style="color:#79B8FF">    "Steel"</span><span style="color:#E1E4E8">: { </span><span style="color:#79B8FF">"unit"</span><span style="color:#E1E4E8">: </span><span style="color:#9ECBFF">"pound"</span><span style="color:#E1E4E8">, </span><span style="color:#79B8FF">"rate"</span><span style="color:#E1E4E8">: </span><span style="color:#79B8FF">0.85</span><span style="color:#E1E4E8"> }</span></span>
+<span class="line"><span style="color:#E1E4E8">  }</span></span>
+<span class="line"><span style="color:#E1E4E8">}</span></span></code></pre>
+<h3 id="space-and-room-analysis">Space and Room Analysis</h3>
+<pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8; overflow-x: auto; white-space: pre-wrap; word-wrap: break-word;" tabindex="0" data-language="bash"><code><span class="line"><span style="color:#6A737D"># Extract room/space data for space planning</span></span>
+<span class="line"><span style="color:#B392F0">raps</span><span style="color:#9ECBFF"> translate</span><span style="color:#9ECBFF"> properties</span><span style="color:#F97583"> &#x3C;</span><span style="color:#9ECBFF">ur</span><span style="color:#E1E4E8">n</span><span style="color:#F97583">></span><span style="color:#79B8FF"> --extract-spaces</span><span style="color:#79B8FF"> --include-boundaries</span><span style="color:#79B8FF"> --calc-adjacencies</span></span></code></pre>
+<hr>
+<h2 id="property-comparison-and-change-detection">Property Comparison and Change Detection</h2>
+<h3 id="compare-model-versions">Compare Model Versions</h3>
+<pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8; overflow-x: auto; white-space: pre-wrap; word-wrap: break-word;" tabindex="0" data-language="bash"><code><span class="line"><span style="color:#6A737D"># Compare properties between model versions</span></span>
+<span class="line"><span style="color:#B392F0">raps</span><span style="color:#9ECBFF"> translate</span><span style="color:#9ECBFF"> compare-properties</span><span style="color:#F97583"> &#x3C;</span><span style="color:#9ECBFF">urn</span><span style="color:#F97583">1></span><span style="color:#F97583"> &#x3C;</span><span style="color:#9ECBFF">urn</span><span style="color:#F97583">2></span><span style="color:#79B8FF"> --output</span><span style="color:#9ECBFF"> changes.json</span></span></code></pre>
+<p>Output identifies:</p>
+<ul>
+<li>Added elements</li>
+<li>Deleted elements</li>
+<li>Modified properties</li>
+<li>Moved elements</li>
+</ul>
+<h3 id="track-changes-over-time">Track Changes Over Time</h3>
+<pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8; overflow-x: auto; white-space: pre-wrap; word-wrap: break-word;" tabindex="0" data-language="bash"><code><span class="line"><span style="color:#6A737D"># Store properties in version-controlled format</span></span>
+<span class="line"><span style="color:#B392F0">raps</span><span style="color:#9ECBFF"> translate</span><span style="color:#9ECBFF"> properties</span><span style="color:#F97583"> &#x3C;</span><span style="color:#9ECBFF">ur</span><span style="color:#E1E4E8">n</span><span style="color:#F97583">></span><span style="color:#79B8FF"> --output</span><span style="color:#9ECBFF"> "properties_v$(</span><span style="color:#B392F0">date</span><span style="color:#9ECBFF"> +%Y%m%d).json"</span><span style="color:#79B8FF"> --git-commit</span></span></code></pre>
+<hr>
+<h2 id="integration-examples">Integration Examples</h2>
+<h3 id="python-data-analysis">Python Data Analysis</h3>
+<pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8; overflow-x: auto; white-space: pre-wrap; word-wrap: break-word;" tabindex="0" data-language="python"><code><span class="line"><span style="color:#F97583">import</span><span style="color:#E1E4E8"> json</span></span>
+<span class="line"><span style="color:#F97583">import</span><span style="color:#E1E4E8"> pandas </span><span style="color:#F97583">as</span><span style="color:#E1E4E8"> pd</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#6A737D"># Load RAPS extracted properties</span></span>
+<span class="line"><span style="color:#F97583">with</span><span style="color:#79B8FF"> open</span><span style="color:#E1E4E8">(</span><span style="color:#9ECBFF">'properties.json'</span><span style="color:#E1E4E8">, </span><span style="color:#9ECBFF">'r'</span><span style="color:#E1E4E8">) </span><span style="color:#F97583">as</span><span style="color:#E1E4E8"> f:</span></span>
+<span class="line"><span style="color:#E1E4E8">    data </span><span style="color:#F97583">=</span><span style="color:#E1E4E8"> json.load(f)</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#6A737D"># Convert to pandas DataFrame for analysis</span></span>
+<span class="line"><span style="color:#E1E4E8">elements_df </span><span style="color:#F97583">=</span><span style="color:#E1E4E8"> pd.json_normalize(data[</span><span style="color:#9ECBFF">'elements'</span><span style="color:#E1E4E8">])</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#6A737D"># Analyze by category</span></span>
+<span class="line"><span style="color:#E1E4E8">category_summary </span><span style="color:#F97583">=</span><span style="color:#E1E4E8"> elements_df.groupby(</span><span style="color:#9ECBFF">'category'</span><span style="color:#E1E4E8">).agg({</span></span>
+<span class="line"><span style="color:#9ECBFF">    'properties.Area'</span><span style="color:#E1E4E8">: [</span><span style="color:#9ECBFF">'count'</span><span style="color:#E1E4E8">, </span><span style="color:#9ECBFF">'sum'</span><span style="color:#E1E4E8">, </span><span style="color:#9ECBFF">'mean'</span><span style="color:#E1E4E8">],</span></span>
+<span class="line"><span style="color:#9ECBFF">    'properties.Volume'</span><span style="color:#E1E4E8">: [</span><span style="color:#9ECBFF">'sum'</span><span style="color:#E1E4E8">, </span><span style="color:#9ECBFF">'mean'</span><span style="color:#E1E4E8">]</span></span>
+<span class="line"><span style="color:#E1E4E8">}).round(</span><span style="color:#79B8FF">2</span><span style="color:#E1E4E8">)</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#79B8FF">print</span><span style="color:#E1E4E8">(category_summary)</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#6A737D"># Find largest elements by area</span></span>
+<span class="line"><span style="color:#E1E4E8">largest_elements </span><span style="color:#F97583">=</span><span style="color:#E1E4E8"> elements_df.nlargest(</span><span style="color:#79B8FF">10</span><span style="color:#E1E4E8">, </span><span style="color:#9ECBFF">'properties.Area'</span><span style="color:#E1E4E8">)[</span></span>
+<span class="line"><span style="color:#E1E4E8">    [</span><span style="color:#9ECBFF">'category'</span><span style="color:#E1E4E8">, </span><span style="color:#9ECBFF">'properties.Name'</span><span style="color:#E1E4E8">, </span><span style="color:#9ECBFF">'properties.Area'</span><span style="color:#E1E4E8">]</span></span>
+<span class="line"><span style="color:#E1E4E8">]</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#79B8FF">print</span><span style="color:#E1E4E8">(largest_elements)</span></span></code></pre>
+<h3 id="power-bi-integration">Power BI Integration</h3>
+<pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8; overflow-x: auto; white-space: pre-wrap; word-wrap: break-word;" tabindex="0" data-language="bash"><code><span class="line"><span style="color:#6A737D"># Generate Power BI compatible format</span></span>
+<span class="line"><span style="color:#B392F0">raps</span><span style="color:#9ECBFF"> translate</span><span style="color:#9ECBFF"> properties</span><span style="color:#F97583"> &#x3C;</span><span style="color:#9ECBFF">ur</span><span style="color:#E1E4E8">n</span><span style="color:#F97583">></span><span style="color:#79B8FF"> --format</span><span style="color:#9ECBFF"> powerbi</span><span style="color:#79B8FF"> --output</span><span style="color:#9ECBFF"> model_data.pbix</span><span style="color:#79B8FF"> --include-relationships</span></span></code></pre>
+<h3 id="excel-analysis-template">Excel Analysis Template</h3>
+<pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8; overflow-x: auto; white-space: pre-wrap; word-wrap: break-word;" tabindex="0" data-language="bash"><code><span class="line"><span style="color:#6A737D"># Create Excel template with formulas</span></span>
+<span class="line"><span style="color:#B392F0">raps</span><span style="color:#9ECBFF"> translate</span><span style="color:#9ECBFF"> properties</span><span style="color:#F97583"> &#x3C;</span><span style="color:#9ECBFF">ur</span><span style="color:#E1E4E8">n</span><span style="color:#F97583">></span><span style="color:#79B8FF"> --format</span><span style="color:#9ECBFF"> xlsx</span><span style="color:#79B8FF"> --template</span><span style="color:#9ECBFF"> analysis</span><span style="color:#79B8FF"> --output</span><span style="color:#9ECBFF"> model_analysis.xlsx</span></span></code></pre>
+<p>The template includes:</p>
+<ul>
+<li>Pivot tables for category analysis</li>
+<li>Charts for material distribution</li>
+<li>Formulas for cost calculations</li>
+<li>Conditional formatting for outliers</li>
+</ul>
+<hr>
+<h2 id="automation-and-scheduling">Automation and Scheduling</h2>
+<h3 id="batch-property-extraction">Batch Property Extraction</h3>
+<pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8; overflow-x: auto; white-space: pre-wrap; word-wrap: break-word;" tabindex="0" data-language="bash"><code><span class="line"><span style="color:#6A737D"># Extract properties from multiple models</span></span>
+<span class="line"><span style="color:#B392F0">raps</span><span style="color:#9ECBFF"> translate</span><span style="color:#9ECBFF"> properties-batch</span><span style="color:#79B8FF"> --bucket</span><span style="color:#9ECBFF"> my-models</span><span style="color:#79B8FF"> --output-dir</span><span style="color:#9ECBFF"> ./extracted_data/</span><span style="color:#79B8FF"> --parallel</span><span style="color:#79B8FF"> 3</span></span></code></pre>
+<h3 id="scheduled-extraction">Scheduled Extraction</h3>
+<pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8; overflow-x: auto; white-space: pre-wrap; word-wrap: break-word;" tabindex="0" data-language="bash"><code><span class="line"><span style="color:#6A737D"># Set up daily extraction for active projects</span></span>
+<span class="line"><span style="color:#B392F0">raps</span><span style="color:#9ECBFF"> schedule</span><span style="color:#9ECBFF"> properties-extraction</span><span style="color:#79B8FF"> --models</span><span style="color:#9ECBFF"> @active_models.list</span><span style="color:#79B8FF"> --time</span><span style="color:#9ECBFF"> "02:00"</span><span style="color:#79B8FF"> --output-format</span><span style="color:#9ECBFF"> csv</span></span></code></pre>
+<h3 id="cicd-integration">CI/CD Integration</h3>
+<pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8; overflow-x: auto; white-space: pre-wrap; word-wrap: break-word;" tabindex="0" data-language="yaml"><code><span class="line"><span style="color:#6A737D"># GitHub Actions workflow</span></span>
+<span class="line"><span style="color:#85E89D">name</span><span style="color:#E1E4E8">: </span><span style="color:#9ECBFF">Extract Model Properties</span></span>
+<span class="line"><span style="color:#79B8FF">on</span><span style="color:#E1E4E8">:</span></span>
+<span class="line"><span style="color:#85E89D">  push</span><span style="color:#E1E4E8">:</span></span>
+<span class="line"><span style="color:#85E89D">    paths</span><span style="color:#E1E4E8">: [</span><span style="color:#9ECBFF">'models/*.rvt'</span><span style="color:#E1E4E8">]</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#85E89D">jobs</span><span style="color:#E1E4E8">:</span></span>
+<span class="line"><span style="color:#85E89D">  extract</span><span style="color:#E1E4E8">:</span></span>
+<span class="line"><span style="color:#85E89D">    runs-on</span><span style="color:#E1E4E8">: </span><span style="color:#9ECBFF">ubuntu-latest</span></span>
+<span class="line"><span style="color:#85E89D">    steps</span><span style="color:#E1E4E8">:</span></span>
+<span class="line"><span style="color:#E1E4E8">      - </span><span style="color:#85E89D">name</span><span style="color:#E1E4E8">: </span><span style="color:#9ECBFF">Extract Properties</span></span>
+<span class="line"><span style="color:#85E89D">        run</span><span style="color:#E1E4E8">: </span><span style="color:#F97583">|</span></span>
+<span class="line"><span style="color:#9ECBFF">          raps translate properties ${{ env.MODEL_URN }} --output properties.json</span></span>
+<span class="line"><span style="color:#9ECBFF">          # Upload to data warehouse, trigger analysis pipeline, etc.</span></span></code></pre>
+<hr>
+<h2 id="performance-tips">Performance Tips</h2>
+<h3 id="1-use-filters-to-reduce-data-volume">1. Use Filters to Reduce Data Volume</h3>
+<pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8; overflow-x: auto; white-space: pre-wrap; word-wrap: break-word;" tabindex="0" data-language="bash"><code><span class="line"><span style="color:#6A737D"># Extract only what you need</span></span>
+<span class="line"><span style="color:#B392F0">raps</span><span style="color:#9ECBFF"> translate</span><span style="color:#9ECBFF"> properties</span><span style="color:#F97583"> &#x3C;</span><span style="color:#9ECBFF">ur</span><span style="color:#E1E4E8">n</span><span style="color:#F97583">></span><span style="color:#79B8FF"> --filter-category</span><span style="color:#9ECBFF"> "Walls,Doors"</span><span style="color:#79B8FF"> --exclude-properties</span><span style="color:#9ECBFF"> "History,Constraints"</span></span></code></pre>
+<h3 id="2-parallelize-multiple-models">2. Parallelize Multiple Models</h3>
+<pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8; overflow-x: auto; white-space: pre-wrap; word-wrap: break-word;" tabindex="0" data-language="bash"><code><span class="line"><span style="color:#6A737D"># Process multiple models simultaneously</span></span>
+<span class="line"><span style="color:#B392F0">raps</span><span style="color:#9ECBFF"> translate</span><span style="color:#9ECBFF"> properties-batch</span><span style="color:#79B8FF"> --models</span><span style="color:#9ECBFF"> urn1,urn2,urn3</span><span style="color:#79B8FF"> --parallel</span><span style="color:#79B8FF"> 3</span></span></code></pre>
+<h3 id="3-cache-expensive-operations">3. Cache Expensive Operations</h3>
+<pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8; overflow-x: auto; white-space: pre-wrap; word-wrap: break-word;" tabindex="0" data-language="bash"><code><span class="line"><span style="color:#6A737D"># Enable caching for repeated extractions</span></span>
+<span class="line"><span style="color:#B392F0">raps</span><span style="color:#9ECBFF"> config</span><span style="color:#9ECBFF"> set</span><span style="color:#9ECBFF"> cache.properties-extraction</span><span style="color:#79B8FF"> true</span></span>
+<span class="line"><span style="color:#B392F0">raps</span><span style="color:#9ECBFF"> config</span><span style="color:#9ECBFF"> set</span><span style="color:#9ECBFF"> cache.retention-days</span><span style="color:#79B8FF"> 7</span></span></code></pre>
+<h3 id="4-stream-large-datasets">4. Stream Large Datasets</h3>
+<pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8; overflow-x: auto; white-space: pre-wrap; word-wrap: break-word;" tabindex="0" data-language="bash"><code><span class="line"><span style="color:#6A737D"># Stream properties to database for large models</span></span>
+<span class="line"><span style="color:#B392F0">raps</span><span style="color:#9ECBFF"> translate</span><span style="color:#9ECBFF"> properties</span><span style="color:#F97583"> &#x3C;</span><span style="color:#9ECBFF">ur</span><span style="color:#E1E4E8">n</span><span style="color:#F97583">></span><span style="color:#79B8FF"> --stream-to-database</span><span style="color:#79B8FF"> --batch-size</span><span style="color:#79B8FF"> 1000</span></span></code></pre>
+<hr>
+<h2 id="troubleshooting-common-issues">Troubleshooting Common Issues</h2>
+<h3 id="issue-1-no-properties-found">Issue 1: “No Properties Found”</h3>
+<p><strong>Cause:</strong> Model needs translation first<br>
+<strong>Solution:</strong></p>
+<pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8; overflow-x: auto; white-space: pre-wrap; word-wrap: break-word;" tabindex="0" data-language="bash"><code><span class="line"><span style="color:#6A737D"># Ensure model is translated</span></span>
+<span class="line"><span style="color:#B392F0">raps</span><span style="color:#9ECBFF"> translate</span><span style="color:#F97583"> &#x3C;</span><span style="color:#9ECBFF">ur</span><span style="color:#E1E4E8">n</span><span style="color:#F97583">></span><span style="color:#79B8FF"> --formats</span><span style="color:#9ECBFF"> properties</span><span style="color:#79B8FF"> --wait</span></span>
+<span class="line"><span style="color:#6A737D"># Then extract properties</span></span>
+<span class="line"><span style="color:#B392F0">raps</span><span style="color:#9ECBFF"> translate</span><span style="color:#9ECBFF"> properties</span><span style="color:#F97583"> &#x3C;</span><span style="color:#9ECBFF">ur</span><span style="color:#E1E4E8">n</span><span style="color:#F97583">></span></span></code></pre>
+<h3 id="issue-2-missing-properties-for-some-elements">Issue 2: “Missing Properties for Some Elements”</h3>
+<p><strong>Cause:</strong> Some CAD elements don’t have extractable properties<br>
+<strong>Solution:</strong></p>
+<pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8; overflow-x: auto; white-space: pre-wrap; word-wrap: break-word;" tabindex="0" data-language="bash"><code><span class="line"><span style="color:#6A737D"># Check which elements have properties</span></span>
+<span class="line"><span style="color:#B392F0">raps</span><span style="color:#9ECBFF"> translate</span><span style="color:#9ECBFF"> properties</span><span style="color:#F97583"> &#x3C;</span><span style="color:#9ECBFF">ur</span><span style="color:#E1E4E8">n</span><span style="color:#F97583">></span><span style="color:#79B8FF"> --validate-elements</span><span style="color:#79B8FF"> --report-missing</span></span></code></pre>
+<h3 id="issue-3-properties-extraction-times-out">Issue 3: “Properties Extraction Times Out”</h3>
+<p><strong>Cause:</strong> Very large model with millions of elements<br>
+<strong>Solution:</strong></p>
+<pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8; overflow-x: auto; white-space: pre-wrap; word-wrap: break-word;" tabindex="0" data-language="bash"><code><span class="line"><span style="color:#6A737D"># Use chunked extraction for large models</span></span>
+<span class="line"><span style="color:#B392F0">raps</span><span style="color:#9ECBFF"> translate</span><span style="color:#9ECBFF"> properties</span><span style="color:#F97583"> &#x3C;</span><span style="color:#9ECBFF">ur</span><span style="color:#E1E4E8">n</span><span style="color:#F97583">></span><span style="color:#79B8FF"> --chunked</span><span style="color:#79B8FF"> --chunk-size</span><span style="color:#79B8FF"> 10000</span><span style="color:#79B8FF"> --timeout</span><span style="color:#79B8FF"> 600</span></span></code></pre>
+<h3 id="issue-4-inconsistent-property-names">Issue 4: “Inconsistent Property Names”</h3>
+<p><strong>Cause:</strong> Different CAD software uses different property names<br>
+<strong>Solution:</strong></p>
+<pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8; overflow-x: auto; white-space: pre-wrap; word-wrap: break-word;" tabindex="0" data-language="bash"><code><span class="line"><span style="color:#6A737D"># Apply property name mapping</span></span>
+<span class="line"><span style="color:#B392F0">raps</span><span style="color:#9ECBFF"> translate</span><span style="color:#9ECBFF"> properties</span><span style="color:#F97583"> &#x3C;</span><span style="color:#9ECBFF">ur</span><span style="color:#E1E4E8">n</span><span style="color:#F97583">></span><span style="color:#79B8FF"> --normalize-names</span><span style="color:#79B8FF"> --mapping</span><span style="color:#9ECBFF"> property_mappings.json</span></span></code></pre>
+<p>Where <code>property_mappings.json</code>:</p>
+<pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8; overflow-x: auto; white-space: pre-wrap; word-wrap: break-word;" tabindex="0" data-language="json"><code><span class="line"><span style="color:#E1E4E8">{</span></span>
+<span class="line"><span style="color:#79B8FF">  "nameMapping"</span><span style="color:#E1E4E8">: {</span></span>
+<span class="line"><span style="color:#79B8FF">    "Type Name"</span><span style="color:#E1E4E8">: </span><span style="color:#9ECBFF">"ElementType"</span><span style="color:#E1E4E8">,</span></span>
+<span class="line"><span style="color:#79B8FF">    "Host"</span><span style="color:#E1E4E8">: </span><span style="color:#9ECBFF">"Parent"</span><span style="color:#E1E4E8">,</span></span>
+<span class="line"><span style="color:#79B8FF">    "Base Constraint"</span><span style="color:#E1E4E8">: </span><span style="color:#9ECBFF">"Level"</span></span>
+<span class="line"><span style="color:#E1E4E8">  }</span></span>
+<span class="line"><span style="color:#E1E4E8">}</span></span></code></pre>
+<hr>
+<h2 id="use-cases">Use Cases</h2>
+<h3 id="1-quantity-surveying">1. Quantity Surveying</h3>
+<pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8; overflow-x: auto; white-space: pre-wrap; word-wrap: break-word;" tabindex="0" data-language="bash"><code><span class="line"><span style="color:#6A737D"># Generate material takeoff report</span></span>
+<span class="line"><span style="color:#B392F0">raps</span><span style="color:#9ECBFF"> translate</span><span style="color:#9ECBFF"> properties</span><span style="color:#F97583"> &#x3C;</span><span style="color:#9ECBFF">ur</span><span style="color:#E1E4E8">n</span><span style="color:#F97583">></span><span style="color:#79B8FF"> --analyze</span><span style="color:#9ECBFF"> materials</span><span style="color:#79B8FF"> --group-by</span><span style="color:#9ECBFF"> Material</span><span style="color:#79B8FF"> --calc</span><span style="color:#9ECBFF"> "sum(Volume),sum(Area)"</span><span style="color:#79B8FF"> --output</span><span style="color:#9ECBFF"> takeoff.xlsx</span></span></code></pre>
+<h3 id="2-space-programming">2. Space Programming</h3>
+<pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8; overflow-x: auto; white-space: pre-wrap; word-wrap: break-word;" tabindex="0" data-language="bash"><code><span class="line"><span style="color:#6A737D"># Extract room data for space planning</span></span>
+<span class="line"><span style="color:#B392F0">raps</span><span style="color:#9ECBFF"> translate</span><span style="color:#9ECBFF"> properties</span><span style="color:#F97583"> &#x3C;</span><span style="color:#9ECBFF">ur</span><span style="color:#E1E4E8">n</span><span style="color:#F97583">></span><span style="color:#79B8FF"> --filter-category</span><span style="color:#9ECBFF"> "Rooms,Spaces"</span><span style="color:#79B8FF"> --include-area</span><span style="color:#79B8FF"> --include-occupancy</span><span style="color:#79B8FF"> --output</span><span style="color:#9ECBFF"> spaces.csv</span></span></code></pre>
+<h3 id="3-asset-management">3. Asset Management</h3>
+<pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8; overflow-x: auto; white-space: pre-wrap; word-wrap: break-word;" tabindex="0" data-language="bash"><code><span class="line"><span style="color:#6A737D"># Extract equipment data for maintenance planning  </span></span>
+<span class="line"><span style="color:#B392F0">raps</span><span style="color:#9ECBFF"> translate</span><span style="color:#9ECBFF"> properties</span><span style="color:#F97583"> &#x3C;</span><span style="color:#9ECBFF">ur</span><span style="color:#E1E4E8">n</span><span style="color:#F97583">></span><span style="color:#79B8FF"> --filter-category</span><span style="color:#9ECBFF"> "Mechanical Equipment,Electrical Equipment"</span><span style="color:#79B8FF"> --include-specs</span><span style="color:#79B8FF"> --output</span><span style="color:#9ECBFF"> assets.json</span></span></code></pre>
+<h3 id="4-code-compliance">4. Code Compliance</h3>
+<pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8; overflow-x: auto; white-space: pre-wrap; word-wrap: break-word;" tabindex="0" data-language="bash"><code><span class="line"><span style="color:#6A737D"># Extract data for building code analysis</span></span>
+<span class="line"><span style="color:#B392F0">raps</span><span style="color:#9ECBFF"> translate</span><span style="color:#9ECBFF"> properties</span><span style="color:#F97583"> &#x3C;</span><span style="color:#9ECBFF">ur</span><span style="color:#E1E4E8">n</span><span style="color:#F97583">></span><span style="color:#79B8FF"> --filter-properties</span><span style="color:#9ECBFF"> "Fire Rating,Occupancy,Exit Width"</span><span style="color:#79B8FF"> --validate-codes</span><span style="color:#9ECBFF"> building_codes.json</span></span></code></pre>
+<hr>
+<h2 id="next-steps">Next Steps</h2>
+<h3 id="advanced-property-analysis-1">Advanced Property Analysis</h3>
+<ol>
+<li>
+<p><strong>🔗 Try other recipes:</strong></p>
+<ul>
+<li><a href="./upload-translate-view.md">Upload-Translate-View Recipe</a></li>
+<li><a href="./batch-translate.md">Batch Processing Recipe</a></li>
+<li><a href="./webhook-setup.md">Webhook Integration Recipe</a></li>
+</ul>
+</li>
+<li>
+<p><strong>📊 Explore analytics:</strong></p>
+<ul>
+<li>Time-series property tracking</li>
+<li>Multi-model comparisons</li>
+<li>Predictive maintenance models</li>
+</ul>
+</li>
+<li>
+<p><strong>🔌 Integrate with your tools:</strong></p>
+<ul>
+<li>Business intelligence platforms</li>
+<li>ERP systems</li>
+<li>IoT sensor data</li>
+</ul>
+</li>
+</ol>
+<hr>
+<p><strong>💡 Pro Tip:</strong> Combine property extraction with other APS APIs:</p>
+<pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8; overflow-x: auto; white-space: pre-wrap; word-wrap: break-word;" tabindex="0" data-language="bash"><code><span class="line"><span style="color:#6A737D"># Extract properties + generate viewer for context</span></span>
+<span class="line"><span style="color:#B392F0">raps</span><span style="color:#9ECBFF"> translate</span><span style="color:#9ECBFF"> properties</span><span style="color:#F97583"> &#x3C;</span><span style="color:#9ECBFF">ur</span><span style="color:#E1E4E8">n</span><span style="color:#F97583">></span><span style="color:#79B8FF"> --output</span><span style="color:#9ECBFF"> data.json</span><span style="color:#E1E4E8"> &#x26;&#x26; </span><span style="color:#B392F0">raps</span><span style="color:#9ECBFF"> view</span><span style="color:#F97583"> &#x3C;</span><span style="color:#9ECBFF">ur</span><span style="color:#E1E4E8">n</span><span style="color:#F97583">></span><span style="color:#79B8FF"> --highlight-elements</span><span style="color:#9ECBFF"> @large_elements.json</span></span></code></pre>
+<hr>
+<p><em>Last verified: January 2026 | RAPS v4.2.1 | Model Derivative API v2</em><br>
+<em>Property extraction works with all major BIM and CAD formats. For format-specific property schemas, see the <a href="../references/property-schemas.md">APS Property Guide</a>.</em></p> </div> <nav class="mt-12 pt-8 border-t border-gray-200" data-astro-cid-z3wdsy7t> <a href="/recipes" class="btn btn-secondary" data-astro-cid-z3wdsy7t>
+← Back to Recipes
+</a> </nav> </div> </article>  </main> <footer class="bg-gray-50 border-t border-gray-200 mt-20" data-astro-cid-37fxchfa> <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12" data-astro-cid-37fxchfa> <div class="grid grid-cols-1 md:grid-cols-4 gap-8" data-astro-cid-37fxchfa> <div data-astro-cid-37fxchfa> <h3 class="font-semibold text-gray-900 mb-4" data-astro-cid-37fxchfa>Product</h3> <ul class="space-y-2" data-astro-cid-37fxchfa> <li data-astro-cid-37fxchfa><a href="/features" class="text-gray-600 hover:text-raps-blue" data-astro-cid-37fxchfa>Features</a></li> <li data-astro-cid-37fxchfa><a href="/pricing" class="text-gray-600 hover:text-raps-blue" data-astro-cid-37fxchfa>Pricing</a></li> <li data-astro-cid-37fxchfa><a href="/changelog" class="text-gray-600 hover:text-raps-blue" data-astro-cid-37fxchfa>Changelog</a></li> <li data-astro-cid-37fxchfa><a href="/roadmap" class="text-gray-600 hover:text-raps-blue" data-astro-cid-37fxchfa>Roadmap</a></li> </ul> </div> <div data-astro-cid-37fxchfa> <h3 class="font-semibold text-gray-900 mb-4" data-astro-cid-37fxchfa>Resources</h3> <ul class="space-y-2" data-astro-cid-37fxchfa> <li data-astro-cid-37fxchfa><a href="/docs" class="text-gray-600 hover:text-raps-blue" data-astro-cid-37fxchfa>Documentation</a></li> <li data-astro-cid-37fxchfa><a href="/guides" class="text-gray-600 hover:text-raps-blue" data-astro-cid-37fxchfa>Guides</a></li> <li data-astro-cid-37fxchfa><a href="/articles" class="text-gray-600 hover:text-raps-blue" data-astro-cid-37fxchfa>Articles</a></li> <li data-astro-cid-37fxchfa><a href="/tools" class="text-gray-600 hover:text-raps-blue" data-astro-cid-37fxchfa>Tools</a></li> </ul> </div> <div data-astro-cid-37fxchfa> <h3 class="font-semibold text-gray-900 mb-4" data-astro-cid-37fxchfa>Community</h3> <ul class="space-y-2" data-astro-cid-37fxchfa> <li data-astro-cid-37fxchfa><a href="https://github.com" class="text-gray-600 hover:text-raps-blue" data-astro-cid-37fxchfa>GitHub</a></li> <li data-astro-cid-37fxchfa><a href="https://discord.gg" class="text-gray-600 hover:text-raps-blue" data-astro-cid-37fxchfa>Discord</a></li> <li data-astro-cid-37fxchfa><a href="https://twitter.com" class="text-gray-600 hover:text-raps-blue" data-astro-cid-37fxchfa>Twitter</a></li> <li data-astro-cid-37fxchfa><a href="/blog" class="text-gray-600 hover:text-raps-blue" data-astro-cid-37fxchfa>Blog</a></li> </ul> </div> <div data-astro-cid-37fxchfa> <h3 class="font-semibold text-gray-900 mb-4" data-astro-cid-37fxchfa>Company</h3> <ul class="space-y-2" data-astro-cid-37fxchfa> <li data-astro-cid-37fxchfa><a href="/about" class="text-gray-600 hover:text-raps-blue" data-astro-cid-37fxchfa>About</a></li> <li data-astro-cid-37fxchfa><a href="/contact" class="text-gray-600 hover:text-raps-blue" data-astro-cid-37fxchfa>Contact</a></li> <li data-astro-cid-37fxchfa><a href="/privacy" class="text-gray-600 hover:text-raps-blue" data-astro-cid-37fxchfa>Privacy</a></li> <li data-astro-cid-37fxchfa><a href="/terms" class="text-gray-600 hover:text-raps-blue" data-astro-cid-37fxchfa>Terms</a></li> </ul> </div> </div> <div class="mt-8 pt-8 border-t border-gray-200" data-astro-cid-37fxchfa> <p class="text-center text-gray-600" data-astro-cid-37fxchfa>
+© 2026 RAPS CLI. Professional APS Automation Tools.
+</p> </div> </div> </footer> </body></html> 
