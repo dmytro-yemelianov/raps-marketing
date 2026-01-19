@@ -1,0 +1,498 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>DevCon Article Image Generator</title>
+    <style>
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            background: linear-gradient(135deg, #1a1a2e 0%, #16213e 100%);
+            min-height: 100vh;
+            padding: 2rem;
+            color: #e0e0e0;
+        }
+        h1 {
+            text-align: center;
+            margin-bottom: 0.5rem;
+            color: #00d4aa;
+        }
+        .subtitle {
+            text-align: center;
+            color: #888;
+            margin-bottom: 2rem;
+        }
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+        }
+        .instructions {
+            background: #1a1a2e;
+            border-radius: 8px;
+            padding: 1rem 1.5rem;
+            margin-bottom: 2rem;
+            border-left: 4px solid #00d4aa;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 1rem;
+        }
+        .instructions-text {
+            flex: 1;
+            min-width: 300px;
+        }
+        .instructions h3 {
+            color: #00d4aa;
+            margin-bottom: 0.5rem;
+        }
+        .instructions p {
+            color: #888;
+            font-size: 0.9rem;
+        }
+        .gemini-link {
+            display: inline-block;
+            background: #4285f4;
+            color: white;
+            padding: 0.75rem 1.5rem;
+            border-radius: 8px;
+            text-decoration: none;
+            font-weight: bold;
+            font-size: 1rem;
+            transition: all 0.2s;
+        }
+        .gemini-link:hover {
+            background: #5a9bff;
+            transform: scale(1.05);
+        }
+        .article-card {
+            background: #252542;
+            border-radius: 12px;
+            margin-bottom: 2rem;
+            border: 1px solid #3a3a5c;
+            overflow: hidden;
+        }
+        .article-header {
+            background: #1e1e3a;
+            padding: 1rem 1.5rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-bottom: 1px solid #3a3a5c;
+        }
+        .article-header h2 {
+            color: #00d4aa;
+            font-size: 1.3rem;
+        }
+        .article-header .subtitle-text {
+            color: #888;
+            font-size: 0.9rem;
+        }
+        .session-id {
+            background: #00d4aa;
+            color: #1a1a2e;
+            padding: 0.25rem 0.75rem;
+            border-radius: 20px;
+            font-weight: bold;
+            font-size: 0.9rem;
+        }
+        .themes {
+            display: flex;
+            gap: 0.5rem;
+            margin-top: 0.5rem;
+        }
+        .theme-tag {
+            background: #3a3a5c;
+            color: #b0b0b0;
+            padding: 0.2rem 0.5rem;
+            border-radius: 4px;
+            font-size: 0.75rem;
+        }
+        .prompts-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 1rem;
+            padding: 1.5rem;
+        }
+        .prompt-card {
+            background: #1a1a2e;
+            border: 2px dashed #3a3a5c;
+            border-radius: 8px;
+            padding: 1rem;
+            display: flex;
+            flex-direction: column;
+            min-height: 180px;
+            transition: all 0.2s;
+            cursor: default;
+        }
+        .prompt-card.drag-over {
+            border-color: #00d4aa;
+            background: #1a2a3e;
+            transform: scale(1.02);
+        }
+        .prompt-card.has-image {
+            border-style: solid;
+            border-color: #00d4aa;
+        }
+        .prompt-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 0.5rem;
+        }
+        .prompt-name {
+            color: #ffd700;
+            font-weight: bold;
+            font-size: 1rem;
+        }
+        .btn-copy {
+            background: #00d4aa;
+            color: #1a1a2e;
+            border: none;
+            padding: 0.4rem 0.8rem;
+            border-radius: 4px;
+            cursor: pointer;
+            font-weight: bold;
+            font-size: 0.8rem;
+            transition: all 0.2s;
+        }
+        .btn-copy:hover {
+            background: #00f5c4;
+            transform: scale(1.05);
+        }
+        .btn-copy.copied {
+            background: #ffd700;
+        }
+        .prompt-desc {
+            color: #888;
+            font-size: 0.85rem;
+            margin-bottom: 0.75rem;
+        }
+        .drop-zone {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            border: 1px dashed #3a3a5c;
+            border-radius: 6px;
+            padding: 1rem;
+            text-align: center;
+            color: #666;
+            font-size: 0.85rem;
+            transition: all 0.2s;
+        }
+        .prompt-card.drag-over .drop-zone {
+            border-color: #00d4aa;
+            color: #00d4aa;
+        }
+        .drop-zone-icon {
+            font-size: 1.5rem;
+            margin-bottom: 0.25rem;
+        }
+        .drop-zone-text {
+            font-size: 0.8rem;
+        }
+        .preview-container {
+            flex: 1;
+            display: none;
+        }
+        .preview-container.visible {
+            display: block;
+        }
+        .preview-img {
+            width: 100%;
+            border-radius: 6px;
+            margin-bottom: 0.5rem;
+        }
+        .file-info {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            font-size: 0.75rem;
+        }
+        .file-name {
+            color: #00d4aa;
+            font-family: monospace;
+        }
+        .btn-remove {
+            background: none;
+            border: none;
+            color: #ff5555;
+            cursor: pointer;
+            font-size: 0.8rem;
+            padding: 0.2rem 0.4rem;
+        }
+        .btn-remove:hover {
+            text-decoration: underline;
+        }
+        .download-section {
+            background: #252542;
+            border-radius: 12px;
+            padding: 1.5rem;
+            margin-top: 2rem;
+            border: 1px solid #3a3a5c;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 1rem;
+        }
+        .download-stats {
+            display: flex;
+            gap: 2rem;
+        }
+        .stat {
+            text-align: center;
+        }
+        .stat-value {
+            font-size: 2rem;
+            font-weight: bold;
+            color: #00d4aa;
+        }
+        .stat-label {
+            color: #888;
+            font-size: 0.85rem;
+        }
+        .download-btn {
+            background: #ffd700;
+            color: #1a1a2e;
+            border: none;
+            padding: 1rem 2rem;
+            border-radius: 8px;
+            font-size: 1.1rem;
+            font-weight: bold;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+        .download-btn:hover:not(:disabled) {
+            background: #ffed4a;
+            transform: scale(1.02);
+        }
+        .download-btn:disabled {
+            background: #5a5a7c;
+            cursor: not-allowed;
+            transform: none;
+        }
+        .loading {
+            text-align: center;
+            padding: 4rem;
+            color: #888;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>DevCon 2026 Article Image Generator</h1>
+        <p class="subtitle">Copy prompts → Generate in Gemini → Drag & drop images here</p>
+
+        <div class="instructions">
+            <div class="instructions-text">
+                <h3>How to use</h3>
+                <p>Copy a prompt, generate image in Gemini, then drag & drop the downloaded image onto the card.</p>
+            </div>
+            <a href="https://gemini.google.com/app" target="_blank" class="gemini-link">Open Gemini →</a>
+        </div>
+
+        <div id="articles-container">
+            <div class="loading">Loading...</div>
+        </div>
+
+        <div class="download-section">
+            <div class="download-stats">
+                <div class="stat">
+                    <div class="stat-value" id="uploaded-count">0</div>
+                    <div class="stat-label">Uploaded</div>
+                </div>
+                <div class="stat">
+                    <div class="stat-value" id="total-prompts">0</div>
+                    <div class="stat-label">Total</div>
+                </div>
+            </div>
+            <button class="download-btn" id="downloadBtn" onclick="downloadAll()" disabled>
+                Download ZIP
+            </button>
+        </div>
+    </div>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.10.1/jszip.min.js"></script>
+    <script>
+        let data = null;
+        const uploadedImages = {};
+
+        async function loadData() {
+            try {
+                const response = await fetch('data.json');
+                data = await response.json();
+                renderArticles();
+                updateStats();
+                setupDragAndDrop();
+            } catch (error) {
+                document.getElementById('articles-container').innerHTML =
+                    `<div class="loading" style="color: #ff5555;">Error: ${error.message}</div>`;
+            }
+        }
+
+        function renderArticles() {
+            const container = document.getElementById('articles-container');
+            container.innerHTML = data.articles.map(article => `
+                <div class="article-card" data-article="${article.id}">
+                    <div class="article-header">
+                        <div>
+                            <h2>${article.title}</h2>
+                            <div class="subtitle-text">${article.subtitle}</div>
+                            <div class="themes">
+                                ${article.themes.map(t => `<span class="theme-tag">${t}</span>`).join('')}
+                            </div>
+                        </div>
+                        <span class="session-id">${article.id}</span>
+                    </div>
+                    <div class="prompts-grid">
+                        ${article.prompts.map(prompt => `
+                            <div class="prompt-card"
+                                 id="card-${article.id}-${prompt.id}"
+                                 data-article-id="${article.id}"
+                                 data-prompt-id="${prompt.id}"
+                                 data-filename="${article.filename}-${prompt.id}.png">
+                                <div class="prompt-header">
+                                    <span class="prompt-name">${prompt.name}</span>
+                                    <button class="btn-copy" onclick="copyPrompt(this, '${article.id}', '${prompt.id}')">
+                                        Copy
+                                    </button>
+                                </div>
+                                <div class="prompt-desc">${prompt.description}</div>
+                                <div class="drop-zone" id="dropzone-${article.id}-${prompt.id}">
+                                    <div class="drop-zone-icon">📁</div>
+                                    <div class="drop-zone-text">Drop image here</div>
+                                </div>
+                                <div class="preview-container" id="preview-${article.id}-${prompt.id}">
+                                    <img class="preview-img" id="img-${article.id}-${prompt.id}" alt="Preview">
+                                    <div class="file-info">
+                                        <span class="file-name" id="filename-${article.id}-${prompt.id}"></span>
+                                        <button class="btn-remove" onclick="removeImage('${article.id}', '${prompt.id}')">✕ Remove</button>
+                                    </div>
+                                </div>
+                            </div>
+                        `).join('')}
+                    </div>
+                </div>
+            `).join('');
+        }
+
+        function setupDragAndDrop() {
+            document.querySelectorAll('.prompt-card').forEach(card => {
+                card.addEventListener('dragover', (e) => {
+                    e.preventDefault();
+                    card.classList.add('drag-over');
+                });
+
+                card.addEventListener('dragleave', (e) => {
+                    e.preventDefault();
+                    card.classList.remove('drag-over');
+                });
+
+                card.addEventListener('drop', (e) => {
+                    e.preventDefault();
+                    card.classList.remove('drag-over');
+
+                    const files = e.dataTransfer.files;
+                    if (files.length > 0 && files[0].type.startsWith('image/')) {
+                        const articleId = card.dataset.articleId;
+                        const promptId = card.dataset.promptId;
+                        const filename = card.dataset.filename;
+                        handleImage(files[0], articleId, promptId, filename);
+                    }
+                });
+            });
+        }
+
+        function copyPrompt(btn, articleId, promptId) {
+            const article = data.articles.find(a => a.id === articleId);
+            const prompt = article.prompts.find(p => p.id === promptId);
+
+            navigator.clipboard.writeText(prompt.prompt).then(() => {
+                btn.textContent = 'Copied!';
+                btn.classList.add('copied');
+                setTimeout(() => {
+                    btn.textContent = 'Copy';
+                    btn.classList.remove('copied');
+                }, 1500);
+            });
+        }
+
+        function handleImage(file, articleId, promptId, filename) {
+            const key = `${articleId}-${promptId}`;
+            uploadedImages[key] = { file, filename };
+
+            const card = document.getElementById(`card-${articleId}-${promptId}`);
+            card.classList.add('has-image');
+
+            const dropzone = document.getElementById(`dropzone-${articleId}-${promptId}`);
+            const preview = document.getElementById(`preview-${articleId}-${promptId}`);
+            const img = document.getElementById(`img-${articleId}-${promptId}`);
+            const filenameEl = document.getElementById(`filename-${articleId}-${promptId}`);
+
+            dropzone.style.display = 'none';
+            preview.classList.add('visible');
+            filenameEl.textContent = filename;
+
+            const reader = new FileReader();
+            reader.onload = (e) => img.src = e.target.result;
+            reader.readAsDataURL(file);
+
+            updateStats();
+        }
+
+        function removeImage(articleId, promptId) {
+            const key = `${articleId}-${promptId}`;
+            delete uploadedImages[key];
+
+            const card = document.getElementById(`card-${articleId}-${promptId}`);
+            card.classList.remove('has-image');
+
+            const dropzone = document.getElementById(`dropzone-${articleId}-${promptId}`);
+            const preview = document.getElementById(`preview-${articleId}-${promptId}`);
+
+            dropzone.style.display = 'flex';
+            preview.classList.remove('visible');
+
+            updateStats();
+        }
+
+        function updateStats() {
+            const uploadedCount = Object.keys(uploadedImages).length;
+            const totalPrompts = data ? data.articles.reduce((sum, a) => sum + a.prompts.length, 0) : 0;
+
+            document.getElementById('uploaded-count').textContent = uploadedCount;
+            document.getElementById('total-prompts').textContent = totalPrompts;
+
+            const btn = document.getElementById('downloadBtn');
+            btn.disabled = uploadedCount === 0;
+            btn.textContent = uploadedCount > 0 ? `Download ${uploadedCount} as ZIP` : 'Download ZIP';
+        }
+
+        async function downloadAll() {
+            const zip = new JSZip();
+            const imgFolder = zip.folder('devcon-images');
+
+            for (const { file, filename } of Object.values(uploadedImages)) {
+                const arrayBuffer = await file.arrayBuffer();
+                imgFolder.file(filename, arrayBuffer);
+            }
+
+            const content = await zip.generateAsync({ type: 'blob' });
+            const a = document.createElement('a');
+            a.href = URL.createObjectURL(content);
+            a.download = 'devcon-2026-images.zip';
+            a.click();
+        }
+
+        loadData();
+    </script>
+</body>
+</html>
