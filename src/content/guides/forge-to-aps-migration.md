@@ -7,7 +7,7 @@ readTime: 15
 order: 1
 keywords: ["Forge", "APS", "migration", "API", "upgrade", "legacy", "Autodesk Platform Services"]
 raps_commands: ["raps auth migrate-from-forge", "raps config set", "raps auth login"]
-raps_version: ">=4.2.0"
+raps_version: ">=4.11.0"
 aps_apis:
   authentication: "v2"
   data_management: "v1"
@@ -19,7 +19,7 @@ forge_apis:
   data_management: "v1"
   model_derivative: "v2"
   design_automation: "v2"
-last_verified: "January 2026"
+last_verified: "February 2026"
 migration_deadline: "2026-12-31"
 ---
 
@@ -550,5 +550,5 @@ A: Forge APIs will be shut down, breaking your application. Migration is mandato
 
 ---
 
-*Last updated: January 2026 | Migration deadline: December 31, 2026*  
+*Last updated: February 2026 | Migration deadline: December 31, 2026*  
 *This guide covers the most common migration scenarios. For complex cases, consult the [official APS migration documentation](https://aps.autodesk.com/en/docs/oauth/v2/developers_guide/migration/).*

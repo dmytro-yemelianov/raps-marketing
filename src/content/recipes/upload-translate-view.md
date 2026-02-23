@@ -7,13 +7,13 @@ prerequisites: ["CAD file (any format)", "Valid APS access token", "Basic comman
 apis: ["OSS v2", "Model Derivative v2", "Viewer v7", "Authentication v2"]
 keywords: ["APS", "workflow", "recipe", "upload", "translate", "viewer", "3D", "SVF2"]
 raps_commands: ["raps oss upload", "raps translate", "raps view", "raps urn encode"]
-raps_version: ">=4.2.0"
+raps_version: ">=4.11.0"
 aps_apis:
   authentication: "v2"
   oss: "v2"
   model_derivative: "v2"
   viewer: "v7"
-last_verified: "January 2026"
+last_verified: "February 2026"
 ---
 
 # Upload → Translate → View Workflow Recipe
@@ -37,7 +37,7 @@ Transform a CAD file (`.dwg`, `.rvt`, `.ipt`, etc.) into a 3D model viewable in 
 ## Prerequisites
 
 ### Required Tools
-- ✅ **RAPS CLI** v4.2.0+ installed
+- ✅ **RAPS CLI** v4.11.0+ installed
 - ✅ **Autodesk Developer Account** with app credentials
 - ✅ **CAD file** to test with (`.dwg`, `.rvt`, `.ipt`, `.f3d`, etc.)
 - ✅ **Modern web browser** (Chrome, Firefox, Safari, Edge)
@@ -620,5 +620,5 @@ translate-view my-model.rvt --bucket project-alpha
 
 ---
 
-*Last verified: January 2026 | RAPS v4.2.1 | APS APIs: OSS v2, Model Derivative v2, Viewer v7*  
+*Last verified: February 2026 | RAPS v4.11.0 | APS APIs: OSS v2, Model Derivative v2, Viewer v7*  
 *This recipe works with all major CAD formats. For format-specific notes, see the [APS Format Support Guide](../references/supported-formats.md).*

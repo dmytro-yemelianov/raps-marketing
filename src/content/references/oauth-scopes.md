@@ -6,10 +6,10 @@ lastUpdated: 2026-01-08
 completeness: "complete"
 keywords: ["APS", "OAuth", "scopes", "permissions", "authentication", "Forge API"]
 raps_commands: ["raps auth login", "raps auth status"]
-raps_version: ">=4.2.0"
+raps_version: ">=4.11.0"
 aps_apis:
   authentication: "v2"
-last_verified: "January 2026"
+last_verified: "February 2026"
 ---
 
 # APS OAuth Scopes Reference
@@ -558,5 +558,5 @@ raps auth support-report --sanitize
 
 ---
 
-*Last verified: January 2026 against APS Authentication API v2 and RAPS v4.2.1*  
+*Last verified: February 2026 against APS Authentication API v2 and RAPS v4.11.0*  
 *OAuth scopes may evolve. Check the [official documentation](https://aps.autodesk.com/en/docs/oauth/v2/overview/scopes) for the latest information.*

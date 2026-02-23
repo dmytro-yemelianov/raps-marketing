@@ -136,7 +136,7 @@ generate_pdf_pandoc \
     "aps-cheatsheet" \
     "APS Developer Cheat Sheet" \
     "Single-page reference for Autodesk Platform Services APIs" \
-    "RAPS v4.2.1 | January 2026"
+    "RAPS v4.11.0 | February 2026"
 
 # Error Codes Reference
 generate_pdf_pandoc \
@@ -144,7 +144,7 @@ generate_pdf_pandoc \
     "aps-error-codes" \
     "APS Error Codes Reference" \
     "Complete troubleshooting guide" \
-    "RAPS v4.2.1 | January 2026"
+    "RAPS v4.11.0 | February 2026"
 
 # Migration Guide
 generate_pdf_pandoc \
@@ -152,7 +152,7 @@ generate_pdf_pandoc \
     "forge-to-aps-migration" \
     "Forge to APS Migration Guide" \
     "Complete step-by-step migration walkthrough" \
-    "RAPS v4.2.1 | Migration deadline: Dec 31, 2026"
+    "RAPS v4.11.0 | Migration deadline: Dec 31, 2026"
 
 # Additional docs if they exist
 docs_to_process=(
@@ -168,7 +168,7 @@ for doc_info in "${docs_to_process[@]}"; do
             "$filename" \
             "$title" \
             "$subtitle" \
-            "RAPS v4.2.1 | January 2026"
+            "RAPS v4.11.0 | February 2026"
     fi
 done
 

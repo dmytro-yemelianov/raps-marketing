@@ -7,11 +7,11 @@ prerequisites: ["Upload a model to APS", "Valid APS access token", "Basic API kn
 apis: ["Model Derivative v2", "Authentication v2"]
 keywords: ["APS", "properties", "metadata", "extraction", "BIM", "CAD", "Model Derivative"]
 raps_commands: ["raps translate properties", "raps translate metadata", "raps translate manifest"]
-raps_version: ">=4.2.0"
+raps_version: ">=4.11.0"
 aps_apis:
   model_derivative: "v2"
   authentication: "v2"
-last_verified: "January 2026"
+last_verified: "February 2026"
 ---
 
 # Extract Model Properties Recipe
@@ -35,7 +35,7 @@ Extract structured data from CAD models (BIM properties, geometry info, material
 ## Prerequisites
 
 ### Required Tools
-- ✅ **RAPS CLI** v4.2.0+ installed
+- ✅ **RAPS CLI** v4.11.0+ installed
 - ✅ **Autodesk Developer Account** with app credentials
 - ✅ **CAD file** uploaded to APS (any supported format)
 
@@ -716,5 +716,5 @@ raps translate properties <urn> --output data.json && raps view <urn> --highligh
 
 ---
 
-*Last verified: January 2026 | RAPS v4.2.1 | Model Derivative API v2*  
+*Last verified: February 2026 | RAPS v4.11.0 | Model Derivative API v2*  
 *Property extraction works with all major BIM and CAD formats. For format-specific property schemas, see the [APS Property Guide](../references/property-schemas.md).*

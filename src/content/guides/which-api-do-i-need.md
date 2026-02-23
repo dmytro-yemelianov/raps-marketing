@@ -7,14 +7,14 @@ readTime: 15
 order: 2
 keywords: ["APS", "API", "decision tree", "Model Derivative", "Data Management", "Viewer", "Design Automation"]
 raps_commands: ["raps --help", "raps auth login", "raps dm projects", "raps translate", "raps view"]
-raps_version: ">=4.2.0"
+raps_version: ">=4.11.0"
 aps_apis:
   authentication: "v2"
   data_management: "v1"
   model_derivative: "v2"
   design_automation: "v3"
   oss: "v2"
-last_verified: "January 2026"
+last_verified: "February 2026"
 ---
 
 # Which APS API Do I Need?
@@ -342,5 +342,5 @@ flowchart TD
 
 ---
 
-*Last verified: January 2026 | RAPS v4.2.1 | APS APIs: Auth v2, DM v1, MD v2, OSS v2, DA v3*  
+*Last verified: February 2026 | RAPS v4.11.0 | APS APIs: Auth v2, DM v1, MD v2, OSS v2, DA v3*  
 *This decision tree covers 90% of APS use cases. For specialized scenarios, consult the [official APS documentation](https://aps.autodesk.com/en/docs/).*

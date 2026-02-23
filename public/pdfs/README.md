@@ -171,5 +171,5 @@ pdfs/
 
 ---
 
-*Last updated: January 2026 | RAPS v4.2.1*  
+*Last updated: February 2026 | RAPS v4.11.0*  
 *Next review: April 2026 | Marketing Team*

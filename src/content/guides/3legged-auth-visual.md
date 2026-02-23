@@ -557,5 +557,5 @@ raps dm projects
 
 ---
 
-*Last Updated: January 2026 | RAPS v4.2.1*  
+*Last Updated: February 2026 | RAPS v4.11.0*  
 *This guide eliminates 90% of OAuth implementation confusion*

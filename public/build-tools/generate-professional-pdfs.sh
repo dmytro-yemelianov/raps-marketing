@@ -344,7 +344,7 @@ if [ -f "$PDF_READY_DIR/aps-cheatsheet-pdf.md" ]; then
         "aps-cheatsheet" \
         "APS Developer Cheat Sheet" \
         "Single-page reference for Autodesk Platform Services APIs with RAPS shortcuts" \
-        "RAPS v4.2.1 | APS APIs: Auth v2, DM v1, MD v2, OSS v2, DA v3 | January 2026"
+        "RAPS v4.11.0 | APS APIs: Auth v2, DM v1, MD v2, OSS v2, DA v3 | February 2026"
 fi
 
 # Error Codes Reference
@@ -354,7 +354,7 @@ if [ -f "$PDF_READY_DIR/error-codes-pdf.md" ]; then
         "aps-error-codes" \
         "APS API Error Codes Reference" \
         "Complete troubleshooting guide for Autodesk Platform Services" \
-        "RAPS v4.2.1 | APS APIs: Auth v2, DM v1, MD v2, OSS v2, DA v3 | January 2026"
+        "RAPS v4.11.0 | APS APIs: Auth v2, DM v1, MD v2, OSS v2, DA v3 | February 2026"
 fi
 
 # Forge Migration Guide
@@ -364,7 +364,7 @@ if [ -f "$PDF_READY_DIR/forge-migration-pdf.md" ]; then
         "forge-to-aps-migration" \
         "Forge to APS Migration Guide" \
         "Complete step-by-step migration walkthrough" \
-        "RAPS v4.2.1 | Migration deadline: December 31, 2026 | January 2026"
+        "RAPS v4.11.0 | Migration deadline: December 31, 2026 | February 2026"
 fi
 
 # Generate additional PDFs from existing markdown files
@@ -377,7 +377,7 @@ if [ -f "$PROJECT_DIR/cheatsheets/raps-developer-quickstart.md" ]; then
         "raps-developer-quickstart" \
         "RAPS Developer Quick Start Guide" \
         "Get started with RAPS CLI for APS automation in minutes" \
-        "RAPS v4.2.1 | Minimum Rust 1.88.0 | January 2026"
+        "RAPS v4.11.0 | Minimum Rust 1.88.0 | February 2026"
 fi
 
 # OAuth Scopes Reference  
@@ -387,7 +387,7 @@ if [ -f "$PROJECT_DIR/developer-resources/references/oauth-scopes.md" ]; then
         "aps-oauth-scopes" \
         "APS OAuth Scopes Reference" \
         "Complete guide to Autodesk Platform Services OAuth scopes and permissions" \
-        "RAPS v4.2.1 | APS Authentication API v2 | January 2026"
+        "RAPS v4.11.0 | APS Authentication API v2 | February 2026"
 fi
 
 # Upload-Translate-View Recipe
@@ -397,7 +397,7 @@ if [ -f "$PROJECT_DIR/developer-resources/recipes/upload-translate-view.md" ]; t
         "aps-upload-translate-view" \
         "Upload → Translate → View Workflow Recipe" \
         "Complete step-by-step recipe for the most common APS workflow" \
-        "RAPS v4.2.1 | APS APIs: OSS v2, Model Derivative v2, Viewer v7 | January 2026"
+        "RAPS v4.11.0 | APS APIs: OSS v2, Model Derivative v2, Viewer v7 | February 2026"
 fi
 
 # Cleanup

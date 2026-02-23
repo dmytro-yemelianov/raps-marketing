@@ -17,9 +17,9 @@ status: "published"
 ---
 
 **Version Information**
-- **RAPS Version**: 4.2.0 (with MCP Server v1.2.0)
+- **RAPS Version**: 4.11.0 (with MCP Server (101 tools))
 - **APS API Compatibility**: Data Management v1, Model Derivative v2, OSS v2, Construction Cloud v1
-- **MCP Protocol**: v1.2.0 (Latest)
+- **MCP Protocol**: MCP Server (101 tools)
 - **AI Integration**: Claude 3.5+ Compatible
 - **OpenAPI Specification**: 3.0.3
 

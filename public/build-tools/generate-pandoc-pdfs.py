@@ -215,7 +215,7 @@ documents = [
         'output': 'aps-cheatsheet',
         'title': 'APS Developer Cheat Sheet',
         'subtitle': 'Single-page reference for Autodesk Platform Services APIs',
-        'version': '4.2.1',
+        'version': '4.11.0',
         'revision': '2.1'
     },
     {
@@ -223,7 +223,7 @@ documents = [
         'output': 'aps-error-codes-reference',
         'title': 'APS API Error Codes Reference',
         'subtitle': 'Complete troubleshooting guide for Autodesk Platform Services',
-        'version': '4.2.1',
+        'version': '4.11.0',
         'revision': '1.8'
     },
     {
@@ -231,7 +231,7 @@ documents = [
         'output': 'forge-to-aps-migration-guide',
         'title': 'Forge to APS Migration Guide',
         'subtitle': 'Complete step-by-step migration walkthrough',
-        'version': '4.2.1',
+        'version': '4.11.0',
         'revision': '1.5'
     },
     {
@@ -239,7 +239,7 @@ documents = [
         'output': 'raps-developer-quickstart',
         'title': 'RAPS Developer Quick Start Guide',
         'subtitle': 'Get started with RAPS CLI for APS automation',
-        'version': '4.2.1',
+        'version': '4.11.0',
         'revision': '3.2'
     }
 ]

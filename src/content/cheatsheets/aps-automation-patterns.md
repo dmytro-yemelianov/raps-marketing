@@ -10,11 +10,11 @@ downloadUrl: "/pdfs/aps-automation-patterns.pdf"
 
 ---
 
-**Document Version**: v4.2 (January 2026)  
-**RAPS Version**: 4.2.1 (with MCP Server v1.2.0)  
+**Document Version**: v4.11 (February 2026)
+**RAPS Version**: 4.11.0 (with MCP Server (101 tools))
 **APS API Coverage**: Data Management v1, Model Derivative v2, OSS v2, Authentication v2, Construction Cloud v1, Design Automation v3  
 **Integration Support**: GitHub Actions, Jenkins, Docker, Kubernetes  
-**AI Features**: Natural Language Operations via MCP Protocol v1.2.0  
+**AI Features**: Natural Language Operations via MCP Server (101 tools)  
 
 ---
 
@@ -532,13 +532,13 @@ raps degradation configure \
 
 ## Version-Specific Features & Changes
 
-### RAPS 4.2.1 New Automation Features
+### RAPS 4.11.0 New Automation Features
 - **Natural Language Automation**: `raps ai-assistant "upload all models and generate PDFs"`
 - **Enhanced Parallel Processing**: 50% faster bulk operations
 - **Improved Error Recovery**: Smart retry with exponential backoff
 - **Advanced Monitoring**: Real-time performance analytics
 
-### MCP Server v1.2.0 Integration
+### MCP Server (101 tools) Integration
 ```bash
 # Natural language workflow automation
 raps mcp enable
@@ -554,7 +554,7 @@ raps ai "migrate production data to new tenant with validation"
 | Enterprise SSO | Auth v1 | Auth v2 | v2 required for advanced features |
 | Multi-Tenant | DM v1, OSS v1 | DM v1, OSS v2, CC v1 | Construction Cloud for enterprise |
 | CI/CD Integration | All v1 | All v2 | Better webhook support in v2 |
-| AI Operations | All v2 | All v2 + MCP v1.2 | Requires latest versions |
+| AI Operations | All v2 | All v2 + MCP (101 tools) | Requires latest versions |
 
 ### Deprecation Warnings
 - **Model Derivative v1**: Pattern examples updated for v2 migration
@@ -568,4 +568,4 @@ raps ai "migrate production data to new tenant with validation"
 
 ---
 
-*APS Automation Patterns v4.2 | RAPS v4.2.1 + MCP v1.2.0 | APS APIs: DM v1, MD v2, OSS v2, Auth v2, CC v1, DA v3 | Updated: January 2026 | For Enterprise Use*
+*APS Automation Patterns v4.11 | RAPS v4.11.0 + MCP Server (101 tools) | APS APIs: DM v1, MD v2, OSS v2, Auth v2, CC v1, DA v3 | Updated: February 2026 | For Enterprise Use*
