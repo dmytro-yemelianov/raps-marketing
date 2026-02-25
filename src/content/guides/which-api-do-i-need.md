@@ -6,8 +6,8 @@ difficulty: "beginner"
 readTime: 15
 order: 2
 keywords: ["APS", "API", "decision tree", "Model Derivative", "Data Management", "Viewer", "Design Automation"]
-raps_commands: ["raps --help", "raps auth login", "raps dm projects", "raps translate", "raps view"]
-raps_version: ">=4.11.0"
+raps_commands: ["raps --help", "raps auth login", "raps project list", "raps translate", "raps translate download"]
+raps_version: ">=4.14.0"
 aps_apis:
   authentication: "v2"
   data_management: "v1"
@@ -29,23 +29,23 @@ last_verified: "February 2026"
 flowchart TD
     Start([What do you want to build?]) --> Q1{Need to display 3D models<br/>in a web browser?}
     
-    Q1 -->|Yes| Viewer[🎯 **Viewer SDK** + Model Derivative<br/>📋 Use: Initialize 3D viewer<br/>📦 Formats: SVF2, SVF<br/>💡 RAPS: `raps view &lt;urn&gt;`]
+    Q1 -->|Yes| Viewer[🎯 **Viewer SDK** + Model Derivative<br/>📋 Use: Initialize 3D viewer<br/>📦 Formats: SVF2, SVF<br/>💡 RAPS: `raps translate download &lt;urn&gt;`]
     
     Q1 -->|No| Q2{Need to store/manage files<br/>in the cloud?}
     
     Q2 -->|Yes| Q3{Working with BIM 360/<br/>ACC projects?}
     
-    Q3 -->|Yes| BIM360[🎯 **Data Management API**<br/>📋 Use: Project files & folders<br/>📦 Context: User's BIM projects<br/>💡 RAPS: `raps dm projects`<br/>🔑 Auth: 3-legged OAuth]
+    Q3 -->|Yes| BIM360[🎯 **Data Management API**<br/>📋 Use: Project files & folders<br/>📦 Context: User's BIM projects<br/>💡 RAPS: `raps project list`<br/>🔑 Auth: 3-legged OAuth]
     
     Q3 -->|No| Q4{Just need simple<br/>file storage?}
     
-    Q4 -->|Yes| OSS[🎯 **Object Storage Service**<br/>📋 Use: Upload/download files<br/>📦 Context: Your app's storage<br/>💡 RAPS: `raps oss upload &lt;file&gt; &lt;bucket&gt;`<br/>🔑 Auth: 2-legged OAuth]
+    Q4 -->|Yes| OSS[🎯 **Object Storage Service**<br/>📋 Use: Upload/download files<br/>📦 Context: Your app's storage<br/>💡 RAPS: `raps object upload &lt;file&gt; &lt;bucket&gt;`<br/>🔑 Auth: 2-legged OAuth]
     
     Q2 -->|No| Q5{Need to convert<br/>file formats?}
     
     Q5 -->|Yes| Q6{Converting to viewable<br/>formats for web?}
     
-    Q6 -->|Yes| Translate[🎯 **Model Derivative API**<br/>📋 Use: File format conversion<br/>📦 Outputs: SVF2, PDF, OBJ, STL<br/>💡 RAPS: `raps translate &lt;urn&gt; --formats svf2`]
+    Q6 -->|Yes| Translate[🎯 **Model Derivative API**<br/>📋 Use: File format conversion<br/>📦 Outputs: SVF2, PDF, OBJ, STL<br/>💡 RAPS: `raps translate &lt;urn&gt; --format svf2`]
     
     Q6 -->|No| Q7{Need to extract model<br/>properties/metadata?}
     
@@ -94,9 +94,10 @@ flowchart TD
 # Manual approach: 5+ API calls, complex geometry handling
 # With RAPS:
 raps auth login
-raps oss upload model.rvt mybucket
-raps translate $(raps urn encode "urn:adsk.objects:os.object:mybucket:model.rvt") --wait
-raps view $(raps urn encode "urn:adsk.objects:os.object:mybucket:model.rvt")
+raps object upload mybucket model.rvt
+URN=$(echo -n "urn:adsk.objects:os.object:mybucket:model.rvt" | base64 | tr '+/' '-_' | tr -d '=')
+raps translate start "$URN" --format svf2 --wait
+raps translate download "$URN"
 ```
 
 **Authentication:** 2-legged OAuth (server apps) or 3-legged (user apps)  
@@ -116,10 +117,10 @@ raps view $(raps urn encode "urn:adsk.objects:os.object:mybucket:model.rvt")
 ```bash
 # Manual approach: Complex hub/project hierarchy navigation
 # With RAPS:
-raps auth login --3legged --scopes account:read,data:read
-raps dm projects
-raps dm folders <project-id>
-raps dm download <item-id> ./local-file.rvt
+raps auth login --default  # scopes: account:read,data:read
+raps project list
+raps folder list <project-id>
+raps object download <item-id> ./local-file.rvt
 ```
 
 **Authentication:** 3-legged OAuth (user must have project access)  
@@ -141,8 +142,8 @@ raps dm download <item-id> ./local-file.rvt
 # Manual approach: Complex job queuing, polling, error handling
 # With RAPS:
 raps bucket create batch-processing
-raps oss upload-batch *.dwg --bucket batch-processing
-raps translate-batch --bucket batch-processing --formats pdf,svf2 --parallel 5
+raps object upload-batch *.dwg --bucket batch-processing
+raps translate-batch --bucket batch-processing --format pdf,svf2 --parallel 5
 ```
 
 **Authentication:** 2-legged OAuth  
@@ -184,7 +185,7 @@ raps da submit-workitem MyDrawingProcessor --input drawing.dwg --script process.
 ```bash
 # Manual approach: Multi-step manifest navigation, GUID handling
 # With RAPS:
-raps translate <urn> --formats properties
+raps translate <urn> --format svf2
 raps translate properties <urn> --output properties.json
 raps translate metadata <urn> --guid <model-guid>
 ```
@@ -198,9 +199,9 @@ raps translate metadata <urn> --guid <model-guid>
 
 | Use Case | Primary API | Secondary APIs | RAPS Commands | Authentication Type |
 |----------|-------------|----------------|---------------|-------------------|
-| **3D Web Viewer** | Model Derivative | Viewer SDK, OSS | `raps view`, `raps translate` | 2-legged or 3-legged |
-| **BIM 360 Files** | Data Management | - | `raps dm projects`, `raps dm download` | 3-legged only |
-| **Simple File Storage** | Object Storage | - | `raps oss upload`, `raps bucket create` | 2-legged |
+| **3D Web Viewer** | Model Derivative | Viewer SDK, OSS | `raps translate download`, `raps translate` | 2-legged or 3-legged |
+| **BIM 360 Files** | Data Management | - | `raps project list`, `raps object download` | 3-legged only |
+| **Simple File Storage** | Object Storage | - | `raps object upload`, `raps bucket create` | 2-legged |
 | **Format Conversion** | Model Derivative | OSS | `raps translate --formats` | 2-legged |
 | **CAD Automation** | Design Automation | OSS | `raps da submit-workitem` | 2-legged |
 | **Property Extraction** | Model Derivative | - | `raps translate properties` | 2-legged |
@@ -217,7 +218,7 @@ flowchart TD
     
     UserApp -->|Yes| NeedBIM{Need access to user's<br/>BIM 360/ACC projects?}
     
-    NeedBIM -->|Yes| ThreeLegged[🔑 **3-Legged OAuth**<br/>📋 User authorizes your app<br/>📦 Access: User's projects only<br/>💡 RAPS: `raps auth login --3legged`]
+    NeedBIM -->|Yes| ThreeLegged[🔑 **3-Legged OAuth**<br/>📋 User authorizes your app<br/>📦 Access: User's projects only<br/>💡 RAPS: `raps auth login`]
     
     NeedBIM -->|No| ServerApp{Server-to-server<br/>processing only?}
     
@@ -247,11 +248,11 @@ flowchart TD
 
 | API Category | Required Scopes | Optional Scopes | RAPS Example |
 |--------------|-----------------|-----------------|--------------|
-| **Object Storage** | `bucket:read` | `bucket:create`, `bucket:delete` | `raps auth login --scopes bucket:read,bucket:create` |
-| **Data Management** | `data:read` | `data:write`, `data:create` | `raps auth login --scopes data:read,data:write,data:create` |
-| **Model Derivative** | `data:read`, `viewables:read` | - | `raps auth login --scopes data:read,viewables:read` |
-| **Design Automation** | `code:all` | `bucket:create` | `raps auth login --scopes code:all,bucket:create` |
-| **BIM 360/ACC** | `account:read`, `data:read` | `account:write`, `data:write` | `raps auth login --3legged --scopes account:read,data:read` |
+| **Object Storage** | `bucket:read` | `bucket:create`, `bucket:delete` | `raps auth login --default  # scopes: bucket:read,bucket:create` |
+| **Data Management** | `data:read` | `data:write`, `data:create` | `raps auth login --default  # scopes: data:read,data:write,data:create` |
+| **Model Derivative** | `data:read`, `viewables:read` | - | `raps auth login --default  # scopes: data:read,viewables:read` |
+| **Design Automation** | `code:all` | `bucket:create` | `raps auth login --default  # scopes: code:all,bucket:create` |
+| **BIM 360/ACC** | `account:read`, `data:read` | `account:write`, `data:write` | `raps auth login --default  # scopes: account:read,data:read` |
 | **Webhooks** | Same as target API | - | `raps webhook create --scopes-inherit` |
 
 ---
@@ -275,14 +276,14 @@ flowchart TD
 
 | Purpose | Format | Extension | RAPS Command |
 |---------|--------|-----------|--------------|
-| **Web Viewing** | SVF2 (modern) | `.svf2` | `raps translate <urn> --formats svf2` |
-| **Web Viewing** | SVF (legacy) | `.svf` | `raps translate <urn> --formats svf` |
-| **3D Printing** | STL | `.stl` | `raps translate <urn> --formats stl` |
-| **3D Mesh** | OBJ | `.obj` | `raps translate <urn> --formats obj` |
-| **2D Drawings** | PDF | `.pdf` | `raps translate <urn> --formats pdf` |
-| **CAD Exchange** | DWG | `.dwg` | `raps translate <urn> --formats dwg` |
+| **Web Viewing** | SVF2 (modern) | `.svf2` | `raps translate <urn> --format svf2` |
+| **Web Viewing** | SVF (legacy) | `.svf` | `raps translate <urn> --format svf` |
+| **3D Printing** | STL | `.stl` | `raps translate <urn> --format stl` |
+| **3D Mesh** | OBJ | `.obj` | `raps translate <urn> --format obj` |
+| **2D Drawings** | PDF | `.pdf` | `raps translate <urn> --format pdf` |
+| **CAD Exchange** | DWG | `.dwg` | `raps translate <urn> --format dwg` |
 | **Properties** | JSON | `.json` | `raps translate properties <urn>` |
-| **Thumbnails** | PNG | `.png` | `raps translate <urn> --formats thumbnail` |
+| **Thumbnails** | PNG | `.png` | `raps translate <urn> --format thumbnail` |
 
 ---
 
@@ -305,7 +306,7 @@ flowchart TD
 
 1. **Set Up Authentication**
    ```bash
-   raps auth login --scopes <required-scopes>
+   raps auth login --default  # scopes: <required-scopes>
    ```
 
 2. **Test Basic Connectivity**
@@ -342,5 +343,5 @@ flowchart TD
 
 ---
 
-*Last verified: February 2026 | RAPS v4.11.0 | APS APIs: Auth v2, DM v1, MD v2, OSS v2, DA v3*  
+*Last verified: February 2026 | RAPS v4.14.0 | APS APIs: Auth v2, DM v1, MD v2, OSS v2, DA v3*  
 *This decision tree covers 90% of APS use cases. For specialized scenarios, consult the [official APS documentation](https://aps.autodesk.com/en/docs/).*

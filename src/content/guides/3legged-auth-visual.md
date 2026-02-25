@@ -75,7 +75,7 @@ window.location.href = authUrl;
 
 **What user sees**: Redirected to Autodesk login page
 
-**RAPS equivalent**: `raps auth login --3legged`
+**RAPS equivalent**: `raps auth login`
 
 ---
 
@@ -505,13 +505,13 @@ fetch('/api/user-info')
 
 ```bash
 # RAPS handles the entire flow automatically
-raps auth login --3legged
+raps auth login
 
 # Check authentication status
 raps auth status
 
 # Make authenticated API calls
-raps dm projects
+raps project list
 ```
 
 **Benefits of RAPS**:
@@ -557,5 +557,5 @@ raps dm projects
 
 ---
 
-*Last Updated: February 2026 | RAPS v4.11.0*  
+*Last Updated: February 2026 | RAPS v4.14.0*  
 *This guide eliminates 90% of OAuth implementation confusion*

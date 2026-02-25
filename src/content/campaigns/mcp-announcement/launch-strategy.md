@@ -116,7 +116,7 @@ targetAudience: ["AI developers", "APS developers", "DevOps engineers", "Enterpr
 ### **Week 1: Soft Launch**
 
 #### **Monday: Technical Community Launch**
-- [ ] **GitHub Release**: RAPS v3.0 with MCP server capabilities
+- [ ] **GitHub Release**: RAPS v4.14.0 with MCP server capabilities
 - [ ] **HackerNews Post**: Technical announcement targeting developer community
 - [ ] **Technical Blog Post**: Detailed architecture and implementation post
 - [ ] **Demo Video**: Release flagship demonstration video

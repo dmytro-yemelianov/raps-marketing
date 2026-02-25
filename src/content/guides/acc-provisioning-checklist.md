@@ -106,7 +106,8 @@ Contact your ACC Account Admin and ask them to:
 ```bash
 # Using RAPS CLI
 raps auth login
-raps dm projects
+raps hub list
+raps project list
 
 # Should list your ACC projects without 403 errors
 ```
@@ -225,16 +226,13 @@ Old Forge App → New APS App:
 raps auth status
 
 # 2. List accessible hubs
-raps dm hubs
+raps hub list
 
-# 3. List projects in each hub
-raps dm projects --hub-id <hub-id>
+# 3. List projects in a hub
+raps project list
 
 # 4. Test file operations
-raps dm folders <project-id>
-
-# 5. Verify provisioning status
-raps acc check-provisioning
+raps folder list
 ```
 
 **Expected output:**
@@ -282,5 +280,5 @@ raps acc check-provisioning
 
 ---
 
-*Last Updated: February 2026 | RAPS v4.11.0*  
+*Last Updated: February 2026 | RAPS v4.14.0*  
 *Based on community feedback from 1000+ developers*

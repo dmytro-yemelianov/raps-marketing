@@ -5,8 +5,8 @@ category: "scopes"
 lastUpdated: 2026-01-08
 completeness: "complete"
 keywords: ["APS", "OAuth", "scopes", "permissions", "authentication", "Forge API"]
-raps_commands: ["raps auth login", "raps auth status"]
-raps_version: ">=4.11.0"
+raps_commands: ["raps auth login", "raps auth status", "raps auth inspect"]
+raps_version: ">=4.14.0"
 aps_apis:
   authentication: "v2"
 last_verified: "February 2026"
@@ -35,14 +35,32 @@ last_verified: "February 2026"
 
 ---
 
+## How Scopes Work with RAPS
+
+RAPS handles scope selection in several ways:
+
+```bash
+# Interactive scope selection (default - opens checklist)
+raps auth login
+
+# Use common scopes without prompting
+raps auth login --default
+
+# Use all available scopes
+raps auth login --preset all
+
+# For CI/CD: inject a pre-obtained token
+raps auth login --token $APS_ACCESS_TOKEN
+```
+
+---
+
 ## Data Management Scopes
 
-### Core Data Operations
-
-#### `data:read`
+### `data:read`
 **What it enables:**
 - Download files from projects and folders
-- List project contents and folder hierarchy  
+- List project contents and folder hierarchy
 - Read file metadata and version history
 - Access item thumbnails and previews
 
@@ -51,22 +69,17 @@ last_verified: "February 2026"
 GET /data/v1/projects/{project_id}
 GET /data/v1/projects/{project_id}/folders/{folder_id}/contents
 GET /data/v1/projects/{project_id}/items/{item_id}/versions
-GET /data/v1/projects/{project_id}/downloads
 ```
 
 **RAPS Usage:**
 ```bash
-# Login with read-only access
-raps auth login --scopes data:read
-
-# List projects (requires data:read)
-raps dm projects
-
-# Download file (requires data:read)
-raps dm download <item_id> ./local-file.dwg
+raps hub list
+raps project list
+raps folder list
+raps item list
 ```
 
-#### `data:write`
+### `data:write`
 **What it enables:**
 - Update file metadata and custom attributes
 - Modify folder properties
@@ -77,24 +90,13 @@ raps dm download <item_id> ./local-file.dwg
 ```
 PATCH /data/v1/projects/{project_id}/items/{item_id}
 PATCH /data/v1/projects/{project_id}/folders/{folder_id}
-PATCH /data/v1/projects/{project_id}/versions/{version_id}
 ```
 
-**RAPS Usage:**
-```bash
-# Login with write permissions
-raps auth login --scopes data:read,data:write
-
-# Update file metadata
-raps dm update-item <item_id> --name "Updated Model.rvt"
-```
-
-#### `data:create`
+### `data:create`
 **What it enables:**
 - Upload new files to projects
 - Create new folders and project structure
 - Create new versions of existing items
-- Establish file relationships
 
 **API Endpoints:**
 ```
@@ -106,23 +108,15 @@ POST /data/v1/projects/{project_id}/versions
 
 **RAPS Usage:**
 ```bash
-# Login with full data permissions
-raps auth login --scopes data:read,data:write,data:create
-
-# Upload new file
-raps dm upload model.rvt --project <project_id> --folder <folder_id>
-
-# Create new folder
-raps dm create-folder "CAD Models" --parent <folder_id>
+raps folder create
+raps object upload <bucket> <file>
 ```
 
 ---
 
 ## Object Storage Service (OSS) Scopes
 
-### Bucket Management
-
-#### `bucket:read`
+### `bucket:read`
 **What it enables:**
 - List available buckets
 - Read bucket details and settings
@@ -139,21 +133,16 @@ GET /oss/v2/buckets/{bucketKey}/objects/{objectName}
 
 **RAPS Usage:**
 ```bash
-# Login with bucket read access
-raps auth login --scopes bucket:read
-
-# List all accessible buckets
 raps bucket list
-
-# List objects in bucket
-raps oss list mybucket
+raps bucket info <bucket>
+raps object list <bucket>
+raps object download <bucket> <object>
 ```
 
-#### `bucket:create`
+### `bucket:create`
 **What it enables:**
 - Create new storage buckets
 - Set bucket policies and retention
-- Configure bucket permissions
 
 **API Endpoints:**
 ```
@@ -162,17 +151,12 @@ POST /oss/v2/buckets
 
 **RAPS Usage:**
 ```bash
-# Login with bucket creation rights
-raps auth login --scopes bucket:read,bucket:create
-
-# Create new bucket
-raps bucket create my-new-bucket --region us-west
+raps bucket create --key my-bucket --policy transient --region US
 ```
 
-#### `bucket:delete`
+### `bucket:delete`
 **What it enables:**
 - Delete empty buckets
-- Remove bucket policies
 - Clean up unused storage containers
 
 **API Endpoints:**
@@ -182,22 +166,18 @@ DELETE /oss/v2/buckets/{bucketKey}
 
 **RAPS Usage:**
 ```bash
-# Login with full bucket permissions
-raps auth login --scopes bucket:read,bucket:create,bucket:delete
-
-# Delete unused bucket
-raps bucket delete old-bucket --confirm
+raps bucket delete <bucket> --yes
 ```
 
 ---
 
 ## Model Derivative & Viewer Scopes
 
-#### `viewables:read`
+### `viewables:read`
 **What it enables:**
 - Access translated model derivatives (SVF/SVF2)
 - Download viewable geometry and metadata
-- Initialize Forge Viewer with models
+- Initialize Viewer with models
 - Extract model properties and metadata
 
 **API Endpoints:**
@@ -209,21 +189,18 @@ GET /modelderivative/v2/designdata/{urn}/metadata/{guid}/properties
 
 **RAPS Usage:**
 ```bash
-# Login for model viewing
-raps auth login --scopes data:read,viewables:read
-
-# Start translation for viewing
-raps translate <urn> --formats svf2
-
-# View model in browser
-raps view <urn>
+raps translate start <urn> --format svf2 --wait
+raps translate status <urn>
+raps translate metadata <urn>
+raps translate properties <urn> <guid>
+raps translate download <urn>
 ```
 
 ---
 
 ## Design Automation Scopes
 
-#### `code:all`
+### `code:all`
 **What it enables:**
 - Create and manage Activities
 - Upload and manage AppBundles
@@ -240,31 +217,21 @@ POST /da/us-east/v3/workitems
 
 **RAPS Usage:**
 ```bash
-# Login for Design Automation
-raps auth login --scopes code:all
-
-# List available engines
 raps da engines
-
-# Create activity
-raps da create-activity MyActivity --engine Autodesk.AutoCAD+24
-
-# Submit workitem
-raps da submit-workitem MyActivity --input input.dwg --output output.pdf
+raps da appbundle-create --id MyPlugin --engine Autodesk.AutoCAD+24
+raps da activity-create --file activity.json
+raps da run --activity MyPlugin.MyActivity+prod --file workitem.json
 ```
 
 ---
 
 ## Account & Construction Cloud Scopes
 
-### BIM360/ACC Account Management
-
-#### `account:read`
+### `account:read`
 **What it enables:**
 - List account information and users
 - Read project settings and permissions
 - Access account-level reporting data
-- View company and project structure
 
 **API Endpoints:**
 ```
@@ -275,22 +242,17 @@ GET /hq/v1/accounts/{account_id}/users
 
 **RAPS Usage:**
 ```bash
-# Login for account reading
-raps auth login --scopes account:read
-
-# List accessible accounts
-raps acc accounts
-
-# List projects in account
-raps acc projects --account <account_id>
+raps hub list
+raps project list
+raps acc asset list --project-id <id>
+raps acc checklist list --project-id <id>
 ```
 
-#### `account:write`
+### `account:write`
 **What it enables:**
 - Modify account settings and permissions
 - Create and configure projects
 - Manage user access and roles
-- Update company information
 
 **API Endpoints:**
 ```
@@ -301,14 +263,8 @@ POST /hq/v1/accounts/{account_id}/users
 
 **RAPS Usage:**
 ```bash
-# Login for account management
-raps auth login --scopes account:read,account:write
-
-# Create new project
-raps acc create-project "New Building Project" --account <account_id>
-
-# Add user to project
-raps acc add-user user@company.com --project <project_id> --role admin
+raps admin user list --account-id <id>
+raps admin project list --account-id <id>
 ```
 
 ---
@@ -318,59 +274,41 @@ raps acc add-user user@company.com --project <project_id> --role admin
 ### Basic File Operations
 ```bash
 # Read-only access to files and projects
-raps auth login --scopes data:read
+raps auth login --default
+# Selects: data:read, bucket:read, viewables:read
 
-# Full file management (most common)
-raps auth login --scopes data:read,data:write,data:create
+# Full access for all operations
+raps auth login --preset all
 ```
 
-### 3D Model Workflow
-```bash
-# Upload, translate, and view models
-raps auth login --scopes data:read,data:write,data:create,viewables:read
+### Typical Workflows
 
-# Include bucket access for direct storage
-raps auth login --scopes data:read,data:write,data:create,bucket:read,bucket:create,viewables:read
-```
-
-### Design Automation
-```bash
-# Full Design Automation access
-raps auth login --scopes code:all,data:read,data:write,data:create,bucket:read,bucket:create
-
-# DA with BIM360 integration
-raps auth login --scopes code:all,data:read,data:write,data:create,account:read
-```
-
-### BIM360/ACC Administration
-```bash
-# Read-only account access
-raps auth login --scopes account:read,data:read
-
-# Full account management
-raps auth login --scopes account:read,account:write,data:read,data:write,data:create
-```
-
-### Maximum Permissions (Development/Testing)
-```bash
-# All available scopes (use carefully)
-raps auth login --scopes data:read,data:write,data:create,bucket:read,bucket:create,bucket:delete,viewables:read,code:all,account:read,account:write
-```
+| Workflow | Required Scopes |
+|----------|----------------|
+| **List projects and files** | `data:read` |
+| **Upload files to OSS** | `data:read`, `data:create`, `bucket:read`, `bucket:create` |
+| **Translate models** | `data:read`, `viewables:read` |
+| **Design Automation** | `code:all`, `data:read`, `data:create`, `bucket:read`, `bucket:create` |
+| **BIM360/ACC access** | `data:read`, `account:read` |
+| **Full file management** | `data:read`, `data:write`, `data:create` |
 
 ---
 
 ## Scope Troubleshooting
 
-### Checking Current Scopes
+### Checking Current Authentication
 ```bash
-# View current authentication details
+# View current authentication status
 raps auth status
 
-# Show detailed scope information
-raps auth status --scopes
+# Inspect token details including scopes and expiry
+raps auth inspect
 
-# Test specific scope permissions
-raps auth test-scope data:read
+# Check expiry with warning threshold (useful in CI)
+raps auth inspect --warn-expiry-seconds 300
+
+# See authenticated user profile
+raps auth whoami
 ```
 
 ### Common Scope Issues
@@ -379,33 +317,34 @@ raps auth test-scope data:read
 **Cause:** Missing required scope for the operation
 **Solution:**
 ```bash
-# Check what scopes you have
-raps auth status --scopes
+# Check current auth status
+raps auth status
 
-# Re-authenticate with additional scopes
-raps auth login --scopes data:read,data:write,data:create
+# Re-authenticate with all scopes
+raps auth login --preset all
 ```
 
 #### Error: "Access denied to BIM360 project"
-**Cause:** User not added to project or missing account scope
+**Cause:** User not added to project or app not provisioned
 **Solution:**
 ```bash
-# Login with account scope
-raps auth login --scopes account:read,data:read
+# Verify accessible hubs and projects
+raps hub list
+raps project list
 
-# Verify project access
-raps acc projects
+# Ensure app is provisioned in ACC admin console
+# (see ACC Provisioning Checklist guide)
 ```
 
 #### Error: "Cannot create bucket"
 **Cause:** Missing `bucket:create` scope
 **Solution:**
 ```bash
-# Add bucket creation scope
-raps auth login --scopes bucket:read,bucket:create
+# Re-login with all scopes
+raps auth login --preset all
 
-# Verify bucket permissions
-raps auth test-scope bucket:create
+# Then create bucket
+raps bucket create --key my-bucket --policy transient --region US
 ```
 
 ---
@@ -417,7 +356,7 @@ raps auth test-scope bucket:create
 **Available scopes:** Limited subset, no user context
 **RAPS command:**
 ```bash
-raps auth login --2legged --scopes data:read,bucket:read,code:all
+raps auth test
 ```
 
 ### 3-Legged OAuth (User Authorization)
@@ -425,111 +364,70 @@ raps auth login --2legged --scopes data:read,bucket:read,code:all
 **Available scopes:** Full set, user context preserved
 **RAPS command:**
 ```bash
-raps auth login --3legged --scopes data:read,data:write,account:read
+raps auth login
+# Use --device flag for headless/CI environments
+raps auth login --device
 ```
 
 ### Scope Differences
 
 | Scope | 2-Legged | 3-Legged | Notes |
 |-------|----------|----------|-------|
-| `data:read` | ✅ Limited | ✅ Full | 2-legged can't access user's BIM360/ACC |
-| `data:write` | ✅ Limited | ✅ Full | 2-legged can't modify user's projects |
-| `bucket:*` | ✅ Full | ✅ Full | Both have same OSS access |
-| `code:all` | ✅ Full | ✅ Full | Design Automation works with both |
-| `account:*` | ❌ None | ✅ Full | Account management requires 3-legged |
+| `data:read` | Limited | Full | 2-legged can't access user's BIM360/ACC |
+| `data:write` | Limited | Full | 2-legged can't modify user's projects |
+| `bucket:*` | Full | Full | Both have same OSS access |
+| `code:all` | Full | Full | Design Automation works with both |
+| `account:*` | None | Full | Account management requires 3-legged |
 
 ---
 
 ## Best Practices
 
 ### 1. Principle of Least Privilege
-Request only the scopes your application actually needs:
-```bash
-# Good: Only what's needed for file download
-raps auth login --scopes data:read
+Request only the scopes your application actually needs. During `raps auth login`, select only the scopes required for your workflow.
 
-# Avoid: Requesting unnecessary permissions
-raps auth login --scopes data:read,data:write,data:create,bucket:delete,account:write
+### 2. Use Profiles for Different Environments
+```bash
+# Create separate profiles for dev/prod
+raps config profile create development
+raps config set client_id DEV_CLIENT_ID
+raps config set client_secret DEV_SECRET
+
+raps config profile create production
+raps config set client_id PROD_CLIENT_ID
+raps config set client_secret PROD_SECRET
+
+# Switch between them
+raps config profile use development
+raps auth login --default
 ```
 
-### 2. Scope Validation
-Always verify your scopes match your intended operations:
+### 3. Token Management for CI/CD
 ```bash
-# Test specific functionality
-raps auth test-scope data:write
-raps auth test-scope bucket:create
-```
+# Inject pre-obtained token for CI environments
+raps auth login --token $APS_ACCESS_TOKEN
 
-### 3. Environment-Specific Scopes
-Use different scopes for different environments:
-```bash
-# Development: Full access for testing
-raps auth login --profile dev --scopes data:read,data:write,data:create,viewables:read,code:all
-
-# Production: Minimal required scopes
-raps auth login --profile prod --scopes data:read,viewables:read
-```
-
-### 4. Regular Scope Auditing
-Periodically review and update your scope requirements:
-```bash
-# Review current permissions
-raps auth status --scopes --verbose
-
-# Check actual API usage
-raps logs --scope-usage --last 30d
-```
-
----
-
-## Advanced Scope Management
-
-### Dynamic Scope Requests
-For applications with varying requirements:
-```bash
-# Base authentication
-raps auth login --scopes data:read,bucket:read
-
-# Request additional scopes when needed
-raps auth extend-scopes --add data:write,data:create
-
-# Remove unnecessary scopes
-raps auth reduce-scopes --remove bucket:delete
-```
-
-### Scope Monitoring
-Track scope usage for optimization:
-```bash
-# Enable scope usage tracking
-raps config set auth.track-scope-usage true
-
-# Generate scope usage report
-raps auth scope-report --period 30d
+# Or use device flow for headless servers
+raps auth login --device
 ```
 
 ---
 
 ## Migration from Forge
 
-### Legacy Forge Scopes
-If migrating from Forge APIs, map old scopes to new ones:
+OAuth scopes are identical between Forge and APS. No scope changes needed.
 
 | Forge Scope | APS Equivalent | Notes |
 |-------------|----------------|-------|
 | `data:read` | `data:read` | No change |
 | `data:write` | `data:write` | No change |
 | `data:create` | `data:create` | No change |
-| `bucket:read` | `bucket:read` | No change |
-| `bucket:create` | `bucket:create` | No change |
-| `bucket:delete` | `bucket:delete` | No change |
-| `viewables:read` | `viewables:read` | No change |
+| `bucket:*` | `bucket:*` | No change |
 | `code:all` | `code:all` | No change |
+| `viewables:read` | `viewables:read` | No change |
+| `account:*` | `account:*` | No change |
 
-**Migration command:**
-```bash
-# Most Forge scopes work unchanged in APS
-raps auth migrate-from-forge --verify-scopes
-```
+The main migration change is authentication endpoint: `/authentication/v1/` to `/authentication/v2/`. RAPS uses v2 by default.
 
 ---
 
@@ -538,25 +436,17 @@ raps auth migrate-from-forge --verify-scopes
 ### Scope-Related Issues
 1. **Check [APS Authentication Guide](https://aps.autodesk.com/en/docs/oauth/v2/overview/)**
 2. **Test with [APS Postman Collection](https://github.com/Autodesk-Forge/forge-api-postman-collection)**
-3. **Ask in [RAPS Discord](https://discord.gg/raps-community)**
 
-### Debugging Commands
+### RAPS Auth Commands
 ```bash
-# Comprehensive auth diagnosis
-raps auth diagnose
-
-# Test specific scope combination
-raps auth test-scopes --scopes data:read,bucket:create --endpoint /oss/v2/buckets
-
-# Generate auth report for support
-raps auth support-report --sanitize
+raps auth --help       # See all auth subcommands
+raps auth status       # Check current auth state
+raps auth inspect      # Detailed token info
+raps auth whoami       # Authenticated user profile
+raps auth login --help # Login options
 ```
 
 ---
 
-**💡 Pro Tip:** Use `raps auth status` regularly to verify your current scopes match your intended operations. RAPS will warn you if you're attempting operations without proper permissions.
-
----
-
-*Last verified: February 2026 against APS Authentication API v2 and RAPS v4.11.0*  
+*Last verified: February 2026 against APS Authentication API v2 and RAPS v4.14.0*
 *OAuth scopes may evolve. Check the [official documentation](https://aps.autodesk.com/en/docs/oauth/v2/overview/scopes) for the latest information.*

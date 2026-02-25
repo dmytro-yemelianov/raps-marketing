@@ -30,7 +30,7 @@ This comprehensive calendar integrates all marketing activities, campaigns, and 
 
 | Week | Date | Theme | Activity | Owner | Status |
 |------|------|-------|----------|--------|---------|
-| **W1** | Jan 1-7 | 🚀 Product | RAPS 2.0 Release Announcement | Product Team | Planning |
+| **W1** | Jan 1-7 | 🚀 Product | RAPS v4.14 Release Announcement | Product Team | Planning |
 | | Jan 2 | 📚 Content | Blog: "APS Automation in 2026: The Year of CLI" | Content Team | Draft |
 | | Jan 3 | 🌍 Community | Reddit AMA: "Ask Us Anything About APS Automation" | Developer Relations | Scheduled |
 | | Jan 5 | 📊 Analytics | Q4 2025 Performance Review | Analytics Team | Pending |
@@ -57,7 +57,7 @@ This comprehensive calendar integrates all marketing activities, campaigns, and 
 | | Feb 5 | 💼 Enterprise | Partner Program Launch | Partnerships | Launching |
 | **W6** | Feb 8-14 | 🎯 DevCon | Session Acceptance Notifications | Autodesk | Waiting |
 | | Feb 10 | 📚 Content | Video: "RAPS vs Manual: Speed Test" | Video Team | Filming |
-| | Feb 12 | 🚀 Product | RAPS CLI 2.1 Beta | Engineering | Development |
+| | Feb 12 | 🚀 Product | RAPS CLI v4.15 Beta | Engineering | Development |
 | | Feb 14 | 🌍 Community | Valentine's Day: "Love Your CLI" Campaign | Social Media | Creative Ready |
 | **W7** | Feb 15-21 | 📚 Content | Technical Webinar Series Start | Education | Registration |
 | | Feb 15 | Webinar | "Authentication at Scale" | Tech Experts | Preparing |
@@ -74,7 +74,7 @@ This comprehensive calendar integrates all marketing activities, campaigns, and 
 |------|------|-------|----------|--------|---------|
 | **W9** | Mar 1-7 | 🎯 DevCon | Early Bird Registration Opens | Conference | Announcement |
 | | Mar 2 | 📚 Content | Case Study: "GlobalTech Manufacturing Success" | Content | Publishing |
-| | Mar 4 | 🚀 Product | RAPS 2.1 Official Release | Product | Launch Prep |
+| | Mar 4 | 🚀 Product | RAPS v4.15 Official Release | Product | Launch Prep |
 | | Mar 6 | 🌍 Community | "March Madness: APS Automation Challenge" | Community | Contest Launch |
 | **W10** | Mar 8-14 | 💼 Enterprise | Enterprise Summit (Virtual) | Sales | Event Planning |
 | | Mar 10 | 📚 Content | Blog: "The Hidden Costs of DIY APS" | Content | Publishing |
@@ -122,7 +122,7 @@ This comprehensive calendar integrates all marketing activities, campaigns, and 
 | | May 2 | 📚 Content | Blog: "May the Force Be With Your APS" | Content | Star Wars Theme |
 | | May 4 | 🌍 Community | Star Wars Day Special | Social | Campaign |
 | | May 6 | 💼 Enterprise | Enterprise Roadshow Begins | Sales | Travel |
-| **W18** | May 8-14 | 🚀 Product | RAPS 2.2 Beta Release | Engineering | Testing |
+| **W18** | May 8-14 | 🚀 Product | RAPS v4.16 Beta Release | Engineering | Testing |
 | | May 10 | 📚 Content | Mother's Day: "RAPS Cares For Your Code" | Social | Campaign |
 | | May 12 | 🎯 DevCon | Travel Arrangements Finalized | Logistics | Confirmed |
 | | May 14 | 🌍 Community | Community Contributor Spotlight | Community | Recognition |
@@ -149,7 +149,7 @@ This comprehensive calendar integrates all marketing activities, campaigns, and 
 | | Jun 10 | 📚 Content | Blog: "DevCon 2026 Highlights" | Content | Recap |
 | | Jun 12 | 🌍 Community | DevCon Debrief Community Call | Community | Virtual |
 | | Jun 14 | 💼 Enterprise | Enterprise Lead Processing | Sales | CRM |
-| **W23** | Jun 15-21 | 🚀 Product | RAPS 2.2 Official Release | Product | Launch |
+| **W23** | Jun 15-21 | 🚀 Product | RAPS v4.16 Official Release | Product | Launch |
 | | Jun 17 | 📚 Content | Video: "DevCon Demo Compilation" | Video | Editing |
 | | Jun 19 | 🌍 Community | Father's Day: "RAPS: The Dad Joke of CLIs" | Social | Campaign |
 | | Jun 21 | 🤖 MCP | Post-DevCon AI Feature Push | Product | Development |
@@ -178,7 +178,7 @@ This comprehensive calendar integrates all marketing activities, campaigns, and 
 | | Jul 17 | 📚 Content | Case Study: "Post-DevCon Adoption" | Content | Research |
 | | Jul 19 | 💼 Enterprise | Enterprise Summer Webinar Series | Sales | Events |
 | | Jul 21 | 🌍 Community | Community Code Challenge | Community | Competition |
-| **W28** | Jul 22-28 | 🚀 Product | RAPS 3.0 Planning Sessions | Product | Roadmap |
+| **W28** | Jul 22-28 | 🚀 Product | RAPS v5.0 Planning Sessions | Product | Roadmap |
 | | Jul 24 | 📚 Content | Blog: "The Dog Days of Manual APS" | Content | Summer Theme |
 | | Jul 26 | 🤖 MCP | MCP 2.0 Development Sprint | Engineering | Coding |
 | | Jul 28 | 🌍 Community | Monthly Developer Meetup | DevRel | Virtual |
@@ -198,7 +198,7 @@ This comprehensive calendar integrates all marketing activities, campaigns, and 
 | **W31** | Aug 15-21 | 💼 Enterprise | Enterprise Case Study Push | Sales | Content |
 | | Aug 17 | 📚 Content | Technical Guide: "Advanced RAPS" | Tech Writers | Publishing |
 | | Aug 19 | 🌍 Community | International Community Day | Community | Global |
-| | Aug 21 | 🚀 Product | RAPS 2.3 Release | Product | Launch |
+| | Aug 21 | 🚀 Product | RAPS v4.17 Release | Product | Launch |
 | **W32** | Aug 22-28 | 🤖 MCP | AI Hackathon Event | DevRel | Competition |
 | | Aug 24 | 📚 Content | Blog: "Summer Success Stories" | Content | Compilation |
 | | Aug 26 | 🌍 Community | Autodesk Forum August Blitz | Community | Intensive |
@@ -244,7 +244,7 @@ This comprehensive calendar integrates all marketing activities, campaigns, and 
 | **W39** | Oct 15-21 | 💼 Enterprise | Enterprise Halloween Special | Sales | Promotion |
 | | Oct 17 | 📚 Content | Video: "Horror Stories Without RAPS" | Video | Halloween |
 | | Oct 19 | 🌍 Community | Community Halloween Contest | Community | Fun |
-| | Oct 21 | 🚀 Product | RAPS 3.0 Alpha Preview | Product | Preview |
+| | Oct 21 | 🚀 Product | RAPS v5.0 Alpha Preview | Product | Preview |
 | **W40** | Oct 22-28 | 🎯 DevCon | DevCon 2027 Call for Papers Opens | Conference | Announcement |
 | | Oct 24 | 📚 Content | Blog: "Frightening APS Statistics" | Content | Halloween |
 | | Oct 26 | 🤖 MCP | MCP 2.0 Official Release | Product | Launch |
@@ -265,7 +265,7 @@ This comprehensive calendar integrates all marketing activities, campaigns, and 
 | **W43** | Nov 15-21 | 💼 Enterprise | Enterprise Year-End Push | Sales | Campaign |
 | | Nov 17 | 📚 Content | Video: "RAPS Greatest Hits 2026" | Video | Compilation |
 | | Nov 19 | 🌍 Community | Community Thanksgiving | Community | Gratitude |
-| | Nov 21 | 🚀 Product | RAPS 3.0 Beta Release | Product | Testing |
+| | Nov 21 | 🚀 Product | RAPS v5.0 Beta Release | Product | Testing |
 | **W44** | Nov 22-28 | 💼 Enterprise | **Black Friday/Cyber Monday** | Sales | **Major Sale** |
 | | Nov 26 | 📚 Content | Blog: "Thankful for Our Community" | Content | Thanksgiving |
 | | Nov 27 | 🌍 Community | Black Friday Special Offers | Sales | Promotion |

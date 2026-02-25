@@ -51,7 +51,7 @@ targetAudience: ["APS developers", "Enterprise architects", "DevOps engineers", 
 - "Sneak Peek" content showing DevCon demos
 - Behind-the-scenes development videos
 - Community feedback integration and response videos
-- RAPS v4.0 beta release with DevCon exclusive features
+- RAPS v4.14.0 release with DevCon exclusive features
 
 **Media Outreach:**
 - Press releases to AEC trade publications

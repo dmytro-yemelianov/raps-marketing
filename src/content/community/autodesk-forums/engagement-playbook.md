@@ -141,9 +141,9 @@ Translation status polling is one of those tasks that seems simple but gets comp
 raps translate start $URN --format svf2 --wait
 # Handles all polling automatically, returns when complete
 
-# Batch case - multiple files
-raps translate batch *.rvt --format svf2 --parallel=4
-# Optimizes API calls, handles failures gracefully
+# Batch case - upload multiple files, then translate each
+raps object upload-batch my-bucket *.rvt --parallel 4
+# Then translate each URN with --wait
 ```
 
 **What RAPS does behind the scenes:**

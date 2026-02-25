@@ -109,7 +109,7 @@ raps auth login
 ```bash
 # APS Docs: Custom parallel processing logic
 # RAPS: Native parallel support
-raps dm upload --parallel 50 --folder ./models
+raps object upload-batch my-bucket ./models/*.rvt --parallel 4
 ```
 
 **Marketing Message**: "Process 10,000 files while you sleep."

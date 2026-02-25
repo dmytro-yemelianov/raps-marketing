@@ -1,155 +1,111 @@
 ---
-title: "RAPS 4.0 Revolutionizes Autodesk Platform Services Automation with Enterprise-Grade CLI Tools"
-description: "New version delivers 95% faster APS operations, enterprise SSO, and AI-powered natural language interface"
+title: "RAPS 4.x: Open-Source CLI for Autodesk Platform Services Reaches 60+ Commands"
+description: "Rust-based APS CLI tool covers authentication, data management, model translation, design automation, and more"
 type: "release"
 publishDate: 2026-03-15
-status: "published"
+status: "draft"
 ---
 
 # FOR IMMEDIATE RELEASE
 
-## RAPS 4.0 Revolutionizes Autodesk Platform Services Automation with Enterprise-Grade CLI Tools
+## RAPS 4.x: Open-Source CLI for Autodesk Platform Services Reaches 60+ Commands
 
-*New version delivers 95% faster APS operations, enterprise SSO, and AI-powered natural language interface*
-
-**[LOCATION], March 15, 2026**
+*Rust-based CLI tool provides comprehensive APS API coverage with 10 workspace crates and MCP server integration*
 
 ---
 
 **Version Information**
-- **RAPS Version**: 4.0.0 (LTS Release)
-- **APS API Compatibility**: Data Management v1, Model Derivative v2, OSS v2, Authentication v2
-- **MCP Protocol**: v1.0.0 
-- **OpenAPI Specification**: 3.0.3
+- **Current Version**: 4.14.0
+- **APS API Coverage**: Authentication v2, Data Management v1, Model Derivative v2, OSS v2, Design Automation v3, Construction Cloud v1, Webhooks, Account Admin
+- **Architecture**: 10 Rust workspace crates
+- **License**: Apache-2.0 (open source)
 
 ---
 
-RAPS (Rust-based APS CLI), the leading automation tool for Autodesk Platform Services, today announced the release of RAPS 4.0, featuring groundbreaking enterprise capabilities and AI integration that transforms how organizations interact with APS APIs. The new version addresses critical gaps in enterprise APS operations, delivering unprecedented speed, security, and simplicity.
+RAPS (Rust-based APS CLI) has reached version 4.14.0, providing comprehensive command-line coverage for Autodesk Platform Services APIs. The tool is written in Rust for performance and reliability, and is available as open source under the Apache-2.0 license.
 
-### Key Innovation: From Code to Conversation
+### What RAPS Does
 
-RAPS 4.0 introduces the industry's first natural language interface for APS operations through its integrated Model Context Protocol (MCP) server. Users can now perform complex APS workflows using plain English commands, eliminating the need for custom API integration code.
+RAPS replaces manual APS API calls with simple CLI commands:
 
-"We're witnessing a fundamental shift in how developers interact with APS," said [Spokesperson Name], [Title] at RAPS. "RAPS 4.0 doesn't just automate APS operations – it makes them conversational. A simple request like 'process all models in the production bucket' now replaces hundreds of lines of custom code."
+```bash
+# Instead of writing OAuth token exchange code
+raps auth login
 
-### Enterprise-First Architecture
+# Instead of multi-step upload API calls
+raps object upload my-bucket model.rvt
 
-RAPS 4.0 delivers enterprise-grade features addressing the most critical needs of large organizations:
+# Instead of building translation job requests
+raps translate start <urn> --format svf2 --wait
 
-**Enterprise SSO Integration**
-- Seamless integration with Active Directory, Okta, and Azure AD
-- Zero-touch authentication for enterprise workflows
-- Compliance with SOC 2, GDPR, and industry security standards
+# Instead of polling for status
+raps translate status <urn>
+```
 
-**Multi-Tenant Operations**
-- Native support for managing thousands of APS tenants
-- Automated resource allocation and cost tracking
-- Isolated execution environments for enhanced security
+### Coverage
 
-**Industrial-Scale Performance**
-- Parallel processing of up to 10,000 concurrent operations
-- 95% reduction in processing time compared to manual API calls
-- Built-in retry logic and error recovery mechanisms
+RAPS provides 60+ commands organized into command groups:
 
-### Solving the $10 Million Problem
+| Command Group | Operations | APS API |
+|---------------|-----------|---------|
+| `raps auth` | login, test, status, inspect, whoami, logout | Authentication v2 |
+| `raps hub/project/folder/item` | list, create, navigate | Data Management v1 |
+| `raps bucket` | create, list, info, delete | OSS v2 |
+| `raps object` | upload, download, list, delete, copy, batch ops | OSS v2 |
+| `raps translate` | start, status, manifest, download, metadata, properties | Model Derivative v2 |
+| `raps da` | engines, appbundle-create, activity-create, run | Design Automation v3 |
+| `raps webhook` | create, list, delete, test, verify-signature | Webhooks |
+| `raps acc` | asset, submittal, checklist management | Construction Cloud v1 |
+| `raps admin` | user, project, folder bulk operations | Account Admin |
+| `raps pipeline` | run, validate, sample | YAML pipelines |
+| `raps config` | profile, get, set, context management | Local config |
 
-Industry research reveals that enterprises spend an average of $2.1 million annually on custom APS integration development and maintenance. RAPS 4.0 addresses this through:
+### Architecture
 
-- **Zero Custom Code**: Pre-built workflows eliminate development overhead
-- **Maintenance-Free Operations**: Automatic updates and dependency management
-- **Enterprise Support**: 24/7 technical support and SLA guarantees
-- **Rapid Deployment**: From installation to production in under 30 minutes
+RAPS is built as a Rust workspace with 10 crates:
 
-### Real-World Impact
+- **raps-cli**: Command-line interface and output formatting
+- **raps-kernel**: Authentication, token management, HTTP client
+- **raps-oss**: Object Storage Service operations
+- **raps-dm**: Data Management API client
+- **raps-derivative**: Model Derivative API client
+- **raps-da**: Design Automation API client
+- **raps-webhooks**: Webhooks API client
+- **raps-acc**: Construction Cloud API client
+- **raps-admin**: Account Admin API client
+- **raps-reality**: Reality Capture API client
 
-Beta customers report transformative results:
+### Key Features in 4.14.0
 
-**GlobalTech Manufacturing** reduced APS deployment time from 72 hours to 5 minutes, achieving 864x speed improvement while eliminating manual errors.
+- **API Health Tracking**: Real-time monitoring of APS endpoint health
+- **Streaming Bucket Listing**: Per-region bucket listing with `tokio::select!`
+- **Headless Auth Detection**: Auto-switches to device code flow in headless environments
+- **PKCE Support**: Proof Key for Code Exchange for enhanced OAuth security
+- **Unix Pipe Support**: Read from stdin, write to stdout for shell integration
+- **MCP Server**: 101 tools for AI assistant integration
+- **TUI Dashboard**: 7 tabs with 33 views for interactive monitoring
 
-**DesignFlow SaaS** now manages APS operations for 10,000+ tenants using natural language commands, reducing support ticket resolution from 4 hours to 5 minutes.
+### Installation
 
-**BuildSmart Technologies** processes 1,000+ BIM models daily with 99.5% accuracy, achieving 2,000x performance improvement over manual workflows.
+```bash
+# Via Cargo
+cargo install raps-cli
 
-### AI-Powered Innovation
+# Via Homebrew (macOS)
+brew install dmytro-yemelianov/tap/raps
 
-The integrated MCP server represents a breakthrough in API interaction design:
-
-- **Natural Language Processing**: Convert English requests to optimized APS operations
-- **Intelligent Error Handling**: AI-powered diagnosis and automatic resolution
-- **Predictive Operations**: Machine learning optimizes performance based on usage patterns
-- **Context-Aware Automation**: Understanding project context for smarter workflows
-
-### Industry Recognition
-
-RAPS has gained significant traction in the APS ecosystem:
-- 50,000+ downloads in the past year
-- 98% customer satisfaction rating
-- Featured in Autodesk Developer Conference keynote
-- Recognized by Gartner as "Cool Vendor in Design and Engineering"
-
-### Technical Specifications
-
-**System Requirements**
-- Operating Systems: Windows 10+, macOS 10.15+, Linux (Ubuntu 18.04+)
-- Memory: 512 MB RAM minimum, 2 GB recommended
-- Network: HTTPS connectivity for APS API access
-- Authentication: APS client credentials or OAuth 2.0 tokens
-
-**Supported APS APIs**
-- Data Management API (complete coverage)
-- Model Derivative API (all formats)
-- Object Storage Service (full feature set)
-- Authentication Service (2-legged and 3-legged OAuth)
-- Webhooks API (complete integration)
-- Construction Cloud API (new in 4.0)
-- Design Automation API (full support)
-
-### Availability and Pricing
-
-RAPS 4.0 is available immediately with multiple licensing options:
-
-**Community Edition**: Free for individual developers and small teams
-**Professional Edition**: $299/month for advanced features and priority support
-**Enterprise Edition**: Custom pricing for large organizations with SLA guarantees
-
-Download and documentation available at: [rapscli.xyz](https://rapscli.xyz)
+# Via Scoop (Windows)
+scoop install raps
+```
 
 ### About RAPS
 
-RAPS (Rust-based APS CLI) is the leading automation platform for Autodesk Platform Services, trusted by thousands of developers and hundreds of enterprises worldwide. Built with Rust for maximum performance and reliability, RAPS transforms complex APS operations into simple command-line workflows. The company is committed to democratizing APS automation and enabling organizations to focus on innovation rather than infrastructure.
+RAPS is an open-source project developed by Dmytro Yemelianov. It is free to use under the Apache-2.0 license.
 
-For more information, visit [rapscli.xyz](https://rapscli.xyz) or follow [@raps_cli](https://twitter.com/raps_cli) on social media.
-
-### Media Contact
-
-**[Media Contact Name]**  
-Director of Communications  
-RAPS  
-Email: press@rapscli.xyz  
-Phone: +1 (555) 123-4567  
-
-**Technical Contact**
-
-**[Technical Contact Name]**  
-Developer Relations  
-RAPS  
-Email: devrel@rapscli.xyz  
-Phone: +1 (555) 123-4568  
-
-### Investor Relations
-
-**[Investor Contact Name]**  
-Chief Financial Officer  
-RAPS  
-Email: investors@rapscli.xyz  
-Phone: +1 (555) 123-4569  
+- **Website**: [rapscli.xyz](https://rapscli.xyz)
+- **Source Code**: [github.com/dmytro-yemelianov/raps](https://github.com/dmytro-yemelianov/raps)
+- **Author**: Dmytro Yemelianov (dmytroyemelianov@icloud.com)
 
 ---
 
-**High-resolution images, logos, and additional resources available in our digital press kit**: https://rapscli.xyz/press
-
-**Follow RAPS**: [LinkedIn](https://linkedin.com/company/raps-cli) | [Twitter](https://twitter.com/raps_cli) | [GitHub](https://github.com/raps-cli) | [Discord](https://discord.gg/raps-community)
-
-###
-
-*RAPS and the RAPS logo are trademarks of RAPS, Inc. Autodesk and APS are trademarks of Autodesk, Inc. All other trademarks are the property of their respective owners.*
+*RAPS is an independent open-source project. Autodesk, APS, Forge, and related marks are trademarks of Autodesk, Inc.*

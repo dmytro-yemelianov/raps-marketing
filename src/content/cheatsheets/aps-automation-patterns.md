@@ -1,6 +1,6 @@
 ---
 title: "APS Automation Patterns Cheat Sheet"
-description: "Common automation workflows, patterns, and best practices for Autodesk Platform Services with RAPS CLI"
+description: "Common automation workflows and patterns for Autodesk Platform Services with RAPS CLI"
 category: "workflows"
 order: 2
 downloadUrl: "/pdfs/aps-automation-patterns.pdf"
@@ -10,562 +10,366 @@ downloadUrl: "/pdfs/aps-automation-patterns.pdf"
 
 ---
 
-**Document Version**: v4.11 (February 2026)
-**RAPS Version**: 4.11.0 (with MCP Server (101 tools))
-**APS API Coverage**: Data Management v1, Model Derivative v2, OSS v2, Authentication v2, Construction Cloud v1, Design Automation v3  
-**Integration Support**: GitHub Actions, Jenkins, Docker, Kubernetes  
-**AI Features**: Natural Language Operations via MCP Server (101 tools)  
+**RAPS Version**: 4.14.0
+**APS API Coverage**: Data Management v1, Model Derivative v2, OSS v2, Authentication v2, Construction Cloud v1, Design Automation v3
 
 ---
 
 ## Common Automation Workflows
 
-### 🚀 File Processing Pipeline
+### File Processing Pipeline
 ```bash
-# Pattern: Upload → Process → Download → Notify
-raps workflow create "standard-processing" \
-  --steps "upload,translate,download,notify" \
-  --retry-on-failure \
-  --parallel-execution
+# Pattern: Upload → Translate → Download derivatives
+# 1. Upload a model to OSS
+raps object upload mybucket model.rvt
 
-# One-liner implementation
-raps pipeline run \
-  --input "*.dwg" \
-  --output "./processed/" \
-  --formats "svf,pdf" \
-  --webhook "$COMPLETION_URL"
+# 2. Start translation (the URN is base64-encoded)
+raps translate start <base64-urn> --format svf2 --wait
+
+# 3. Check available derivatives
+raps translate derivatives <base64-urn>
+
+# 4. Download translated output
+raps translate download <base64-urn> --out-dir ./output
 ```
 
-### 📁 Project Synchronization
+### Batch File Upload
 ```bash
-# Pattern: Sync local directory with APS project
-raps sync configure \
-  --local "./project-files/" \
-  --remote "aps://project/b.12345678-1234" \
-  --bidirectional \
-  --exclude-patterns "*.tmp,*.bak"
+# Upload multiple files in parallel
+raps object upload-batch mybucket *.dwg --parallel 4
 
-# Continuous sync with change detection
-raps sync watch --auto-upload --conflict-resolution newest
+# Upload with resume support for large files
+raps object upload mybucket large-model.rvt --resume
 ```
 
-### 🔄 Multi-Environment Deployment
+### Design Automation Workflow
 ```bash
-# Pattern: Dev → Staging → Production
-raps deploy pipeline \
-  --source-env development \
-  --target-env staging \
-  --approval-required \
-  --rollback-on-failure
+# 1. List available engines
+raps da engines
 
-# Automated promotion with validation
-raps deploy promote \
-  --from staging \
-  --to production \
-  --validate-before \
-  --health-checks "api,permissions,quotas"
-```
+# 2. Create an app bundle with your custom plugin
+raps da appbundle-create --id MyPlugin --engine Autodesk.Revit+2024 --description "Extract parameters"
 
----
+# 3. Upload the plugin archive
+raps da appbundle-upload --id MyPlugin --archive ./plugin.zip --engine Autodesk.Revit+2024
 
-## Enterprise Automation Strategies
+# 4. Create an activity that uses your bundle
+raps da activity-create --file activity-definition.json
 
-### 📊 Batch Processing Optimization
-
-#### Large-Scale File Operations
-```bash
-# Process 10,000+ files efficiently
-raps batch optimize \
-  --chunk-size 100 \
-  --parallel-workers 20 \
-  --memory-limit 4GB \
-  --rate-limit-adaptive
-
-# Queue-based processing for stability
-raps queue create processing-queue \
-  --workers 10 \
-  --retry-attempts 3 \
-  --dead-letter-queue failed-processing
-```
-
-#### Smart Resource Management
-```bash
-# Automatic resource scaling based on load
-raps autoscale configure \
-  --metric queue-length \
-  --scale-up-threshold 100 \
-  --scale-down-threshold 10 \
-  --min-workers 5 \
-  --max-workers 50
-```
-
-### 🔐 Security Automation
-
-#### Token Management
-```bash
-# Automated token rotation
-raps auth rotate \
-  --schedule "0 2 * * 0" \
-  --notify-before 24h \
-  --update-services automatically
-
-# Service account management
-raps service-accounts create automation-bot \
-  --permissions "oss:read,dm:write,derivative:admin" \
-  --rotate-monthly \
-  --audit-access
-```
-
-#### Access Control Automation
-```bash
-# Dynamic permission assignment
-raps rbac auto-assign \
-  --rule "project-owner → full-access" \
-  --rule "team-member → read-write" \
-  --rule "external-contractor → read-only"
-
-# Compliance automation
-raps compliance auto-check \
-  --framework sox \
-  --schedule daily \
-  --remediate-violations
+# 5. Run a work item
+raps da run --activity MyPlugin.ExtractParams+prod --file workitem.json
 ```
 
 ---
 
 ## CI/CD Integration Patterns
 
-### GitHub Actions Workflows
-
-#### Standard Deployment
+### GitHub Actions
 ```yaml
-name: APS Deployment
+name: APS Model Processing
 on:
   push:
     branches: [main]
+    paths: ['models/**']
 jobs:
-  deploy:
+  process:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v3
-      - name: Setup RAPS
+      - uses: actions/checkout@v4
+      - name: Install RAPS
+        run: cargo install raps-cli
+
+      - name: Authenticate
+        run: raps auth login --token ${{ secrets.APS_ACCESS_TOKEN }}
+
+      - name: Upload models
         run: |
-          curl -L rapscli.xyz/install.sh | sh
-          raps auth login --token ${{ secrets.APS_TOKEN }}
-      
-      - name: Deploy to APS
+          for file in models/*.rvt; do
+            raps object upload production-bucket "$file"
+          done
+
+      - name: Start translations
         run: |
-          raps deploy run \
-            --environment production \
-            --source ./models \
-            --auto-rollback \
-            --notify-slack ${{ secrets.SLACK_WEBHOOK }}
+          for file in models/*.rvt; do
+            filename=$(basename "$file")
+            urn=$(echo -n "urn:adsk.objects:os.object:production-bucket:$filename" | base64 | tr '+/' '-_' | tr -d '=')
+            raps translate start "$urn" --format svf2 --wait
+          done
 ```
 
-#### Advanced Pipeline with Testing
+### Docker Integration
+```dockerfile
+FROM rust:1.88-slim AS builder
+RUN cargo install raps-cli
+
+FROM debian:bookworm-slim
+COPY --from=builder /usr/local/cargo/bin/raps /usr/local/bin/raps
+
+# Set credentials via environment
+ENV APS_CLIENT_ID=""
+ENV APS_CLIENT_SECRET=""
+
+ENTRYPOINT ["raps"]
+```
+
+```bash
+# Run RAPS in Docker
+docker run -e APS_CLIENT_ID=$CLIENT_ID -e APS_CLIENT_SECRET=$SECRET \
+  raps-cli auth test
+```
+
+### Shell Script Automation
+```bash
+#!/usr/bin/env bash
+set -euo pipefail
+
+# Authenticate (2-legged for server-to-server)
+raps auth test
+
+# Upload and translate all .dwg files in a directory
+for file in ./input/*.dwg; do
+  filename=$(basename "$file")
+  echo "Processing: $filename"
+
+  # Upload
+  raps object upload my-bucket "$file"
+
+  # Build URN and translate
+  urn=$(echo -n "urn:adsk.objects:os.object:my-bucket:$filename" | base64 | tr '+/' '-_' | tr -d '=')
+  raps translate start "$urn" --format svf2 --wait
+
+  # Download derivatives
+  raps translate download "$urn" --out-dir "./output/$filename/"
+done
+```
+
+---
+
+## Pipeline Automation
+
+### RAPS Pipeline Files
+RAPS supports YAML pipeline definitions for multi-step automation.
+
 ```yaml
-      - name: Validate Models
-        run: |
-          raps validate batch ./models \
-            --rules "size<100MB,format=dwg|rvt" \
-            --fail-on-error
-      
-      - name: Performance Test
-        run: |
-          raps test performance \
-            --load-test 100-files \
-            --max-duration 5min \
-            --success-threshold 95%
-      
-      - name: Blue-Green Deployment
-        run: |
-          raps deploy blue-green \
-            --staging-slot blue \
-            --production-slot green \
-            --traffic-shift gradual
+# pipeline.yml
+name: model-processing
+steps:
+  - name: authenticate
+    command: "raps auth test"
+
+  - name: upload-model
+    command: "raps object upload ${BUCKET} ${INPUT_FILE}"
+
+  - name: translate
+    command: "raps translate start ${URN} --format svf2 --wait"
+    continue_on_error: false
+
+  - name: download-output
+    command: "raps translate download ${URN} --out-dir ${OUTPUT_DIR}"
 ```
 
-### Jenkins Pipeline
-```groovy
-pipeline {
-    agent any
-    stages {
-        stage('Setup') {
-            steps {
-                sh 'raps auth login --token $APS_TOKEN'
-            }
-        }
-        stage('Process Models') {
-            parallel {
-                stage('Validate') {
-                    steps {
-                        sh 'raps validate ./models --strict'
-                    }
-                }
-                stage('Transform') {
-                    steps {
-                        sh 'raps batch convert *.dwg --format rvt'
-                    }
-                }
-            }
-        }
-        stage('Deploy') {
-            when {
-                branch 'main'
-            }
-            steps {
-                sh '''
-                    raps deploy production \
-                        --source ./models \
-                        --notify-teams $TEAMS_WEBHOOK
-                '''
-            }
-        }
-    }
-    post {
-        always {
-            sh 'raps cleanup --temp-files'
-        }
-    }
-}
+```bash
+# Validate pipeline syntax
+raps pipeline validate pipeline.yml
+
+# Run with variable substitution
+raps pipeline run pipeline.yml \
+  --var BUCKET=my-bucket \
+  --var INPUT_FILE=model.rvt \
+  --var URN=dXJuOmFkc2... \
+  --var OUTPUT_DIR=./output
+
+# Dry run to see what would execute
+raps pipeline run pipeline.yml --dry-run
 ```
 
 ---
 
-## Error Handling & Resilience
+## Webhook-Driven Automation
 
-### Robust Error Recovery
+### Event-Driven Processing
 ```bash
-# Configure intelligent retry logic
-raps resilience configure \
-  --retry-strategy exponential \
-  --max-attempts 5 \
-  --circuit-breaker-threshold 50% \
-  --timeout-escalation progressive
+# List available webhook event types
+raps webhook events
 
-# Dead letter queue for failed operations
-raps dlq configure \
-  --max-retries 3 \
-  --quarantine-duration 24h \
-  --manual-review-required \
-  --escalation-email ops@company.com
-```
+# Set up webhook for file uploads
+raps webhook create --event dm.version.added --url https://myserver.com/hooks/new-version
 
-### Health Monitoring Automation
-```bash
-# Proactive health monitoring
-raps health monitor \
-  --check-interval 30s \
-  --auto-remediation basic \
-  --alert-escalation progressive \
-  --integrate-with pagerduty
+# Set up webhook for translation completion
+raps webhook create --event extraction.finished --url https://myserver.com/hooks/translation-done
 
-# Automatic service recovery
-raps recovery configure \
-  --detect-patterns "timeout,rate-limit,auth-failure" \
-  --actions "retry,failover,scale-up" \
-  --notification-channels slack,email
+# List active webhooks
+raps webhook list
+
+# Test webhook endpoint connectivity
+raps webhook test https://myserver.com/hooks/new-version --timeout 10
+
+# Verify webhook signature authenticity
+raps webhook verify-signature '{"payload":"..."}' --signature "abc123..."
 ```
 
 ---
 
-## Performance Optimization Patterns
+## Object Management Patterns
 
-### Caching Strategies
+### Bucket Lifecycle
 ```bash
-# Intelligent caching for derivatives
-raps cache configure \
-  --strategy lru \
-  --max-size 10GB \
-  --ttl 24h \
-  --prefetch-popular \
-  --compress-storage
+# Create buckets with different retention policies
+raps bucket create --key temp-processing --policy transient --region US
+raps bucket create --key project-archive --policy persistent --region US
 
-# Distributed caching for teams
-raps cache distributed \
-  --nodes cache1,cache2,cache3 \
-  --consistency eventual \
-  --replication-factor 2
+# List all buckets
+raps bucket list
+
+# Check bucket details
+raps bucket info my-bucket
+
+# Clean up temporary bucket
+raps bucket delete temp-processing --yes
 ```
 
-### Network Optimization
+### Object Operations
 ```bash
-# Optimize for global teams
-raps network optimize \
-  --enable-compression \
-  --use-cdn \
-  --regional-endpoints \
-  --connection-pooling \
-  --keep-alive 300s
+# Copy objects between buckets
+raps object copy --source-bucket staging --source-key model.rvt \
+  --dest-bucket production --dest-key model.rvt
 
-# Bandwidth management
-raps bandwidth configure \
-  --limit-per-user 10Mbps \
-  --priority-uploads critical \
-  --throttle-downloads off-hours \
-  --burst-allowance 50MB
-```
+# Batch copy all objects
+raps object batch-copy --source-bucket staging --dest-bucket production
 
----
+# Rename objects within a bucket
+raps object rename --bucket my-bucket --old-key draft.rvt --new-key final.rvt
 
-## Monitoring & Analytics Automation
+# Get pre-signed download URL
+raps object signed-url my-bucket model.rvt
 
-### Automated Reporting
-```bash
-# Daily operational reports
-raps reporting schedule daily \
-  --metrics "usage,performance,errors" \
-  --format html \
-  --recipients ops-team@company.com
-
-# Cost optimization alerts
-raps cost monitor \
-  --threshold-increase 20% \
-  --alert-frequency daily \
-  --recommendations automatic
-```
-
-### Performance Analytics
-```bash
-# Real-time performance tracking
-raps analytics stream \
-  --metrics "response-time,throughput,error-rate" \
-  --output prometheus \
-  --dashboard grafana
-
-# Predictive scaling
-raps predict load \
-  --model usage-patterns \
-  --horizon 7days \
-  --auto-scale-trigger 80%
+# Get object details
+raps object info my-bucket model.rvt
 ```
 
 ---
 
-## Data Management Automation
+## Profile and Configuration Management
 
-### Lifecycle Management
+### Multi-Environment Setup
 ```bash
-# Automated data lifecycle
-raps lifecycle policy create \
-  --name "standard-retention" \
-  --hot-period 30days \
-  --warm-period 90days \
-  --cold-storage 7years \
-  --auto-delete never
+# Create separate profiles for dev/staging/production
+raps config profile create development
+raps config set client_id DEV_CLIENT_ID
+raps config set client_secret DEV_SECRET
 
-# Data archival automation
-raps archive configure \
-  --trigger "age>365days OR size<1MB" \
-  --destination glacier \
-  --compression enabled \
-  --encryption required
+raps config profile create production
+raps config set client_id PROD_CLIENT_ID
+raps config set client_secret PROD_SECRET
+
+# Switch between environments
+raps config profile use development
+raps auth test
+
+raps config profile use production
+raps auth test
+
+# List all profiles
+raps config profile list
 ```
 
-### Backup Automation
+### Working Context
 ```bash
-# Intelligent backup scheduling
-raps backup schedule \
-  --strategy incremental-daily \
-  --full-backup weekly \
-  --retention 12-months \
-  --verify-integrity always
+# Set default hub/project context to avoid repeating IDs
+raps config context set hub_id b.12345678-abcd-1234-5678-abcdef123456
+raps config context set project_id b.87654321-dcba-4321-8765-fedcba654321
 
-# Cross-region disaster recovery
-raps dr configure \
-  --primary us-east \
-  --secondary eu-west \
-  --rpo 1hour \
-  --rto 4hours \
-  --test-schedule monthly
-```
+# Show current context
+raps config context show
 
----
-
-## Integration Patterns
-
-### Webhook Automation
-```bash
-# Event-driven automation
-raps webhook create project-automation \
-  --trigger "file.uploaded" \
-  --action "start-translation" \
-  --filter "file.size > 1MB" \
-  --retry-policy exponential
-
-# Workflow orchestration
-raps workflow create complex-pipeline \
-  --trigger webhook \
-  --steps "validate,transform,notify,archive" \
-  --parallel-where-possible \
-  --timeout 30min
-```
-
-### External System Integration
-```bash
-# ERP system integration
-raps integration configure sap \
-  --endpoint erp.company.com \
-  --auth oauth2 \
-  --sync-schedule hourly \
-  --mapping project-code:cost-center
-
-# PLM integration
-raps integration configure windchill \
-  --bidirectional-sync \
-  --conflict-resolution newest \
-  --audit-trail comprehensive
+# Clear context
+raps config context set hub_id clear
 ```
 
 ---
 
-## Troubleshooting Patterns
+## Model Derivative Patterns
 
-### Automated Diagnostics
+### Translation with Metadata Extraction
 ```bash
-# Self-healing diagnostics
-raps diagnose auto \
-  --symptoms "slow-response,high-error-rate" \
-  --remediation automatic \
-  --escalation-threshold 3-attempts
+# Start translation
+raps translate start <urn> --format svf2 --wait
 
-# Performance bottleneck detection
-raps analyze bottlenecks \
-  --timeframe 24h \
-  --auto-optimize \
-  --report-improvements
+# Get model metadata (views/viewables)
+raps translate metadata <urn>
+
+# Get object tree for a specific view
+raps translate tree <urn> <view-guid>
+
+# Extract properties from a view
+raps translate properties <urn> <view-guid>
+
+# Query specific object properties
+raps translate query-properties <urn> <view-guid> --filter "1,2,3" --fields "name,value"
 ```
 
-### Debug Automation
+### Translation Presets
 ```bash
-# Intelligent debug collection
-raps debug collect \
-  --scenario performance-issue \
-  --include-logs 24h \
-  --sanitize-secrets \
-  --upload-to-support
+# List available presets
+raps translate preset list
 
-# Automated root cause analysis
-raps rca perform \
-  --incident-id INC-12345 \
-  --analyze-patterns \
-  --suggest-prevention
+# Use presets for consistent translation settings
+raps translate start <urn> --format svf2 --wait
 ```
 
 ---
 
-## Best Practices Summary
+## Authentication Patterns
 
-### ✅ Do's
-- **Always use profiles** for environment separation
-- **Implement retry logic** for all external operations  
-- **Monitor performance** metrics continuously
-- **Automate token rotation** for security
-- **Use batch operations** for efficiency
-- **Cache frequently accessed** data
-- **Log all operations** for audit trails
-
-### ❌ Don'ts  
-- **Never hardcode credentials** in scripts
-- **Don't ignore rate limits** - implement backoff
-- **Avoid sequential processing** of large datasets
-- **Don't skip validation** of input data
-- **Never bypass error handling** for speed
-- **Don't run operations** without monitoring
-- **Avoid manual processes** that can be automated
-
-### 🎯 Optimization Tips
+### Token Management for CI/CD
 ```bash
-# Profile your operations
-raps profile operation upload-batch --analyze
+# Direct token injection (CI/CD)
+raps auth login --token $APS_ACCESS_TOKEN
 
-# Use parallel processing wisely
-raps config optimize --workload-type batch-heavy
+# With refresh token for long-running jobs
+raps auth login --token $APS_ACCESS_TOKEN --refresh-token $APS_REFRESH_TOKEN
 
-# Monitor and adjust based on metrics
-raps metrics analyze --recommendations
+# Device code flow for headless environments
+raps auth login --device
+
+# Check token health before operations
+raps auth inspect --warn-expiry-seconds 300
+
+# View current auth status
+raps auth status
+
+# See authenticated user info (3-legged only)
+raps auth whoami
+```
+
+### Keychain Security
+```bash
+# Migrate plaintext tokens to OS keychain
+raps config migrate-tokens
+
+# Check current auth configuration
+raps config get client_id
 ```
 
 ---
 
-## Emergency Automation
+## Best Practices
 
-### Incident Response
-```bash
-# Automated incident response
-raps incident create high-api-errors \
-  --auto-investigate \
-  --escalation-path "team-lead → manager → director" \
-  --resolution-sla 4h
+### Do's
+- Use `raps config profile` to separate dev/staging/production credentials
+- Use `--wait` flag on translations to block until completion in scripts
+- Use `raps auth inspect --warn-expiry-seconds 300` in CI to catch expiring tokens
+- Use `raps object upload-batch` for multiple files instead of sequential uploads
+- Use `raps pipeline validate` before running pipelines
+- Store credentials in environment variables or CI secrets, never in scripts
 
-# Emergency procedures
-raps emergency execute traffic-divert \
-  --from problematic-region \
-  --to healthy-regions \
-  --duration 30min
-```
-
-### Business Continuity
-```bash
-# Automatic failover
-raps failover configure \
-  --health-check endpoint \
-  --failure-threshold 3 \
-  --recovery-delay 5min \
-  --rollback-if-worse
-
-# Service degradation handling
-raps degradation configure \
-  --preserve-core-functions \
-  --disable-non-essential \
-  --user-notification automatic
-```
+### Don'ts
+- Don't hardcode client IDs or secrets in automation scripts
+- Don't poll translation status in tight loops (use `--wait` flag instead)
+- Don't skip error checking in shell scripts (use `set -euo pipefail`)
+- Don't use transient buckets for data you need to keep long-term
+- Don't ignore the `--resume` flag for large file uploads
 
 ---
 
-**📚 More Resources**:
-- **Pattern Library**: [rapscli.xyz/patterns](https://rapscli.xyz/patterns)
-- **Best Practices**: [rapscli.xyz/best-practices](https://rapscli.xyz/best-practices)  
-- **Community Examples**: [github.com/raps-cli/examples](https://github.com/raps-cli/examples)
-
----
-
-## Version-Specific Features & Changes
-
-### RAPS 4.11.0 New Automation Features
-- **Natural Language Automation**: `raps ai-assistant "upload all models and generate PDFs"`
-- **Enhanced Parallel Processing**: 50% faster bulk operations
-- **Improved Error Recovery**: Smart retry with exponential backoff
-- **Advanced Monitoring**: Real-time performance analytics
-
-### MCP Server (101 tools) Integration
-```bash
-# Natural language workflow automation
-raps mcp enable
-raps ai "process all models in staging bucket for client presentation"
-raps ai "migrate production data to new tenant with validation"
-```
-
-### API Version Dependencies
-
-| Pattern | Min APS API | Recommended | Notes |
-|---------|-------------|-------------|-------|
-| File Processing | DM v1, MD v1 | DM v1, MD v2 | v2 has better format support |
-| Enterprise SSO | Auth v1 | Auth v2 | v2 required for advanced features |
-| Multi-Tenant | DM v1, OSS v1 | DM v1, OSS v2, CC v1 | Construction Cloud for enterprise |
-| CI/CD Integration | All v1 | All v2 | Better webhook support in v2 |
-| AI Operations | All v2 | All v2 + MCP (101 tools) | Requires latest versions |
-
-### Deprecation Warnings
-- **Model Derivative v1**: Pattern examples updated for v2 migration
-- **OAuth 1.0 Flows**: Removed from all examples (use OAuth 2.0)
-- **Legacy Webhook Format**: Update to new schema before Q3 2026
-
-### Compatibility Notes
-- **RAPS 4.x**: All patterns compatible across minor versions
-- **RAPS 3.x**: Basic patterns work, AI features unavailable
-- **APS API**: Patterns tested against latest API versions only
-
----
-
-*APS Automation Patterns v4.11 | RAPS v4.11.0 + MCP Server (101 tools) | APS APIs: DM v1, MD v2, OSS v2, Auth v2, CC v1, DA v3 | Updated: February 2026 | For Enterprise Use*
+*APS Automation Patterns | RAPS v4.14.0 | APS APIs: DM v1, MD v2, OSS v2, Auth v2, CC v1, DA v3 | Updated: February 2026*

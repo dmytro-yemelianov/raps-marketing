@@ -6,8 +6,8 @@ difficulty: "intermediate"
 readTime: 15
 order: 1
 keywords: ["Forge", "APS", "migration", "API", "upgrade", "legacy", "Autodesk Platform Services"]
-raps_commands: ["raps auth migrate-from-forge", "raps config set", "raps auth login"]
-raps_version: ">=4.11.0"
+raps_commands: ["raps auth login", "raps config set", "raps auth test"]
+raps_version: ">=4.14.0"
 aps_apis:
   authentication: "v2"
   data_management: "v1"
@@ -76,7 +76,7 @@ curl -X POST "https://developer.api.autodesk.com/authentication/v1/authenticate"
   -d "client_id=$CLIENT_ID&client_secret=$CLIENT_SECRET&grant_type=client_credentials&scope=data:read"
 
 # With RAPS (handles APS v2 automatically)
-raps auth login --scopes data:read
+raps auth login --default
 ```
 
 ### Data Management API
@@ -123,11 +123,11 @@ raps auth login --scopes data:read
 
 **RAPS Migration:**
 ```bash
-# Check current DA API version
-raps da engines --version
-
 # RAPS automatically uses DA v3
-raps da create-activity MyActivity --engine Autodesk.AutoCAD+24
+raps da engines
+
+# Create activities with the correct subcommand
+raps da activity-create --file activity.json
 ```
 
 ---
@@ -182,7 +182,7 @@ const APS = require('autodesk-aps-sdk');
 const apsApi = new APS.AuthenticationClient(clientId, clientSecret, scopes);
 
 // With RAPS (no SDK needed for prototyping)
-// raps auth login && raps dm projects
+// raps auth login && raps project list
 ```
 
 ### .NET
@@ -247,11 +247,12 @@ const apsApi = new APS.AuthenticationClient(clientId, clientSecret, scopes);
 
 **RAPS Assessment:**
 ```bash
-# Test current setup compatibility
-raps auth migrate-assessment --forge-credentials
+# Test current APS credentials
+raps auth test
 
-# Generate migration report
-raps migrate plan --current-apis forge --target-apis aps
+# Verify 3-legged auth works
+raps auth login --default
+raps auth status
 ```
 
 ### Phase 2: Development Environment (Week 2)
@@ -271,12 +272,16 @@ raps migrate plan --current-apis forge --target-apis aps
 **RAPS Development Testing:**
 ```bash
 # Set up APS development profile
-raps config create-profile dev-aps
-raps auth login --profile dev-aps --scopes data:read,data:write,viewables:read
+raps config profile create dev-aps
+raps config profile use dev-aps
+raps config set client_id YOUR_DEV_CLIENT_ID
+raps config set client_secret YOUR_DEV_SECRET
 
 # Test common workflows
-raps dm projects --profile dev-aps
-raps translate <test-urn> --profile dev-aps --formats svf2
+raps auth test
+raps auth login --default
+raps project list
+raps translate start <test-urn> --format svf2 --wait
 ```
 
 ### Phase 3: Testing (Week 3)
@@ -316,11 +321,11 @@ raps translate <test-urn> --profile dev-aps --formats svf2
 **Solution:** Update to Authentication API v2
 
 ```bash
-# Check current token compatibility
-raps auth diagnose --check-aps-compatibility
+# Test APS v2 authentication
+raps auth test
 
-# Migrate authentication
-raps auth migrate-from-forge --update-endpoints
+# Re-login with APS v2 (RAPS uses v2 by default)
+raps auth login --default
 ```
 
 ### 2. SDK Breaking Changes
@@ -345,11 +350,8 @@ apsApi.getAccessToken().then(token => { ... });
 **Solution:** Recreate Activities using v3 format
 
 ```bash
-# List existing DA v2 activities
-raps da list-legacy-activities
-
-# Migrate to v3 format
-raps da migrate-activity <activity-name> --from-v2 --to-v3
+# RAPS uses DA v3 by default - recreate activities in v3 format
+raps da activity-create --file activity-v3.json
 ```
 
 ### 4. URL Reference Updates
@@ -396,15 +398,13 @@ const baseUrl = process.env.APS_BASE_URL || 'https://aps.autodesk.com';
 
 ```bash
 # Test APS authentication
-raps auth login --scopes data:read,viewables:read
+raps auth test
+raps auth login --default
 
 # Test core operations
-raps dm projects --limit 1
-raps bucket list --limit 1
+raps project list
+raps bucket list
 raps translate status <test-urn>
-
-# Compare Forge vs APS responses
-raps compare-apis --forge-token <old-token> --aps-token <new-token> --endpoint /oss/v2/buckets
 ```
 
 ### Regression Testing
@@ -452,14 +452,10 @@ dotnet remove package Autodesk.Forge
 ### Monitor Migration Success
 
 ```bash
-# Check migration status
-raps migration status --report
-
-# Monitor API usage
-raps logs --api-calls --since-migration
-
-# Validate all systems operational
-raps health check --comprehensive
+# Verify all operations work with APS v2
+raps auth status
+raps bucket list
+raps project list
 ```
 
 ---
@@ -509,10 +505,10 @@ raps health check --comprehensive
 
 3. **Migration Tools**
    ```bash
-   # RAPS migration utilities
-   raps migrate --help
-   raps auth migrate-from-forge
-   raps compare-apis --forge-vs-aps
+   # RAPS auth commands
+   raps auth --help
+   raps auth test
+   raps auth login --default
    ```
 
 ### Professional Migration Services

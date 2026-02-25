@@ -5,11 +5,11 @@ category: "api"
 order: 1
 downloadUrl: "/pdfs/aps-cheatsheet.pdf"
 keywords: ["APS", "cheat sheet", "reference", "API", "endpoints", "Forge"]
-raps_commands: ["raps auth login", "raps dm projects", "raps translate", "raps oss upload"]
-raps_version: ">=4.11.0"
+raps_commands: ["raps auth login", "raps project list", "raps translate start", "raps object upload"]
+raps_version: ">=4.14.0"
 aps_apis:
   authentication: "v2"
-  data_management: "v1" 
+  data_management: "v1"
   model_derivative: "v2"
   design_automation: "v3"
   oss: "v2"
@@ -22,7 +22,7 @@ last_verified: "February 2026"
 
 ---
 
-## 🔐 Authentication
+## Authentication
 
 ### OAuth Flow Comparison
 
@@ -33,35 +33,37 @@ last_verified: "February 2026"
 | **BIM360/ACC:** Limited access | **BIM360/ACC:** Full project access | |
 | **Grant Type:** `client_credentials` | **Grant Type:** `authorization_code` | |
 | **Endpoint:** `/authentication/v2/token` | **Endpoint:** `/authentication/v2/authorize` + `/token` | |
-| | | `raps auth login` (2-legged default) |
-| | | `raps auth login --3legged` |
+| | | `raps auth test` (2-legged) |
+| | | `raps auth login` (3-legged, opens browser) |
 
-### Essential OAuth Scopes
+### OAuth Scopes
 
-| **Scope** | **Purpose** | **Required For** | **RAPS Usage** |
-|-----------|-------------|------------------|----------------|
-| `data:read` | Read files/projects | Download, list contents | `--scopes data:read` |
-| `data:write` | Modify metadata | Update file properties | `--scopes data:read,data:write` |
-| `data:create` | Upload files | File uploads, folder creation | `--scopes data:read,data:write,data:create` |
-| `bucket:read` | List buckets | OSS bucket operations | `--scopes bucket:read` |
-| `bucket:create` | Create buckets | New storage containers | `--scopes bucket:read,bucket:create` |
-| `viewables:read` | View models | Viewer SDK, derivatives | `--scopes viewables:read` |
-| `code:all` | Design Automation | All DA operations | `--scopes code:all` |
-| `account:read` | BIM360/ACC info | Account/project listing | `--scopes account:read` |
+| **Scope** | **Purpose** | **Required For** |
+|-----------|-------------|------------------|
+| `data:read` | Read files/projects | Download, list contents |
+| `data:write` | Modify metadata | Update file properties |
+| `data:create` | Upload files | File uploads, folder creation |
+| `bucket:read` | List buckets | OSS bucket operations |
+| `bucket:create` | Create buckets | New storage containers |
+| `viewables:read` | View models | Viewer SDK, derivatives |
+| `code:all` | Design Automation | All DA operations |
+| `account:read` | BIM360/ACC info | Account/project listing |
+
+> Scopes are selected interactively during `raps auth login`, or use `--default` for common scopes or `--preset all` for every scope.
 
 ### Token Lifecycle
 
 | **Manual Process** | **RAPS Equivalent** |
 |-------------------|-------------------|
-| POST to `/authentication/v2/token` | `raps auth login` |
+| POST to `/authentication/v2/token` | `raps auth test` (2-legged) or `raps auth login` (3-legged) |
 | Store token + refresh logic | Automatic token management |
 | Check expiry (1 hour default) | `raps auth status` |
-| Refresh when needed | `raps auth refresh` |
-| Handle auth errors manually | Built-in retry with refresh |
+| Refresh when needed | Automatic (built-in refresh) |
+| Inspect token details | `raps auth inspect` |
 
 ---
 
-## 📁 Data Management API
+## Data Management API
 
 ### Project Hierarchy
 
@@ -81,12 +83,12 @@ Hub (Company/Account)
 
 | **Operation** | **Manual API Call** | **RAPS Command** |
 |---------------|-------------------|------------------|
-| **List Hubs** | `GET /project/v1/hubs` | `raps dm hubs` |
-| **List Projects** | `GET /project/v1/hubs/{hub_id}/projects` | `raps dm projects` |
-| **List Folders** | `GET /data/v1/projects/{project_id}/folders/{folder_id}/contents` | `raps dm folders <project_id>` |
-| **Upload File** | Multi-step: Create storage → Upload → Create item → Create version | `raps dm upload <file> --project <id>` |
-| **Download File** | `GET /data/v1/projects/{project_id}/downloads` + download URL | `raps dm download <item_id>` |
-| **Create Folder** | `POST /data/v1/projects/{project_id}/folders` | `raps dm create-folder <name>` |
+| **List Hubs** | `GET /project/v1/hubs` | `raps hub list` |
+| **List Projects** | `GET /project/v1/hubs/{hub_id}/projects` | `raps project list` |
+| **List Folders** | `GET /data/v1/projects/{project_id}/folders/{folder_id}/contents` | `raps folder list` |
+| **Upload File** | Multi-step: Create storage → Upload → Create item → Create version | `raps object upload <bucket> <file>` |
+| **Download File** | `GET /oss/v2/buckets/{bucket}/objects/{object}` | `raps object download <bucket> <object>` |
+| **Create Folder** | `POST /data/v1/projects/{project_id}/folders` | `raps folder create` |
 
 ### URN Formats
 
@@ -100,21 +102,18 @@ Hub (Company/Account)
 ```bash
 # Manual (error-prone)
 echo -n "urn:adsk.objects:os.object:bucket/file.dwg" | base64 | tr '+/' '-_' | tr -d '='
-
-# With RAPS
-raps urn encode "urn:adsk.objects:os.object:bucket/file.dwg"
 ```
 
 ---
 
-## 🗄️ Object Storage Service (OSS)
+## Object Storage Service (OSS)
 
 ### Bucket Operations
 
 | **Operation** | **Manual API Call** | **RAPS Command** |
 |---------------|-------------------|------------------|
 | **List Buckets** | `GET /oss/v2/buckets` | `raps bucket list` |
-| **Create Bucket** | `POST /oss/v2/buckets` | `raps bucket create <name>` |
+| **Create Bucket** | `POST /oss/v2/buckets` | `raps bucket create --key <name> --policy transient --region US` |
 | **Bucket Details** | `GET /oss/v2/buckets/{bucketKey}/details` | `raps bucket info <name>` |
 | **Delete Bucket** | `DELETE /oss/v2/buckets/{bucketKey}` | `raps bucket delete <name>` |
 
@@ -122,22 +121,23 @@ raps urn encode "urn:adsk.objects:os.object:bucket/file.dwg"
 
 | **Operation** | **Manual API Call** | **RAPS Command** |
 |---------------|-------------------|------------------|
-| **List Objects** | `GET /oss/v2/buckets/{bucketKey}/objects` | `raps oss list <bucket>` |
-| **Upload Object** | `PUT /oss/v2/buckets/{bucketKey}/objects/{objectName}` | `raps oss upload <file> <bucket>` |
-| **Download Object** | `GET /oss/v2/buckets/{bucketKey}/objects/{objectName}` | `raps oss download <bucket> <object>` |
-| **Delete Object** | `DELETE /oss/v2/buckets/{bucketKey}/objects/{objectName}` | `raps oss delete <bucket> <object>` |
+| **List Objects** | `GET /oss/v2/buckets/{bucketKey}/objects` | `raps object list <bucket>` |
+| **Upload Object** | `PUT /oss/v2/buckets/{bucketKey}/objects/{objectName}` | `raps object upload <bucket> <file>` |
+| **Upload Batch** | Multiple PUTs | `raps object upload-batch <bucket> <files...> --parallel 4` |
+| **Download Object** | `GET /oss/v2/buckets/{bucketKey}/objects/{objectName}` | `raps object download <bucket> <object>` |
+| **Delete Object** | `DELETE /oss/v2/buckets/{bucketKey}/objects/{objectName}` | `raps object delete <bucket> <object>` |
 
 ### Bucket Naming Rules
 
-- ✅ 3-128 characters
-- ✅ Lowercase letters, numbers, hyphens
-- ✅ Must start/end with letter or number
-- ❌ No spaces, underscores, or special chars
-- ❌ Cannot look like IP address
+- 3-128 characters
+- Lowercase letters, numbers, hyphens
+- Must start/end with letter or number
+- No spaces, underscores, or special chars
+- Cannot look like IP address
 
 ---
 
-## 🔄 Model Derivative API
+## Model Derivative API
 
 ### Translation Workflow
 
@@ -152,10 +152,12 @@ raps urn encode "urn:adsk.objects:os.object:bucket/file.dwg"
 
 | **Operation** | **Manual Process** | **RAPS Command** |
 |---------------|-------------------|------------------|
-| **Start Translation** | `POST /modelderivative/v2/designdata/job` | `raps translate <urn> --formats svf2` |
+| **Start Translation** | `POST /modelderivative/v2/designdata/job` | `raps translate start <urn> --format svf2` |
+| **Start + Wait** | POST + manual polling | `raps translate start <urn> --format svf2 --wait` |
 | **Check Status** | `GET /modelderivative/v2/designdata/{urn}/manifest` | `raps translate status <urn>` |
-| **Wait for Completion** | Manual polling with delays | `raps translate <urn> --wait` |
-| **Get Properties** | `GET /modelderivative/v2/designdata/{urn}/metadata/{guid}/properties` | `raps translate properties <urn>` |
+| **Get Manifest** | `GET .../manifest` | `raps translate manifest <urn>` |
+| **List Derivatives** | Parse manifest | `raps translate derivatives <urn>` |
+| **Get Properties** | `GET /modelderivative/v2/designdata/{urn}/metadata/{guid}/properties` | `raps translate properties <urn> <guid>` |
 | **Download Derivatives** | Multiple API calls + file handling | `raps translate download <urn>` |
 
 ### Output Formats
@@ -183,17 +185,16 @@ raps urn encode "urn:adsk.objects:os.object:bucket/file.dwg"
 
 ---
 
-## 🤖 Design Automation API
+## Design Automation API
 
 ### Engine Support
 
 | **Engine** | **File Types** | **Version** | **RAPS Command** |
 |------------|----------------|-------------|------------------|
-| **AutoCAD** | DWG, DXF | 2024 | `raps da engines --filter autocad` |
-| **Revit** | RVT, RFA | 2024 | `raps da engines --filter revit` |
-| **Inventor** | IPT, IAM | 2024 | `raps da engines --filter inventor` |
-| **3ds Max** | MAX | 2024 | `raps da engines --filter max` |
-| **Fusion 360** | F3D | Current | `raps da engines --filter fusion` |
+| **AutoCAD** | DWG, DXF | 2024 | `raps da engines` |
+| **Revit** | RVT, RFA | 2024 | `raps da engines` |
+| **Inventor** | IPT, IAM | 2024 | `raps da engines` |
+| **3ds Max** | MAX | 2024 | `raps da engines` |
 
 ### DA Workflow Components
 
@@ -203,22 +204,22 @@ AppBundle (your code) + Activity (defines process) + WorkItem (execution instanc
 
 | **Component** | **Purpose** | **RAPS Management** |
 |---------------|-------------|-------------------|
-| **AppBundle** | Custom code/plugins | `raps da appbundle create` |
-| **Activity** | Processing definition | `raps da activity create` |
-| **WorkItem** | Execution request | `raps da workitem submit` |
+| **AppBundle** | Custom code/plugins | `raps da appbundle-create` |
+| **Activity** | Processing definition | `raps da activity-create` |
+| **WorkItem** | Execution request | `raps da run` |
 
 ---
 
-## 🕸️ Webhooks
+## Webhooks
 
 ### Event Types
 
 | **Service** | **Event** | **Trigger** | **RAPS Setup** |
 |-------------|-----------|-------------|----------------|
-| **Data Management** | `dm.folder.added` | New folder created | `raps webhook create --event dm.folder.added` |
-| **Data Management** | `dm.version.added` | File uploaded/versioned | `raps webhook create --event dm.version.added` |
-| **Model Derivative** | `extraction.finished` | Translation complete | `raps webhook create --event extraction.finished` |
-| **Model Derivative** | `extraction.updated` | Translation progress | `raps webhook create --event extraction.updated` |
+| **Data Management** | `dm.folder.added` | New folder created | `raps webhook create --event dm.folder.added --url <callback>` |
+| **Data Management** | `dm.version.added` | File uploaded/versioned | `raps webhook create --event dm.version.added --url <callback>` |
+| **Model Derivative** | `extraction.finished` | Translation complete | `raps webhook create --event extraction.finished --url <callback>` |
+| **Model Derivative** | `extraction.updated` | Translation progress | `raps webhook create --event extraction.updated --url <callback>` |
 
 ### Webhook Payload Structure
 
@@ -238,20 +239,20 @@ AppBundle (your code) + Activity (defines process) + WorkItem (execution instanc
 
 ---
 
-## ⚠️ Common Error Codes
+## Common Error Codes
 
 | **Code** | **API** | **Cause** | **Manual Fix** | **RAPS Prevention** |
 |----------|---------|-----------|----------------|-------------------|
 | **400** | All | Invalid request format | Check JSON syntax | Built-in validation |
-| **401** | All | Authentication failed | Refresh token | `raps auth refresh` |
-| **403** | All | Insufficient permissions | Check scopes | `raps auth status --scopes` |
-| **404** | Model Derivative | URN not found | Verify URN encoding | `raps urn encode` |
+| **401** | All | Authentication failed | Refresh token | `raps auth login` (auto-refresh) |
+| **403** | All | Insufficient permissions | Check scopes | `raps auth status` |
+| **404** | Model Derivative | URN not found | Verify URN encoding | Check base64 encoding |
 | **409** | OSS | Bucket name conflict | Use different name | `raps bucket list` first |
 | **429** | All | Rate limit exceeded | Implement backoff | Built-in rate limiting |
 
 ---
 
-## 📊 Rate Limits
+## Rate Limits
 
 | **API** | **Limit** | **Window** | **RAPS Handling** |
 |---------|-----------|------------|------------------|
@@ -263,110 +264,87 @@ AppBundle (your code) + Activity (defines process) + WorkItem (execution instanc
 
 ---
 
-## 🔧 Quick Setup Commands
+## Quick Setup Commands
 
 ### First-Time Setup
 ```bash
 # Install RAPS
 # Windows: scoop install raps
-# macOS: brew install raps
+# macOS: brew install dmytro-yemelianov/tap/raps
 # Linux: cargo install raps-cli
 
-# Initial authentication
+# Initial authentication (2-legged test)
+raps auth test
+
+# 3-legged login (opens browser)
 raps auth login
 
-# Test connectivity
+# Check auth status
 raps auth status
-raps dm projects --limit 1
 ```
 
 ### Common Workflows
 ```bash
-# File Upload → Translation → View
-raps oss upload model.rvt mybucket
-raps translate $(raps urn encode "urn:adsk.objects:os.object:mybucket:model.rvt") --wait
-raps view $(raps urn encode "urn:adsk.objects:os.object:mybucket:model.rvt")
+# Upload file to a bucket
+raps object upload mybucket model.rvt
 
-# Batch Operations
-raps oss upload-batch *.dwg --bucket mybucket --parallel 5
-raps translate-batch --bucket mybucket --formats svf2,pdf
+# Translate uploaded file
+raps translate start <base64-urn> --format svf2 --wait
 
-# Data Management Upload
-raps dm upload model.rvt --project b.12345678-1234-5678-9abc-123456789012 --folder fol123
+# List available derivatives
+raps translate derivatives <base64-urn>
+
+# Download derivatives
+raps translate download <base64-urn>
+
+# Batch upload multiple files
+raps object upload-batch mybucket *.dwg --parallel 4
 ```
 
 ### Configuration
 ```bash
-# Set preferences
-raps config set output.format table
-raps config set parallel.max-workers 10
-raps config set retry.enabled true
+# Set profile values
+raps config set client_id YOUR_CLIENT_ID
+raps config set client_secret YOUR_SECRET
+raps config set base_url https://developer.api.autodesk.com
 
-# View current config
-raps config list
+# Get a config value
+raps config get client_id
+
+# Manage profiles
+raps config profile create myprofile
+raps config profile list
+raps config profile use myprofile
 ```
 
 ---
 
-## 🌐 Regional Endpoints
+## Regional Endpoints
 
 | **Region** | **Base URL** | **Use Case** | **RAPS Setting** |
 |------------|--------------|--------------|------------------|
-| **US** | `developer.api.autodesk.com` | North America | `raps config set region us` |
-| **EMEA** | `developer.api.autodesk.com` | Europe/Middle East | `raps config set region emea` |
+| **US** | `developer.api.autodesk.com` | North America | `raps config set base_url https://developer.api.autodesk.com` |
+| **EMEA** | `developer.api.autodesk.com` | Europe/Middle East | `raps config set base_url https://developer.api.autodesk.com` |
 
 ---
 
-## 📚 Quick References
-
-### URN Quick Commands
+## Help & Documentation
 ```bash
-raps urn encode "urn:adsk.objects:os.object:bucket:file.dwg"    # Encode for API
-raps urn decode "dXJuOmFkc2sub2JqZWN0cy..."                     # Decode URN
-raps urn validate "urn:adsk.objects:os.object:bucket:file.dwg"  # Validate format
-```
-
-### Health & Diagnostics
-```bash
-raps health check                    # Full system check
-raps health check --aps-endpoints    # Test APS connectivity
-raps auth diagnose                   # Auth troubleshooting
-raps debug report                    # Generate support report
-```
-
-### Help & Documentation
-```bash
-raps help                           # General help
-raps help auth                      # Command-specific help
-raps --version                      # Check version
-raps examples                       # Show usage examples
+raps --help                          # General help
+raps auth --help                     # Command-specific help
+raps translate --help                # Translate subcommands
+raps --version                       # Check version
 ```
 
 ---
 
-## 🚨 Emergency Commands
-
-```bash
-# Authentication issues
-raps auth refresh                   # Refresh expired token
-raps auth login --force             # Force re-authentication
-raps auth status --verbose         # Detailed auth info
-
-# Operation failures
-raps config set retry.max-attempts 5    # Increase retries
-raps health check --comprehensive       # Full diagnostic
-raps logs --level error --last 1h      # Check recent errors
-```
+**Pro Tips:**
+- Use `--default` with `raps auth login` to skip scope selection
+- Use `--device` with `raps auth login` for headless/CI environments
+- Use `--format json` on most commands for machine-readable output
+- Use `raps auth inspect` to check token details and expiry
 
 ---
 
-**💡 Pro Tips:**
-- Use `raps examples` to see common workflow patterns
-- Set up multiple profiles with `raps auth login --profile <name>` for different environments
-- Enable verbose output with `--verbose` flag for debugging
-- Check `raps health check` if anything isn't working
-
----
-
-*Last verified: February 2026 | RAPS v4.11.0 | APS APIs: Auth v2, DM v1, MD v2, OSS v2, DA v3*  
-*Print-friendly format • Save for quick reference • Share with your team*
+*Last verified: February 2026 | RAPS v4.14.0 | APS APIs: Auth v2, DM v1, MD v2, OSS v2, DA v3*
+*Print-friendly format - Save for quick reference - Share with your team*

@@ -1,51 +1,48 @@
 ---
-title: "Upload → Translate → View Workflow Recipe"
-description: "Complete step-by-step recipe for uploading CAD files, translating them, and viewing in browser"
+title: "Upload, Translate, and View Workflow Recipe"
+description: "Complete step-by-step recipe for uploading CAD files, translating them, and viewing derivatives"
 difficulty: "beginner"
 estimatedTime: "10 minutes"
 prerequisites: ["CAD file (any format)", "Valid APS access token", "Basic command line knowledge"]
-apis: ["OSS v2", "Model Derivative v2", "Viewer v7", "Authentication v2"]
+apis: ["OSS v2", "Model Derivative v2", "Authentication v2"]
 keywords: ["APS", "workflow", "recipe", "upload", "translate", "viewer", "3D", "SVF2"]
-raps_commands: ["raps oss upload", "raps translate", "raps view", "raps urn encode"]
-raps_version: ">=4.11.0"
+raps_commands: ["raps object upload", "raps translate start", "raps translate download"]
+raps_version: ">=4.14.0"
 aps_apis:
   authentication: "v2"
   oss: "v2"
   model_derivative: "v2"
-  viewer: "v7"
 last_verified: "February 2026"
 ---
 
-# Upload → Translate → View Workflow Recipe
+# Upload, Translate, and View Workflow Recipe
 
-**Complete recipe for the most common APS workflow: upload a CAD file, translate it to web-viewable format, and display in browser**
+**Complete recipe for the most common APS workflow: upload a CAD file, translate it to a viewable format, and download derivatives**
 
 ---
 
 ## Goal
 
-Transform a CAD file (`.dwg`, `.rvt`, `.ipt`, etc.) into a 3D model viewable in any web browser.
+Transform a CAD file (`.dwg`, `.rvt`, `.ipt`, etc.) into web-viewable SVF2 format and download the output.
 
 **What you'll achieve:**
 - Upload CAD files to cloud storage
-- Convert files to web-optimized 3D format (SVF2)
-- Display interactive 3D models in browser
-- Extract model properties and metadata
+- Convert files to web-optimized format (SVF2)
+- Download translated derivatives
+- Extract model metadata and properties
 
 ---
 
 ## Prerequisites
 
 ### Required Tools
-- ✅ **RAPS CLI** v4.11.0+ installed
-- ✅ **Autodesk Developer Account** with app credentials
-- ✅ **CAD file** to test with (`.dwg`, `.rvt`, `.ipt`, `.f3d`, etc.)
-- ✅ **Modern web browser** (Chrome, Firefox, Safari, Edge)
+- **RAPS CLI** v4.14.0+ installed
+- **Autodesk Developer Account** with app credentials
+- **CAD file** to test with (`.dwg`, `.rvt`, `.ipt`, `.f3d`, etc.)
 
-### Required Scopes
-```bash
-# Authentication scopes needed for this workflow
-data:read bucket:read bucket:create viewables:read
+### Required OAuth Scopes
+```
+data:read data:create bucket:read bucket:create viewables:read
 ```
 
 ### Files Used in This Recipe
@@ -54,12 +51,12 @@ data:read bucket:read bucket:create viewables:read
 
 ---
 
-## The Manual Way (50+ Lines of Code)
+## The Manual Way (100+ Lines of Code)
 
 To appreciate what RAPS does, here's the manual approach:
 
 <details>
-<summary>🔍 Click to see manual implementation (JavaScript example)</summary>
+<summary>Click to see manual implementation (JavaScript example)</summary>
 
 ```javascript
 const axios = require('axios');
@@ -85,14 +82,11 @@ async function createBucket(token, bucketKey) {
   try {
     await axios.post(
       'https://developer.api.autodesk.com/oss/v2/buckets',
-      {
-        bucketKey: bucketKey,
-        policyKey: 'transient'
-      },
+      { bucketKey: bucketKey, policyKey: 'transient' },
       { headers: { Authorization: `Bearer ${token}` }}
     );
   } catch (error) {
-    if (error.response?.status !== 409) throw error; // Ignore if exists
+    if (error.response?.status !== 409) throw error;
   }
 }
 
@@ -113,20 +107,14 @@ async function uploadFile(token, bucketKey, fileName, fileData) {
 
 // Step 4: Start translation
 async function startTranslation(token, urn) {
-  const response = await axios.post(
+  await axios.post(
     'https://developer.api.autodesk.com/modelderivative/v2/designdata/job',
     {
       input: { urn: urn },
-      output: {
-        formats: [{
-          type: 'svf2',
-          views: ['2d', '3d']
-        }]
-      }
+      output: { formats: [{ type: 'svf2', views: ['2d', '3d'] }] }
     },
     { headers: { Authorization: `Bearer ${token}` }}
   );
-  return response.data.urn;
 }
 
 // Step 5: Poll for completion
@@ -136,199 +124,166 @@ async function waitForTranslation(token, urn) {
       `https://developer.api.autodesk.com/modelderivative/v2/designdata/${urn}/manifest`,
       { headers: { Authorization: `Bearer ${token}` }}
     );
-    
     if (response.data.status === 'success') return true;
     if (response.data.status === 'failed') throw new Error('Translation failed');
-    
-    await new Promise(resolve => setTimeout(resolve, 5000)); // Wait 5 seconds
+    await new Promise(resolve => setTimeout(resolve, 5000));
   }
 }
 
-// Step 6: Generate viewer HTML
-function generateViewerHTML(urn, token) {
-  return `
-    <!DOCTYPE html>
-    <html>
-    <head>
-      <script src="https://developer.api.autodesk.com/modelderivative/v2/viewers/7.*/viewer3D.min.js"></script>
-    </head>
-    <body>
-      <div id="forgeViewer" style="width: 100%; height: 500px;"></div>
-      <script>
-        const options = {
-          env: 'AutodeskProduction',
-          api: 'derivativeV2',
-          getAccessToken: function(onTokenReady) {
-            onTokenReady('${token}', 3600);
-          }
-        };
-        
-        Autodesk.Viewing.Initializer(options, function() {
-          const viewer = new Autodesk.Viewing.GuiViewer3D(
-            document.getElementById('forgeViewer')
-          );
-          viewer.start();
-          viewer.loadDocumentNode(viewer, '${urn}');
-        });
-      </script>
-    </body>
-    </html>
-  `;
-}
-
-// Main workflow (6 steps, error handling, base64 encoding...)
+// Main workflow
 async function main() {
-  try {
-    console.log('1. Getting access token...');
-    const token = await getToken();
-    
-    console.log('2. Creating bucket...');
-    const bucketKey = 'my-bucket-' + Date.now();
-    await createBucket(token, bucketKey);
-    
-    console.log('3. Uploading file...');
-    const fileData = fs.readFileSync('./model.rvt');
-    const objectId = await uploadFile(token, bucketKey, 'model.rvt', fileData);
-    
-    console.log('4. Starting translation...');
-    const urn = Buffer.from(`urn:adsk.objects:os.object:${bucketKey}:model.rvt`)
-                     .toString('base64').replace(/\+/g, '-').replace(/\//g, '_').replace(/=/g, '');
-    await startTranslation(token, urn);
-    
-    console.log('5. Waiting for translation...');
-    await waitForTranslation(token, urn);
-    
-    console.log('6. Generating viewer...');
-    const html = generateViewerHTML(urn, token);
-    fs.writeFileSync('./viewer.html', html);
-    
-    console.log('✅ Complete! Open viewer.html in browser');
-  } catch (error) {
-    console.error('❌ Error:', error.message);
-  }
+  const token = await getToken();
+  const bucketKey = 'my-bucket-' + Date.now();
+  await createBucket(token, bucketKey);
+  const fileData = fs.readFileSync('./model.rvt');
+  await uploadFile(token, bucketKey, 'model.rvt', fileData);
+  const urn = Buffer.from(`urn:adsk.objects:os.object:${bucketKey}:model.rvt`)
+    .toString('base64').replace(/\+/g, '-').replace(/\//g, '_').replace(/=/g, '');
+  await startTranslation(token, urn);
+  await waitForTranslation(token, urn);
+  console.log('Done! URN:', urn);
 }
 
 main();
 ```
 
-**That's 120+ lines of code with incomplete error handling!**
+**That's 80+ lines of code with incomplete error handling!**
 
 </details>
 
 ---
 
-## The RAPS Way (5 Commands)
+## The RAPS Way
 
 ### Step 1: Authenticate
 
 ```bash
-# One-time setup: login with required scopes
-raps auth login --scopes bucket:read,bucket:create,data:read,viewables:read
+# 2-legged (server-to-server, client credentials)
+raps auth test
+
+# Or 3-legged (user-facing, opens browser)
+raps auth login
+# Use --default for common scopes, or --preset all for every scope
 ```
 
 **What happens:**
-- Opens browser for OAuth flow
-- Saves credentials securely to system keyring
-- Validates scopes work correctly
+- 2-legged: validates client credentials and gets an access token
+- 3-legged: opens browser for OAuth flow, saves token securely to system keychain
+- Token refresh is automatic for subsequent commands
 
-### Step 2: Create Storage Bucket
+### Step 2: Create a Storage Bucket
 
 ```bash
-# Create a bucket for your files (bucket names must be globally unique)
-raps bucket create my-bucket-$(date +%s)
+# Interactive (prompts for name, policy, region)
+raps bucket create
+
+# Or fully specified
+raps bucket create --key my-project-bucket --policy transient --region US
 ```
 
 **What happens:**
 - Creates a new Object Storage Service (OSS) bucket
-- Handles naming conflicts automatically
-- Sets appropriate retention policies
+- Policy options: `transient` (24h), `temporary` (30 days), `persistent` (permanent)
+- Region options: `US`, `EMEA`
 
 ### Step 3: Upload Your CAD File
 
 ```bash
 # Upload file to bucket
-raps oss upload model.rvt my-bucket-$(date +%s)
+raps object upload my-project-bucket model.rvt
 ```
 
 **What happens:**
-- Uploads file with progress indicator
-- Validates file integrity
-- Returns the file's URN for translation
+- Uploads the file with progress indicator
+- For large files, use `--resume` to resume interrupted uploads
+- Returns the object key for building the URN
 
 ### Step 4: Translate to Web Format
 
 ```bash
-# Start translation job (using SVF2 for best performance)
-raps translate $(raps urn encode "urn:adsk.objects:os.object:my-bucket-1234567890:model.rvt") --formats svf2 --wait
+# Build base64 URN and start translation
+URN=$(echo -n "urn:adsk.objects:os.object:my-project-bucket:model.rvt" | base64 | tr '+/' '-_' | tr -d '=')
+
+# Start translation and wait for completion
+raps translate start "$URN" --format svf2 --wait
 ```
 
 **What happens:**
-- Encodes URN correctly (handles base64 URL-safe encoding)
 - Submits translation job to Model Derivative service
-- Polls for completion automatically with `--wait` flag
+- `--wait` polls for completion automatically
 - Shows progress updates during translation
+- `--force` can be added to re-translate even if a manifest already exists
 
-### Step 5: View in Browser
+### Step 5: Download Derivatives
 
 ```bash
-# Generate and open viewer
-raps view $(raps urn encode "urn:adsk.objects:os.object:my-bucket-1234567890:model.rvt")
+# List available derivatives
+raps translate derivatives "$URN"
+
+# Download all derivatives
+raps translate download "$URN" --all --out-dir ./output
+
+# Or download specific format
+raps translate download "$URN" --format obj --out-dir ./output
 ```
 
 **What happens:**
-- Generates HTML viewer with embedded 3D model
-- Handles authentication token injection
-- Opens browser automatically
-- Provides interactive 3D navigation
+- Lists or downloads translated output files
+- `--all` downloads everything available
+- `--format` filters to a specific output format
 
 ---
 
-## Complete One-Liner Workflow
+## Batch Upload Workflow
 
-Once authenticated, the entire workflow can be done in one command:
+For processing multiple files at once:
 
 ```bash
-# Upload, translate, and view in one command
-raps workflow upload-translate-view model.rvt --bucket my-project-bucket
-```
+# Upload multiple files in parallel
+raps object upload-batch my-project-bucket *.dwg --parallel 4
 
-**What this does:**
-1. Creates bucket if needed
-2. Uploads the file
-3. Starts translation to SVF2
-4. Waits for completion
-5. Opens browser viewer
+# Then translate each one
+for file in *.dwg; do
+  urn=$(echo -n "urn:adsk.objects:os.object:my-project-bucket:$file" | base64 | tr '+/' '-_' | tr -d '=')
+  raps translate start "$urn" --format svf2 --wait
+done
+```
 
 ---
 
-## Workflow Variations
+## Translation Format Options
 
-### Batch Processing Multiple Files
+You can translate to different output formats:
 
 ```bash
-# Upload and translate multiple files
-raps workflow batch-translate *.dwg --bucket cad-drawings --formats svf2,pdf --parallel 3
+# SVF2 (recommended for web viewing)
+raps translate start "$URN" --format svf2 --wait
+
+# OBJ (3D meshes)
+raps translate start "$URN" --format obj --wait
+
+# STL (3D printing)
+raps translate start "$URN" --format stl --wait
+
+# IFC (industry standard exchange)
+raps translate start "$URN" --format ifc --wait
 ```
 
-### Extract Properties Only
+---
+
+## Webhook Notifications
+
+Instead of polling, set up webhooks to be notified when translation completes:
 
 ```bash
-# Get model metadata without viewing
-raps translate <urn> --formats properties --output metadata.json
-```
+# Create webhook for translation completion
+raps webhook create --event extraction.finished --url https://your-app.com/hooks/done
 
-### Custom Translation Formats
+# List all webhooks
+raps webhook list
 
-```bash
-# Translate to multiple formats for different uses
-raps translate <urn> --formats svf2,stl,obj,pdf --wait
-```
-
-### Webhook Integration
-
-```bash
-# Set up webhook to get notified when translations complete
-raps webhook create --event extraction.finished --callback https://your-app.com/webhook
+# Test webhook endpoint
+raps webhook test https://your-app.com/hooks/done
 ```
 
 ---
@@ -337,220 +292,52 @@ raps webhook create --event extraction.finished --callback https://your-app.com/
 
 ### Issue 1: "Bucket already exists" Error
 
-**Problem:** Bucket name conflicts  
-**Solution:** Use timestamps or UUIDs in bucket names
+**Problem:** Bucket name conflicts (names are globally unique)
+**Solution:** Use a more unique bucket name
 ```bash
-# Add timestamp to ensure uniqueness
 BUCKET_NAME="my-project-$(date +%s)"
-raps bucket create $BUCKET_NAME
+raps bucket create --key "$BUCKET_NAME" --policy transient --region US
 ```
 
 ### Issue 2: Translation Fails
 
-**Problem:** Unsupported file format or corrupted file  
-**Solution:** Check file and format support
+**Problem:** Unsupported file format or corrupted file
+**Solution:** Check translation status for error details
 ```bash
-# Check translation status with details
-raps translate status <urn> --verbose
+# Check status
+raps translate status "$URN"
 
-# Retry with different format
-raps translate <urn> --formats svf --retry
+# Check full manifest for error details
+raps translate manifest "$URN"
 ```
 
-### Issue 3: Viewer Shows "Loading..." Forever
+### Issue 3: Authentication Errors
 
-**Problem:** Translation not complete or token expired  
-**Solution:** Check translation status and refresh auth
+**Problem:** Token expired or wrong scopes
+**Solution:** Re-authenticate
 ```bash
-# Verify translation completed successfully
-raps translate status <urn>
+# Check current auth status
+raps auth status
 
-# Refresh authentication if needed
-raps auth refresh
+# Inspect token details
+raps auth inspect
+
+# Re-login
+raps auth login --default
 ```
 
-### Issue 4: File Upload Fails
+### Issue 4: Large File Upload Fails
 
-**Problem:** File too large or network issues  
-**Solution:** Check file size and use resumable upload
+**Problem:** Network interruption during upload
+**Solution:** Use resume flag
 ```bash
-# Check file size (max 100MB for standard upload)
-ls -lh model.rvt
-
-# Use chunked upload for large files
-raps oss upload model.rvt my-bucket --chunked --chunk-size 10MB
-```
-
-### Issue 5: Permission Denied
-
-**Problem:** Missing required scopes  
-**Solution:** Re-authenticate with correct scopes
-```bash
-# Check current scopes
-raps auth status --scopes
-
-# Re-login with required scopes
-raps auth login --scopes bucket:read,bucket:create,data:read,viewables:read
+# Resume interrupted upload
+raps object upload my-bucket large-model.rvt --resume
 ```
 
 ---
 
-## Performance Tips
-
-### 1. Use SVF2 Format
-
-SVF2 loads 50% faster than legacy SVF format:
-```bash
-# Always prefer SVF2 for new projects
-raps translate <urn> --formats svf2
-```
-
-### 2. Pre-create Buckets
-
-Create buckets once, reuse many times:
-```bash
-# Create project bucket
-raps bucket create my-project-models
-
-# Upload multiple files to same bucket
-raps oss upload model1.rvt my-project-models
-raps oss upload model2.dwg my-project-models
-```
-
-### 3. Batch Operations
-
-Process multiple files efficiently:
-```bash
-# Parallel uploads (faster than sequential)
-raps oss upload-batch *.rvt --bucket my-models --parallel 5
-
-# Batch translation with progress
-raps translate-batch --bucket my-models --formats svf2 --parallel 3
-```
-
-### 4. Monitor Translation Queue
-
-Large files can take time to translate:
-```bash
-# Start translation without waiting
-raps translate <urn> --formats svf2
-
-# Check status later
-raps translate status <urn>
-
-# Get notified when done (if webhooks set up)
-raps translate <urn> --notify-webhook https://your-app.com/done
-```
-
----
-
-## Advanced Scenarios
-
-### Scenario 1: Assembly Files with Dependencies
-
-For CAD assemblies with multiple linked files:
-
-```bash
-# Upload all related files to same bucket
-raps oss upload main-assembly.iam my-project
-raps oss upload part1.ipt my-project  
-raps oss upload part2.ipt my-project
-
-# Translate main assembly (will find dependencies automatically)
-raps translate $(raps urn encode "urn:adsk.objects:os.object:my-project:main-assembly.iam") --formats svf2
-```
-
-### Scenario 2: Password-Protected Files
-
-For encrypted/password-protected CAD files:
-
-```bash
-# Include password in translation request
-raps translate <urn> --formats svf2 --password "your-file-password"
-```
-
-### Scenario 3: Custom Viewer Integration
-
-Generate embeddable viewer code for your website:
-
-```bash
-# Generate viewer HTML with custom options
-raps view <urn> --generate-embed --width 800 --height 600 --toolbar minimal > embed.html
-```
-
-### Scenario 4: Region-Specific Deployment
-
-For EMEA data residency requirements:
-
-```bash
-# Configure for European data centers
-raps config set region emea
-
-# All subsequent operations use EMEA endpoints
-raps bucket create eu-project-models --region emea
-```
-
----
-
-## Cost Optimization
-
-### Understanding APS Pricing
-
-| Operation | Cost Factor | RAPS Optimization |
-|-----------|-------------|-------------------|
-| **OSS Storage** | Per GB per month | Auto-cleanup old files |
-| **Translation** | Per job | Batch processing |
-| **Viewer** | Per view session | Token reuse |
-| **API Calls** | Per request | Request batching |
-
-### Cost-Saving Tips
-
-```bash
-# Enable automatic cleanup of old translations
-raps config set cleanup.auto-delete-derivatives true
-raps config set cleanup.retention-days 30
-
-# Use transient buckets for temporary files
-raps bucket create temp-bucket --policy transient
-
-# Monitor usage
-raps usage report --period last-month
-```
-
----
-
-## Integration Examples
-
-### Web Application Integration
-
-```javascript
-// In your Node.js app
-const { exec } = require('child_process');
-
-// Upload and translate via RAPS
-function processCADFile(filePath, bucketName) {
-  return new Promise((resolve, reject) => {
-    const cmd = `raps workflow upload-translate-view "${filePath}" --bucket ${bucketName} --output-urn`;
-    
-    exec(cmd, (error, stdout, stderr) => {
-      if (error) reject(error);
-      else resolve(stdout.trim()); // Returns URN for viewer
-    });
-  });
-}
-
-// Use in your route
-app.post('/upload-model', async (req, res) => {
-  try {
-    const urn = await processCADFile(req.file.path, 'user-models');
-    res.json({ urn, viewerUrl: `/viewer?urn=${urn}` });
-  } catch (error) {
-    res.status(500).json({ error: error.message });
-  }
-});
-```
-
-### CI/CD Pipeline Integration
+## CI/CD Integration
 
 ```yaml
 # GitHub Actions example
@@ -563,62 +350,32 @@ jobs:
   translate:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v3
-      
+      - uses: actions/checkout@v4
+
       - name: Install RAPS
-        run: curl -sSL https://rapscli.xyz/install.sh | sh
-        
+        run: cargo install raps-cli
+
       - name: Authenticate
-        run: raps auth login --client-id ${{ secrets.APS_CLIENT_ID }} --client-secret ${{ secrets.APS_CLIENT_SECRET }}
-        
-      - name: Process changed models
+        run: raps auth login --token ${{ secrets.APS_ACCESS_TOKEN }}
+
+      - name: Upload and translate
         run: |
-          for file in $(git diff --name-only HEAD~1 | grep '\.rvt$'); do
-            echo "Processing $file..."
-            raps workflow upload-translate-view "$file" --bucket ci-models
-          done
+          raps object upload production-bucket models/building.rvt
+          URN=$(echo -n "urn:adsk.objects:os.object:production-bucket:building.rvt" | base64 | tr '+/' '-_' | tr -d '=')
+          raps translate start "$URN" --format svf2 --wait
 ```
 
 ---
 
-## Next Steps
+## Performance Tips
 
-### Once you've mastered this workflow:
-
-1. **🎯 Try other recipes:**
-   - [Extract Properties Recipe](./extract-properties.md)
-   - [Batch Processing Recipe](./batch-translate.md)
-   - [Webhook Integration Recipe](./webhook-setup.md)
-
-2. **📚 Learn advanced features:**
-   - Custom viewer extensions
-   - Property filtering and search
-   - Real-time collaboration
-
-3. **🚀 Scale your application:**
-   - Load balancing translation jobs
-   - Caching strategies
-   - Error recovery patterns
-
-### Resources
-
-- **RAPS Documentation:** [rapscli.xyz/docs](https://rapscli.xyz/docs/)
-- **APS Viewer SDK:** [aps.autodesk.com/developer/documentation](https://aps.autodesk.com/developer/documentation)
-- **Community Support:** [discord.gg/raps-community](https://discord.gg/raps-community)
+1. **Use SVF2 format** - loads faster than legacy SVF
+2. **Batch uploads** - `raps object upload-batch` processes files in parallel
+3. **Reuse buckets** - create once, upload many files
+4. **Use `--wait`** - avoids manual polling in scripts
+5. **Resume large uploads** - `--resume` flag handles network interruptions
 
 ---
 
-**💡 Pro Tip:** Save time by creating aliases for common workflows:
-```bash
-# Add to your .bashrc or .zshrc
-alias translate-view='raps workflow upload-translate-view'
-alias quick-upload='raps oss upload'
-
-# Then use like:
-translate-view my-model.rvt --bucket project-alpha
-```
-
----
-
-*Last verified: February 2026 | RAPS v4.11.0 | APS APIs: OSS v2, Model Derivative v2, Viewer v7*  
-*This recipe works with all major CAD formats. For format-specific notes, see the [APS Format Support Guide](../references/supported-formats.md).*
+*Last verified: February 2026 | RAPS v4.14.0 | APS APIs: OSS v2, Model Derivative v2*
+*This recipe works with all major CAD formats supported by APS Model Derivative service.*

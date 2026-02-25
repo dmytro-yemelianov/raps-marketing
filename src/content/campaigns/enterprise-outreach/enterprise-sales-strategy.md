@@ -2,7 +2,7 @@
 title: "Enterprise Sales Strategy: Production-Ready APS Automation"
 description: "Comprehensive strategy to convert enterprise prospects into paying customers through targeted automation solutions and services"
 campaign: "enterprise-outreach"
-status: "planning"
+status: "aspirational-draft"
 startDate: 2026-01-01
 endDate: 2026-12-31
 targetAudience: ["Enterprise decision makers", "IT directors", "AEC executives", "Manufacturing leaders"]
@@ -10,9 +10,11 @@ targetAudience: ["Enterprise decision makers", "IT directors", "AEC executives",
 
 # Enterprise Sales Strategy: "Production-Ready APS Automation"
 
+> **Note**: This is an aspirational planning document. RAPS is currently an open-source project (Apache-2.0) by a solo developer. Enterprise features like SSO, SLA guarantees, and pricing tiers described below are future goals, not current offerings. Customer stories and company names are hypothetical examples.
+
 ## Strategic Overview
 
-**Objective**: Convert 50+ enterprise prospects into paying customers through targeted enterprise automation solutions and services.
+**Objective**: Develop enterprise adoption strategy for RAPS CLI automation solutions.
 
 **Core Value Proposition**: *"Transform from manual APS operations to enterprise-grade automated workflows with zero-downtime deployment and comprehensive compliance."*
 
