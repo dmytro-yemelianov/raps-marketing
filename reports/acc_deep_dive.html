@@ -1,0 +1,685 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ACC Plugin Ecosystem Deep-Dive Report</title>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <style>
+        :root {
+            --primary: #0696D7;
+            --secondary: #1E3A5F;
+            --accent: #F26322;
+            --success: #2E7D32;
+            --warning: #ED6C02;
+            --danger: #D32F2F;
+            --bg: #F8FAFC;
+            --card: #FFFFFF;
+            --text: #1E293B;
+            --muted: #64748B;
+        }
+
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+
+        body {
+            font-family: 'Segoe UI', system-ui, sans-serif;
+            background: var(--bg);
+            color: var(--text);
+            line-height: 1.6;
+        }
+
+        .container { max-width: 1400px; margin: 0 auto; padding: 2rem; }
+
+        header {
+            background: linear-gradient(135deg, var(--secondary) 0%, var(--primary) 100%);
+            color: white;
+            padding: 3rem 2rem;
+            margin-bottom: 2rem;
+            border-radius: 12px;
+        }
+
+        header h1 { font-size: 2.5rem; font-weight: 700; margin-bottom: 0.5rem; }
+        header p { opacity: 0.9; font-size: 1.1rem; }
+
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+            gap: 1.5rem;
+            margin-bottom: 2rem;
+        }
+
+        .stat-card {
+            background: var(--card);
+            padding: 1.5rem;
+            border-radius: 12px;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+            text-align: center;
+        }
+
+        .stat-card.forum { border-left: 4px solid var(--success); }
+        .stat-card.so { border-left: 4px solid var(--accent); }
+        .stat-card.opp { border-left: 4px solid var(--primary); }
+
+        .stat-value { font-size: 2rem; font-weight: 700; color: var(--secondary); }
+        .stat-label { color: var(--muted); font-size: 0.85rem; text-transform: uppercase; }
+
+        section {
+            background: var(--card);
+            padding: 2rem;
+            border-radius: 12px;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+            margin-bottom: 2rem;
+        }
+
+        section h2 {
+            color: var(--secondary);
+            font-size: 1.5rem;
+            margin-bottom: 1.5rem;
+            padding-bottom: 0.75rem;
+            border-bottom: 2px solid var(--bg);
+        }
+
+        .chart-container { position: relative; height: 350px; margin-bottom: 1.5rem; }
+        .chart-row { display: grid; grid-template-columns: 1fr 1fr; gap: 2rem; margin-bottom: 1.5rem; }
+        .chart-cell { background: var(--bg); padding: 1.5rem; border-radius: 8px; }
+        .chart-cell h3 { color: var(--secondary); font-size: 1rem; margin-bottom: 1rem; text-align: center; }
+
+        table { width: 100%; border-collapse: collapse; font-size: 0.9rem; }
+        th, td { padding: 0.875rem; text-align: left; border-bottom: 1px solid #E2E8F0; }
+        th { background: var(--bg); font-weight: 600; color: var(--secondary); }
+        tr:hover { background: #F1F5F9; }
+
+        .score { font-weight: 700; color: var(--accent); }
+
+        .badge {
+            display: inline-block;
+            padding: 0.2rem 0.6rem;
+            border-radius: 20px;
+            font-size: 0.75rem;
+            font-weight: 500;
+        }
+
+        .badge-high { background: #FEE2E2; color: #991B1B; }
+        .badge-medium { background: #FEF3C7; color: #92400E; }
+        .badge-low { background: #D1FAE5; color: #065F46; }
+
+        .recommendation {
+            padding: 1.25rem;
+            margin-bottom: 1rem;
+            background: var(--bg);
+            border-radius: 8px;
+            border-left: 4px solid var(--accent);
+        }
+
+        .recommendation h4 { color: var(--secondary); margin-bottom: 0.5rem; font-size: 1rem; }
+        .recommendation .rec-score { font-size: 1.1rem; font-weight: 700; color: var(--accent); }
+        .recommendation p { color: var(--muted); font-size: 0.9rem; margin-top: 0.5rem; }
+
+        .expert-grid { display: flex; flex-wrap: wrap; gap: 1rem; }
+
+        .expert-card {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            padding: 0.75rem 1rem;
+            background: var(--bg);
+            border-radius: 8px;
+        }
+
+        .expert-rank {
+            width: 28px;
+            height: 28px;
+            background: var(--primary);
+            color: white;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 700;
+            font-size: 0.85rem;
+        }
+
+        .expert-name { font-weight: 600; font-size: 0.9rem; }
+        .expert-count { color: var(--muted); font-size: 0.8rem; }
+
+        footer { text-align: center; padding: 2rem; color: var(--muted); font-size: 0.85rem; }
+
+        @media (max-width: 900px) { .chart-row { grid-template-columns: 1fr; } }
+        @media (max-width: 768px) {
+            .container { padding: 1rem; }
+            header { padding: 2rem 1rem; }
+            header h1 { font-size: 1.75rem; }
+            .chart-container { height: 280px; }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>ACC Plugin Ecosystem Deep-Dive</h1>
+            <p>Market Opportunity Analysis for Autodesk Construction Cloud | January 31, 2026</p>
+        </header>
+
+        <div class="stats-grid">
+            <div class="stat-card forum">
+                <div class="stat-value">2,594</div>
+                <div class="stat-label">Forum Ideas</div>
+            </div>
+            <div class="stat-card forum">
+                <div class="stat-value">89%</div>
+                <div class="stat-label">Categorized</div>
+            </div>
+            <div class="stat-card so">
+                <div class="stat-value">4,619</div>
+                <div class="stat-label">SO Questions</div>
+            </div>
+            <div class="stat-card so">
+                <div class="stat-value">95%</div>
+                <div class="stat-label">Categorized</div>
+            </div>
+            <div class="stat-card opp">
+                <div class="stat-value">5</div>
+                <div class="stat-label">Opportunities</div>
+            </div>
+        </div>
+
+        <section>
+            <h2>Executive Summary</h2>
+            <p style="color: var(--muted); margin-bottom: 1.5rem;">
+                Analysis of 2,594 ACC forum ideas and 4,619 Stack Overflow questions reveals significant plugin opportunities.
+            </p>
+            
+            <div class="recommendation">
+                <h4>1. Documents Plugin</h4>
+                <div class="rec-score">Demand Score: 2,365</div>
+                <p>Plugin for document management and file sharing</p>
+            </div>
+            
+            <div class="recommendation">
+                <h4>2. Permissions Plugin</h4>
+                <div class="rec-score">Demand Score: 1,271</div>
+                <p>Plugin for user/role management and access control</p>
+            </div>
+            
+            <div class="recommendation">
+                <h4>3. Issues Plugin</h4>
+                <div class="rec-score">Demand Score: 1,113</div>
+                <p>Plugin for issue tracking, rfis, and submittals</p>
+            </div>
+            
+        </section>
+
+        <section>
+            <h2>Demand by Functional Area</h2>
+            <div class="chart-container">
+                <canvas id="functionalAreaChart"></canvas>
+            </div>
+            <table>
+                <thead>
+                    <tr>
+                        <th>Category</th>
+                        <th>Ideas</th>
+                        <th>Votes</th>
+                        <th>Demand Score</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    
+                    <tr>
+                        <td><strong>Documents</strong></td>
+                        <td>754</td>
+                        <td>5,348</td>
+                        <td class="score">2,365.4</td>
+                    </tr>
+                    
+                    <tr>
+                        <td><strong>Permissions</strong></td>
+                        <td>417</td>
+                        <td>2,864</td>
+                        <td class="score">1,270.7</td>
+                    </tr>
+                    
+                    <tr>
+                        <td><strong>Issues</strong></td>
+                        <td>362</td>
+                        <td>2,512</td>
+                        <td class="score">1,113.4</td>
+                    </tr>
+                    
+                    <tr>
+                        <td><strong>Other</strong></td>
+                        <td>279</td>
+                        <td>1,262</td>
+                        <td class="score">588.5</td>
+                    </tr>
+                    
+                    <tr>
+                        <td><strong>Forms</strong></td>
+                        <td>212</td>
+                        <td>1,186</td>
+                        <td class="score">538.0</td>
+                    </tr>
+                    
+                    <tr>
+                        <td><strong>Sheets</strong></td>
+                        <td>146</td>
+                        <td>802</td>
+                        <td class="score">364.6</td>
+                    </tr>
+                    
+                    <tr>
+                        <td><strong>Cost Management</strong></td>
+                        <td>205</td>
+                        <td>528</td>
+                        <td class="score">272.7</td>
+                    </tr>
+                    
+                    <tr>
+                        <td><strong>Photos</strong></td>
+                        <td>65</td>
+                        <td>553</td>
+                        <td class="score">240.7</td>
+                    </tr>
+                    
+                    <tr>
+                        <td><strong>Model Coordination</strong></td>
+                        <td>31</td>
+                        <td>537</td>
+                        <td class="score">224.1</td>
+                    </tr>
+                    
+                    <tr>
+                        <td><strong>Design Collaboration</strong></td>
+                        <td>56</td>
+                        <td>451</td>
+                        <td class="score">197.2</td>
+                    </tr>
+                    
+                </tbody>
+            </table>
+        </section>
+
+        <section>
+            <h2>Developer Activity by API Topic</h2>
+            <div class="chart-row">
+                <div class="chart-cell">
+                    <h3>Questions by Topic</h3>
+                    <canvas id="apiTopicChart"></canvas>
+                </div>
+                <div class="chart-cell">
+                    <h3>Unanswered Rate by Topic</h3>
+                    <canvas id="unansweredChart"></canvas>
+                </div>
+            </div>
+        </section>
+
+        <section>
+            <h2>Plugin Opportunities</h2>
+            <p style="color: var(--muted); margin-bottom: 1.5rem;">
+                Top opportunities filtered to those above median demand score (top 50%).
+            </p>
+            <table>
+                <thead>
+                    <tr>
+                        <th>#</th>
+                        <th>Opportunity</th>
+                        <th>Category</th>
+                        <th>Score</th>
+                        <th>Evidence</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    
+                    <tr>
+                        <td>1</td>
+                        <td><strong>Documents Plugin</strong></td>
+                        <td>Documents</td>
+                        <td class="score">2,365</td>
+                        <td>5 items</td>
+                    </tr>
+                    
+                    <tr>
+                        <td>2</td>
+                        <td><strong>Permissions Plugin</strong></td>
+                        <td>Permissions</td>
+                        <td class="score">1,271</td>
+                        <td>5 items</td>
+                    </tr>
+                    
+                    <tr>
+                        <td>3</td>
+                        <td><strong>Issues Plugin</strong></td>
+                        <td>Issues</td>
+                        <td class="score">1,113</td>
+                        <td>5 items</td>
+                    </tr>
+                    
+                    <tr>
+                        <td>4</td>
+                        <td><strong>Forms Plugin</strong></td>
+                        <td>Forms</td>
+                        <td class="score">538</td>
+                        <td>5 items</td>
+                    </tr>
+                    
+                    <tr>
+                        <td>5</td>
+                        <td><strong>Sheets Plugin</strong></td>
+                        <td>Sheets</td>
+                        <td class="score">365</td>
+                        <td>5 items</td>
+                    </tr>
+                    
+                </tbody>
+            </table>
+        </section>
+
+        <section>
+            <h2>Developer Pain Points</h2>
+            <p style="color: var(--muted); margin-bottom: 1.5rem;">
+                API topics with highest unanswered rates indicate documentation or support gaps.
+            </p>
+            <table>
+                <thead>
+                    <tr>
+                        <th>API Topic</th>
+                        <th>Questions</th>
+                        <th>Unanswered</th>
+                        <th>Rate</th>
+                        <th>Status</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    
+                    <tr>
+                        <td><strong>Bim360 Acc Apis</strong></td>
+                        <td>163</td>
+                        <td>109</td>
+                        <td>67%</td>
+                        <td><span class="badge badge-high">Critical</span></td>
+                    </tr>
+                    
+                    <tr>
+                        <td><strong>Authentication</strong></td>
+                        <td>132</td>
+                        <td>85</td>
+                        <td>64%</td>
+                        <td><span class="badge badge-high">Critical</span></td>
+                    </tr>
+                    
+                    <tr>
+                        <td><strong>Other</strong></td>
+                        <td>226</td>
+                        <td>139</td>
+                        <td>62%</td>
+                        <td><span class="badge badge-high">Critical</span></td>
+                    </tr>
+                    
+                    <tr>
+                        <td><strong>Model Derivative</strong></td>
+                        <td>578</td>
+                        <td>352</td>
+                        <td>61%</td>
+                        <td><span class="badge badge-high">Critical</span></td>
+                    </tr>
+                    
+                    <tr>
+                        <td><strong>Data Management</strong></td>
+                        <td>767</td>
+                        <td>459</td>
+                        <td>60%</td>
+                        <td><span class="badge badge-medium">Moderate</span></td>
+                    </tr>
+                    
+                    <tr>
+                        <td><strong>Webhooks</strong></td>
+                        <td>55</td>
+                        <td>32</td>
+                        <td>58%</td>
+                        <td><span class="badge badge-medium">Moderate</span></td>
+                    </tr>
+                    
+                    <tr>
+                        <td><strong>Viewer</strong></td>
+                        <td>2341</td>
+                        <td>1315</td>
+                        <td>56%</td>
+                        <td><span class="badge badge-medium">Moderate</span></td>
+                    </tr>
+                    
+                    <tr>
+                        <td><strong>Design Automation</strong></td>
+                        <td>357</td>
+                        <td>195</td>
+                        <td>55%</td>
+                        <td><span class="badge badge-medium">Moderate</span></td>
+                    </tr>
+                    
+                </tbody>
+            </table>
+        </section>
+
+        <section>
+            <h2>Top Forum Requests</h2>
+            <table>
+                <thead>
+                    <tr>
+                        <th>#</th>
+                        <th>Request</th>
+                        <th>Category</th>
+                        <th>Votes</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    
+                    <tr>
+                        <td>1</td>
+                        <td>Allow adding a user(s) to MULTIPLE PROJECTS</td>
+                        <td>Documents</td>
+                        <td class="score">344</td>
+                    </tr>
+                    
+                    <tr>
+                        <td>2</td>
+                        <td>Increase Submittals Assignee Limit Beyond 10 Users</td>
+                        <td>Issues</td>
+                        <td class="score">317</td>
+                    </tr>
+                    
+                    <tr>
+                        <td>3</td>
+                        <td>Measure coordinate XYZ in 3D view</td>
+                        <td>Model Coordination</td>
+                        <td class="score">276</td>
+                    </tr>
+                    
+                    <tr>
+                        <td>4</td>
+                        <td>ACC (Autodesk Docs) - Markups need improving</td>
+                        <td>Documents</td>
+                        <td class="score">246</td>
+                    </tr>
+                    
+                    <tr>
+                        <td>5</td>
+                        <td>Folder Permissions option to REMOVE Inherited Permissions</td>
+                        <td>Permissions</td>
+                        <td class="score">175</td>
+                    </tr>
+                    
+                    <tr>
+                        <td>6</td>
+                        <td>Permission for Photos</td>
+                        <td>Permissions</td>
+                        <td class="score">135</td>
+                    </tr>
+                    
+                    <tr>
+                        <td>7</td>
+                        <td>Organize Photos into Folders</td>
+                        <td>Documents</td>
+                        <td class="score">131</td>
+                    </tr>
+                    
+                    <tr>
+                        <td>8</td>
+                        <td>Automate the "description" field values in ACC Docs when uploading documents to ...</td>
+                        <td>Documents</td>
+                        <td class="score">119</td>
+                    </tr>
+                    
+                    <tr>
+                        <td>9</td>
+                        <td>Naming Standard available in ACC Templates</td>
+                        <td>Documents</td>
+                        <td class="score">108</td>
+                    </tr>
+                    
+                    <tr>
+                        <td>10</td>
+                        <td>Design Collaboration Publish Schedule</td>
+                        <td>Design Collaboration</td>
+                        <td class="score">100</td>
+                    </tr>
+                    
+                </tbody>
+            </table>
+        </section>
+
+        <section>
+            <h2>Community Experts</h2>
+            <p style="color: var(--muted); margin-bottom: 1.5rem;">
+                Top Stack Overflow contributors for ACC/Forge/APS topics.
+            </p>
+            <div class="expert-grid">
+                
+            </div>
+        </section>
+
+        <section>
+            <h2>Strategic Recommendations</h2>
+
+            <div class="recommendation">
+                <h4>1. Build Permission Management Plugin</h4>
+                <div class="rec-score">Highest Demand</div>
+                <p>User permissions and bulk management consistently rank as top requests. Build a plugin for managing users across multiple projects.</p>
+            </div>
+
+            <div class="recommendation">
+                <h4>2. Improve Viewer Documentation</h4>
+                <div class="rec-score">Developer Support</div>
+                <p>High unanswered rates on Viewer questions indicate documentation gaps. Partner with DevRel to create more tutorials.</p>
+            </div>
+
+            <div class="recommendation">
+                <h4>3. Document Management Enhancements</h4>
+                <div class="rec-score">Strong Demand</div>
+                <p>Documents and file management features are highly requested. Consider version comparison and batch operations plugins.</p>
+            </div>
+
+            <div class="recommendation">
+                <h4>4. Leverage Community Champions</h4>
+                <div class="rec-score">Community Building</div>
+                <p>Top answerers like Petr Broz have significant influence. Formalize MVP programs and co-create content.</p>
+            </div>
+
+            <div class="recommendation">
+                <h4>5. Address Model Coordination Gaps</h4>
+                <div class="rec-score">Opportunity</div>
+                <p>Model coordination and clash detection plugins could fill gaps not addressed by native Navisworks integration.</p>
+            </div>
+        </section>
+
+        <footer>
+            <p>Generated by Autodesk Ecosystem Analytics | ACC Deep-Dive Report</p>
+            <p>Forum Ideas: 2314/2594 categorized (89%) | SO Questions: 4393/4619 categorized (95%)</p>
+        </footer>
+    </div>
+
+    <script>
+        const colors = {
+            primary: '#0696D7',
+            secondary: '#1E3A5F',
+            accent: '#F26322',
+            success: '#2E7D32',
+            warning: '#ED6C02',
+            danger: '#D32F2F'
+        };
+
+        // Functional Area Chart
+        new Chart(document.getElementById('functionalAreaChart'), {
+            type: 'bar',
+            data: {
+                labels: ["Documents", "Permissions", "Issues", "Other", "Forms", "Sheets", "Cost Management", "Photos", "Model Coordination", "Design Collaboration"],
+                datasets: [
+                    {
+                        label: 'Forum Votes',
+                        data: [5348, 2864, 2512, 1262, 1186, 802, 528, 553, 537, 451],
+                        backgroundColor: colors.accent,
+                        borderRadius: 4,
+                        yAxisID: 'y'
+                    },
+                    {
+                        label: 'Ideas Count',
+                        data: [754, 417, 362, 279, 212, 146, 205, 65, 31, 56],
+                        backgroundColor: colors.primary,
+                        borderRadius: 4,
+                        yAxisID: 'y1'
+                    }
+                ]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                plugins: { legend: { position: 'top' } },
+                scales: {
+                    y: { type: 'linear', position: 'left', beginAtZero: true, title: { display: true, text: 'Votes' } },
+                    y1: { type: 'linear', position: 'right', beginAtZero: true, title: { display: true, text: 'Ideas' }, grid: { drawOnChartArea: false } }
+                }
+            }
+        });
+
+        // API Topic Chart
+        new Chart(document.getElementById('apiTopicChart'), {
+            type: 'bar',
+            data: {
+                labels: ["Viewer", "Data Management", "Model Derivative", "Design Automation", "Other", "BIM360/ACC APIs", "Authentication", "Webhooks"],
+                datasets: [{
+                    label: 'Questions',
+                    data: [2341, 767, 578, 357, 226, 163, 132, 55],
+                    backgroundColor: colors.accent,
+                    borderRadius: 4
+                }]
+            },
+            options: {
+                indexAxis: 'y',
+                responsive: true,
+                maintainAspectRatio: true,
+                plugins: { legend: { display: false } },
+                scales: { x: { beginAtZero: true } }
+            }
+        });
+
+        // Unanswered Rate Chart
+        new Chart(document.getElementById('unansweredChart'), {
+            type: 'bar',
+            data: {
+                labels: ["Bim360 Acc Apis", "Authentication", "Other", "Model Derivative", "Data Management", "Webhooks", "Viewer", "Design Automation"],
+                datasets: [{
+                    label: 'Unanswered %',
+                    data: [66.9, 64.4, 61.5, 60.9, 59.8, 58.2, 56.2, 54.6],
+                    backgroundColor: ["#D32F2F", "#D32F2F", "#D32F2F", "#D32F2F", "#ED6C02", "#ED6C02", "#ED6C02", "#ED6C02"],
+                    borderRadius: 4
+                }]
+            },
+            options: {
+                indexAxis: 'y',
+                responsive: true,
+                maintainAspectRatio: true,
+                plugins: { legend: { display: false } },
+                scales: { x: { beginAtZero: true, max: 100, title: { display: true, text: '%' } } }
+            }
+        });
+    </script>
+</body>
+</html>

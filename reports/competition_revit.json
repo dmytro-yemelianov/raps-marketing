@@ -1,0 +1,99 @@
+{
+  "generated_at": "2026-01-31T07:28:44.341340Z",
+  "product": {
+    "id": "revit",
+    "name": "Revit",
+    "app_count": 1437
+  },
+  "pricing": {
+    "free_count": 414,
+    "free_percent": 28.8,
+    "trial_count": 341,
+    "trial_percent": 23.7,
+    "paid_count": 375,
+    "paid_percent": 26.1,
+    "subscription_count": 306,
+    "subscription_percent": 21.3,
+    "price_distribution": {
+      "under_10": 303,
+      "10_to_50": 258,
+      "50_to_100": 51,
+      "over_100": 69
+    },
+    "median_price_usd": 10.0
+  },
+  "ratings": {
+    "average": 3.06,
+    "distribution": {
+      "5_stars": 270,
+      "4_stars": 62,
+      "3_stars": 72,
+      "2_stars": 118,
+      "1_star": 219,
+      "unrated": 696
+    }
+  },
+  "top_performers": [
+    {
+      "id": "3065869958781255107",
+      "name": "One Click LCA for Autodesk\u00ae Revit\u00ae",
+      "rating": 5.0,
+      "price": "Trial"
+    },
+    {
+      "id": "7448218013676619378",
+      "name": "ProSheets - Batch export to PDF, DWG, IFC, etc.",
+      "rating": 5.0,
+      "price": "Trial"
+    },
+    {
+      "id": "2295752866487515443",
+      "name": "PropertyWizard",
+      "rating": 5.0,
+      "price": "USD 3.80/M"
+    },
+    {
+      "id": "8322693954537305888",
+      "name": "DigiPara\u00ae Elevatorarchitect for Autodesk\u00ae Revit\u00ae",
+      "rating": 5.0,
+      "price": "Free"
+    },
+    {
+      "id": "350000436945268836",
+      "name": "PaperMEP",
+      "rating": 5.0,
+      "price": "Free"
+    },
+    {
+      "id": "5732893034415014394",
+      "name": "Match Elevation",
+      "rating": 5.0,
+      "price": "Free"
+    },
+    {
+      "id": "5773910748155457827",
+      "name": "AG Hanger Generator",
+      "rating": 5.0,
+      "price": "USD 10.00/M"
+    },
+    {
+      "id": "7389501092783473712",
+      "name": "Conserve Box",
+      "rating": 5.0,
+      "price": "Free"
+    },
+    {
+      "id": "1611389912686376992",
+      "name": "ToolBox",
+      "rating": 5.0,
+      "price": "Free"
+    },
+    {
+      "id": "5252839840672598944",
+      "name": "Id:door&window",
+      "rating": 5.0,
+      "price": "USD 15.00/M"
+    }
+  ],
+  "saturation_score": 0.96
+}

@@ -1,0 +1,131 @@
+{
+  "generated_at": "2026-01-31T07:28:17.000499Z",
+  "coverage": {
+    "total_ideas": 4295,
+    "categorized": 4295,
+    "uncategorized": 0,
+    "coverage_percent": 100.0
+  },
+  "pain_points": [
+    {
+      "category": "permissions",
+      "frequency": 400,
+      "total_votes": 3628,
+      "severity_score": 3628.0,
+      "example_ideas": [
+        {
+          "id": "12714729",
+          "title": "Allow adding a user(s) to MULTIPLE PROJECTS",
+          "kudos": 344
+        },
+        {
+          "id": "13957015",
+          "title": "Increase Submittals Assignee Limit Beyond 10 Users",
+          "kudos": 317
+        },
+        {
+          "id": "12421150",
+          "title": "Folder Permissions option to REMOVE Inherited Permissions",
+          "kudos": 175
+        }
+      ],
+      "products_affected": []
+    },
+    {
+      "category": "ui-ux",
+      "frequency": 410,
+      "total_votes": 2344,
+      "severity_score": 2344.0,
+      "example_ideas": [
+        {
+          "id": "10810682",
+          "title": "ACC (Autodesk Docs) - Markups need improving",
+          "kudos": 246
+        },
+        {
+          "id": "13084089",
+          "title": "ACC Markups tools, and ACC PDF Viewer - Improvements Required",
+          "kudos": 95
+        },
+        {
+          "id": "13661096",
+          "title": "ACC Viewer - Make PDFs documents scrollable",
+          "kudos": 61
+        }
+      ],
+      "products_affected": []
+    },
+    {
+      "category": "integrate-full-microsoft",
+      "frequency": 386,
+      "total_votes": 2228,
+      "severity_score": 2228.0,
+      "example_ideas": [
+        {
+          "id": "13701135",
+          "title": "Integrate Full Microsoft Office Online Experience in ACC (Word, Excel, PowerPoint)",
+          "kudos": 98
+        },
+        {
+          "id": "12403536",
+          "title": "Project List - Adding custom attributes to allow us to search/filter/organize projects better",
+          "kudos": 84
+        },
+        {
+          "id": "12563354",
+          "title": "Allow adding of project logo image to an ACC project",
+          "kudos": 69
+        }
+      ],
+      "products_affected": []
+    },
+    {
+      "category": "offline",
+      "frequency": 367,
+      "total_votes": 2206,
+      "severity_score": 2206.0,
+      "example_ideas": [
+        {
+          "id": "12730621",
+          "title": "Automate the \"description\" field values in ACC Docs when uploading documents to streamline user workflow.",
+          "kudos": 119
+        },
+        {
+          "id": "12403530",
+          "title": "Naming Standard available in ACC Templates",
+          "kudos": 108
+        },
+        {
+          "id": "12447900",
+          "title": "Manual SYNC button in Desktop Connector App",
+          "kudos": 88
+        }
+      ],
+      "products_affected": []
+    },
+    {
+      "category": "collaboration",
+      "frequency": 295,
+      "total_votes": 1994,
+      "severity_score": 1994.0,
+      "example_ideas": [
+        {
+          "id": "13004651",
+          "title": "Measure coordinate XYZ in 3D view",
+          "kudos": 276
+        },
+        {
+          "id": "13427256",
+          "title": "Multiple section creation in the ACC viewer",
+          "kudos": 95
+        },
+        {
+          "id": "13928347",
+          "title": "Modelle Coordination: Store a model coordination view point direct in meeting notes",
+          "kudos": 49
+        }
+      ],
+      "products_affected": []
+    }
+  ]
+}

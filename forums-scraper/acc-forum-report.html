@@ -1,0 +1,726 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ACC Forum Analysis | Interactive Report | RAPS CLI</title>
+    <meta name="description" content="Interactive analysis of 4,295 Autodesk Construction Cloud forum feature requests. Explore the data behind the 96.6% abandonment rate.">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <style>
+        :root {
+            --bg-primary: #0a0a0a;
+            --bg-secondary: #141414;
+            --bg-card: #1a1a1a;
+            --text-primary: #ffffff;
+            --text-secondary: #a0a0a0;
+            --accent: #f97316;
+            --accent-dim: #c2410c;
+            --border: #2a2a2a;
+            --success: #22c55e;
+            --warning: #eab308;
+            --danger: #ef4444;
+        }
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, sans-serif;
+            background: var(--bg-primary);
+            color: var(--text-primary);
+            line-height: 1.6;
+        }
+        
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 2rem;
+        }
+        
+        header {
+            text-align: center;
+            padding: 3rem 0;
+            border-bottom: 1px solid var(--border);
+            margin-bottom: 3rem;
+        }
+        
+        h1 {
+            font-size: 2.5rem;
+            margin-bottom: 1rem;
+            background: linear-gradient(135deg, var(--accent), #fb923c);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+        
+        .subtitle {
+            color: var(--text-secondary);
+            font-size: 1.2rem;
+            max-width: 700px;
+            margin: 0 auto;
+        }
+        
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 1.5rem;
+            margin-bottom: 3rem;
+        }
+        
+        .stat-card {
+            background: var(--bg-card);
+            border: 1px solid var(--border);
+            border-radius: 12px;
+            padding: 1.5rem;
+            text-align: center;
+        }
+        
+        .stat-value {
+            font-size: 2.5rem;
+            font-weight: 700;
+            color: var(--accent);
+        }
+        
+        .stat-value.danger {
+            color: var(--danger);
+        }
+        
+        .stat-value.success {
+            color: var(--success);
+        }
+        
+        .stat-label {
+            color: var(--text-secondary);
+            font-size: 0.9rem;
+            margin-top: 0.5rem;
+        }
+        
+        .section {
+            margin-bottom: 4rem;
+        }
+        
+        h2 {
+            font-size: 1.5rem;
+            margin-bottom: 1.5rem;
+            padding-bottom: 0.5rem;
+            border-bottom: 2px solid var(--accent);
+            display: inline-block;
+        }
+        
+        .chart-container {
+            background: var(--bg-card);
+            border: 1px solid var(--border);
+            border-radius: 12px;
+            padding: 2rem;
+            margin-bottom: 2rem;
+        }
+        
+        .chart-wrapper {
+            position: relative;
+            height: 400px;
+        }
+        
+        .chart-wrapper.tall {
+            height: 500px;
+        }
+        
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            background: var(--bg-card);
+            border-radius: 12px;
+            overflow: hidden;
+        }
+        
+        th, td {
+            padding: 1rem;
+            text-align: left;
+            border-bottom: 1px solid var(--border);
+        }
+        
+        th {
+            background: var(--bg-secondary);
+            color: var(--text-secondary);
+            font-weight: 600;
+            font-size: 0.85rem;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+        }
+        
+        tr:hover {
+            background: var(--bg-secondary);
+        }
+        
+        .status-badge {
+            display: inline-block;
+            padding: 0.25rem 0.75rem;
+            border-radius: 9999px;
+            font-size: 0.8rem;
+            font-weight: 500;
+        }
+        
+        .status-gathering {
+            background: rgba(239, 68, 68, 0.2);
+            color: #fca5a5;
+        }
+        
+        .status-implemented {
+            background: rgba(34, 197, 94, 0.2);
+            color: #86efac;
+        }
+        
+        .status-review {
+            background: rgba(234, 179, 8, 0.2);
+            color: #fde047;
+        }
+        
+        .status-future {
+            background: rgba(59, 130, 246, 0.2);
+            color: #93c5fd;
+        }
+        
+        .kudos {
+            font-weight: 600;
+            color: var(--accent);
+        }
+        
+        .callout {
+            background: linear-gradient(135deg, rgba(249, 115, 22, 0.1), rgba(249, 115, 22, 0.05));
+            border: 1px solid rgba(249, 115, 22, 0.3);
+            border-radius: 12px;
+            padding: 1.5rem;
+            margin: 2rem 0;
+        }
+        
+        .callout-title {
+            font-weight: 600;
+            color: var(--accent);
+            margin-bottom: 0.5rem;
+        }
+        
+        .methodology {
+            background: var(--bg-secondary);
+            border-radius: 12px;
+            padding: 2rem;
+            margin-top: 3rem;
+        }
+        
+        .methodology h3 {
+            margin-bottom: 1rem;
+        }
+        
+        .methodology p {
+            color: var(--text-secondary);
+            margin-bottom: 1rem;
+        }
+        
+        .methodology a {
+            color: var(--accent);
+            text-decoration: none;
+        }
+        
+        .methodology a:hover {
+            text-decoration: underline;
+        }
+        
+        footer {
+            text-align: center;
+            padding: 3rem 0;
+            border-top: 1px solid var(--border);
+            margin-top: 4rem;
+            color: var(--text-secondary);
+        }
+        
+        footer a {
+            color: var(--accent);
+            text-decoration: none;
+        }
+        
+        .two-col {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 2rem;
+        }
+        
+        @media (max-width: 768px) {
+            .two-col {
+                grid-template-columns: 1fr;
+            }
+            
+            h1 {
+                font-size: 1.8rem;
+            }
+            
+            .chart-wrapper {
+                height: 300px;
+            }
+        }
+        
+        .highlight {
+            color: var(--accent);
+            font-weight: 600;
+        }
+        
+        .quote {
+            border-left: 4px solid var(--accent);
+            padding-left: 1.5rem;
+            margin: 1.5rem 0;
+            color: var(--text-secondary);
+            font-style: italic;
+        }
+        
+        .filter-bar {
+            display: flex;
+            gap: 1rem;
+            margin-bottom: 1.5rem;
+            flex-wrap: wrap;
+        }
+        
+        .filter-btn {
+            background: var(--bg-card);
+            border: 1px solid var(--border);
+            color: var(--text-primary);
+            padding: 0.5rem 1rem;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+        
+        .filter-btn:hover, .filter-btn.active {
+            background: var(--accent);
+            border-color: var(--accent);
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>ACC Forum Analysis</h1>
+            <p class="subtitle">
+                We analyzed 4,295 feature requests from Autodesk Construction Cloud's official feedback forum. 
+                Here's what we found.
+            </p>
+        </header>
+        
+        <!-- Key Stats -->
+        <div class="stats-grid">
+            <div class="stat-card">
+                <div class="stat-value">4,295</div>
+                <div class="stat-label">Total Ideas Submitted</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-value danger">96.6%</div>
+                <div class="stat-label">Stuck in "Gathering Support"</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-value success">1.4%</div>
+                <div class="stat-label">Actually Implemented</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-value">24,615</div>
+                <div class="stat-label">Community Votes (Kudos)</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-value">1.1M</div>
+                <div class="stat-label">Total Views</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-value">4+ yrs</div>
+                <div class="stat-label">Oldest Unaddressed Request</div>
+            </div>
+        </div>
+        
+        <!-- Status Distribution -->
+        <section class="section">
+            <h2>Status Distribution</h2>
+            <div class="two-col">
+                <div class="chart-container">
+                    <div class="chart-wrapper">
+                        <canvas id="statusChart"></canvas>
+                    </div>
+                </div>
+                <div>
+                    <p style="color: var(--text-secondary); margin-bottom: 1.5rem;">
+                        The vast majority of feature requests enter a status called <strong>"Gathering Support"</strong> 
+                        and never leave. This is effectively a holding pattern with no commitment or timeline.
+                    </p>
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>Status</th>
+                                <th>Count</th>
+                                <th>%</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td><span class="status-badge status-gathering">Gathering Support</span></td>
+                                <td>4,149</td>
+                                <td>96.6%</td>
+                            </tr>
+                            <tr>
+                                <td><span class="status-badge status-implemented">Implemented</span></td>
+                                <td>60</td>
+                                <td>1.4%</td>
+                            </tr>
+                            <tr>
+                                <td><span class="status-badge status-future">Accepted</span></td>
+                                <td>37</td>
+                                <td>0.9%</td>
+                            </tr>
+                            <tr>
+                                <td><span class="status-badge status-review">Under Review</span></td>
+                                <td>30</td>
+                                <td>0.7%</td>
+                            </tr>
+                            <tr>
+                                <td><span class="status-badge status-future">Future Consideration</span></td>
+                                <td>18</td>
+                                <td>0.4%</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </section>
+        
+        <!-- Topics by Kudos -->
+        <section class="section">
+            <h2>Pain Points by Category</h2>
+            <div class="chart-container">
+                <div class="chart-wrapper tall">
+                    <canvas id="categoryChart"></canvas>
+                </div>
+            </div>
+            <div class="callout">
+                <div class="callout-title">📸 Photos & Media: Highest Engagement</div>
+                <p>Despite having fewer total ideas (311), the Photos category has the highest average kudos per idea (9.1). 
+                This suggests intense, focused frustration — users desperately want folder organization, permissions, and bulk editing for photos.</p>
+            </div>
+        </section>
+        
+        <!-- Submission Trends -->
+        <section class="section">
+            <h2>Submission Volume Over Time</h2>
+            <div class="chart-container">
+                <div class="chart-wrapper">
+                    <canvas id="timelineChart"></canvas>
+                </div>
+            </div>
+            <p style="color: var(--text-secondary); margin-top: 1rem;">
+                Submissions exploded in 2025 with <span class="highlight">3,400 ideas</span> — a 4.6x increase from 2024. 
+                This could indicate expanded ACC adoption, increased user frustration, or both.
+            </p>
+        </section>
+        
+        <!-- Top Requests -->
+        <section class="section">
+            <h2>Top 10 Most-Voted Requests</h2>
+            <table>
+                <thead>
+                    <tr>
+                        <th>Rank</th>
+                        <th>Request</th>
+                        <th>Kudos</th>
+                        <th>Date</th>
+                        <th>Status</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>1</td>
+                        <td>Allow adding user(s) to MULTIPLE PROJECTS</td>
+                        <td class="kudos">344</td>
+                        <td>Apr 2024</td>
+                        <td><span class="status-badge status-future">Future Consideration</span></td>
+                    </tr>
+                    <tr>
+                        <td>2</td>
+                        <td>Increase Submittals Assignee Limit Beyond 10 Users</td>
+                        <td class="kudos">317</td>
+                        <td>Dec 2025</td>
+                        <td><span class="status-badge status-gathering">Gathering Support</span></td>
+                    </tr>
+                    <tr>
+                        <td>3</td>
+                        <td>Measure coordinate XYZ in 3D view</td>
+                        <td class="kudos">276</td>
+                        <td>Sep 2024</td>
+                        <td><span class="status-badge status-implemented">Implemented</span></td>
+                    </tr>
+                    <tr>
+                        <td>4</td>
+                        <td>ACC (Autodesk Docs) - Markups need improving</td>
+                        <td class="kudos">246</td>
+                        <td>Dec 2021</td>
+                        <td><span class="status-badge status-future">Future Consideration</span></td>
+                    </tr>
+                    <tr>
+                        <td>5</td>
+                        <td>Folder Permissions - REMOVE Inherited Permissions</td>
+                        <td class="kudos">175</td>
+                        <td>Dec 2023</td>
+                        <td><span class="status-badge status-future">Future Consideration</span></td>
+                    </tr>
+                    <tr>
+                        <td>6</td>
+                        <td>Organize Photos into Folders</td>
+                        <td class="kudos">131</td>
+                        <td>Jun 2024</td>
+                        <td><span class="status-badge status-future">Accepted</span></td>
+                    </tr>
+                    <tr>
+                        <td>7</td>
+                        <td>Automate description field values when uploading docs</td>
+                        <td class="kudos">119</td>
+                        <td>Apr 2024</td>
+                        <td><span class="status-badge status-review">Under Review</span></td>
+                    </tr>
+                    <tr>
+                        <td>8</td>
+                        <td>Naming Standard available in ACC Templates</td>
+                        <td class="kudos">108</td>
+                        <td>Nov 2023</td>
+                        <td><span class="status-badge status-future">Future Consideration</span></td>
+                    </tr>
+                    <tr>
+                        <td>9</td>
+                        <td>Permission for Photos</td>
+                        <td class="kudos">100</td>
+                        <td>May 2025</td>
+                        <td><span class="status-badge status-future">Accepted</span></td>
+                    </tr>
+                    <tr>
+                        <td>10</td>
+                        <td>Design Collaboration Publish Schedule (Daily)</td>
+                        <td class="kudos">100</td>
+                        <td>May 2024</td>
+                        <td><span class="status-badge status-future">Future Consideration</span></td>
+                    </tr>
+                </tbody>
+            </table>
+            
+            <div class="quote">
+                "This feature was brought up in the BIM360 forum SIX (6) years ago and was marked as Under Review 2 weeks after submission. ZERO response/feedback from Autodesk since..."
+                <br><small>— From the #1 most-voted request</small>
+            </div>
+        </section>
+        
+        <!-- Pain Patterns -->
+        <section class="section">
+            <h2>Common Pain Patterns</h2>
+            <div class="chart-container">
+                <div class="chart-wrapper">
+                    <canvas id="painChart"></canvas>
+                </div>
+            </div>
+            <p style="color: var(--text-secondary); margin-top: 1rem;">
+                <span class="highlight">Bulk/batch operations</span> appear as a consistent theme across categories — 
+                users want to manage multiple items at once, but ACC forces one-by-one workflows.
+            </p>
+        </section>
+        
+        <!-- Methodology -->
+        <div class="methodology">
+            <h3>📊 Methodology</h3>
+            <p>
+                <strong>Data collection:</strong> We scraped the ACC Ideas forum (forums.autodesk.com/t5/acc-ideas/) 
+                in January 2026, collecting all publicly visible ideas with metadata including title, body, kudos, 
+                views, replies, status, and dates.
+            </p>
+            <p>
+                <strong>Analysis:</strong> Python (pandas) for data processing and categorization. Topic classification 
+                used keyword matching against 18 predefined category groups.
+            </p>
+            <p>
+                <strong>Limitations:</strong> Only public forum data (no internal Autodesk metrics). Keyword categorization 
+                may misclassify edge cases. "Gathering Support" status may include ideas Autodesk tracks internally.
+            </p>
+            <p>
+                <strong>Full code and data:</strong> 
+                <a href="https://github.com/dmytro-yemelianov/raps-research" target="_blank">github.com/dmytro-yemelianov/raps-research</a>
+            </p>
+        </div>
+        
+        <footer>
+            <p>
+                Analysis by <a href="https://rapscli.xyz">RAPS CLI</a> — 
+                The developer toolkit for Autodesk Platform Services.
+            </p>
+            <p style="margin-top: 1rem; font-size: 0.9rem;">
+                <a href="/blog/acc-forum-analysis">Read the full blog post</a> · 
+                <a href="https://github.com/dmytro-yemelianov/raps-research">View on GitHub</a> · 
+                <a href="https://linkedin.com/in/dmytro-yemelianov">Connect on LinkedIn</a>
+            </p>
+        </footer>
+    </div>
+    
+    <script>
+        // Color palette
+        const colors = {
+            orange: '#f97316',
+            red: '#ef4444',
+            green: '#22c55e',
+            yellow: '#eab308',
+            blue: '#3b82f6',
+            purple: '#a855f7',
+            gray: '#6b7280'
+        };
+        
+        // Status Distribution Pie Chart
+        const statusCtx = document.getElementById('statusChart').getContext('2d');
+        new Chart(statusCtx, {
+            type: 'doughnut',
+            data: {
+                labels: ['Gathering Support', 'Implemented', 'Accepted', 'Under Review', 'Future Consideration'],
+                datasets: [{
+                    data: [4149, 60, 37, 30, 18],
+                    backgroundColor: [colors.red, colors.green, colors.blue, colors.yellow, colors.purple],
+                    borderWidth: 0
+                }]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                plugins: {
+                    legend: {
+                        position: 'bottom',
+                        labels: { color: '#a0a0a0', padding: 20 }
+                    }
+                }
+            }
+        });
+        
+        // Category Bar Chart
+        const categoryCtx = document.getElementById('categoryChart').getContext('2d');
+        new Chart(categoryCtx, {
+            type: 'bar',
+            data: {
+                labels: [
+                    'Documents & Files',
+                    'User Management',
+                    'Viewer & 3D',
+                    'Submittals & RFIs',
+                    'Issues & Tasks',
+                    'Sheets & Drawing',
+                    'Mobile App',
+                    'Templates & Standards',
+                    'Design Collaboration',
+                    'Integration & Sync',
+                    'Reports & Export',
+                    'Photos & Media'
+                ],
+                datasets: [{
+                    label: 'Total Kudos',
+                    data: [10960, 10368, 10222, 5900, 5450, 4710, 4312, 3816, 3767, 3744, 3636, 2844],
+                    backgroundColor: colors.orange,
+                    borderRadius: 4
+                }]
+            },
+            options: {
+                indexAxis: 'y',
+                responsive: true,
+                maintainAspectRatio: false,
+                plugins: {
+                    legend: { display: false }
+                },
+                scales: {
+                    x: {
+                        grid: { color: '#2a2a2a' },
+                        ticks: { color: '#a0a0a0' }
+                    },
+                    y: {
+                        grid: { display: false },
+                        ticks: { color: '#a0a0a0' }
+                    }
+                }
+            }
+        });
+        
+        // Timeline Chart
+        const timelineCtx = document.getElementById('timelineChart').getContext('2d');
+        new Chart(timelineCtx, {
+            type: 'bar',
+            data: {
+                labels: ['2021', '2022', '2023', '2024', '2025', '2026 (Jan)'],
+                datasets: [{
+                    label: 'Ideas Submitted',
+                    data: [1, 1, 35, 733, 3400, 125],
+                    backgroundColor: colors.orange,
+                    borderRadius: 4
+                }]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                plugins: {
+                    legend: { display: false }
+                },
+                scales: {
+                    x: {
+                        grid: { display: false },
+                        ticks: { color: '#a0a0a0' }
+                    },
+                    y: {
+                        grid: { color: '#2a2a2a' },
+                        ticks: { color: '#a0a0a0' }
+                    }
+                }
+            }
+        });
+        
+        // Pain Patterns Chart
+        const painCtx = document.getElementById('painChart').getContext('2d');
+        new Chart(painCtx, {
+            type: 'bar',
+            data: {
+                labels: [
+                    'Missing Features',
+                    'UX/Workflow Friction',
+                    'Permissions Complexity',
+                    'Bulk/Batch Operations',
+                    'Export Limitations',
+                    'Notification Overload',
+                    'Performance Issues',
+                    'Sync Issues'
+                ],
+                datasets: [{
+                    label: 'Total Kudos',
+                    data: [6622, 4793, 3251, 3860, 2480, 1526, 1527, 1435],
+                    backgroundColor: [
+                        colors.red,
+                        colors.orange,
+                        colors.yellow,
+                        colors.green,
+                        colors.blue,
+                        colors.purple,
+                        colors.gray,
+                        colors.gray
+                    ],
+                    borderRadius: 4
+                }]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                plugins: {
+                    legend: { display: false }
+                },
+                scales: {
+                    x: {
+                        grid: { display: false },
+                        ticks: { color: '#a0a0a0' }
+                    },
+                    y: {
+                        grid: { color: '#2a2a2a' },
+                        ticks: { color: '#a0a0a0' }
+                    }
+                }
+            }
+        });
+    </script>
+</body>
+</html>

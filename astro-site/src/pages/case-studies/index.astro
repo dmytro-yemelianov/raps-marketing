@@ -1,0 +1,210 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import '../../styles/global.css';
+
+const caseStudies = [
+  {
+    id: "enterprise-deployment",
+    title: "Enterprise APS Deployment",
+    subtitle: "Fortune 500 AEC Company",
+    category: "Enterprise",
+    duration: "3 months",
+    industry: "Architecture/Engineering/Construction",
+    challenge: "40+ hours/week spent on manual CAD file processing with no version control, translation bottlenecks, and compliance risks.",
+    solution: "End-to-end automation platform using RAPS as the core engine with file watching, processing pipeline, integration layer, and admin dashboard.",
+    results: [
+      { metric: "Time Saved", value: "95%", detail: "40 hrs/week → 2 hrs/week" },
+      { metric: "Processing Speed", value: "16x", detail: "4 hours → 15 minutes" },
+      { metric: "Error Rate", value: "92%↓", detail: "12/month → <1/month" },
+      { metric: "ROI Payback", value: "6 months", detail: "$89K annual savings" }
+    ],
+    technologies: ["RAPS CLI", "Azure", "OSS", "Model Derivative", "Webhooks"],
+    testimonial: {
+      quote: "Before this system, we were drowning in manual file uploads. Now our designers just drop files in a folder and everything happens automatically. The ROI was realized within the first quarter.",
+      author: "BIM Director"
+    }
+  },
+  {
+    id: "startup-mvp",
+    title: "PropTech MVP",
+    subtitle: "Seed Stage Startup",
+    category: "Startup",
+    duration: "6 weeks",
+    industry: "PropTech / Real Estate Technology",
+    challenge: "Early-stage startup needed a working MVP for investor demo day with zero APS experience and limited budget.",
+    solution: "Focused MVP using APS Model Derivative and Viewer APIs with pragmatic architecture using RAPS as backend engine for rapid development.",
+    results: [
+      { metric: "Time to Market", value: "6 weeks", detail: "From zero to demo" },
+      { metric: "Funding Secured", value: "$1.2M", detail: "Seed round closed" },
+      { metric: "Demo Success", value: "100%", detail: "No failures during demo" },
+      { metric: "Total Cost", value: "$14.5K", detail: "Within budget" }
+    ],
+    technologies: ["Next.js", "React", "RAPS CLI", "Forge Viewer", "Vercel"],
+    testimonial: {
+      quote: "We had zero experience with Autodesk APIs and needed something working in 6 weeks. The RAPS approach got us to demo day with a product that actually worked. The investors thought we'd been building for months.",
+      author: "CTO"
+    }
+  },
+  {
+    id: "consulting-engagement",
+    title: "Technical Consulting",
+    subtitle: "Automotive Parts Manufacturer",
+    category: "Consulting",
+    duration: "8 weeks",
+    industry: "Manufacturing (Automotive)",
+    challenge: "Existing APS integration built by departed contractor wasn't working well: 65% translation success rate, slow uploads, high cloud costs.",
+    solution: "Systematic assessment, prioritized remediation, and hands-on implementation support to fix critical issues and establish monitoring.",
+    results: [
+      { metric: "Success Rate", value: "65%→98%", detail: "+33% improvement" },
+      { metric: "Upload Speed", value: "75%↑", detail: "12 min → 3 min" },
+      { metric: "API Errors", value: "93%↓", detail: "150+/week → <10/week" },
+      { metric: "Annual Savings", value: "$90K", detail: "Cloud + labor costs" }
+    ],
+    technologies: ["RAPS CLI", "CloudWatch", "Slack", "Custom Profiling"],
+    testimonial: {
+      quote: "We were about to scrap the entire APS integration and start over. This engagement saved us 6+ months and showed us the original foundation was solid - it just needed expert attention.",
+      author: "Director of Engineering"
+    }
+  }
+];
+---
+
+<BaseLayout 
+  title="Case Studies - APS Success Stories" 
+  description="Detailed case studies of successful Autodesk Platform Services implementations with measurable results."
+>
+  <!-- Hero Section -->
+  <section class="py-16 bg-gradient-to-br from-gray-50 to-white">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div class="text-center max-w-3xl mx-auto">
+        <h1 class="text-4xl md:text-5xl font-bold mb-6">
+          <span class="gradient-text">Case Studies</span>
+        </h1>
+        <p class="text-xl text-gray-600 mb-8">
+          Real-world APS implementations with measurable business outcomes. See the challenges, solutions, and results.
+        </p>
+      </div>
+    </div>
+  </section>
+
+  <!-- Case Studies -->
+  <section class="py-16">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div class="space-y-16">
+        {caseStudies.map((study, index) => (
+          <div class="card overflow-hidden" id={study.id}>
+            <div class="grid lg:grid-cols-5 gap-0">
+              <!-- Left side - Overview -->
+              <div class="lg:col-span-2 bg-gradient-to-br from-raps-blue to-raps-purple p-8 text-white">
+                <span class="inline-block px-3 py-1 bg-white/20 rounded-full text-sm mb-4">
+                  {study.category}
+                </span>
+                <h2 class="text-2xl font-bold mb-2">{study.title}</h2>
+                <p class="text-white/80 mb-6">{study.subtitle}</p>
+                
+                <div class="space-y-4 text-sm">
+                  <div>
+                    <span class="text-white/60">Industry</span>
+                    <p class="font-medium">{study.industry}</p>
+                  </div>
+                  <div>
+                    <span class="text-white/60">Duration</span>
+                    <p class="font-medium">{study.duration}</p>
+                  </div>
+                  <div>
+                    <span class="text-white/60">Technologies</span>
+                    <div class="flex flex-wrap gap-2 mt-1">
+                      {study.technologies.map((tech) => (
+                        <span class="px-2 py-1 bg-white/20 rounded text-xs">{tech}</span>
+                      ))}
+                    </div>
+                  </div>
+                </div>
+              </div>
+              
+              <!-- Right side - Details -->
+              <div class="lg:col-span-3 p-8">
+                <!-- Challenge -->
+                <div class="mb-6">
+                  <h3 class="text-lg font-bold text-gray-900 mb-2">The Challenge</h3>
+                  <p class="text-gray-600">{study.challenge}</p>
+                </div>
+                
+                <!-- Solution -->
+                <div class="mb-6">
+                  <h3 class="text-lg font-bold text-gray-900 mb-2">The Solution</h3>
+                  <p class="text-gray-600">{study.solution}</p>
+                </div>
+                
+                <!-- Results -->
+                <div class="mb-6">
+                  <h3 class="text-lg font-bold text-gray-900 mb-3">Results</h3>
+                  <div class="grid grid-cols-2 md:grid-cols-4 gap-4">
+                    {study.results.map((result) => (
+                      <div class="bg-gray-50 rounded-lg p-4 text-center">
+                        <div class="text-2xl font-bold text-raps-blue">{result.value}</div>
+                        <div class="text-xs text-gray-500 mt-1">{result.metric}</div>
+                        <div class="text-xs text-gray-400">{result.detail}</div>
+                      </div>
+                    ))}
+                  </div>
+                </div>
+                
+                <!-- Testimonial -->
+                <div class="bg-gray-50 rounded-lg p-4 border-l-4 border-raps-blue">
+                  <p class="text-gray-600 italic mb-2">"{study.testimonial.quote}"</p>
+                  <p class="text-sm text-gray-500">— {study.testimonial.author}</p>
+                </div>
+              </div>
+            </div>
+          </div>
+        ))}
+      </div>
+    </div>
+  </section>
+
+  <!-- Summary Stats -->
+  <section class="py-16 bg-gray-50">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <h2 class="text-2xl font-bold text-center mb-8">Aggregate Impact</h2>
+      <div class="grid grid-cols-2 md:grid-cols-4 gap-6">
+        <div class="bg-white rounded-xl p-6 text-center shadow-sm">
+          <div class="text-4xl font-bold text-raps-blue mb-2">95%</div>
+          <div class="text-gray-600">Average Time Saved</div>
+        </div>
+        <div class="bg-white rounded-xl p-6 text-center shadow-sm">
+          <div class="text-4xl font-bold text-raps-blue mb-2">10x</div>
+          <div class="text-gray-600">Capacity Increase</div>
+        </div>
+        <div class="bg-white rounded-xl p-6 text-center shadow-sm">
+          <div class="text-4xl font-bold text-raps-blue mb-2">$180K+</div>
+          <div class="text-gray-600">Total Client Savings</div>
+        </div>
+        <div class="bg-white rounded-xl p-6 text-center shadow-sm">
+          <div class="text-4xl font-bold text-raps-blue mb-2">6mo</div>
+          <div class="text-gray-600">Avg. ROI Payback</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- CTA -->
+  <section class="py-16">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div class="bg-gradient-to-r from-raps-blue to-raps-purple rounded-2xl p-8 md:p-12 text-white text-center">
+        <h2 class="text-3xl md:text-4xl font-bold mb-6">Your Success Story Starts Here</h2>
+        <p class="text-xl mb-8 opacity-90 max-w-2xl mx-auto">
+          Let's discuss how we can achieve similar results for your organization.
+        </p>
+        <div class="flex flex-col sm:flex-row gap-4 justify-center">
+          <a href="/contact" class="btn bg-white text-raps-blue hover:bg-gray-100 text-lg px-8 py-3 rounded-lg font-semibold">
+            Schedule a Consultation
+          </a>
+          <a href="/services" class="btn bg-white/20 backdrop-blur text-white hover:bg-white/30 text-lg px-8 py-3 rounded-lg font-semibold">
+            View Services
+          </a>
+        </div>
+      </div>
+    </div>
+  </section>
+</BaseLayout>

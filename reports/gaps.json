@@ -1,0 +1,119 @@
+{
+  "generated_at": "2026-01-31T07:25:39.068972Z",
+  "data_sources": {
+    "app_store": {
+      "available": true,
+      "record_count": 4078,
+      "last_updated": "2026-01-23T20:23:29.339868",
+      "stale": false
+    },
+    "forum": {
+      "available": true,
+      "record_count": 4295,
+      "last_updated": "2026-01-16T10:19:49.942398",
+      "stale": false
+    },
+    "blog": {
+      "available": true,
+      "record_count": 8150,
+      "last_updated": "2026-01-29T23:18:00.879257",
+      "stale": false
+    }
+  },
+  "gaps": [
+    {
+      "product_id": "autodesk-construction-cloud",
+      "product_name": "Autodesk Construction Cloud",
+      "gap_score": 3142.6,
+      "demand_signals": {
+        "forum_count": 501,
+        "forum_votes": 4881,
+        "blog_mentions": 2759
+      },
+      "supply_count": 0,
+      "confidence": 1.0,
+      "evidence": [
+        "12714729",
+        "13957015",
+        "10810682",
+        "12856978",
+        "13701135"
+      ]
+    },
+    {
+      "product_id": "autocad-electrical",
+      "product_name": "Autocad Electrical",
+      "gap_score": 813.1,
+      "demand_signals": {
+        "forum_count": 4,
+        "forum_votes": 2,
+        "blog_mentions": 8120
+      },
+      "supply_count": 1,
+      "confidence": 1.0,
+      "evidence": [
+        "13921011",
+        "13773520",
+        "13884341",
+        "13752300"
+      ]
+    },
+    {
+      "product_id": "autocad-map-3d",
+      "product_name": "Autocad Map 3D",
+      "gap_score": 379.5,
+      "demand_signals": {
+        "forum_count": 26,
+        "forum_votes": 367,
+        "blog_mentions": 941
+      },
+      "supply_count": 0,
+      "confidence": 1.0,
+      "evidence": [
+        "13004651",
+        "13617277",
+        "12829921",
+        "13025302",
+        "13842999"
+      ]
+    },
+    {
+      "product_id": "vault",
+      "product_name": "Vault",
+      "gap_score": 117.7,
+      "demand_signals": {
+        "forum_count": 1,
+        "forum_votes": 32,
+        "blog_mentions": 507
+      },
+      "supply_count": 0,
+      "confidence": 1.0,
+      "evidence": [
+        "13386971"
+      ]
+    },
+    {
+      "product_id": "autocad-lt",
+      "product_name": "Autocad Lt",
+      "gap_score": 110.9,
+      "demand_signals": {
+        "forum_count": 28,
+        "forum_votes": 167,
+        "blog_mentions": 95
+      },
+      "supply_count": 0,
+      "confidence": 1.0,
+      "evidence": [
+        "13265596",
+        "13657786",
+        "13717283",
+        "12638806",
+        "12570559"
+      ]
+    }
+  ],
+  "quality_metrics": {
+    "products_analyzed": 5,
+    "products_with_gaps": 5
+  }
+}

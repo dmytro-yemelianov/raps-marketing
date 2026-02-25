@@ -1,0 +1,174 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import '../styles/global.css';
+---
+
+<BaseLayout 
+  title="Contact - Get in Touch" 
+  description="Contact us for APS integration, automation, and consulting projects. Free 30-minute consultation available."
+>
+  <!-- Hero Section -->
+  <section class="py-16 bg-gradient-to-br from-gray-50 to-white">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div class="text-center max-w-3xl mx-auto">
+        <h1 class="text-4xl md:text-5xl font-bold mb-6">
+          <span class="gradient-text">Get in Touch</span>
+        </h1>
+        <p class="text-xl text-gray-600 mb-8">
+          Ready to discuss your project? Reach out through any of the channels below.
+        </p>
+      </div>
+    </div>
+  </section>
+
+  <!-- Contact Options -->
+  <section class="py-16">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div class="grid md:grid-cols-3 gap-8">
+        
+        <!-- Upwork -->
+        <a href="https://www.upwork.com" target="_blank" class="card p-8 text-center hover:shadow-xl transition group">
+          <div class="w-16 h-16 bg-green-100 rounded-full flex items-center justify-center mx-auto mb-6">
+            <span class="text-3xl">💼</span>
+          </div>
+          <h3 class="text-xl font-bold mb-2">Upwork</h3>
+          <p class="text-gray-600 mb-4">
+            Hire through Upwork for payment protection and project management.
+          </p>
+          <span class="text-raps-blue font-semibold group-hover:underline">View Profile →</span>
+        </a>
+
+        <!-- Email -->
+        <a href="mailto:contact@rapscli.xyz" class="card p-8 text-center hover:shadow-xl transition group">
+          <div class="w-16 h-16 bg-blue-100 rounded-full flex items-center justify-center mx-auto mb-6">
+            <span class="text-3xl">📧</span>
+          </div>
+          <h3 class="text-xl font-bold mb-2">Email</h3>
+          <p class="text-gray-600 mb-4">
+            Direct communication for project inquiries and proposals.
+          </p>
+          <span class="text-raps-blue font-semibold group-hover:underline">contact@rapscli.xyz</span>
+        </a>
+
+        <!-- LinkedIn -->
+        <a href="https://www.linkedin.com" target="_blank" class="card p-8 text-center hover:shadow-xl transition group">
+          <div class="w-16 h-16 bg-blue-100 rounded-full flex items-center justify-center mx-auto mb-6">
+            <span class="text-3xl">💬</span>
+          </div>
+          <h3 class="text-xl font-bold mb-2">LinkedIn</h3>
+          <p class="text-gray-600 mb-4">
+            Connect for professional networking and updates.
+          </p>
+          <span class="text-raps-blue font-semibold group-hover:underline">Connect →</span>
+        </a>
+
+      </div>
+    </div>
+  </section>
+
+  <!-- What to Include -->
+  <section class="py-16 bg-gray-50">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div class="max-w-3xl mx-auto">
+        <h2 class="text-3xl font-bold text-center mb-8">What to Include in Your Message</h2>
+        <div class="card p-8">
+          <p class="text-gray-600 mb-6">
+            To provide the best response, please include:
+          </p>
+          <ul class="space-y-4">
+            <li class="flex items-start">
+              <span class="text-green-500 mr-3 mt-1">✓</span>
+              <div>
+                <strong class="text-gray-900">Project Overview</strong>
+                <p class="text-gray-600 text-sm">Brief description of what you're trying to accomplish</p>
+              </div>
+            </li>
+            <li class="flex items-start">
+              <span class="text-green-500 mr-3 mt-1">✓</span>
+              <div>
+                <strong class="text-gray-900">APS APIs Involved</strong>
+                <p class="text-gray-600 text-sm">Which APIs you need to integrate (OSS, Model Derivative, ACC, etc.)</p>
+              </div>
+            </li>
+            <li class="flex items-start">
+              <span class="text-green-500 mr-3 mt-1">✓</span>
+              <div>
+                <strong class="text-gray-900">Timeline</strong>
+                <p class="text-gray-600 text-sm">When you need this completed</p>
+              </div>
+            </li>
+            <li class="flex items-start">
+              <span class="text-green-500 mr-3 mt-1">✓</span>
+              <div>
+                <strong class="text-gray-900">Budget Range</strong>
+                <p class="text-gray-600 text-sm">Helps tailor the solution appropriately (optional but helpful)</p>
+              </div>
+            </li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Response Time -->
+  <section class="py-16">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div class="bg-gradient-to-r from-raps-blue to-raps-purple rounded-2xl p-8 md:p-12 text-white">
+        <div class="grid md:grid-cols-2 gap-8 items-center">
+          <div>
+            <h2 class="text-3xl font-bold mb-4">Quick Response Guaranteed</h2>
+            <p class="text-white/80 mb-6">
+              I respond to all inquiries within 24 hours. For urgent projects, mention "URGENT" in your subject line.
+            </p>
+            <div class="flex items-center space-x-4">
+              <div class="text-center">
+                <div class="text-3xl font-bold">&lt;24h</div>
+                <div class="text-sm text-white/70">Response Time</div>
+              </div>
+              <div class="w-px h-12 bg-white/30"></div>
+              <div class="text-center">
+                <div class="text-3xl font-bold">Free</div>
+                <div class="text-sm text-white/70">Initial Consultation</div>
+              </div>
+              <div class="w-px h-12 bg-white/30"></div>
+              <div class="text-center">
+                <div class="text-3xl font-bold">30min</div>
+                <div class="text-sm text-white/70">Discovery Call</div>
+              </div>
+            </div>
+          </div>
+          <div class="text-center md:text-right">
+            <a href="mailto:contact@rapscli.xyz" class="btn bg-white text-raps-blue hover:bg-gray-100 text-lg px-8 py-3 rounded-lg font-semibold inline-block">
+              Send Message →
+            </a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- FAQ -->
+  <section class="py-16 bg-gray-50">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <h2 class="text-3xl font-bold text-center mb-8">Frequently Asked Questions</h2>
+      <div class="max-w-3xl mx-auto space-y-4">
+        <div class="card p-6">
+          <h3 class="font-bold mb-2">What's the typical project timeline?</h3>
+          <p class="text-gray-600">Small integrations take 1-2 weeks, medium projects 2-4 weeks, and enterprise solutions 1-3 months depending on complexity.</p>
+        </div>
+        <div class="card p-6">
+          <h3 class="font-bold mb-2">Do you offer fixed-price projects?</h3>
+          <p class="text-gray-600">Yes, I prefer fixed-price for well-defined projects. I'll provide a detailed estimate after understanding the full scope.</p>
+        </div>
+        <div class="card p-6">
+          <h3 class="font-bold mb-2">Can you work with our existing codebase?</h3>
+          <p class="text-gray-600">Absolutely. I can integrate with any technology stack (Node.js, Python, .NET, etc.) and follow your team's workflow.</p>
+        </div>
+        <div class="card p-6">
+          <h3 class="font-bold mb-2">What if we need ongoing support?</h3>
+          <p class="text-gray-600">I offer retainer arrangements with discounted rates and priority response times for ongoing needs.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+</BaseLayout>

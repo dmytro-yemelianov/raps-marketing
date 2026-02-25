@@ -1,0 +1,457 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Autodesk Ecosystem Opportunity Report</title>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <style>
+        :root {
+            --primary: #0696D7;
+            --secondary: #1E3A5F;
+            --accent: #F26322;
+            --success: #2E7D32;
+            --warning: #ED6C02;
+            --bg: #F8FAFC;
+            --card: #FFFFFF;
+            --text: #1E293B;
+            --muted: #64748B;
+        }
+
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+
+        body {
+            font-family: 'Segoe UI', system-ui, sans-serif;
+            background: var(--bg);
+            color: var(--text);
+            line-height: 1.6;
+        }
+
+        .container { max-width: 1400px; margin: 0 auto; padding: 2rem; }
+
+        header {
+            background: linear-gradient(135deg, var(--secondary) 0%, var(--primary) 100%);
+            color: white;
+            padding: 3rem 2rem;
+            margin-bottom: 2rem;
+            border-radius: 12px;
+        }
+
+        header h1 { font-size: 2.5rem; font-weight: 700; margin-bottom: 0.5rem; }
+        header p { opacity: 0.9; font-size: 1.1rem; }
+
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
+            gap: 1.5rem;
+            margin-bottom: 2rem;
+        }
+
+        .stat-card {
+            background: var(--card);
+            padding: 1.5rem;
+            border-radius: 12px;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+            text-align: center;
+        }
+
+        .stat-card.apps { border-left: 4px solid var(--primary); }
+        .stat-card.forum { border-left: 4px solid var(--success); }
+        .stat-card.blog { border-left: 4px solid var(--warning); }
+        .stat-card.so { border-left: 4px solid var(--accent); }
+
+        .stat-value { font-size: 2rem; font-weight: 700; color: var(--secondary); }
+        .stat-label { color: var(--muted); font-size: 0.8rem; text-transform: uppercase; letter-spacing: 0.5px; }
+
+        section {
+            background: var(--card);
+            padding: 2rem;
+            border-radius: 12px;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+            margin-bottom: 2rem;
+        }
+
+        section h2 {
+            color: var(--secondary);
+            font-size: 1.5rem;
+            margin-bottom: 1.5rem;
+            padding-bottom: 0.75rem;
+            border-bottom: 2px solid var(--bg);
+        }
+
+        .chart-container { position: relative; height: 350px; margin-bottom: 1.5rem; }
+
+        .chart-row {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 2rem;
+            margin-bottom: 1.5rem;
+        }
+
+        .chart-cell {
+            background: var(--bg);
+            padding: 1.5rem;
+            border-radius: 8px;
+        }
+
+        .chart-cell h3 {
+            color: var(--secondary);
+            font-size: 1rem;
+            margin-bottom: 1rem;
+            text-align: center;
+        }
+
+        table { width: 100%; border-collapse: collapse; font-size: 0.9rem; }
+        th, td { padding: 0.875rem; text-align: left; border-bottom: 1px solid #E2E8F0; }
+        th { background: var(--bg); font-weight: 600; color: var(--secondary); font-size: 0.8rem; text-transform: uppercase; }
+        tr:hover { background: #F1F5F9; }
+
+        .gap-score { font-weight: 700; color: var(--accent); }
+
+        .badge {
+            display: inline-block;
+            padding: 0.2rem 0.6rem;
+            border-radius: 20px;
+            font-size: 0.75rem;
+            font-weight: 500;
+        }
+
+        .badge-high { background: #FEE2E2; color: #991B1B; }
+        .badge-medium { background: #FEF3C7; color: #92400E; }
+        .badge-low { background: #D1FAE5; color: #065F46; }
+
+        .recommendation {
+            padding: 1.25rem;
+            margin-bottom: 1rem;
+            background: var(--bg);
+            border-radius: 8px;
+            border-left: 4px solid var(--accent);
+        }
+
+        .recommendation h4 { color: var(--secondary); margin-bottom: 0.5rem; font-size: 1rem; }
+        .recommendation .score { font-size: 1.1rem; font-weight: 700; color: var(--accent); }
+        .recommendation p { color: var(--muted); font-size: 0.9rem; margin-top: 0.5rem; }
+
+        footer { text-align: center; padding: 2rem; color: var(--muted); font-size: 0.85rem; }
+
+        @media (max-width: 900px) { .chart-row { grid-template-columns: 1fr; } }
+        @media (max-width: 768px) {
+            .container { padding: 1rem; }
+            header { padding: 2rem 1rem; }
+            header h1 { font-size: 1.75rem; }
+            .chart-container { height: 280px; }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>Autodesk Ecosystem Opportunity Report</h1>
+            <p>Market Gap Analysis with Stack Overflow Developer Insights | January 31, 2026</p>
+        </header>
+
+        <div class="stats-grid">
+            <div class="stat-card apps">
+                <div class="stat-value">4,078</div>
+                <div class="stat-label">Apps</div>
+            </div>
+            <div class="stat-card forum">
+                <div class="stat-value">4,295</div>
+                <div class="stat-label">Forum Ideas</div>
+            </div>
+            <div class="stat-card blog">
+                <div class="stat-value">8,150</div>
+                <div class="stat-label">Blog Posts</div>
+            </div>
+            <div class="stat-card so">
+                <div class="stat-value">7,424</div>
+                <div class="stat-label">SO Questions</div>
+            </div>
+            <div class="stat-card so">
+                <div class="stat-value">8,186</div>
+                <div class="stat-label">SO Answers</div>
+            </div>
+        </div>
+
+        <section>
+            <h2>Data Sources Overview</h2>
+            <div class="chart-row">
+                <div class="chart-cell">
+                    <h3>Distribution by Source</h3>
+                    <canvas id="sourcesPieChart"></canvas>
+                </div>
+                <div class="chart-cell">
+                    <h3>Record Counts</h3>
+                    <canvas id="sourcesBarChart"></canvas>
+                </div>
+            </div>
+        </section>
+
+        <section>
+            <h2>Market Gaps Analysis</h2>
+            <p style="color: var(--muted); margin-bottom: 1rem; font-size: 0.9rem;">
+                Gap Score = (Forum Votes × 0.4 + Forum Count × 0.25 + Blog × 0.15 + SO Qs × 0.1 + SO Score × 0.1) / (Apps + 1)
+            </p>
+            <div class="chart-container">
+                <canvas id="gapScoreChart"></canvas>
+            </div>
+            <table>
+                <thead>
+                    <tr>
+                        <th>#</th>
+                        <th>Product</th>
+                        <th>Gap Score</th>
+                        <th>Apps</th>
+                        <th>Forum</th>
+                        <th>Blog</th>
+                        <th>SO Qs</th>
+                        <th>Priority</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr><td>1</td><td><strong>Autodesk Construction Cloud</strong></td><td class="gap-score">3,002</td><td>0</td><td>501</td><td>2,759</td><td>4,212</td><td><span class="badge badge-high">Critical</span></td></tr>
+                    <tr><td>2</td><td><strong>AutoCAD Electrical</strong></td><td class="gap-score">610</td><td>1</td><td>4</td><td>8,120</td><td>0</td><td><span class="badge badge-high">High</span></td></tr>
+                    <tr><td>3</td><td><strong>AutoCAD Map 3D</strong></td><td class="gap-score">295</td><td>0</td><td>26</td><td>941</td><td>0</td><td><span class="badge badge-high">High</span></td></tr>
+                    <tr><td>4</td><td><strong>Vault</strong></td><td class="gap-score">89</td><td>0</td><td>1</td><td>507</td><td>0</td><td><span class="badge badge-medium">Medium</span></td></tr>
+                    <tr><td>5</td><td><strong>AutoCAD LT</strong></td><td class="gap-score">88</td><td>0</td><td>28</td><td>95</td><td>0</td><td><span class="badge badge-medium">Medium</span></td></tr>
+                    <tr><td>6</td><td><strong>Navisworks Manage</strong></td><td class="gap-score">70</td><td>0</td><td>41</td><td>24</td><td>0</td><td><span class="badge badge-medium">Medium</span></td></tr>
+                    <tr><td>7</td><td><strong>Drive</strong></td><td class="gap-score">58</td><td>0</td><td>0</td><td>386</td><td>0</td><td><span class="badge badge-medium">Medium</span></td></tr>
+                    <tr><td>8</td><td><strong>AutoCAD Mechanical</strong></td><td class="gap-score">44</td><td>0</td><td>9</td><td>136</td><td>0</td><td><span class="badge badge-low">Low</span></td></tr>
+                    <tr><td>9</td><td><strong>AutoCAD Plant 3D</strong></td><td class="gap-score">34</td><td>0</td><td>12</td><td>67</td><td>0</td><td><span class="badge badge-low">Low</span></td></tr>
+                    <tr><td>10</td><td><strong>InfraWorks</strong></td><td class="gap-score">32</td><td>0</td><td>3</td><td>203</td><td>0</td><td><span class="badge badge-low">Low</span></td></tr>
+                </tbody>
+            </table>
+        </section>
+
+        <section>
+            <h2>Stack Overflow Developer Activity</h2>
+            <div class="chart-row">
+                <div class="chart-cell">
+                    <h3>Questions by Product</h3>
+                    <canvas id="soProductChart"></canvas>
+                </div>
+                <div class="chart-cell">
+                    <h3>Answer Rate by Product</h3>
+                    <canvas id="soAnswerRateChart"></canvas>
+                </div>
+            </div>
+        </section>
+
+        <section>
+            <h2>User Pain Points</h2>
+            <div class="chart-container">
+                <canvas id="painPointsChart"></canvas>
+            </div>
+            <table>
+                <thead>
+                    <tr><th>Category</th><th>Ideas</th><th>Votes</th><th>Top Request</th></tr>
+                </thead>
+                <tbody>
+                    <tr><td><strong>Permissions</strong></td><td>400</td><td>3,628</td><td>Bulk user management across projects</td></tr>
+                    <tr><td><strong>UI/UX</strong></td><td>410</td><td>2,344</td><td>ACC Markups improvements</td></tr>
+                    <tr><td><strong>Microsoft Integration</strong></td><td>386</td><td>2,228</td><td>Full Office Online experience</td></tr>
+                    <tr><td><strong>Offline Access</strong></td><td>367</td><td>2,206</td><td>Offline mode for ACC Docs</td></tr>
+                    <tr><td><strong>Collaboration</strong></td><td>295</td><td>1,994</td><td>XYZ coordinate measurement</td></tr>
+                    <tr><td><strong>Notifications</strong></td><td>290</td><td>1,850</td><td>Publish scheduling</td></tr>
+                    <tr><td><strong>File Management</strong></td><td>169</td><td>1,757</td><td>Photo folder organization</td></tr>
+                    <tr><td><strong>Integration</strong></td><td>291</td><td>1,559</td><td>Specifications export</td></tr>
+                    <tr><td><strong>Reporting</strong></td><td>234</td><td>1,299</td><td>Hide closed issues</td></tr>
+                    <tr><td><strong>Markups</strong></td><td>276</td><td>1,236</td><td>Change review initiator</td></tr>
+                </tbody>
+            </table>
+        </section>
+
+        <section>
+            <h2>Strategic Recommendations</h2>
+
+            <div class="recommendation">
+                <h4>1. ACC/Forge Plugin Ecosystem</h4>
+                <div class="score">Gap Score: 3,002</div>
+                <p>4,212 SO questions + 501 forum ideas with zero marketplace apps. Highest opportunity.</p>
+            </div>
+
+            <div class="recommendation">
+                <h4>2. AutoCAD Vertical Plugins</h4>
+                <div class="score">Combined Gap: 1,000+</div>
+                <p>Electrical, Map 3D, Mechanical, Plant 3D all underserved despite high blog coverage.</p>
+            </div>
+
+            <div class="recommendation">
+                <h4>3. Developer Documentation</h4>
+                <div class="score">58-63% Unanswered</div>
+                <p>High unanswered rates on SO indicate documentation and tutorial gaps.</p>
+            </div>
+
+            <div class="recommendation">
+                <h4>4. Permission Management Tool</h4>
+                <div class="score">3,628 Votes</div>
+                <p>Top user pain point. Build bulk user/project management solution.</p>
+            </div>
+
+            <div class="recommendation">
+                <h4>5. Microsoft Office Integration</h4>
+                <div class="score">2,228 Votes</div>
+                <p>Strong demand for Office Online integration within ACC.</p>
+            </div>
+        </section>
+
+        <footer>
+            <p>Generated by Autodesk Ecosystem Analytics | All 4 Data Sources Active</p>
+            <p>Apps: 4,078 | Forum: 4,295 | Blog: 8,150 | Stack Overflow: 7,424 Qs + 8,186 Ans</p>
+        </footer>
+    </div>
+
+    <script>
+        const colors = {
+            primary: '#0696D7',
+            secondary: '#1E3A5F',
+            accent: '#F26322',
+            success: '#2E7D32',
+            warning: '#ED6C02',
+            purple: '#7C3AED'
+        };
+
+        // Sources Pie Chart
+        new Chart(document.getElementById('sourcesPieChart'), {
+            type: 'doughnut',
+            data: {
+                labels: ['Apps', 'Forum Ideas', 'Blog Posts', 'SO Questions', 'SO Answers'],
+                datasets: [{
+                    data: [4078, 4295, 8150, 7424, 8186],
+                    backgroundColor: [colors.primary, colors.success, colors.warning, colors.accent, colors.purple],
+                    borderWidth: 0
+                }]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: true,
+                plugins: { legend: { position: 'bottom', labels: { boxWidth: 12, padding: 15 } } }
+            }
+        });
+
+        // Sources Bar Chart
+        new Chart(document.getElementById('sourcesBarChart'), {
+            type: 'bar',
+            data: {
+                labels: ['Apps', 'Forum', 'Blog', 'SO Qs', 'SO Ans'],
+                datasets: [{
+                    data: [4078, 4295, 8150, 7424, 8186],
+                    backgroundColor: [colors.primary, colors.success, colors.warning, colors.accent, colors.purple],
+                    borderRadius: 4
+                }]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: true,
+                plugins: { legend: { display: false } },
+                scales: { y: { beginAtZero: true } }
+            }
+        });
+
+        // Gap Score Chart
+        new Chart(document.getElementById('gapScoreChart'), {
+            type: 'bar',
+            data: {
+                labels: ['ACC', 'AutoCAD Elec', 'Map 3D', 'Vault', 'AutoCAD LT', 'Navisworks', 'Drive', 'Mechanical', 'Plant 3D', 'InfraWorks'],
+                datasets: [{
+                    label: 'Gap Score',
+                    data: [3002, 610, 295, 89, 88, 70, 58, 44, 34, 32],
+                    backgroundColor: colors.accent,
+                    borderRadius: 4
+                }]
+            },
+            options: {
+                indexAxis: 'y',
+                responsive: true,
+                maintainAspectRatio: false,
+                plugins: { legend: { display: false } },
+                scales: { x: { beginAtZero: true, title: { display: true, text: 'Gap Score' } } }
+            }
+        });
+
+        // SO Product Chart
+        new Chart(document.getElementById('soProductChart'), {
+            type: 'bar',
+            data: {
+                labels: ['ACC/Forge', 'AutoCAD', '3ds Max', 'Revit', 'Maya', 'Inventor'],
+                datasets: [{
+                    label: 'Questions',
+                    data: [4212, 1702, 726, 598, 261, 57],
+                    backgroundColor: colors.accent,
+                    borderRadius: 4
+                }]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: true,
+                plugins: { legend: { display: false } },
+                scales: { y: { beginAtZero: true } }
+            }
+        });
+
+        // SO Answer Rate Chart
+        new Chart(document.getElementById('soAnswerRateChart'), {
+            type: 'bar',
+            data: {
+                labels: ['ACC/Forge', 'AutoCAD', '3ds Max', 'Revit', 'Maya', 'Inventor'],
+                datasets: [
+                    {
+                        label: 'Answered',
+                        data: [42, 48, 46, 37, 42, 35],
+                        backgroundColor: colors.success,
+                        borderRadius: 4
+                    },
+                    {
+                        label: 'Unanswered',
+                        data: [58, 52, 54, 63, 58, 65],
+                        backgroundColor: '#E5E7EB',
+                        borderRadius: 4
+                    }
+                ]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: true,
+                plugins: { legend: { position: 'bottom', labels: { boxWidth: 12 } } },
+                scales: {
+                    x: { stacked: true },
+                    y: { stacked: true, max: 100, title: { display: true, text: '% of Questions' } }
+                }
+            }
+        });
+
+        // Pain Points Chart
+        new Chart(document.getElementById('painPointsChart'), {
+            type: 'bar',
+            data: {
+                labels: ['Permissions', 'UI/UX', 'Microsoft', 'Offline', 'Collaboration', 'Notifications', 'File Mgmt', 'Integration', 'Reporting', 'Markups'],
+                datasets: [
+                    {
+                        label: 'Votes',
+                        data: [3628, 2344, 2228, 2206, 1994, 1850, 1757, 1559, 1299, 1236],
+                        backgroundColor: colors.accent,
+                        borderRadius: 4,
+                        yAxisID: 'y'
+                    },
+                    {
+                        label: 'Ideas',
+                        data: [400, 410, 386, 367, 295, 290, 169, 291, 234, 276],
+                        backgroundColor: colors.primary,
+                        borderRadius: 4,
+                        yAxisID: 'y1'
+                    }
+                ]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                plugins: { legend: { position: 'top' } },
+                scales: {
+                    y: { type: 'linear', position: 'left', beginAtZero: true, title: { display: true, text: 'Votes' } },
+                    y1: { type: 'linear', position: 'right', beginAtZero: true, title: { display: true, text: 'Ideas' }, grid: { drawOnChartArea: false } }
+                }
+            }
+        });
+    </script>
+</body>
+</html>

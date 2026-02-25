@@ -1,0 +1,291 @@
+{
+  "report_metadata": {
+    "title": "ACC Plugin & Solution Ideas Report",
+    "generated_at": "2026-01-31T12:00:00Z",
+    "data_sources": {
+      "forum_ideas_analyzed": 2594,
+      "so_questions_analyzed": 4619
+    }
+  },
+  "plugin_ideas": [
+    {
+      "id": "markup-manager",
+      "name": "Advanced Markup Manager",
+      "category": "Document Management",
+      "description": "Centralized markup management: archive old markups, batch export, search across markups, restore historical markups",
+      "demand_score": 391,
+      "evidence": [
+        {"source": "forum", "votes": 246, "title": "ACC Markups need improving"},
+        {"source": "forum", "votes": 95, "title": "ACC Markups tools improvements required"},
+        {"source": "forum", "votes": 50, "title": "Archive Markups"}
+      ],
+      "apis_required": ["Viewer API", "Data Management API"],
+      "complexity": "medium",
+      "market_opportunity": "high"
+    },
+    {
+      "id": "smart-uploader",
+      "name": "Smart Document Uploader",
+      "category": "Document Management",
+      "description": "Automated upload with auto-description, naming standard enforcement, folder tree upload, bulk metadata",
+      "demand_score": 275,
+      "evidence": [
+        {"source": "forum", "votes": 119, "title": "Automate description field values when uploading"},
+        {"source": "forum", "votes": 108, "title": "Naming Standard in ACC Templates"},
+        {"source": "forum", "votes": 48, "title": "Upload folders via web interface"}
+      ],
+      "apis_required": ["Data Management API", "Webhooks"],
+      "complexity": "low",
+      "market_opportunity": "high"
+    },
+    {
+      "id": "ms-office-integration",
+      "name": "Microsoft Office Integration Suite",
+      "category": "Document Management",
+      "description": "Full MS Office Online integration - edit Word, Excel, PowerPoint directly in ACC with auto-sync",
+      "demand_score": 143,
+      "evidence": [
+        {"source": "forum", "votes": 98, "title": "Integrate Full MS Office Online Experience"},
+        {"source": "forum", "votes": 45, "title": "ACC better integrate with MS Teams"}
+      ],
+      "apis_required": ["Microsoft Graph API", "Data Management API"],
+      "complexity": "high",
+      "market_opportunity": "very_high"
+    },
+    {
+      "id": "pdf-viewer",
+      "name": "Enhanced PDF Viewer",
+      "category": "Document Management",
+      "description": "Scrollable multi-page PDFs, better navigation, page thumbnails, in-PDF search",
+      "demand_score": 112,
+      "evidence": [
+        {"source": "forum", "votes": 61, "title": "Make PDFs scrollable"},
+        {"source": "forum", "votes": 51, "title": "Multiple page PDF navigation"}
+      ],
+      "apis_required": ["Viewer API", "PDF.js"],
+      "complexity": "medium",
+      "market_opportunity": "medium"
+    },
+    {
+      "id": "bulk-user-manager",
+      "name": "Bulk User Manager",
+      "category": "Permissions & User Management",
+      "description": "Multi-project user management: add to multiple projects, bulk role assignment, CSV import, permission audit",
+      "demand_score": 487,
+      "evidence": [
+        {"source": "forum", "votes": 344, "title": "Allow adding user(s) to MULTIPLE PROJECTS"},
+        {"source": "forum", "votes": 91, "title": "View all projects a user is assigned to"},
+        {"source": "forum", "votes": 52, "title": "Bulk edit Account and Project Members"}
+      ],
+      "apis_required": ["ACC Admin API", "Account API"],
+      "complexity": "medium",
+      "market_opportunity": "very_high"
+    },
+    {
+      "id": "permission-controller",
+      "name": "Advanced Permission Controller",
+      "category": "Permissions & User Management",
+      "description": "Remove inherited permissions, temporary access, consolidated permission view, permission templates",
+      "demand_score": 261,
+      "evidence": [
+        {"source": "forum", "votes": 175, "title": "Remove Inherited Permissions option"},
+        {"source": "forum", "votes": 57, "title": "Linking Companies and Roles for Scalable Control"},
+        {"source": "forum", "votes": 29, "title": "Temporary Permissions & Consolidated View"}
+      ],
+      "apis_required": ["ACC Admin API", "Data Management API"],
+      "complexity": "high",
+      "market_opportunity": "high"
+    },
+    {
+      "id": "photos-permissions",
+      "name": "Photos Permission Manager",
+      "category": "Permissions & User Management",
+      "description": "Folder-level photo access, view-only vs edit permissions, external sharing controls",
+      "demand_score": 198,
+      "evidence": [
+        {"source": "forum", "votes": 100, "title": "Permission for Photos"},
+        {"source": "forum", "votes": 57, "title": "Build>Photos Tool>Permission"},
+        {"source": "forum", "votes": 41, "title": "Build Photos - permissions"}
+      ],
+      "apis_required": ["Build API", "ACC Admin API"],
+      "complexity": "low",
+      "market_opportunity": "medium"
+    },
+    {
+      "id": "user-activity-dashboard",
+      "name": "User Activity Dashboard",
+      "category": "Permissions & User Management",
+      "description": "Last login tracking, activity heatmaps, inactive user reports, license utilization",
+      "demand_score": 62,
+      "evidence": [
+        {"source": "forum", "votes": 32, "title": "View users' last log-in date"},
+        {"source": "forum", "votes": 30, "title": "Add Last Sign In Information for Build Users"}
+      ],
+      "apis_required": ["ACC Admin API", "Analytics"],
+      "complexity": "low",
+      "market_opportunity": "medium"
+    },
+    {
+      "id": "smart-notifications",
+      "name": "Smart Notification Engine",
+      "category": "Issues & Workflow",
+      "description": "Automated reminders for overdue RFIs/Submittals/Issues, escalation workflows, digest emails",
+      "demand_score": 152,
+      "evidence": [
+        {"source": "forum", "votes": 72, "title": "Automated Reminder Email for Overdue items"},
+        {"source": "forum", "votes": 49, "title": "Automated Reminders for Issues, Reviews, Forms"},
+        {"source": "forum", "votes": 31, "title": "In-Platform Notifications"}
+      ],
+      "apis_required": ["Webhooks", "Issues API"],
+      "complexity": "medium",
+      "market_opportunity": "high"
+    },
+    {
+      "id": "extended-submittals",
+      "name": "Extended Submittals Manager",
+      "category": "Issues & Workflow",
+      "description": "Unlimited assignees (beyond 10), smart stamps with auto-population, flexible workflows",
+      "demand_score": 385,
+      "evidence": [
+        {"source": "forum", "votes": 317, "title": "Increase Submittals Assignee Limit Beyond 10"},
+        {"source": "forum", "votes": 36, "title": "Smart Field Auto-Population in Stamps"},
+        {"source": "forum", "votes": 32, "title": "RFI workflows as flexible as Submittal"}
+      ],
+      "apis_required": ["Issues API", "BIM360 API"],
+      "complexity": "medium",
+      "market_opportunity": "high"
+    },
+    {
+      "id": "cross-project-issues",
+      "name": "Cross-Project Issue Bridge",
+      "category": "Issues & Workflow",
+      "description": "Link issues across projects, shared tracking, cross-project dashboards, unified reporting",
+      "demand_score": 82,
+      "evidence": [
+        {"source": "forum", "votes": 33, "title": "Bridge Issues between projects"},
+        {"source": "forum", "votes": 49, "title": "Multi Selection Custom Field for Issues"}
+      ],
+      "apis_required": ["Issues API", "Webhooks"],
+      "complexity": "high",
+      "market_opportunity": "medium"
+    },
+    {
+      "id": "advanced-forms",
+      "name": "Advanced Form Builder",
+      "category": "Forms & Field Data",
+      "description": "Tables/matrices, expanded conditional logic, per-question free-text, date-time with hours",
+      "demand_score": 181,
+      "evidence": [
+        {"source": "forum", "votes": 66, "title": "Free entry field for each response item"},
+        {"source": "forum", "votes": 43, "title": "Forms - Table or matrix"},
+        {"source": "forum", "votes": 37, "title": "Expand Conditional Logic Options"},
+        {"source": "forum", "votes": 35, "title": "Date and Time option with hours"}
+      ],
+      "apis_required": ["Forms API", "Build API"],
+      "complexity": "medium",
+      "market_opportunity": "medium"
+    },
+    {
+      "id": "qr-scanner",
+      "name": "QR Code Scanner for Forms",
+      "category": "Forms & Field Data",
+      "description": "Scan QR/barcodes into form fields, asset linking via QR, plan version tracking",
+      "demand_score": 45,
+      "evidence": [
+        {"source": "forum", "votes": 23, "title": "Scan QR Codes directly into form fields"},
+        {"source": "forum", "votes": 22, "title": "QR Code for On-Site Plan Version Tracking"}
+      ],
+      "apis_required": ["Forms API", "Mobile SDK"],
+      "complexity": "low",
+      "market_opportunity": "medium"
+    },
+    {
+      "id": "form-workflows",
+      "name": "Form Workflow Templates",
+      "category": "Forms & Field Data",
+      "description": "Reusable approval chains, auto-routing based on responses, Issues/RFI integration",
+      "demand_score": 62,
+      "evidence": [
+        {"source": "forum", "votes": 38, "title": "Add Workflow Templates to Forms"},
+        {"source": "forum", "votes": 24, "title": "Ability to Recover Deleted Form"}
+      ],
+      "apis_required": ["Forms API", "Webhooks"],
+      "complexity": "medium",
+      "market_opportunity": "medium"
+    },
+    {
+      "id": "sheet-comparison",
+      "name": "Sheet Comparison Exporter",
+      "category": "Sheets & 2D Drawings",
+      "description": "Export comparison results as PDF, overlay exports, batch comparison",
+      "demand_score": 58,
+      "evidence": [
+        {"source": "forum", "votes": 27, "title": "Compare 2D drawings - export report"},
+        {"source": "forum", "votes": 17, "title": "Export compared drawings"},
+        {"source": "forum", "votes": 14, "title": "Export Overlay"}
+      ],
+      "apis_required": ["Viewer API", "PDF Export"],
+      "complexity": "medium",
+      "market_opportunity": "medium"
+    },
+    {
+      "id": "titleblock-automation",
+      "name": "Smart Titleblock Automation",
+      "category": "Sheets & 2D Drawings",
+      "description": "Auto-update titleblocks in review process, revision tracking, approval stamps",
+      "demand_score": 59,
+      "evidence": [
+        {"source": "forum", "votes": 26, "title": "Titleblock Automation in Review Process"},
+        {"source": "forum", "votes": 33, "title": "Display Revit Properties in ACC for 2D Sheets"}
+      ],
+      "apis_required": ["Model Derivative API", "Design Automation"],
+      "complexity": "high",
+      "market_opportunity": "medium"
+    },
+    {
+      "id": "oauth-helper",
+      "name": "OAuth Helper Library",
+      "category": "Developer Tools",
+      "description": "2-legged/3-legged OAuth helpers, token refresh handling, PKCE support, error diagnostics",
+      "demand_score": 0,
+      "evidence": [
+        {"source": "stackoverflow", "unanswered_rate": 0.45, "title": "Can you use 3-legged OAuth without web app?"},
+        {"source": "stackoverflow", "unanswered_rate": 0.45, "title": "Does the refresh token expire?"},
+        {"source": "stackoverflow", "unanswered_rate": 0.45, "title": "PKCE Auth Flow - how to authenticate"}
+      ],
+      "apis_required": ["Authentication API"],
+      "complexity": "medium",
+      "market_opportunity": "high",
+      "target_audience": "developers"
+    },
+    {
+      "id": "viewer-extension-kit",
+      "name": "Viewer Extension Kit",
+      "category": "Developer Tools",
+      "description": "Pre-built extensions: material changer, multi-layer markup, Three.js upgrade path",
+      "demand_score": 0,
+      "evidence": [
+        {"source": "stackoverflow", "unanswered_rate": 0.40, "title": "Changing materials in Forge"},
+        {"source": "stackoverflow", "unanswered_rate": 0.40, "title": "Multi-layered CAD files markup"},
+        {"source": "stackoverflow", "unanswered_rate": 0.40, "title": "Upgrade Three.js version in viewer"}
+      ],
+      "apis_required": ["Viewer API", "Three.js"],
+      "complexity": "medium",
+      "market_opportunity": "high",
+      "target_audience": "developers"
+    }
+  ],
+  "top_opportunities_by_demand": [
+    {"rank": 1, "id": "bulk-user-manager", "name": "Bulk User Manager", "demand_score": 487},
+    {"rank": 2, "id": "markup-manager", "name": "Advanced Markup Manager", "demand_score": 391},
+    {"rank": 3, "id": "extended-submittals", "name": "Extended Submittals Manager", "demand_score": 385},
+    {"rank": 4, "id": "smart-uploader", "name": "Smart Document Uploader", "demand_score": 275},
+    {"rank": 5, "id": "permission-controller", "name": "Advanced Permission Controller", "demand_score": 261}
+  ],
+  "quick_wins": [
+    {"id": "smart-uploader", "name": "Smart Document Uploader", "complexity": "low", "demand": 275},
+    {"id": "photos-permissions", "name": "Photos Permission Manager", "complexity": "low", "demand": 198},
+    {"id": "user-activity-dashboard", "name": "User Activity Dashboard", "complexity": "low", "demand": 62},
+    {"id": "qr-scanner", "name": "QR Code Scanner for Forms", "complexity": "low", "demand": 45}
+  ]
+}

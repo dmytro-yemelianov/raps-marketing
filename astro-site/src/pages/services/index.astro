@@ -1,0 +1,217 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import '../../styles/global.css';
+---
+
+<BaseLayout 
+  title="Services - APS Integration & Automation" 
+  description="Expert Autodesk Platform Services integration, CLI development, and automation consulting services."
+>
+  <!-- Hero Section -->
+  <section class="py-16 bg-gradient-to-br from-gray-50 to-white">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div class="text-center max-w-3xl mx-auto">
+        <h1 class="text-4xl md:text-5xl font-bold mb-6">
+          <span class="gradient-text">Professional Services</span>
+        </h1>
+        <p class="text-xl text-gray-600 mb-8">
+          Expert Autodesk Platform Services integration, automation, and consulting from the creator of RAPS CLI.
+        </p>
+      </div>
+    </div>
+  </section>
+
+  <!-- Services Grid -->
+  <section class="py-16">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
+        
+        <!-- Service 1 -->
+        <div class="card p-8 hover:shadow-xl transition-shadow" id="aps-integration">
+          <div class="text-4xl mb-4">🔧</div>
+          <h3 class="text-2xl font-bold mb-4">APS API Integration</h3>
+          <p class="text-gray-600 mb-6">
+            Complete integration of Autodesk Platform Services APIs into your existing systems. Authentication, OSS, Model Derivative, Data Management, and more.
+          </p>
+          <ul class="space-y-2 text-gray-600 mb-6">
+            <li class="flex items-center"><span class="text-green-500 mr-2">✓</span> OAuth 2.0 implementation</li>
+            <li class="flex items-center"><span class="text-green-500 mr-2">✓</span> File upload & translation</li>
+            <li class="flex items-center"><span class="text-green-500 mr-2">✓</span> BIM 360/ACC integration</li>
+            <li class="flex items-center"><span class="text-green-500 mr-2">✓</span> Webhook event handling</li>
+          </ul>
+          <a href="/contact" class="text-raps-blue font-semibold hover:underline">
+            Get Started →
+          </a>
+        </div>
+
+        <!-- Service 2 -->
+        <div class="card p-8 hover:shadow-xl transition-shadow" id="cli-development">
+          <div class="text-4xl mb-4">🛠️</div>
+          <h3 class="text-2xl font-bold mb-4">CLI Development</h3>
+          <p class="text-gray-600 mb-6">
+            Custom command-line tools for your team. Production-grade CLIs in Rust, Python, or Node.js with cross-platform support.
+          </p>
+          <ul class="space-y-2 text-gray-600 mb-6">
+            <li class="flex items-center"><span class="text-green-500 mr-2">✓</span> Zero-dependency binaries</li>
+            <li class="flex items-center"><span class="text-green-500 mr-2">✓</span> Shell completions</li>
+            <li class="flex items-center"><span class="text-green-500 mr-2">✓</span> CI/CD ready output</li>
+            <li class="flex items-center"><span class="text-green-500 mr-2">✓</span> Multi-platform builds</li>
+          </ul>
+          <a href="/contact" class="text-raps-blue font-semibold hover:underline">
+            Get Started →
+          </a>
+        </div>
+
+        <!-- Service 3 -->
+        <div class="card p-8 hover:shadow-xl transition-shadow" id="design-automation">
+          <div class="text-4xl mb-4">⚙️</div>
+          <h3 class="text-2xl font-bold mb-4">Design Automation</h3>
+          <p class="text-gray-600 mb-6">
+            Automated CAD processing workflows for AutoCAD, Revit, Inventor, and 3ds Max. Parametric generation and batch processing at scale.
+          </p>
+          <ul class="space-y-2 text-gray-600 mb-6">
+            <li class="flex items-center"><span class="text-green-500 mr-2">✓</span> App bundle development</li>
+            <li class="flex items-center"><span class="text-green-500 mr-2">✓</span> Activity configuration</li>
+            <li class="flex items-center"><span class="text-green-500 mr-2">✓</span> Work item orchestration</li>
+            <li class="flex items-center"><span class="text-green-500 mr-2">✓</span> Cloud cost optimization</li>
+          </ul>
+          <a href="/contact" class="text-raps-blue font-semibold hover:underline">
+            Get Started →
+          </a>
+        </div>
+
+        <!-- Service 4 -->
+        <div class="card p-8 hover:shadow-xl transition-shadow" id="acc-integration">
+          <div class="text-4xl mb-4">🏗️</div>
+          <h3 class="text-2xl font-bold mb-4">ACC/BIM 360 Integration</h3>
+          <p class="text-gray-600 mb-6">
+            Connect Autodesk Construction Cloud with your enterprise systems. Issues, RFIs, Assets, Submittals, and document management.
+          </p>
+          <ul class="space-y-2 text-gray-600 mb-6">
+            <li class="flex items-center"><span class="text-green-500 mr-2">✓</span> Issues management</li>
+            <li class="flex items-center"><span class="text-green-500 mr-2">✓</span> RFI workflows</li>
+            <li class="flex items-center"><span class="text-green-500 mr-2">✓</span> Document sync</li>
+            <li class="flex items-center"><span class="text-green-500 mr-2">✓</span> ERP integration</li>
+          </ul>
+          <a href="/contact" class="text-raps-blue font-semibold hover:underline">
+            Get Started →
+          </a>
+        </div>
+
+        <!-- Service 5 -->
+        <div class="card p-8 hover:shadow-xl transition-shadow" id="cicd-automation">
+          <div class="text-4xl mb-4">🚀</div>
+          <h3 class="text-2xl font-bold mb-4">CI/CD Automation</h3>
+          <p class="text-gray-600 mb-6">
+            Automated pipelines for CAD file processing, model translation, and deployment. GitHub Actions, Azure DevOps, Jenkins compatible.
+          </p>
+          <ul class="space-y-2 text-gray-600 mb-6">
+            <li class="flex items-center"><span class="text-green-500 mr-2">✓</span> Pipeline design</li>
+            <li class="flex items-center"><span class="text-green-500 mr-2">✓</span> Automated translation</li>
+            <li class="flex items-center"><span class="text-green-500 mr-2">✓</span> Status monitoring</li>
+            <li class="flex items-center"><span class="text-green-500 mr-2">✓</span> Notification setup</li>
+          </ul>
+          <a href="/contact" class="text-raps-blue font-semibold hover:underline">
+            Get Started →
+          </a>
+        </div>
+
+        <!-- Service 6 -->
+        <div class="card p-8 hover:shadow-xl transition-shadow" id="consulting">
+          <div class="text-4xl mb-4">📋</div>
+          <h3 class="text-2xl font-bold mb-4">Technical Consulting</h3>
+          <p class="text-gray-600 mb-6">
+            Architecture reviews, performance audits, and strategic guidance for your APS implementation. Migration support from Forge to APS.
+          </p>
+          <ul class="space-y-2 text-gray-600 mb-6">
+            <li class="flex items-center"><span class="text-green-500 mr-2">✓</span> Architecture review</li>
+            <li class="flex items-center"><span class="text-green-500 mr-2">✓</span> Security audit</li>
+            <li class="flex items-center"><span class="text-green-500 mr-2">✓</span> Performance optimization</li>
+            <li class="flex items-center"><span class="text-green-500 mr-2">✓</span> Migration planning</li>
+          </ul>
+          <a href="/contact" class="text-raps-blue font-semibold hover:underline">
+            Get Started →
+          </a>
+        </div>
+
+      </div>
+    </div>
+  </section>
+
+  <!-- Expertise Section -->
+  <section class="py-16 bg-gray-50">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <h2 class="text-3xl font-bold text-center mb-12">APS API Expertise</h2>
+      <div class="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-6 gap-4">
+        <div class="bg-white p-4 rounded-lg text-center shadow-sm">
+          <div class="text-2xl mb-2">🔐</div>
+          <div class="text-sm font-medium">Authentication</div>
+        </div>
+        <div class="bg-white p-4 rounded-lg text-center shadow-sm">
+          <div class="text-2xl mb-2">📦</div>
+          <div class="text-sm font-medium">OSS</div>
+        </div>
+        <div class="bg-white p-4 rounded-lg text-center shadow-sm">
+          <div class="text-2xl mb-2">🔄</div>
+          <div class="text-sm font-medium">Model Derivative</div>
+        </div>
+        <div class="bg-white p-4 rounded-lg text-center shadow-sm">
+          <div class="text-2xl mb-2">📂</div>
+          <div class="text-sm font-medium">Data Management</div>
+        </div>
+        <div class="bg-white p-4 rounded-lg text-center shadow-sm">
+          <div class="text-2xl mb-2">⚙️</div>
+          <div class="text-sm font-medium">Design Automation</div>
+        </div>
+        <div class="bg-white p-4 rounded-lg text-center shadow-sm">
+          <div class="text-2xl mb-2">🪝</div>
+          <div class="text-sm font-medium">Webhooks</div>
+        </div>
+        <div class="bg-white p-4 rounded-lg text-center shadow-sm">
+          <div class="text-2xl mb-2">🏗️</div>
+          <div class="text-sm font-medium">ACC Issues</div>
+        </div>
+        <div class="bg-white p-4 rounded-lg text-center shadow-sm">
+          <div class="text-2xl mb-2">📝</div>
+          <div class="text-sm font-medium">RFIs</div>
+        </div>
+        <div class="bg-white p-4 rounded-lg text-center shadow-sm">
+          <div class="text-2xl mb-2">📊</div>
+          <div class="text-sm font-medium">Assets</div>
+        </div>
+        <div class="bg-white p-4 rounded-lg text-center shadow-sm">
+          <div class="text-2xl mb-2">📋</div>
+          <div class="text-sm font-medium">Submittals</div>
+        </div>
+        <div class="bg-white p-4 rounded-lg text-center shadow-sm">
+          <div class="text-2xl mb-2">✅</div>
+          <div class="text-sm font-medium">Checklists</div>
+        </div>
+        <div class="bg-white p-4 rounded-lg text-center shadow-sm">
+          <div class="text-2xl mb-2">📸</div>
+          <div class="text-sm font-medium">Reality Capture</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- CTA Section -->
+  <section class="py-16">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div class="bg-gradient-to-r from-raps-blue to-raps-purple rounded-2xl p-8 md:p-12 text-white text-center">
+        <h2 class="text-3xl md:text-4xl font-bold mb-6">Ready to Get Started?</h2>
+        <p class="text-xl mb-8 opacity-90 max-w-2xl mx-auto">
+          Let's discuss your project requirements. Free 30-minute consultation to understand your needs.
+        </p>
+        <div class="flex flex-col sm:flex-row gap-4 justify-center">
+          <a href="/contact" class="btn bg-white text-raps-blue hover:bg-gray-100 text-lg px-8 py-3 rounded-lg font-semibold">
+            Schedule a Call
+          </a>
+          <a href="/portfolio" class="btn bg-white/20 backdrop-blur text-white hover:bg-white/30 text-lg px-8 py-3 rounded-lg font-semibold">
+            View Portfolio
+          </a>
+        </div>
+      </div>
+    </div>
+  </section>
+</BaseLayout>

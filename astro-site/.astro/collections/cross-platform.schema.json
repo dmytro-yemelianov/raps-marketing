@@ -1,0 +1,79 @@
+{
+  "$ref": "#/definitions/cross-platform",
+  "definitions": {
+    "cross-platform": {
+      "type": "object",
+      "properties": {
+        "title": {
+          "type": "string"
+        },
+        "description": {
+          "type": "string"
+        },
+        "platform": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "enum": [
+              "aps",
+              "onshape",
+              "solidworks",
+              "teamcenter",
+              "nx",
+              "all"
+            ]
+          }
+        },
+        "painPoint": {
+          "type": "string",
+          "enum": [
+            "authentication",
+            "translation",
+            "sdk",
+            "documentation",
+            "errors",
+            "webhooks"
+          ]
+        },
+        "severity": {
+          "type": "string",
+          "enum": [
+            "low",
+            "medium",
+            "high",
+            "critical"
+          ]
+        },
+        "publishDate": {
+          "anyOf": [
+            {
+              "type": "string",
+              "format": "date-time"
+            },
+            {
+              "type": "string",
+              "format": "date"
+            },
+            {
+              "type": "integer",
+              "format": "unix-time"
+            }
+          ]
+        },
+        "$schema": {
+          "type": "string"
+        }
+      },
+      "required": [
+        "title",
+        "description",
+        "platform",
+        "painPoint",
+        "severity",
+        "publishDate"
+      ],
+      "additionalProperties": false
+    }
+  },
+  "$schema": "http://json-schema.org/draft-07/schema#"
+}

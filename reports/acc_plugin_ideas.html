@@ -1,0 +1,596 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ACC Plugin & Solution Ideas Report</title>
+    <style>
+        :root {
+            --primary: #0696D7;
+            --secondary: #1E3A5F;
+            --accent: #F26322;
+            --success: #2E7D32;
+            --warning: #ED6C02;
+            --danger: #D32F2F;
+            --bg: #f5f7fa;
+            --card: #ffffff;
+        }
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            background: var(--bg);
+            color: #333;
+            line-height: 1.6;
+        }
+        .container { max-width: 1400px; margin: 0 auto; padding: 20px; }
+        header {
+            background: linear-gradient(135deg, var(--secondary), var(--primary));
+            color: white;
+            padding: 40px 20px;
+            margin-bottom: 30px;
+            border-radius: 12px;
+        }
+        header h1 { font-size: 2.2rem; margin-bottom: 10px; }
+        header p { opacity: 0.9; font-size: 1.1rem; }
+
+        .summary-cards {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 20px;
+            margin-bottom: 30px;
+        }
+        .summary-card {
+            background: var(--card);
+            padding: 24px;
+            border-radius: 12px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+            text-align: center;
+        }
+        .summary-card .number { font-size: 2.5rem; font-weight: 700; color: var(--primary); }
+        .summary-card .label { color: #666; font-size: 0.9rem; margin-top: 5px; }
+
+        .plugin-category {
+            background: var(--card);
+            border-radius: 12px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+            margin-bottom: 30px;
+            overflow: hidden;
+        }
+        .category-header {
+            background: var(--secondary);
+            color: white;
+            padding: 20px 24px;
+        }
+        .category-header h2 { font-size: 1.4rem; margin-bottom: 5px; }
+        .category-header .meta { opacity: 0.8; font-size: 0.9rem; }
+
+        .plugin-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(400px, 1fr));
+            gap: 20px;
+            padding: 24px;
+        }
+
+        .plugin-idea {
+            border: 2px solid #e8ecef;
+            border-radius: 10px;
+            padding: 20px;
+            transition: all 0.2s;
+        }
+        .plugin-idea:hover {
+            border-color: var(--primary);
+            box-shadow: 0 4px 12px rgba(6,150,215,0.15);
+        }
+        .plugin-idea h3 {
+            color: var(--secondary);
+            font-size: 1.1rem;
+            margin-bottom: 10px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        .plugin-idea h3 .icon { font-size: 1.3rem; }
+        .plugin-idea .description {
+            color: #555;
+            font-size: 0.95rem;
+            margin-bottom: 15px;
+        }
+        .plugin-idea .evidence {
+            background: #f8f9fa;
+            border-radius: 8px;
+            padding: 12px;
+            margin-bottom: 12px;
+        }
+        .plugin-idea .evidence-title {
+            font-weight: 600;
+            color: var(--secondary);
+            font-size: 0.85rem;
+            margin-bottom: 8px;
+        }
+        .plugin-idea .evidence-item {
+            font-size: 0.85rem;
+            color: #666;
+            padding: 4px 0;
+            border-bottom: 1px solid #eee;
+        }
+        .plugin-idea .evidence-item:last-child { border: none; }
+        .plugin-idea .votes {
+            color: var(--accent);
+            font-weight: 600;
+        }
+
+        .tags {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 6px;
+            margin-top: 12px;
+        }
+        .tag {
+            background: #e3f2fd;
+            color: var(--primary);
+            padding: 4px 10px;
+            border-radius: 20px;
+            font-size: 0.75rem;
+            font-weight: 500;
+        }
+        .tag.api { background: #fff3e0; color: var(--accent); }
+        .tag.difficulty-easy { background: #e8f5e9; color: var(--success); }
+        .tag.difficulty-medium { background: #fff8e1; color: #f57c00; }
+        .tag.difficulty-hard { background: #ffebee; color: var(--danger); }
+
+        .demand-score {
+            display: inline-flex;
+            align-items: center;
+            gap: 5px;
+            background: var(--accent);
+            color: white;
+            padding: 4px 12px;
+            border-radius: 20px;
+            font-size: 0.8rem;
+            font-weight: 600;
+        }
+
+        footer {
+            text-align: center;
+            padding: 30px;
+            color: #666;
+            font-size: 0.9rem;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>🔌 ACC Plugin & Solution Ideas Report</h1>
+            <p>Specific, actionable plugin opportunities derived from 2,594 forum ideas and 4,619 Stack Overflow questions</p>
+        </header>
+
+        <div class="summary-cards">
+            <div class="summary-card">
+                <div class="number">18</div>
+                <div class="label">Specific Plugin Ideas</div>
+            </div>
+            <div class="summary-card">
+                <div class="number">2,594</div>
+                <div class="label">Forum Ideas Analyzed</div>
+            </div>
+            <div class="summary-card">
+                <div class="number">4,619</div>
+                <div class="label">SO Questions Analyzed</div>
+            </div>
+            <div class="summary-card">
+                <div class="number">$$$</div>
+                <div class="label">Market Opportunity</div>
+            </div>
+        </div>
+
+        <!-- DOCUMENT MANAGEMENT PLUGINS -->
+        <div class="plugin-category">
+            <div class="category-header">
+                <h2>📄 Document Management Solutions</h2>
+                <div class="meta">754 forum ideas • High demand area</div>
+            </div>
+            <div class="plugin-grid">
+
+                <div class="plugin-idea">
+                    <h3><span class="icon">📝</span> Advanced Markup Manager</h3>
+                    <div class="description">
+                        Centralized markup management tool: archive old markups, batch export, search across markups,
+                        and restore historical markups. Addresses the #2 most voted issue in ACC.
+                    </div>
+                    <div class="evidence">
+                        <div class="evidence-title">📊 Demand Evidence</div>
+                        <div class="evidence-item"><span class="votes">246 votes</span> - "ACC Markups need improving"</div>
+                        <div class="evidence-item"><span class="votes">95 votes</span> - "ACC Markups tools improvements required"</div>
+                        <div class="evidence-item"><span class="votes">50 votes</span> - "Archive Markups"</div>
+                    </div>
+                    <div class="tags">
+                        <span class="tag">Viewer API</span>
+                        <span class="tag api">Data Management API</span>
+                        <span class="tag difficulty-medium">Medium Complexity</span>
+                    </div>
+                </div>
+
+                <div class="plugin-idea">
+                    <h3><span class="icon">📋</span> Smart Document Uploader</h3>
+                    <div class="description">
+                        Automated document upload tool with: auto-populated description fields, naming standard
+                        enforcement, folder tree upload via web, and bulk metadata assignment.
+                    </div>
+                    <div class="evidence">
+                        <div class="evidence-title">📊 Demand Evidence</div>
+                        <div class="evidence-item"><span class="votes">119 votes</span> - "Automate description field values when uploading"</div>
+                        <div class="evidence-item"><span class="votes">108 votes</span> - "Naming Standard in ACC Templates"</div>
+                        <div class="evidence-item"><span class="votes">48 votes</span> - "Upload folders via web interface"</div>
+                    </div>
+                    <div class="tags">
+                        <span class="tag">Data Management API</span>
+                        <span class="tag api">Webhooks</span>
+                        <span class="tag difficulty-easy">Low Complexity</span>
+                    </div>
+                </div>
+
+                <div class="plugin-idea">
+                    <h3><span class="icon">📊</span> Microsoft Office Integration Suite</h3>
+                    <div class="description">
+                        Full Microsoft Office Online integration: edit Word, Excel, PowerPoint directly in ACC
+                        without downloading. Automatic sync back to ACC with version control.
+                    </div>
+                    <div class="evidence">
+                        <div class="evidence-title">📊 Demand Evidence</div>
+                        <div class="evidence-item"><span class="votes">98 votes</span> - "Integrate Full MS Office Online Experience"</div>
+                        <div class="evidence-item"><span class="votes">45 votes</span> - "ACC better integrate with MS Teams"</div>
+                    </div>
+                    <div class="tags">
+                        <span class="tag">Microsoft Graph API</span>
+                        <span class="tag api">Data Management API</span>
+                        <span class="tag difficulty-hard">High Complexity</span>
+                    </div>
+                </div>
+
+                <div class="plugin-idea">
+                    <h3><span class="icon">📖</span> Enhanced PDF Viewer</h3>
+                    <div class="description">
+                        Improved PDF viewing experience: scrollable multi-page PDFs, better navigation,
+                        page thumbnails, and search within PDF content.
+                    </div>
+                    <div class="evidence">
+                        <div class="evidence-title">📊 Demand Evidence</div>
+                        <div class="evidence-item"><span class="votes">61 votes</span> - "Make PDFs scrollable"</div>
+                        <div class="evidence-item"><span class="votes">51 votes</span> - "Multiple page PDF navigation"</div>
+                    </div>
+                    <div class="tags">
+                        <span class="tag">Viewer API</span>
+                        <span class="tag api">PDF.js</span>
+                        <span class="tag difficulty-medium">Medium Complexity</span>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+
+        <!-- PERMISSIONS & USER MANAGEMENT -->
+        <div class="plugin-category">
+            <div class="category-header">
+                <h2>🔐 Permissions & User Management Solutions</h2>
+                <div class="meta">421 forum ideas • Critical pain point area</div>
+            </div>
+            <div class="plugin-grid">
+
+                <div class="plugin-idea">
+                    <h3><span class="icon">👥</span> Bulk User Manager</h3>
+                    <div class="description">
+                        Multi-project user management: add users to multiple projects at once, bulk role
+                        assignment, import from CSV, and cross-project permission audit.
+                    </div>
+                    <div class="evidence">
+                        <div class="evidence-title">📊 Demand Evidence</div>
+                        <div class="evidence-item"><span class="votes">344 votes</span> - "Allow adding user(s) to MULTIPLE PROJECTS"</div>
+                        <div class="evidence-item"><span class="votes">52 votes</span> - "Bulk edit Account and Project Members"</div>
+                        <div class="evidence-item"><span class="votes">91 votes</span> - "View all projects to which a user is assigned"</div>
+                    </div>
+                    <div class="tags">
+                        <span class="tag">ACC Admin API</span>
+                        <span class="tag api">Account API</span>
+                        <span class="tag difficulty-medium">Medium Complexity</span>
+                    </div>
+                </div>
+
+                <div class="plugin-idea">
+                    <h3><span class="icon">🔒</span> Advanced Permission Controller</h3>
+                    <div class="description">
+                        Granular permission management: remove inherited permissions, temporary time-limited
+                        access, consolidated permission view, and permission templates.
+                    </div>
+                    <div class="evidence">
+                        <div class="evidence-title">📊 Demand Evidence</div>
+                        <div class="evidence-item"><span class="votes">175 votes</span> - "Remove Inherited Permissions option"</div>
+                        <div class="evidence-item"><span class="votes">57 votes</span> - "Linking Companies and Roles for Scalable Control"</div>
+                        <div class="evidence-item"><span class="votes">29 votes</span> - "Temporary Permissions & Consolidated View"</div>
+                    </div>
+                    <div class="tags">
+                        <span class="tag">ACC Admin API</span>
+                        <span class="tag api">Data Management API</span>
+                        <span class="tag difficulty-hard">High Complexity</span>
+                    </div>
+                </div>
+
+                <div class="plugin-idea">
+                    <h3><span class="icon">📸</span> Photos Permission Manager</h3>
+                    <div class="description">
+                        Dedicated permission controls for the Photos module: folder-level access,
+                        view-only vs edit permissions, and external sharing controls.
+                    </div>
+                    <div class="evidence">
+                        <div class="evidence-title">📊 Demand Evidence</div>
+                        <div class="evidence-item"><span class="votes">100 votes</span> - "Permission for Photos"</div>
+                        <div class="evidence-item"><span class="votes">57 votes</span> - "Build>Photos Tool>Permission"</div>
+                        <div class="evidence-item"><span class="votes">41 votes</span> - "Build Photos - permissions"</div>
+                    </div>
+                    <div class="tags">
+                        <span class="tag">Build API</span>
+                        <span class="tag api">ACC Admin API</span>
+                        <span class="tag difficulty-easy">Low Complexity</span>
+                    </div>
+                </div>
+
+                <div class="plugin-idea">
+                    <h3><span class="icon">📊</span> User Activity Dashboard</h3>
+                    <div class="description">
+                        Track and visualize user engagement: last login dates, activity heatmaps,
+                        inactive user reports, and license utilization metrics.
+                    </div>
+                    <div class="evidence">
+                        <div class="evidence-title">📊 Demand Evidence</div>
+                        <div class="evidence-item"><span class="votes">32 votes</span> - "View users' last log-in date to ACC"</div>
+                        <div class="evidence-item"><span class="votes">30 votes</span> - "Add Last Sign In Information for Build Users"</div>
+                    </div>
+                    <div class="tags">
+                        <span class="tag">ACC Admin API</span>
+                        <span class="tag api">Analytics</span>
+                        <span class="tag difficulty-easy">Low Complexity</span>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+
+        <!-- ISSUES & WORKFLOW MANAGEMENT -->
+        <div class="plugin-category">
+            <div class="category-header">
+                <h2>🎯 Issues & Workflow Solutions</h2>
+                <div class="meta">363 forum ideas • Process improvement area</div>
+            </div>
+            <div class="plugin-grid">
+
+                <div class="plugin-idea">
+                    <h3><span class="icon">📬</span> Smart Notification Engine</h3>
+                    <div class="description">
+                        Automated reminder system: overdue item alerts for RFIs/Submittals/Issues,
+                        escalation workflows, customizable notification schedules, and digest emails.
+                    </div>
+                    <div class="evidence">
+                        <div class="evidence-title">📊 Demand Evidence</div>
+                        <div class="evidence-item"><span class="votes">72 votes</span> - "Automated Reminder Email for Overdue items"</div>
+                        <div class="evidence-item"><span class="votes">49 votes</span> - "Automated Reminders for Issues, Reviews, Forms"</div>
+                        <div class="evidence-item"><span class="votes">31 votes</span> - "In-Platform Notifications"</div>
+                    </div>
+                    <div class="tags">
+                        <span class="tag">Webhooks</span>
+                        <span class="tag api">Issues API</span>
+                        <span class="tag difficulty-medium">Medium Complexity</span>
+                    </div>
+                </div>
+
+                <div class="plugin-idea">
+                    <h3><span class="icon">📋</span> Extended Submittals Manager</h3>
+                    <div class="description">
+                        Enhanced submittals workflow: unlimited assignees (beyond 10 limit),
+                        smart stamps with auto-population, and flexible RFI-like workflows.
+                    </div>
+                    <div class="evidence">
+                        <div class="evidence-title">📊 Demand Evidence</div>
+                        <div class="evidence-item"><span class="votes">317 votes</span> - "Increase Submittals Assignee Limit Beyond 10"</div>
+                        <div class="evidence-item"><span class="votes">36 votes</span> - "Smart Field Auto-Population in Stamps"</div>
+                        <div class="evidence-item"><span class="votes">32 votes</span> - "RFI workflows as flexible as Submittal"</div>
+                    </div>
+                    <div class="tags">
+                        <span class="tag">Issues API</span>
+                        <span class="tag api">BIM360 API</span>
+                        <span class="tag difficulty-medium">Medium Complexity</span>
+                    </div>
+                </div>
+
+                <div class="plugin-idea">
+                    <h3><span class="icon">🔗</span> Cross-Project Issue Bridge</h3>
+                    <div class="description">
+                        Link and sync issues across multiple ACC projects: shared issue tracking,
+                        cross-project dashboards, and unified reporting.
+                    </div>
+                    <div class="evidence">
+                        <div class="evidence-title">📊 Demand Evidence</div>
+                        <div class="evidence-item"><span class="votes">33 votes</span> - "Bridge Issues between projects"</div>
+                        <div class="evidence-item"><span class="votes">49 votes</span> - "Multi Selection Custom Field for Issues"</div>
+                    </div>
+                    <div class="tags">
+                        <span class="tag">Issues API</span>
+                        <span class="tag api">Webhooks</span>
+                        <span class="tag difficulty-hard">High Complexity</span>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+
+        <!-- FORMS & FIELD DATA -->
+        <div class="plugin-category">
+            <div class="category-header">
+                <h2>📝 Forms & Field Data Solutions</h2>
+                <div class="meta">213 forum ideas • Field productivity area</div>
+            </div>
+            <div class="plugin-grid">
+
+                <div class="plugin-idea">
+                    <h3><span class="icon">📊</span> Advanced Form Builder</h3>
+                    <div class="description">
+                        Enhanced form capabilities: tables/matrices, expanded conditional logic,
+                        free-text fields per question, and date-time picker with hours/minutes.
+                    </div>
+                    <div class="evidence">
+                        <div class="evidence-title">📊 Demand Evidence</div>
+                        <div class="evidence-item"><span class="votes">66 votes</span> - "Free entry field for each response item"</div>
+                        <div class="evidence-item"><span class="votes">43 votes</span> - "Forms - Table or matrix"</div>
+                        <div class="evidence-item"><span class="votes">37 votes</span> - "Expand Conditional Logic Options"</div>
+                        <div class="evidence-item"><span class="votes">35 votes</span> - "Date and Time option with hours"</div>
+                    </div>
+                    <div class="tags">
+                        <span class="tag">Forms API</span>
+                        <span class="tag api">Build API</span>
+                        <span class="tag difficulty-medium">Medium Complexity</span>
+                    </div>
+                </div>
+
+                <div class="plugin-idea">
+                    <h3><span class="icon">📱</span> QR Code Scanner for Forms</h3>
+                    <div class="description">
+                        Scan QR/barcodes directly into form text fields, asset linking via QR scan,
+                        and on-site plan version tracking with QR codes.
+                    </div>
+                    <div class="evidence">
+                        <div class="evidence-title">📊 Demand Evidence</div>
+                        <div class="evidence-item"><span class="votes">23 votes</span> - "Scan QR Codes directly into form fields"</div>
+                        <div class="evidence-item"><span class="votes">22 votes</span> - "QR Code for On-Site Plan Version Tracking"</div>
+                    </div>
+                    <div class="tags">
+                        <span class="tag">Forms API</span>
+                        <span class="tag api">Mobile SDK</span>
+                        <span class="tag difficulty-easy">Low Complexity</span>
+                    </div>
+                </div>
+
+                <div class="plugin-idea">
+                    <h3><span class="icon">🔄</span> Form Workflow Templates</h3>
+                    <div class="description">
+                        Reusable workflow templates for forms: approval chains, auto-routing based
+                        on responses, and integration with Issues/RFIs.
+                    </div>
+                    <div class="evidence">
+                        <div class="evidence-title">📊 Demand Evidence</div>
+                        <div class="evidence-item"><span class="votes">38 votes</span> - "Add Workflow Templates to Forms"</div>
+                        <div class="evidence-item"><span class="votes">24 votes</span> - "Ability to Recover Deleted Form"</div>
+                    </div>
+                    <div class="tags">
+                        <span class="tag">Forms API</span>
+                        <span class="tag api">Webhooks</span>
+                        <span class="tag difficulty-medium">Medium Complexity</span>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+
+        <!-- SHEETS & 2D DRAWINGS -->
+        <div class="plugin-category">
+            <div class="category-header">
+                <h2>📐 Sheets & 2D Drawing Solutions</h2>
+                <div class="meta">146 forum ideas • Drawing management area</div>
+            </div>
+            <div class="plugin-grid">
+
+                <div class="plugin-idea">
+                    <h3><span class="icon">🔍</span> Sheet Comparison Exporter</h3>
+                    <div class="description">
+                        Export sheet comparison results: PDF reports of differences,
+                        overlay exports, and batch comparison across sheet sets.
+                    </div>
+                    <div class="evidence">
+                        <div class="evidence-title">📊 Demand Evidence</div>
+                        <div class="evidence-item"><span class="votes">27 votes</span> - "Compare 2D drawings - export report"</div>
+                        <div class="evidence-item"><span class="votes">17 votes</span> - "Export compared drawings"</div>
+                        <div class="evidence-item"><span class="votes">14 votes</span> - "Export Overlay"</div>
+                    </div>
+                    <div class="tags">
+                        <span class="tag">Viewer API</span>
+                        <span class="tag api">PDF Export</span>
+                        <span class="tag difficulty-medium">Medium Complexity</span>
+                    </div>
+                </div>
+
+                <div class="plugin-idea">
+                    <h3><span class="icon">🏷️</span> Smart Titleblock Automation</h3>
+                    <div class="description">
+                        Auto-update titleblocks during ACC review process: revision tracking,
+                        approval stamps, and date synchronization.
+                    </div>
+                    <div class="evidence">
+                        <div class="evidence-title">📊 Demand Evidence</div>
+                        <div class="evidence-item"><span class="votes">26 votes</span> - "Titleblock Automation in Review Process"</div>
+                        <div class="evidence-item"><span class="votes">33 votes</span> - "Display Revit Properties in ACC for 2D Sheets"</div>
+                    </div>
+                    <div class="tags">
+                        <span class="tag">Model Derivative API</span>
+                        <span class="tag api">Design Automation</span>
+                        <span class="tag difficulty-hard">High Complexity</span>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+
+        <!-- DEVELOPER/API TOOLS -->
+        <div class="plugin-category">
+            <div class="category-header">
+                <h2>🛠️ Developer & API Tools</h2>
+                <div class="meta">Based on 4,619 Stack Overflow questions • Developer pain points</div>
+            </div>
+            <div class="plugin-grid">
+
+                <div class="plugin-idea">
+                    <h3><span class="icon">🔐</span> OAuth Helper Library</h3>
+                    <div class="description">
+                        Simplified authentication library: 2-legged/3-legged OAuth helpers,
+                        token refresh handling, PKCE flow support, and error diagnostics.
+                    </div>
+                    <div class="evidence">
+                        <div class="evidence-title">📊 Developer Pain Points (45% unanswered)</div>
+                        <div class="evidence-item">✗ "Can you use 3-legged OAuth without web app?"</div>
+                        <div class="evidence-item">✗ "Does the refresh token expire?"</div>
+                        <div class="evidence-item">✗ "PKCE Auth Flow - how to correctly authenticate"</div>
+                    </div>
+                    <div class="tags">
+                        <span class="tag">Authentication API</span>
+                        <span class="tag api">SDK/Library</span>
+                        <span class="tag difficulty-medium">Medium Complexity</span>
+                    </div>
+                </div>
+
+                <div class="plugin-idea">
+                    <h3><span class="icon">🎨</span> Viewer Extension Kit</h3>
+                    <div class="description">
+                        Pre-built viewer extensions: material changer, multi-layer CAD markup,
+                        Three.js version upgrade path, and document browser customization.
+                    </div>
+                    <div class="evidence">
+                        <div class="evidence-title">📊 Developer Pain Points (40% unanswered)</div>
+                        <div class="evidence-item">✗ "Changing materials in Forge"</div>
+                        <div class="evidence-item">✗ "Multi-layered CAD files markup"</div>
+                        <div class="evidence-item">✗ "Upgrade Three.js version in viewer"</div>
+                    </div>
+                    <div class="tags">
+                        <span class="tag">Viewer API</span>
+                        <span class="tag api">Three.js</span>
+                        <span class="tag difficulty-medium">Medium Complexity</span>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+
+        <footer>
+            <p><strong>Generated by Autodesk Ecosystem Analytics</strong></p>
+            <p>Based on analysis of 2,594 ACC Forum Ideas and 4,619 Stack Overflow Questions</p>
+            <p>Report Date: January 31, 2026</p>
+        </footer>
+    </div>
+</body>
+</html>

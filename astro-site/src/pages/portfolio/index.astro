@@ -1,0 +1,253 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import '../../styles/global.css';
+
+const projects = [
+  {
+    title: "RAPS CLI",
+    category: "Open Source",
+    description: "The most comprehensive command-line interface for Autodesk Platform Services. 50+ commands covering all major APS APIs with cross-platform support.",
+    image: "/portfolio/raps-cli.png",
+    tags: ["Rust", "CLI", "APS", "Open Source"],
+    link: "https://github.com/dmytro-yemelianov/raps",
+    featured: true,
+    stats: {
+      commands: "50+",
+      apis: "12",
+      platforms: "6"
+    }
+  },
+  {
+    title: "MCP Server for APS",
+    category: "AI Integration",
+    description: "Model Context Protocol server enabling AI assistants like Claude and Cursor to directly interact with Autodesk Platform Services through natural language.",
+    image: "/portfolio/mcp-server.png",
+    tags: ["MCP", "AI", "Claude", "Cursor"],
+    link: "https://github.com/dmytro-yemelianov/raps",
+    featured: true,
+    stats: {
+      tools: "14",
+      integrations: "3",
+      operations: "All APS"
+    }
+  },
+  {
+    title: "Enterprise CI/CD Pipeline",
+    category: "Automation",
+    description: "End-to-end automation platform for a Fortune 500 AEC company. Automated CAD processing, model translation, and BIM 360 synchronization.",
+    image: "/portfolio/cicd-pipeline.png",
+    tags: ["CI/CD", "GitHub Actions", "Automation"],
+    link: "/case-studies#enterprise-deployment",
+    featured: true,
+    stats: {
+      timeSaved: "95%",
+      capacity: "10x",
+      roi: "6 months"
+    }
+  },
+  {
+    title: "ACC Integration Suite",
+    category: "Integration",
+    description: "Comprehensive Autodesk Construction Cloud integration connecting Issues, RFIs, Assets, and Submittals with enterprise ERP and PM systems.",
+    image: "/portfolio/acc-integration.png",
+    tags: ["ACC", "BIM 360", "API", "Enterprise"],
+    link: "/case-studies",
+    featured: false,
+    stats: {
+      modules: "6",
+      volume: "10K+/mo",
+      uptime: "99.9%"
+    }
+  },
+  {
+    title: "Design Automation Workflows",
+    category: "CAD Automation",
+    description: "Production Design Automation workflows for AutoCAD, Revit, and Inventor. Parametric model generation and batch processing at scale.",
+    image: "/portfolio/design-automation.png",
+    tags: ["Design Automation", "Revit", "AutoCAD", "Inventor"],
+    link: "/services",
+    featured: false,
+    stats: {
+      engines: "4",
+      drawings: "500+/day",
+      costReduction: "97%"
+    }
+  },
+  {
+    title: "PropTech MVP",
+    category: "Startup",
+    description: "6-week MVP for a PropTech startup featuring 3D model viewing and collaboration. Helped secure $1.2M seed funding.",
+    image: "/portfolio/startup-mvp.png",
+    tags: ["Startup", "MVP", "Forge Viewer", "React"],
+    link: "/case-studies#startup-mvp",
+    featured: false,
+    stats: {
+      timeline: "6 weeks",
+      funding: "$1.2M",
+      models: "20+"
+    }
+  }
+];
+
+const featuredProjects = projects.filter(p => p.featured);
+const otherProjects = projects.filter(p => !p.featured);
+---
+
+<BaseLayout 
+  title="Portfolio - APS Projects & Case Studies" 
+  description="Explore our portfolio of Autodesk Platform Services integrations, CLI tools, and automation solutions."
+>
+  <!-- Hero Section -->
+  <section class="py-16 bg-gradient-to-br from-gray-50 to-white">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div class="text-center max-w-3xl mx-auto">
+        <h1 class="text-4xl md:text-5xl font-bold mb-6">
+          <span class="gradient-text">Portfolio</span>
+        </h1>
+        <p class="text-xl text-gray-600 mb-8">
+          Production-tested APS integrations, CLI tools, and automation solutions delivering real business value.
+        </p>
+      </div>
+    </div>
+  </section>
+
+  <!-- Featured Projects -->
+  <section class="py-16">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <h2 class="text-2xl font-bold mb-8">Featured Projects</h2>
+      <div class="grid lg:grid-cols-3 gap-8">
+        {featuredProjects.map((project) => (
+          <a href={project.link} class="group">
+            <div class="card overflow-hidden hover:shadow-xl transition-all duration-300 h-full">
+              <div class="aspect-video bg-gradient-to-br from-raps-blue to-raps-purple flex items-center justify-center">
+                <span class="text-6xl opacity-50">🌼</span>
+              </div>
+              <div class="p-6">
+                <div class="flex items-center justify-between mb-3">
+                  <span class="text-sm font-medium text-raps-blue">{project.category}</span>
+                  <span class="text-xs text-gray-500">Featured</span>
+                </div>
+                <h3 class="text-xl font-bold mb-3 group-hover:text-raps-blue transition">
+                  {project.title}
+                </h3>
+                <p class="text-gray-600 mb-4 text-sm">
+                  {project.description}
+                </p>
+                <div class="flex flex-wrap gap-2 mb-4">
+                  {project.tags.map((tag) => (
+                    <span class="px-2 py-1 bg-gray-100 text-gray-600 text-xs rounded">
+                      {tag}
+                    </span>
+                  ))}
+                </div>
+                <div class="grid grid-cols-3 gap-2 pt-4 border-t border-gray-100">
+                  {Object.entries(project.stats).map(([key, value]) => (
+                    <div class="text-center">
+                      <div class="text-lg font-bold text-raps-blue">{value}</div>
+                      <div class="text-xs text-gray-500 capitalize">{key.replace(/([A-Z])/g, ' $1')}</div>
+                    </div>
+                  ))}
+                </div>
+              </div>
+            </div>
+          </a>
+        ))}
+      </div>
+    </div>
+  </section>
+
+  <!-- Other Projects -->
+  <section class="py-16 bg-gray-50">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <h2 class="text-2xl font-bold mb-8">More Projects</h2>
+      <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
+        {otherProjects.map((project) => (
+          <a href={project.link} class="group">
+            <div class="card p-6 hover:shadow-lg transition-all duration-300 h-full bg-white">
+              <div class="flex items-center justify-between mb-3">
+                <span class="text-sm font-medium text-raps-blue">{project.category}</span>
+              </div>
+              <h3 class="text-lg font-bold mb-2 group-hover:text-raps-blue transition">
+                {project.title}
+              </h3>
+              <p class="text-gray-600 mb-4 text-sm">
+                {project.description}
+              </p>
+              <div class="flex flex-wrap gap-2">
+                {project.tags.slice(0, 3).map((tag) => (
+                  <span class="px-2 py-1 bg-gray-100 text-gray-600 text-xs rounded">
+                    {tag}
+                  </span>
+                ))}
+              </div>
+            </div>
+          </a>
+        ))}
+      </div>
+    </div>
+  </section>
+
+  <!-- Case Studies Teaser -->
+  <section class="py-16">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div class="bg-gradient-to-r from-gray-900 to-gray-800 rounded-2xl p-8 md:p-12 text-white">
+        <div class="grid md:grid-cols-2 gap-8 items-center">
+          <div>
+            <h2 class="text-3xl font-bold mb-4">Detailed Case Studies</h2>
+            <p class="text-gray-300 mb-6">
+              See the full story behind our implementations: challenges, solutions, results, and ROI calculations.
+            </p>
+            <a href="/case-studies" class="inline-flex items-center text-white font-semibold hover:underline">
+              View All Case Studies →
+            </a>
+          </div>
+          <div class="grid grid-cols-2 gap-4">
+            <div class="bg-white/10 backdrop-blur rounded-lg p-4">
+              <div class="text-2xl font-bold mb-1">95%</div>
+              <div class="text-sm text-gray-300">Time Saved</div>
+            </div>
+            <div class="bg-white/10 backdrop-blur rounded-lg p-4">
+              <div class="text-2xl font-bold mb-1">10x</div>
+              <div class="text-sm text-gray-300">Capacity Increase</div>
+            </div>
+            <div class="bg-white/10 backdrop-blur rounded-lg p-4">
+              <div class="text-2xl font-bold mb-1">6mo</div>
+              <div class="text-sm text-gray-300">Avg ROI Payback</div>
+            </div>
+            <div class="bg-white/10 backdrop-blur rounded-lg p-4">
+              <div class="text-2xl font-bold mb-1">99%+</div>
+              <div class="text-sm text-gray-300">Success Rate</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Technologies -->
+  <section class="py-16 bg-gray-50">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <h2 class="text-2xl font-bold text-center mb-8">Technologies & Platforms</h2>
+      <div class="flex flex-wrap justify-center gap-4">
+        {["Rust", "TypeScript", "Python", "React", "Node.js", "GitHub Actions", "Azure DevOps", "Docker", "AWS", "Azure"].map((tech) => (
+          <span class="px-4 py-2 bg-white rounded-full text-gray-700 shadow-sm">
+            {tech}
+          </span>
+        ))}
+      </div>
+    </div>
+  </section>
+
+  <!-- CTA -->
+  <section class="py-16">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
+      <h2 class="text-3xl font-bold mb-4">Have a Similar Project?</h2>
+      <p class="text-gray-600 mb-8 max-w-2xl mx-auto">
+        Let's discuss how these solutions can be adapted for your specific needs.
+      </p>
+      <a href="/contact" class="btn btn-primary text-lg px-8 py-3">
+        Get in Touch →
+      </a>
+    </div>
+  </section>
+</BaseLayout>
