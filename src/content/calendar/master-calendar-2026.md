@@ -4,7 +4,7 @@ description: "Comprehensive calendar integrating all marketing activities, campa
 type: "master"
 quarter: "all"
 priority: "high"
-lastUpdated: 2026-01-08
+lastUpdated: 2026-03-01
 ---
 
 # RAPS Marketing Master Calendar 2026
@@ -67,12 +67,16 @@ This comprehensive calendar integrates all marketing activities, campaigns, and 
 | | Feb 24 | 📚 Content | eBook: "The APS Survival Guide" | Content | Writing |
 | | Feb 26 | 🌍 Community | Monthly Developer Meetup | DevRel | Virtual Event |
 | | Feb 28 | 📊 Analytics | February Performance Dashboard | Analytics | Reporting |
+| | Feb 28 | 🚀 Product | RAPS v4.15.0 Release (ASVS L2 security hardening, npm fix) | Engineering | Released |
 
 ### March 2026
 
 | Week | Date | Theme | Activity | Owner | Status |
 |------|------|-------|----------|--------|---------|
-| **W9** | Mar 1-7 | 🎯 DevCon | Early Bird Registration Opens | Conference | Announcement |
+| **W9** | Mar 1 | 🚀 Product | RAPS v4.16.0 Release (Pipeline v2, CI/CD integrations) | Engineering | Released |
+| | Mar 1 | 🚀 Product | GitHub Actions v1.0.0 Published (setup, pipeline, upload, translate) | Engineering | Released |
+| | Mar 1 | 🚀 Product | GitLab CI Templates Published (.raps-setup, .raps-pipeline, .raps-upload, .raps-translate) | Engineering | Released |
+| | Mar 1-7 | 🎯 DevCon | Early Bird Registration Opens | Conference | Announcement |
 | | Mar 2 | 📚 Content | Case Study: "GlobalTech Manufacturing Success" | Content | Publishing |
 | | Mar 4 | 🚀 Product | RAPS v4.15 Official Release | Product | Launch Prep |
 | | Mar 6 | 🌍 Community | "March Madness: APS Automation Challenge" | Community | Contest Launch |
@@ -326,6 +330,6 @@ This comprehensive calendar integrates all marketing activities, campaigns, and 
 
 ---
 
-**Last Updated**: January 2026
+**Last Updated**: March 2026
 **Next Review**: Monthly
 **Owner**: Marketing Team

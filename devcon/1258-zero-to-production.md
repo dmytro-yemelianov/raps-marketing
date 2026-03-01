@@ -49,6 +49,9 @@ Four ways to install, because developers are opinionated about package managers.
 **Part 2: Core Operations (15 min)**
 The operations you do every day, but faster. Create buckets with one command. Upload files with automatic chunking for large models. Start translations and actually *wait* for them to complete instead of polling manually. Navigate BIM 360/ACC project hierarchies without losing your mind.
 
+**Part 2.5: Pipeline v2 & CI/CD (NEW)**
+The glue that ties it all together. Define multi-step APS workflows in YAML with retry policies, timeouts, conditionals, parallel execution, and for-each loops. Then run them automatically in GitHub Actions or GitLab CI with official RAPS templates -- four composite actions for GitHub, four include templates for GitLab. Zero to automated deployment pipeline in under 5 minutes.
+
 **Part 3: AI Integration (10 min)**
 The part that makes people's eyes light up. Connect the CLI to Claude, Cursor, or any MCP-compatible AI assistant. Ask questions in English, get operations executed. "What buckets do I have?" becomes a conversation, not a curl command.
 
@@ -71,7 +74,7 @@ That Tuesday, I started building raps.
 
 The idea was simple: what if every APS operation was a single command? What if the CLI handled authentication automatically, remembered my tokens, and let me focus on the actual problem?
 
-18 months later, we have **150+ commands covering 15 APS APIs**, plus bulk account administration, Python bindings, and AI assistant integration. And it's open source, because the APS community deserves better tooling.
+18 months later, we have **55 top-level commands (95+ total operations) covering 15 APS APIs**, plus bulk account administration, Python bindings, and AI assistant integration. And it's open source, because the APS community deserves better tooling.
 
 ## APS Components Used
 
@@ -169,7 +172,7 @@ cargo install raps
 
 ```bash
 raps --version
-# raps 4.3.0
+# raps 4.14.0
 ```
 
 If you see a version number, we're in business.
@@ -350,6 +353,83 @@ raps folder list b.xyz789-project-id urn:folder:root
 raps item versions b.xyz789-project-id urn:item:12345
 ```
 
+## Part 2.5: Pipeline v2 & CI/CD (The Automation Multiplier)
+
+You've seen individual commands. Now let's chain them into production workflows that run themselves.
+
+### Pipeline v2: YAML-Defined Workflows
+
+Pipeline v2 lets you define multi-step APS workflows in YAML with enterprise-grade features:
+
+```yaml
+name: upload-translate-export
+version: 2
+
+steps:
+  - name: upload
+    command: object upload my-bucket model.rvt
+    retry:
+      max-attempts: 3
+      backoff: exponential
+    timeout: 10m
+
+  - name: translate
+    command: translate start ${steps.upload.outputs.urn} --format svf2 --wait
+    timeout: 30m
+    if: steps.upload.status == 'success'
+
+  - name: export
+    command: translate properties ${steps.translate.outputs.urn} --format csv
+    unless: steps.translate.status == 'failed'
+```
+
+Retry policies, timeouts, conditionals (`if`/`unless`), parallel steps, and `for-each` loops -- all in declarative YAML. No more brittle bash scripts with nested if-else chains.
+
+```bash
+# Validate before running
+raps pipeline validate upload-translate-export.yaml
+
+# Run it
+raps pipeline run upload-translate-export.yaml
+```
+
+### CI/CD: GitHub Actions + GitLab CI
+
+Now take that pipeline and run it on every push. RAPS ships official integrations for both platforms:
+
+**GitHub Actions** -- four composite actions:
+
+```yaml
+# .github/workflows/aps.yml
+- uses: raps-actions/setup@v1
+  with:
+    version: '4.16.0'
+    client-id: ${{ secrets.APS_CLIENT_ID }}
+    client-secret: ${{ secrets.APS_CLIENT_SECRET }}
+
+- uses: raps-actions/pipeline@v1
+  with:
+    file: pipelines/upload-translate-export.yaml
+```
+
+**GitLab CI** -- four include templates:
+
+```yaml
+# .gitlab-ci.yml
+include:
+  - project: 'raps/raps-ci-templates'
+    file: '/templates/.raps-setup.yml'
+  - project: 'raps/raps-ci-templates'
+    file: '/templates/.raps-pipeline.yml'
+
+run-pipeline:
+  extends: .raps-pipeline
+  variables:
+    PIPELINE_FILE: pipelines/upload-translate-export.yaml
+```
+
+This is the "zero to production" promise fulfilled. Install, configure, define a pipeline, wire it into CI/CD, and every model change automatically flows through your APS workflow.
+
 ## Part 3: AI Integration (The Part Where Things Get Weird)
 
 ![Speedrun Timer](/devcon/images/1258-zero-to-production-speedrun.png)
@@ -364,7 +444,7 @@ Then I actually used it. Now I can't go back.
 raps serve
 ```
 
-That's it. The CLI is now an MCP server, exposing **35 tools** for AI assistants to use.
+That's it. The CLI is now an MCP server, exposing **101 tools** for AI assistants to use.
 
 ### Connect Claude Desktop
 
@@ -406,7 +486,7 @@ For the developers who live in Cursor, add `.cursor/mcp.json` to your project:
 }
 ```
 
-### 35 MCP Tools Available
+### 101 MCP Tools Available
 
 The MCP server exposes comprehensive APS operations:
 
@@ -459,12 +539,14 @@ raps is one answer. It's the answer I wish existed when I spent three hours debu
 ## Key Takeaways
 
 1. **CLI beats clicking** for anything you do more than twice
-2. **raps has 150+ commands** across 15 APIs—probably covers what you need
+2. **raps has 55 top-level commands (95+ total operations)** across 15 APIs -- probably covers what you need
 3. **Pick your poison for install**: npm, pip, brew, scoop, cargo, or curl-bash
 4. **Profiles save your sanity** when juggling staging vs prod (you will forget which one you're on otherwise)
-5. **MCP is real**—35 tools, works today, not a demo
-6. **Python bindings** exist if you prefer scripting over shell commands
-7. **Open source** means you can fix bugs without waiting on a vendor ticket
+5. **Pipeline v2 turns commands into workflows** -- retry, timeout, conditionals, parallel, for-each, all in YAML
+6. **Official CI/CD integrations** for GitHub Actions and GitLab CI mean your APS workflows run on every push
+7. **MCP is real** -- 101 tools, works today, not a demo
+8. **Python bindings** exist if you prefer scripting over shell commands
+9. **Open source** means you can fix bugs without waiting on a vendor ticket
 
 ## Resources
 
