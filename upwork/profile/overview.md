@@ -40,11 +40,13 @@ I specialize in building production-ready integrations with the Autodesk Platfor
 
 🛠️ MY EXPERTISE
 
-✅ Creator of RAPS (Rust APS CLI) - the most comprehensive open-source CLI for Autodesk Platform Services with 14+ MCP tools for AI assistant integration
+✅ Creator of RAPS (Rust APS CLI) - the most comprehensive open-source CLI for Autodesk Platform Services with 101 MCP tools for AI assistant integration
 
 ✅ Expert in all APS API domains validated against official OpenAPI specifications
 
 ✅ Production-grade Rust development with zero-runtime-dependency binaries
+
+✅ Distributed Systems (Redis, Fly.io, Cloudflare Workers)
 
 ✅ CI/CD pipeline integration (GitHub Actions, Azure DevOps, Jenkins)
 

@@ -52,6 +52,9 @@ The operations you do every day, but faster. Create buckets with one command. Up
 **Part 2.5: Pipeline v2 & CI/CD (NEW)**
 The glue that ties it all together. Define multi-step APS workflows in YAML with retry policies, timeouts, conditionals, parallel execution, and for-each loops. Then run them automatically in GitHub Actions or GitLab CI with official RAPS templates -- four composite actions for GitHub, four include templates for GitLab. Zero to automated deployment pipeline in under 5 minutes.
 
+**Part 2.7: Distributed Deployment (NEW)**
+Scale beyond a single machine. Deploy the full orchestration stack with Docker Compose — Redis-backed job queue, serverless dispatch to Fly.io, and a Cloudflare Workers webhook gateway at the edge. One `docker compose up` gives you 4 worker replicas, monitoring, and automatic scaling to zero.
+
 **Part 3: AI Integration (10 min)**
 The part that makes people's eyes light up. Connect the CLI to Claude, Cursor, or any MCP-compatible AI assistant. Ask questions in English, get operations executed. "What buckets do I have?" becomes a conversation, not a curl command.
 
