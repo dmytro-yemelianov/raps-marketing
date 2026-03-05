@@ -67,7 +67,7 @@ Creator of RAPS - the most comprehensive open-source CLI for Autodesk Platform S
 ## Portfolio Highlights
 
 ### 🌼 RAPS CLI
-Comprehensive command-line interface for APS with 50+ commands, MCP server for AI integration, and multi-platform distribution.
+Comprehensive command-line interface for APS with 100+ commands, 111 MCP tools for AI integration, and multi-platform distribution.
 
 ### 🏗️ Enterprise Deployment
 Full automation platform for AEC firm: 10x processing capacity, 95% time savings, 6-month ROI payback.

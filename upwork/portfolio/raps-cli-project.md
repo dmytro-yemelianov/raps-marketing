@@ -60,7 +60,7 @@ RAPS (Rust Autodesk Platform Services) is a production-grade CLI tool I created 
 • Result downloads (OBJ, FBX, RCS)
 
 🤖 MCP Server (AI Integration)
-• 14 MCP tools for AI assistant integration
+• 111 MCP tools for AI assistant integration
 • Natural language APS operations via Claude, Cursor, etc.
 • Direct access to all major API functions
 ```

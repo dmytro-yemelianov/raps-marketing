@@ -14,7 +14,7 @@ Your need for a [describe their CLI need] caught my attention - this is exactly 
 
 **WHY I'M THE RIGHT FIT**
 
-I'm the creator of RAPS, a production-grade CLI written in Rust with 50+ commands, used by developers worldwide. This gives me deep expertise in:
+I'm the creator of RAPS, a production-grade CLI written in Rust with 100+ commands, used by developers worldwide. This gives me deep expertise in:
 
 • Command structure and argument parsing
 • Multiple output formats (JSON, YAML, CSV, table)

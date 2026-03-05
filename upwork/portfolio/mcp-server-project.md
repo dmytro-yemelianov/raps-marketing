@@ -21,7 +21,7 @@ Developers spend hours writing code to interact with APS APIs. Even experienced 
 💡 THE SOLUTION
 An MCP server that exposes APS functionality as tools that AI assistants can call directly. Instead of writing code, users simply describe what they want in natural language.
 
-🔧 AVAILABLE TOOLS (14 MCP Tools)
+🔧 AVAILABLE TOOLS (111 MCP Tools)
 
 Authentication:
 • auth_test - Validate credentials
