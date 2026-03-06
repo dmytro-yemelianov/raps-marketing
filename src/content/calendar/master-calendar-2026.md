@@ -81,6 +81,8 @@ This comprehensive calendar integrates all marketing activities, campaigns, and 
 | | Mar 2 | 🚀 Product | RAPS v5.1.0 Release (Device Code Auth, Headless OAuth Proxy) | Engineering | Released |
 | | Mar 2 | 📚 Content | Case Study: "GlobalTech Manufacturing Success" | Content | Publishing |
 | | Mar 4 | 🚀 Product | RAPS v4.15 Official Release | Product | Launch Prep |
+| | Mar 6 | 🚀 Product | RAPS v5.2.0 Release (Init Wizard, Status Dashboard, rapscli-api Worker) | Engineering | Released |
+| | Mar 6 | 🚀 Product | RAPS v5.3.0 Release (Test Coverage Suite, Interactive Dashboard, RFI/DA/Admin Scenarios) | Engineering | Released |
 | | Mar 6 | 🌍 Community | "March Madness: APS Automation Challenge" | Community | Contest Launch |
 | **W10** | Mar 8-14 | 💼 Enterprise | Enterprise Summit (Virtual) | Sales | Event Planning |
 | | Mar 10 | 📚 Content | Blog: "The Hidden Costs of DIY APS" | Content | Publishing |
