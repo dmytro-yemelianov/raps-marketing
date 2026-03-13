@@ -87,6 +87,7 @@ This comprehensive calendar integrates all marketing activities, campaigns, and 
 | **W10** | Mar 8-14 | 💼 Enterprise | Enterprise Summit (Virtual) | Sales | Event Planning |
 | | Mar 10 | 📚 Content | Blog: "The Hidden Costs of DIY APS" | Content | Publishing |
 | | Mar 12 | 🤖 MCP | AI Assistant Beta Program | Product | Recruiting |
+| | Mar 13 | 🚀 Product | RAPS v5.6.2 Release (Company CRUD, Account User CRUD, improved user list tables, auth expiry fix) | Engineering | Released |
 | | Mar 14 | 🌍 Community | Pi Day: "3.14x Faster with RAPS" | Social | Campaign |
 | **W11** | Mar 15-21 | 🎯 DevCon | Session Preparation Sprint | Speakers | Content Dev |
 | | Mar 17 | 📚 Content | Video Series: "Enterprise APS Patterns" | Video | Production |

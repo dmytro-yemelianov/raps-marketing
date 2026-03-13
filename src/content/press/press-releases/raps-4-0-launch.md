@@ -77,14 +77,14 @@ RAPS is built as a Rust workspace with 10 crates:
 - **raps-admin**: Account Admin API client
 - **raps-reality**: Reality Capture API client
 
-### Key Features in 4.14.0
+### Key Features in 4.x
 
 - **API Health Tracking**: Real-time monitoring of APS endpoint health
 - **Streaming Bucket Listing**: Per-region bucket listing with `tokio::select!`
 - **Headless Auth Detection**: Auto-switches to device code flow in headless environments
 - **PKCE Support**: Proof Key for Code Exchange for enhanced OAuth security
 - **Unix Pipe Support**: Read from stdin, write to stdout for shell integration
-- **MCP Server**: 101 tools for AI assistant integration
+- **MCP Server**: 111 tools for AI assistant integration
 - **TUI Dashboard**: 7 tabs with 33 views for interactive monitoring
 
 ### What's New in v4.16
