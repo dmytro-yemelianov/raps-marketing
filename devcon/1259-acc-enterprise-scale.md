@@ -381,11 +381,60 @@ raps pipeline sample
 
 This is how you build reliable automation that runs unattended—overnight batch jobs, scheduled reports, triggered workflows.
 
-## Pattern 8: Bulk User Management (NEW in v4.0)
+## Pattern 8: Bulk User Management (NEW in v4.0, enhanced in v5.6)
 
 ![Bulk Operations](/devcon/images/1259-acc-enterprise-scale-bulk-ops.png)
 
 This one came from real pain. A client called me because they'd spent two full days adding a new hire to their 180 projects. Click, search, assign, repeat. Their IT guy was ready to quit.
+
+Since v5.6, this pattern has expanded well beyond project-level operations. You now get **full company CRUD**, **account-level user management**, **smart table output with company name resolution**, and **email-based user lookups** across both ACC and BIM 360 accounts.
+
+### Company Management (v5.6+)
+
+Before you can assign users to companies, you need to manage the companies themselves:
+
+```bash
+# Create a new company in your account
+raps admin company create "$ACCOUNT_ID" --name "Acme Construction" \
+  --trade "General Contractor"
+
+# Search for companies by name
+raps admin company search "$ACCOUNT_ID" --name "Acme"
+
+# Get company details
+raps admin company get "$ACCOUNT_ID" "$COMPANY_ID"
+
+# Update company info
+raps admin company update "$ACCOUNT_ID" "$COMPANY_ID" \
+  --name "Acme Construction LLC"
+```
+
+### Account-Level User CRUD (v5.6+)
+
+Manage users at the account level — invite them, look them up by email, update their company or status:
+
+```bash
+# Invite a new user to your account
+raps admin user create "$ACCOUNT_ID" "new.hire@company.com" \
+  --company-id "$COMPANY_ID"
+
+# Get user details (works with email, not just user ID)
+raps admin user get "$ACCOUNT_ID" "new.hire@company.com"
+
+# Update a user's company assignment or status
+raps admin user update-account "$ACCOUNT_ID" "user@company.com" \
+  --company-id "$NEW_COMPANY_ID" --status active
+```
+
+### Smart Table Output (v5.6+)
+
+The `user list` command now resolves company UUIDs to human-readable names, shows the added_on date, displays a status summary, and adapts its layout based on whether role data is available:
+
+```bash
+# List users with company names resolved automatically
+raps admin user list "$ACCOUNT_ID"
+# Shows: Name, Email, Company Name, Status, Added On, Roles (if available)
+```
 
 ### The Problem
 

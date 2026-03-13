@@ -1,5 +1,5 @@
 ---
-title: "RAPS CLI Launches MCP Server with 101 Tools for AI-Powered APS Automation"
+title: "RAPS CLI Launches MCP Server with 111 Tools for AI-Powered APS Automation"
 description: "Open-source RAPS CLI adds Model Context Protocol server, enabling AI assistants to interact with Autodesk Platform Services"
 type: "release"
 publishDate: 2026-06-10
@@ -8,7 +8,7 @@ status: "draft"
 
 # FOR IMMEDIATE RELEASE
 
-## RAPS CLI Launches MCP Server with 101 Tools for AI-Powered APS Automation
+## RAPS CLI Launches MCP Server with 111 Tools for AI-Powered APS Automation
 
 *Open-source CLI tool adds Model Context Protocol support, enabling AI assistants to perform Autodesk Platform Services operations*
 
@@ -17,12 +17,12 @@ status: "draft"
 **Version Information**
 - **RAPS Version**: 4.14.0
 - **APS API Coverage**: Data Management v1, Model Derivative v2, OSS v2, Authentication v2, Construction Cloud v1, Design Automation v3
-- **MCP Tools**: 101 tools across all APS services
+- **MCP Tools**: 111 tools across all APS services
 - **License**: Apache-2.0 (open source)
 
 ---
 
-RAPS, the open-source Rust-based CLI for Autodesk Platform Services, has added a Model Context Protocol (MCP) server with 101 tools, allowing AI assistants like Claude to interact with APS APIs through natural language.
+RAPS, the open-source Rust-based CLI for Autodesk Platform Services, has added a Model Context Protocol (MCP) server with 111 tools, allowing AI assistants like Claude to interact with APS APIs through natural language.
 
 ### What the MCP Server Does
 
@@ -34,7 +34,7 @@ The MCP server exposes RAPS CLI capabilities as structured tools that AI assista
 - "Start an SVF2 translation for this URN" - initiates Model Derivative job
 - "Show my current auth status" - checks token validity
 
-### 101 Tools Across APS Services
+### 111 Tools Across APS Services
 
 The MCP server provides tools for:
 
@@ -45,7 +45,7 @@ The MCP server provides tools for:
 - **Design Automation**: Engine listing, app bundle and activity management, work item execution
 - **Webhooks**: Create, list, delete, test webhook subscriptions
 - **Construction Cloud**: Asset, submittal, and checklist management
-- **Account Admin**: User and project administration
+- **Account Admin**: Company CRUD, user invite/get/update, project administration
 - **Configuration**: Profile and context management
 - **Pipelines**: YAML pipeline validation and execution
 
@@ -76,7 +76,7 @@ Configure your AI assistant to connect to the MCP server via stdio transport.
 
 ### About RAPS
 
-RAPS is an open-source CLI tool for Autodesk Platform Services, written in Rust. It provides 60+ commands covering authentication, data management, object storage, model translation, design automation, webhooks, and more. RAPS is developed by Dmytro Yemelianov and released under the Apache-2.0 license.
+RAPS is an open-source CLI tool for Autodesk Platform Services, written in Rust. It provides 60+ top-level commands (120+ total operations) covering authentication, data management, object storage, model translation, design automation, webhooks, account administration (company management, user CRUD, project operations), and more. RAPS is developed by Dmytro Yemelianov and released under the Apache-2.0 license.
 
 - **Website**: [rapscli.xyz](https://rapscli.xyz)
 - **Source Code**: [github.com/dmytro-yemelianov/raps](https://github.com/dmytro-yemelianov/raps)
