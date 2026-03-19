@@ -1,6 +1,6 @@
 # RAPS Marketing
 
-Marketing site, research reports, DevCon materials, and pitch collateral for [RAPS CLI](https://github.com/dmytro-yemelianov/raps).
+Marketing site, research reports, DevCon materials, and pitch collateral for [Rapsody](https://rapscli.xyz) — the commercial APS platform.
 
 ## Directory Structure
 
