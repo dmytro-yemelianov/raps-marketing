@@ -1,43 +1,73 @@
-# Astro Starter Kit: Minimal
+# RAPS Marketing
 
-```sh
-npm create astro@latest -- --template minimal
+Marketing site, research reports, DevCon materials, and pitch collateral for [RAPS CLI](https://github.com/dmytro-yemelianov/raps).
+
+## Directory Structure
+
+```
+raps-marketing/
+├── src/                        # Astro site source
+│   ├── components/             # React/Astro components (PainPointMatrix, etc.)
+│   ├── content/                # Content collections (articles, guides, cheatsheets,
+│   │                             campaigns, analytics, press, recipes, references)
+│   ├── layouts/                # Astro page layouts
+│   ├── pages/                  # Routes: articles, guides, tools, pdfs, devcon, recipes
+│   └── styles/                 # Global CSS
+├── public/                     # Static assets (PDFs, images, favicon)
+├── devcon/                     # DevCon CFP drafts and images
+│   ├── 1257-ai-pair-assistant.md
+│   ├── 1258-zero-to-production.md
+│   ├── 1259-acc-enterprise-scale.md
+│   └── cfp2026.md / cfp_good.md
+├── pitch/                      # Investor/partner pitch materials
+├── forums-scraper/             # Autodesk & ACC forum scrapers and analysis
+│   ├── acc_ideas_scraper_v2.py # ACC Ideas Forum scraper (4,295 ideas)
+│   ├── autodesk_forum_api.py   # Forum API client
+│   └── *.md / *.html           # Analysis reports and guides
+├── reports/                    # Market research outputs
+│   ├── forums_analysis_2026-02.md
+│   ├── marketplace_analysis_2026-02.md
+│   ├── stackoverflow_analysis_2026-02.md
+│   └── *.json / *.html         # Data files and rendered reports
+├── upwork/                     # Freelancer collateral and proposals
+│   ├── collateral/             # Capability deck, FAQ, social proof
+│   ├── portfolio/
+│   └── proposals/
+├── scripts/                    # Build helpers (clean-astro-cache.mjs)
+├── astro.config.mjs            # Astro configuration
+├── tailwind.config.mjs         # Tailwind CSS with RAPS brand colors
+└── package.json                # Node dependencies
 ```
 
-> 🧑‍🚀 **Seasoned astronaut?** Delete this file. Have fun!
+## Development
 
-## 🚀 Project Structure
+Requires Node.js 18+.
 
-Inside of your Astro project, you'll see the following folders and files:
-
-```text
-/
-├── public/
-├── src/
-│   └── pages/
-│       └── index.astro
-└── package.json
+```bash
+npm install
+npm run dev       # Start dev server at http://localhost:4321
+npm run build     # Build to ./dist/
+npm run preview   # Preview production build
 ```
 
-Astro looks for `.astro` or `.md` files in the `src/pages/` directory. Each page is exposed as a route based on its file name.
+## Content Editing
 
-There's nothing special about `src/components/`, but that's where we like to put any Astro/React/Vue/Svelte/Preact components.
+- **Articles/Guides**: Add `.md` or `.mdx` files to `src/content/articles/` or `src/content/guides/` with frontmatter (title, description, publishDate, tags).
+- **Interactive tools**: React components in `src/components/`, pages in `src/pages/tools/`.
+- **DevCon CFPs**: Markdown files in `devcon/`.
+- **Research**: Run scrapers in `forums-scraper/`, output lands in `reports/`.
 
-Any static assets, like images, can be placed in the `public/` directory.
+## Key Data Points (Feb 2026 Research)
 
-## 🧞 Commands
+| Source | Records | Insight |
+|--------|---------|---------|
+| ACC Ideas Forum | 4,295 ideas | 1.4% implementation rate |
+| StackOverflow | 4,582 questions | 13% unanswered |
+| Autodesk Marketplace | 259 ACC apps | Zero CLI or MCP tools |
 
-All commands are run from the root of the project, from a terminal:
+## Deployment
 
-| Command                   | Action                                           |
-| :------------------------ | :----------------------------------------------- |
-| `npm install`             | Installs dependencies                            |
-| `npm run dev`             | Starts local dev server at `localhost:4321`      |
-| `npm run build`           | Build your production site to `./dist/`          |
-| `npm run preview`         | Preview your build locally, before deploying     |
-| `npm run astro ...`       | Run CLI commands like `astro add`, `astro check` |
-| `npm run astro -- --help` | Get help using the Astro CLI                     |
-
-## 👀 Want to learn more?
-
-Feel free to check [our documentation](https://docs.astro.build) or jump into our [Discord server](https://astro.build/chat).
+```bash
+npm run build     # Output in dist/
+vercel --prod     # Or deploy dist/ to Netlify/GitHub Pages
+```
