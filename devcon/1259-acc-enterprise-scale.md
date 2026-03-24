@@ -29,87 +29,381 @@
 
 ## Learning Objectives
 
-1. Understand the challenges of managing ACC at enterprise scale (100+ projects, 10,000+ files)
-2. Learn automation patterns for bulk operations: issues, submittals, checklists, and file management
-3. Discover how to integrate ACC workflows with enterprise systems using scriptable CLI tools
+1. Identify which ACC operations outgrow the UI at enterprise scale and benefit from programmatic automation
+2. Implement strategies for bulk project creation, cross-hub data sync, and permission audits across thousands of users
+3. Design resumable, idempotent automation that survives network failures and API rate limits
 
 ![ACC Enterprise Scale Hero](/devcon/images/1259-acc-enterprise-scale-hero.png)
 
 ## Abstract
 
-There's a moment in every enterprise ACC deployment when someone realizes the math doesn't work.
+Enterprise delivery teams face challenges that outgrow the UI: bulk project creation, cross-hub data sync, and permission audits across thousands of users. This session dissects real-world strategies for high-scale ACC integrations.
 
-You have 200 active projects. Each project needs issues tracked, submittals managed, checklists completed, RFIs answered. The project management team has 8 people. Even if each person spends just 15 minutes per project per week on administrative tasks, that's 500 hours of clicking—every week.
+Not theory. Not "here's the API endpoint." Real strategies from automating accounts with 200+ projects and 10,000+ users — including the failures that shaped the approach.
 
-This session is about breaking that math.
+We'll cover three problems that define enterprise ACC:
 
-We'll demonstrate automation patterns that transform hours of manual work into seconds of scripted operations. Not theoretical patterns—real commands you can run today. Creating 50 issues across 10 projects? One script. Exporting all open RFIs to a CSV for your Monday meeting? One command. Deploying standardized checklists from templates? Done before your coffee gets cold.
+**Problem 1: Bulk Project Creation.** You've won a program of 40 projects. Each needs the same folder structure, the same issue types, the same checklist templates, the same user matrix. The ACC UI gives you a "Create Project" button that handles one at a time. We'll show how project templates, scripted provisioning, and idempotent upserts turn a two-week setup into a two-hour pipeline.
 
-The tools are open source. The patterns are proven. The only question is: how much time are you willing to save?
+**Problem 2: Cross-Hub Data Sync.** Your organization has a BIM 360 account with 5 years of history and a new ACC account. Moving 500 users, their roles, and their permissions across hubs isn't a migration — it's a reconciliation. We'll walk through the strategy: export from one, transform, import to the other, handle conflicts, and verify.
+
+**Problem 3: Permission Audits at Scale.** "Who has access to what?" sounds simple until you have 3,000 users across 200 projects, each with different folder-level permissions. Compliance needs an answer by Friday. We'll show how to export the entire permission matrix to CSV, diff it against your approved access list, and remediate discrepancies automatically.
 
 ## The Enterprise ACC Reality
 
 Let me paint a picture that might feel familiar.
 
-**The Setup:** A large general contractor with 200+ active construction projects. ACC is their platform of choice—they've bet big on the Autodesk ecosystem. Documents flow through ACC. Issues get tracked in ACC. Submittals, RFIs, checklists—all ACC.
+**The Setup:** A large general contractor with 200+ active construction projects. ACC is their platform of choice — they've bet big on the Autodesk ecosystem. Documents flow through ACC. Issues get tracked in ACC. Submittals, RFIs, checklists — all ACC.
 
-**The Problem:** Scale breaks everything.
+**The Problem:** At this scale, manual processes can't keep up.
 
-- The BIM team uploads 500 models per month. Each needs translation for viewing.
-- The quality team creates 2,000 checklists per month from standardized templates.
-- The project controls group tracks 10,000+ open issues across all projects.
-- Leadership wants weekly reports aggregating data across the entire portfolio.
+- 8 coordinators spend 20 hours/week on ACC administration
+- New project setup takes 2-3 days of manual configuration
+- User onboarding across 127 projects takes 6-10 hours per person
+- The compliance team's quarterly permission audit takes two full weeks
+- Nobody knows for sure which BIM 360 projects have been migrated to ACC and which haven't
 
-**The Current State:** A small army of coordinators clicking through the ACC UI, copying data into spreadsheets, manually creating issues one at a time. It's unsustainable. People burn out. Data gets stale. Reports are always "as of last Tuesday."
+**The Math:**
+- 160 admin hours/week x 50 weeks = 8,000 hours/year
+- At fully-loaded cost of $75/hour = **$600,000/year in administrative overhead**
 
-**The Question:** What if we could automate 80% of this?
+**After automation:** Same work done in 10% of the time. **$540,000/year saved.** The tooling is free (open source). The implementation is measured in days, not months.
 
 ## APS Components Used
 
+- ACC Account Admin API v2 (Projects, Users, Companies, Permissions)
+- BIM 360 HQ v1 API (legacy accounts)
 - Data Management API (Hubs, Projects, Folders, Items)
-- ACC Issues API (Issues, Comments, Attachments, Transitions)
+- ACC Issues API
 - ACC Submittals API
 - ACC Checklists API
 - ACC RFIs API
 - ACC Assets API
-- **ACC Account Admin API (v4.0+)** - Bulk user management, folder permissions
 - OSS API (Bulk uploads)
 - Model Derivative API (Batch translations)
 
 ## Autodesk Products
 
 - Autodesk Construction Cloud (ACC)
-- BIM 360 (legacy migration scenarios)
+- BIM 360 (legacy migration and mixed-account scenarios)
 
-## Pattern 1: Issue Management at Scale
+## Strategy 1: Bulk Project Creation from Templates
 
-Issues are the heartbeat of construction project management. Clashes identified, RFIs needed, defects logged—they all become issues. At enterprise scale, you might have tens of thousands of open issues across your portfolio.
+### The Problem
 
-### The Commands
+You've won a program of work: 40 healthcare facilities, each with the same delivery methodology, same folder structure, same issue categories, same quality checklists. The ACC UI offers "Create from Template" — one project at a time, each taking 5-10 minutes of clicking through configuration screens.
+
+40 projects x 10 minutes = 6.5 hours. Plus another day to add users to each project with the right roles. Plus another day to deploy checklists. That's a week before anyone does actual construction management.
+
+### The Strategy
+
+**Step 1: Define the template once**
 
 ```bash
-# List all issues in a project
-raps issue list abc123-project-id
-# Returns: ID, title, status, assignee, due date, created date
+# List available project templates
+raps template list "$ACCOUNT_ID"
 
-# Filter to just open issues
-raps issue list abc123-project-id --status open
-
-# Create an issue programmatically
-raps issue create abc123-project-id \
-  --title "Structural clash at Level 3 - Grid C7" \
-  --description "HVAC duct conflicts with beam B-12. Coordination required."
+# Inspect a template's configuration
+raps template info "$ACCOUNT_ID" "$TEMPLATE_ID"
 ```
 
-### The Real-World Use Case
+**Step 2: Script the provisioning**
 
-**Scenario:** Your clash detection software identifies 47 clashes in the latest model coordination. Instead of manually creating 47 issues in the ACC UI (click, type, click, type, repeat), you export the clash report to CSV and run a script:
+```yaml
+# project-matrix.yaml — defines 40 projects
+name: "Healthcare Program 2026"
+version: 2
+
+variables:
+  account_id: "01fb1602-2ec0-4b05-bf6e-39dc70b3ae05"
+  template_id: "healthcare-standard-v3"
+
+steps:
+  - name: create-projects
+    command: project create
+    for_each:
+      items_from: projects.csv  # facility_name, city, state, start_date
+    args:
+      account_id: ${account_id}
+      name: "${item.facility_name} - ${item.city}"
+      template_id: ${template_id}
+      start_date: ${item.start_date}
+    retry:
+      max_attempts: 3
+      backoff: exponential
+
+  - name: add-users
+    command: admin user add
+    for_each:
+      items_from: user-matrix.csv  # email, role
+    args:
+      account_id: ${account_id}
+      email: ${item.email}
+      role: ${item.role}
+      filter: "^Healthcare Program"
+    if: steps.create-projects.status == 'success'
+```
 
 ```bash
-#!/bin/bash
-PROJECT_ID="abc123-project-id"
+# Dry-run first — always
+raps pipeline run project-matrix.yaml --dry-run
 
-while IFS=, read -r title description location; do
+# Execute
+raps pipeline run project-matrix.yaml
+```
+
+**Step 3: Verify**
+
+```bash
+# List projects matching the program
+raps admin project list "$ACCOUNT_ID" --filter "^Healthcare Program"
+
+# Verify user counts per project
+raps admin project list "$ACCOUNT_ID" --filter "^Healthcare Program" --output json | \
+  jq '.[] | {name: .name, members: .member_count}'
+```
+
+### Why This Works at Scale
+
+**Idempotent upserts:** If a project already exists with the same name, the operation skips it. You can re-run the pipeline after a failure without creating duplicates.
+
+**Resumable state:** RAPS persists operation state to disk. If your laptop loses WiFi at project 23 of 40, `raps admin operation resume` picks up at project 24.
+
+**Template drift protection:** By scripting from a template ID, every project gets the same configuration. No manual deviation. No "I forgot to add the quality checklist template to this one."
+
+### Time Saved
+
+Manual: 5 days (project creation + user assignment + verification)
+Automated: 2 hours (write the matrix, dry-run, execute, verify)
+
+## Strategy 2: Cross-Hub Data Sync (BIM 360 → ACC Migration)
+
+### The Problem
+
+Your organization adopted BIM 360 in 2019. You have 5 years of projects, 500 users, and a complex permission matrix. Now you're migrating to ACC. Autodesk's built-in migration handles projects and documents, but user provisioning and permissions? That's on you.
+
+The challenge isn't moving data. It's **reconciliation**:
+- 200 users exist in BIM 360 but haven't been invited to ACC yet
+- 150 users have different roles in BIM 360 vs ACC
+- 50 users left the company but are still active in BIM 360
+- Company assignments don't match between platforms
+
+### The Strategy
+
+**Step 1: Export the source of truth**
+
+```bash
+# Export BIM 360 user list (auto-detects BIM 360 vs ACC)
+raps admin user list "$BIM360_ACCOUNT_ID" --output csv > bim360-users.csv
+
+# Export ACC user list
+raps admin user list "$ACC_ACCOUNT_ID" --output csv > acc-users.csv
+
+# Export BIM 360 permissions
+raps admin export-permissions --account "$BIM360_ACCOUNT_ID" --output bim360-perms.csv
+
+# Export ACC permissions
+raps admin export-permissions --account "$ACC_ACCOUNT_ID" --output acc-perms.csv
+```
+
+**Step 2: Compute the delta**
+
+This is where a script (or an AI assistant) shines. Compare the two exports:
+
+```bash
+# Humans in BIM 360 but not ACC → need inviting
+comm -23 <(cut -d, -f2 bim360-users.csv | sort) \
+         <(cut -d, -f2 acc-users.csv | sort) > users-to-invite.txt
+
+# Humans in both but with different roles → need reconciliation
+# (this is where you involve project leads for decisions)
+```
+
+**Step 3: Execute the sync**
+
+```bash
+# Invite missing users to ACC
+while read -r email; do
+  raps admin user create "$ACC_ACCOUNT_ID" "$email"
+done < users-to-invite.txt
+
+# Add users to projects with correct roles
+raps admin user add "$ACC_ACCOUNT_ID" "user@company.com" \
+  --role project_admin \
+  --dry-run  # ALWAYS dry-run first
+```
+
+**Step 4: Clone permissions for complex cases**
+
+```bash
+# Clone one user's exact project memberships and folder permissions to another
+raps admin clone-permissions \
+  --from "senior.pm@company.com" \
+  --to "new.pm@company.com"
+```
+
+### The BIM 360 Compatibility Layer
+
+RAPS auto-detects whether an account is ACC or BIM 360 and adjusts the API calls transparently. ACC uses Admin API v2 endpoints. BIM 360 uses HQ v1 endpoints. The response formats, pagination patterns, and role naming conventions are different. RAPS normalizes all of it:
+
+```bash
+# Same command, different platforms — RAPS handles the difference
+raps admin user list "$ACC_ACCOUNT_ID"        # → ACC Admin v2
+raps admin user list "$BIM360_ACCOUNT_ID"     # → HQ v1 (auto-detected)
+
+# Role names normalized: "Project Admin" works on both
+raps admin user add "$ACCOUNT_ID" "user@co.com" --role "Project Admin"
+```
+
+This matters because most enterprise accounts have **both** ACC and BIM 360 projects during the multi-year migration window. You can't write separate scripts for each platform.
+
+### Why This Is Hard
+
+**Email matching isn't enough.** Users may have different email addresses across platforms (personal vs corporate, old domain vs new domain). You need fuzzy matching and manual review for edge cases.
+
+**Role semantics differ.** BIM 360's "Document Management" role maps to ACC's "Project Admin" for some operations but not others. Document the mapping decisions.
+
+**Timing matters.** Don't sync on Friday afternoon. Do it Monday morning when IT is available to handle the "I can't access my project" tickets.
+
+### Time Saved
+
+Manual migration of 500 users across 200 projects: 3-4 weeks
+Scripted with validation and dry-run: 2-3 days (mostly the reconciliation review)
+
+## Strategy 3: Permission Audits at Scale
+
+### The Problem
+
+Compliance asks: "Who has access to the Downtown Tower project?" You open ACC, navigate to the project, click Members, and start scrolling. 47 members. You copy names into a spreadsheet. Then they ask about the 199 other projects.
+
+Or worse: "Prove that former employees no longer have access to any project." You have 3,000 users and 200 projects. That's 600,000 potential access combinations to verify.
+
+### The Strategy
+
+**Step 1: Export the entire permission matrix**
+
+```bash
+# Export every user's project memberships and folder permissions
+raps admin export-permissions \
+  --account "$ACCOUNT_ID" \
+  --output permissions-$(date +%Y%m%d).csv
+```
+
+This produces a CSV with columns: `user_email, project_name, project_role, folder_name, folder_permission`. One row per user-project-folder combination. For an account with 3,000 users and 200 projects, expect ~50,000 rows.
+
+**Step 2: Diff against the approved access list**
+
+Every enterprise should have an approved access matrix — which roles are authorized for which projects. Compare:
+
+```bash
+# Find users with access who shouldn't have it
+comm -23 \
+  <(cut -d, -f1,2 permissions-20260415.csv | sort) \
+  <(cut -d, -f1,2 approved-access.csv | sort) > unauthorized-access.csv
+
+# Find users who should have access but don't
+comm -13 \
+  <(cut -d, -f1,2 permissions-20260415.csv | sort) \
+  <(cut -d, -f1,2 approved-access.csv | sort) > missing-access.csv
+```
+
+**Step 3: Remediate automatically**
+
+```bash
+# Remove unauthorized access (dry-run first!)
+while IFS=, read -r email project; do
+  raps admin user remove "$ACCOUNT_ID" "$email" --filter "$project" --dry-run
+done < unauthorized-access.csv
+
+# Grant missing access
+while IFS=, read -r email project role; do
+  raps admin user add "$ACCOUNT_ID" "$email" --role "$role" --filter "$project" --dry-run
+done < missing-access.csv
+```
+
+**Step 4: Generate the audit report**
+
+```bash
+# Before/after comparison
+raps admin export-permissions --account "$ACCOUNT_ID" --output permissions-after.csv
+
+diff permissions-$(date +%Y%m%d).csv permissions-after.csv > audit-changes.diff
+```
+
+### Scheduling Recurring Audits
+
+The real power is running this automatically:
+
+```yaml
+# weekly-audit.yaml
+name: permission-audit
+version: 2
+
+steps:
+  - name: export
+    command: admin export-permissions --account ${ACCOUNT_ID}
+    timeout: 30m
+
+  - name: notify
+    command: "!curl -X POST $SLACK_WEBHOOK -d '{\"text\": \"Permission audit complete. Review: permissions.csv\"}'"
+    if: steps.export.status == 'success'
+```
+
+```bash
+# Run weekly via CI/CD or cron
+raps pipeline run weekly-audit.yaml
+```
+
+### The Safeguard Layer
+
+Permission changes are irreversible in the APS API. There's no "undo" for removing a user from 200 projects. Before any destructive operation:
+
+```bash
+# Generate a rollback script before bulk removal
+raps safeguard backup "admin user remove $ACCOUNT_ID former@company.com"
+# Creates: rollback-20260415-143022.sh
+# Contains: exact commands to re-add the user with original roles
+
+# Now execute with confidence
+raps admin user remove "$ACCOUNT_ID" "former@company.com"
+
+# If something goes wrong:
+bash rollback-20260415-143022.sh
+```
+
+32 destructive operations are covered. Every generated script includes `set -euo pipefail`, inline comments, and the original command as documentation.
+
+### Time Saved
+
+Manual quarterly audit: 2 weeks (2 people x 5 days)
+Automated with export-permissions: 2 hours (export, diff, review, remediate)
+
+## Strategy 4: Bulk Issue and RFI Management
+
+At enterprise scale, issues and RFIs aren't just project-level concerns — they're portfolio-level metrics.
+
+### Cross-Project Reporting
+
+```bash
+# Generate portfolio-wide issue summary
+raps report issues-summary "$ACCOUNT_ID"
+# ┌─────────────────────┬──────┬──────┬────────┬─────────┐
+# │ Project             │ Open │ Closed│ Overdue │ Avg Days│
+# ├─────────────────────┼──────┼──────┼────────┼─────────┤
+# │ Downtown Tower      │  47  │  203 │    8   │   12.3  │
+# │ Harbor Bridge       │  23  │  156 │    2   │    8.7  │
+# │ Hospital Phase 2    │  89  │   67 │   31   │   18.2  │
+# └─────────────────────┴──────┴──────┴────────┴─────────┘
+
+# RFI summary across all projects
+raps report rfi-summary "$ACCOUNT_ID"
+```
+
+### Bulk Issue Creation from Clash Reports
+
+```bash
+# Import clashes as issues from a structured CSV
+while IFS=, read -r title description location priority; do
   raps issue create "$PROJECT_ID" \
     --title "$title" \
     --description "$description"
@@ -118,114 +412,12 @@ done < clash-report.csv
 echo "Created $(wc -l < clash-report.csv) issues"
 ```
 
-**Time saved:** 47 issues × 2 minutes each = 94 minutes → 10 seconds.
+47 issues x 2 minutes each = 94 minutes manually. 10 seconds with automation.
 
-### Issue Lifecycle Management
-
-Issues aren't just created—they move through a lifecycle:
+### Standardized Checklists at Scale
 
 ```bash
-# View available issue types (categories) in the project
-raps issue types abc123-project-id
-# Shows: Clash, Defect, RFI Needed, Safety, etc.
-
-# Update an issue
-raps issue update abc123-project-id issue-id-123 \
-  --status "in_review"
-
-# Add a comment
-raps issue comment add abc123-project-id issue-id-123 \
-  --body "Design team has proposed a solution. See attached sketch."
-
-# Transition to a new status
-raps issue transition abc123-project-id issue-id-123 \
-  --to answered
-```
-
-## Pattern 2: Submittals Workflow
-
-Submittals are the formal dance between contractors and design teams. Shop drawings submitted, reviewed, approved or rejected, resubmitted. At scale, this process generates enormous administrative overhead.
-
-### The Commands
-
-```bash
-# List all submittals in a project
-raps acc submittal list abc123-project-id
-
-# Get details on a specific submittal
-raps acc submittal get abc123-project-id submittal-id-456
-
-# Create a new submittal
-raps acc submittal create abc123-project-id \
-  --title "Curtain Wall Shop Drawings - Revision 2" \
-  --spec-section "08 44 00" \
-  --due-date "2026-05-15"
-
-# Update status after review
-raps acc submittal update abc123-project-id submittal-id-456 \
-  --status approved
-```
-
-### The Real-World Use Case
-
-**Scenario:** At project kickoff, you need to create the standard set of 120 submittals from your company's master list. This is typically a week of data entry.
-
-With automation:
-```bash
-#!/bin/bash
-PROJECT_ID="new-project-id"
-
-# Read from your master submittal list
-while IFS=, read -r title spec_section days_until_due; do
-  due_date=$(date -d "+${days_until_due} days" +%Y-%m-%d)
-  raps acc submittal create "$PROJECT_ID" \
-    --title "$title" \
-    --spec-section "$spec_section" \
-    --due-date "$due_date"
-done < master-submittal-list.csv
-```
-
-**Time saved:** One week → 30 minutes (including review).
-
-## Pattern 3: Checklists at Scale
-
-Quality checklists are the backbone of construction quality assurance. Inspection checklists, safety checklists, commissioning checklists—each needs to be created, assigned, completed, and documented.
-
-### The Commands
-
-```bash
-# List available checklist templates
-raps acc checklist templates abc123-project-id
-# Returns: Template ID, name, description, item count
-
-# Create a checklist from a template
-raps acc checklist create abc123-project-id \
-  --title "Level 5 MEP Rough-In Inspection" \
-  --template-id template-789 \
-  --location "Building A, Level 5, Zones 1-4" \
-  --due-date "2026-04-20" \
-  --assignee-id user-id-inspector
-
-# List all checklists
-raps acc checklist list abc123-project-id
-
-# Get checklist details
-raps acc checklist get abc123-project-id checklist-id-101
-
-# Update status
-raps acc checklist update abc123-project-id checklist-id-101 \
-  --status completed
-```
-
-### The Real-World Use Case
-
-**Scenario:** Your 50-story tower project requires MEP rough-in inspections for every floor, every zone. That's 200 checklists just for this one inspection type. The quality team was going to spend two days creating them manually.
-
-```bash
-#!/bin/bash
-PROJECT_ID="tower-project-id"
-TEMPLATE_ID="mep-roughin-template"
-
+# Deploy inspection checklists for a 50-story building
 for floor in {1..50}; do
   for zone in "North" "South" "East" "West"; do
     raps acc checklist create "$PROJECT_ID" \
@@ -234,350 +426,32 @@ for floor in {1..50}; do
       --location "Level $floor, $zone Zone"
   done
 done
-
-echo "Created 200 checklists"
+# Created 200 checklists in under 5 minutes
 ```
 
-**Time saved:** 2 days → 5 minutes.
+## Under the Hood: Resilience & Output
 
-## Pattern 4: RFI Automation
-
-RFIs (Requests for Information) are the formal questions that get asked when drawings are unclear. They're also a major source of project delays—every day an RFI sits unanswered is potentially a day of construction delay.
-
-### The Commands
-
-```bash
-# List RFIs in a project
-raps rfi list abc123-project-id
-
-# Get RFI details
-raps rfi get abc123-project-id rfi-id-202
-
-# Create a new RFI
-raps rfi create abc123-project-id \
-  --title "Clarification needed: Foundation depth at Grid C-7"
-
-# Answer an RFI
-raps rfi update abc123-project-id rfi-id-202 \
-  --status answered
-```
-
-### The Real-World Use Case
-
-**Scenario:** Monday morning portfolio review. Leadership wants to know: how many RFIs are overdue across all 200 projects?
-
-```bash
-#!/bin/bash
-
-echo "Overdue RFIs by Project" > rfi-report.csv
-
-for project_id in $(cat project-ids.txt); do
-  overdue=$(raps rfi list "$project_id" --output json | \
-    jq '[.[] | select(.status != "answered" and .due_date < now)] | length')
-  echo "$project_id,$overdue" >> rfi-report.csv
-done
-```
-
-The report that used to take someone all morning? Runs automatically at 6 AM, emailed to leadership before they finish their coffee.
-
-## Pattern 5: Asset Management
-
-Assets are the physical things that get installed and need to be tracked: equipment, fixtures, systems. ACC's Asset module lets you track them from specification through installation to operations.
-
-### The Commands
-
-```bash
-# List assets in a project
-raps acc asset list abc123-project-id
-
-# Get asset details
-raps acc asset get abc123-project-id asset-id-303
-
-# Create an asset
-raps acc asset create abc123-project-id \
-  --description "AHU-01 Air Handling Unit - Mechanical Penthouse" \
-  --barcode "AHU-001-2026" \
-  --category-id hvac-equipment-category
-
-# Update asset status
-raps acc asset update abc123-project-id asset-id-303 \
-  --status-id installed
-```
-
-### The Real-World Use Case
-
-**Scenario:** The equipment schedule shows 450 pieces of mechanical equipment arriving over the next 6 months. Each needs an asset record in ACC.
-
-You could have someone type 450 records. Or:
-
-```bash
-#!/bin/bash
-PROJECT_ID="hospital-project-id"
-
-while IFS=, read -r description barcode category; do
-  raps acc asset create "$PROJECT_ID" \
-    --description "$description" \
-    --barcode "$barcode" \
-    --category-id "$category"
-done < equipment-schedule.csv
-```
-
-## Pattern 6: Bulk File Operations
-
-At enterprise scale, file operations compound quickly. 500 models per month means 500 uploads, 500 translations, 500 quality checks.
-
-### Parallel Uploads
-
-```bash
-# Upload multiple files in parallel (8 concurrent uploads)
-raps object upload-batch my-bucket *.rvt *.nwd --parallel 8
-# Uploading 47 files to bucket 'my-bucket' with 8 parallel uploads
-# ✓ hospital-L1.rvt (145 MB)
-# ✓ hospital-L2.rvt (152 MB)
-# ...
-# Total: 47 uploaded, 0 failed
-# Total size: 6.2 GB
-# Time: 4 minutes 32 seconds
-```
-
-Sequential uploads: ~45 minutes. Parallel uploads: ~5 minutes.
-
-### Output Formats for Integration
-
-Every command supports multiple output formats, making integration with other systems trivial:
-
-```bash
-# JSON for processing with jq or Python
-raps issue list abc123-project-id --output json
-
-# CSV for Excel or database import
-raps issue list abc123-project-id --output csv > issues.csv
-
-# YAML for configuration management
-raps acc checklist list abc123-project-id --output yaml
-```
-
-## Pattern 7: Pipeline Automation
-
-For complex multi-step workflows, individual commands aren't enough. raps supports YAML-based pipelines that orchestrate multiple operations with error handling and conditional logic.
-
-```bash
-# Run a pipeline
-raps pipeline run weekly-report.yaml
-
-# Validate without executing (dry run)
-raps pipeline run weekly-report.yaml --dry-run
-
-# Generate sample pipeline templates
-raps pipeline sample
-```
-
-### What Pipelines Enable
-
-- **Sequential dependencies:** Step 2 only runs if Step 1 succeeds
-- **Variable substitution:** `${PROJECT_ID}` gets replaced at runtime
-- **Continue-on-error:** One failure doesn't stop the whole pipeline
-- **Conditional execution:** Skip steps based on previous results
-
-This is how you build reliable automation that runs unattended—overnight batch jobs, scheduled reports, triggered workflows.
-
-## Pattern 8: Bulk User Management (NEW in v4.0, enhanced in v5.6)
-
-![Bulk Operations](/devcon/images/1259-acc-enterprise-scale-bulk-ops.png)
-
-This one came from real pain. A client called me because they'd spent two full days adding a new hire to their 180 projects. Click, search, assign, repeat. Their IT guy was ready to quit.
-
-Since v5.6, this pattern has expanded well beyond project-level operations. You now get **full company CRUD**, **account-level user management**, **smart table output with company name resolution**, and **email-based user lookups** across both ACC and BIM 360 accounts.
-
-### Company Management (v5.6+)
-
-Before you can assign users to companies, you need to manage the companies themselves:
-
-```bash
-# Create a new company in your account
-raps admin company create "$ACCOUNT_ID" --name "Acme Construction" \
-  --trade "General Contractor"
-
-# Search for companies by name
-raps admin company search "$ACCOUNT_ID" --name "Acme"
-
-# Get company details
-raps admin company get "$ACCOUNT_ID" "$COMPANY_ID"
-
-# Update company info
-raps admin company update "$ACCOUNT_ID" "$COMPANY_ID" \
-  --name "Acme Construction LLC"
-```
-
-### Account-Level User CRUD (v5.6+)
-
-Manage users at the account level — invite them, look them up by email, update their company or status:
-
-```bash
-# Invite a new user to your account
-raps admin user create "$ACCOUNT_ID" "new.hire@company.com" \
-  --company-id "$COMPANY_ID"
-
-# Get user details (works with email, not just user ID)
-raps admin user get "$ACCOUNT_ID" "new.hire@company.com"
-
-# Update a user's company assignment or status
-raps admin user update-account "$ACCOUNT_ID" "user@company.com" \
-  --company-id "$NEW_COMPANY_ID" --status active
-```
-
-### Smart Table Output (v5.6+)
-
-The `user list` command now resolves company UUIDs to human-readable names, shows the added_on date, displays a status summary, and adapts its layout based on whether role data is available:
-
-```bash
-# List users with company names resolved automatically
-raps admin user list "$ACCOUNT_ID"
-# Shows: Name, Email, Company Name, Status, Added On, Roles (if available)
-```
-
-### The Problem
-
-> "We just hired a new BIM manager who needs project admin access to all 127 active projects."
-
-With the ACC web interface, you'd need to:
-1. Navigate to each project
-2. Open the Members panel
-3. Search for the user
-4. Assign the role
-5. **Repeat 127 times**
-
-I timed it once: 3-5 minutes per project if you're fast. That's 6-10 hours of your life you're not getting back.
-
-### The Solution
-
-```bash
-# Add user to ALL projects as project admin
-raps admin user add "$ACCOUNT_ID" "new.bim.manager@company.com" \
-  --role project_admin
-
-# Preview first with dry-run (learned this the hard way)
-raps admin user add "$ACCOUNT_ID" "new.bim.manager@company.com" \
-  --role project_admin \
-  --dry-run
-
-# Filter to only active projects matching a pattern
-raps admin user add "$ACCOUNT_ID" "new.bim.manager@company.com" \
-  --role project_admin \
-  --filter "^2026-"
-```
-
-**Result:** 127 projects updated in under 2 minutes. The IT guy didn't quit.
-
-### User Offboarding
-
-When someone leaves the company:
-
-```bash
-# Remove user from ALL projects
-raps admin user remove "$ACCOUNT_ID" "former.employee@company.com"
-```
-
-No more discovering six months later that a departed employee still has access to sensitive project data.
-
-### Role Updates
-
-Promoting someone from viewer to admin?
-
-```bash
-# Update role across all projects
-raps admin user update-role "$ACCOUNT_ID" "promoted.user@company.com" \
-  --role project_admin
-```
-
-### Folder Permissions at Scale
-
-Need to update permissions on Project Files folders across your entire portfolio?
-
-```bash
-# Update folder permissions for user across all projects
-raps admin folder rights "$ACCOUNT_ID" "user@company.com" \
-  --folder-type "Project Files" \
-  --permission edit
-```
-
-### Resumable Operations
-
-Network hiccup? Rate limited? No problem. RAPS saves operation state automatically:
-
-```bash
-# Resume from where you left off
-raps admin operation resume
-
-# Check operation status
-raps admin operation status
-
-# List all operations
-raps admin operation list
-```
-
-### Built for Enterprise
-
-- **Parallel processing:** Up to 50 concurrent API requests
-- **Smart retry:** Exponential backoff handles rate limits automatically
-- **Resumable state:** Operations can be interrupted and resumed
-- **Dry-run mode:** Preview exactly what will happen before executing
-- **Progress tracking:** Real-time progress bars with ETA
-
-## The Integration Story
-
-Everything we've shown today produces structured output. That means integration with enterprise systems is straightforward:
-
-**ERP Integration:** Export issue counts and submittal status to SAP or Oracle for cost tracking.
-
-**BI Dashboards:** Feed issue trends into Power BI or Tableau for executive dashboards.
-
-**Custom Applications:** Use JSON output as input to your internal tools.
-
-**Notification Systems:** Pipe results to Slack, Teams, or email via simple scripts.
-
-The CLI becomes a bridge between ACC and everything else in your enterprise.
-
-## The ROI Conversation
-
-![Time Savings](/devcon/images/1259-acc-enterprise-scale-time-savings.png)
-
-Let's talk numbers that matter to decision makers.
-
-**Before automation:**
-- 8 coordinators spending 20 hours/week on ACC administration
-- 160 hours/week × 50 weeks = 8,000 hours/year
-- At fully-loaded cost of $75/hour = **$600,000/year in administrative overhead**
-
-**After automation:**
-- Same work done in 10% of the time
-- 800 hours/year instead of 8,000
-- Savings: **$540,000/year**
-- Plus: data is always current, reports are always fresh, humans focus on judgment calls
-
-The tooling is free (open source). The implementation is measured in days, not months. The ROI is measured in multiples, not percentages.
+Every strategy above relies on infrastructure patterns — rate-limit-aware concurrency, resumable operations, dry-run previews, and structured output (JSON, CSV, NDJSON) for integration with ERP, BI, and notification systems. These architectural decisions are covered in depth in **Session 1258: "Zero to Production"**, which dissects the five layers that make bulk APS automation survive at enterprise scale.
 
 ## Key Takeaways
 
-![ACC Module Coverage](/devcon/images/1259-acc-enterprise-scale-acc-modules.png)
-
-1. **Manual doesn't scale**—at enterprise volume, clicking is not a strategy
-2. **raps CLI provides comprehensive ACC API coverage**: Issues, Submittals, Checklists, RFIs, Assets, **and Account Admin**
-3. **Bulk user management (v4.0+)** transforms 6-10 hours of clicking into 2 minutes
-4. **Multiple output formats (JSON, CSV, YAML)** enable integration with any system
-5. **Parallel operations** (batch uploads, bulk user management) dramatically reduce processing time
-6. **Resumable operations** mean network issues don't restart your 200-project operation
-7. **Pipeline automation** enables complex, reliable workflows that run unattended
-8. **The patterns are reusable**—what works on one project works on 200 projects
+1. **UI doesn't scale** — at 200+ projects, clicking is not a strategy
+2. **Bulk project creation from templates** turns weeks of setup into hours with idempotent, resumable pipelines
+3. **Cross-hub data sync** between BIM 360 and ACC requires reconciliation, not just migration — export, diff, transform, import
+4. **Permission audits** at scale are solvable: export the matrix, diff against approved access, remediate automatically
+5. **The BIM 360 compatibility layer** means one set of scripts works across mixed accounts during the multi-year migration
+6. **Safeguard rollback scripts** provide an undo for APIs that don't have one
+7. **The ROI is 10x** — $600K/year in admin overhead becomes $60K/year with automation
 
 ## What's Next?
 
-This session showed you the tools. The next step is identifying your highest-impact automation opportunities:
+Start with the highest-impact automation:
 
-- **Quick win:** Export all open issues to CSV for your next project review
-- **Medium effort:** Automate weekly reporting across your portfolio
-- **High impact:** Use bulk user management for onboarding/offboarding
-- **Strategic investment:** Build pipelines that create standardized project setups
+- **Quick win:** Export permissions to CSV for your next compliance review
+- **Medium effort:** Script new project provisioning from templates
+- **High impact:** Automate the BIM 360 → ACC user migration
+- **Recurring value:** Schedule weekly permission audits via CI/CD
+- **Safety net:** Add safeguard backup scripts before any bulk operation
 
 Start small. Prove value. Scale up.
 
@@ -586,7 +460,7 @@ Start small. Prove value. Scale up.
 - **GitHub**: https://github.com/dmytro-yemelianov/raps
 - **Documentation**: https://rapscli.xyz/docs
 - **Account Admin Guide**: https://rapscli.xyz/docs/account-admin
-- **ACC Cookbook**: https://rapscli.xyz/docs/cookbook-construction
+- **Permission Audit Guide**: https://rapscli.xyz/docs/permission-audit
 - **Pipeline Guide**: https://rapscli.xyz/docs/pipelines
-- **Issue Commands**: https://rapscli.xyz/docs/cookbook-acc-issues
-- **Checklist Guide**: https://rapscli.xyz/docs/cookbook-acc-checklists
+- **ACC Cookbook**: https://rapscli.xyz/docs/cookbook-construction
+- **BIM 360 Migration**: https://rapscli.xyz/docs/bim360-migration

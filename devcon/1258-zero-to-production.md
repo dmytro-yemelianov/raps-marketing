@@ -29,533 +29,372 @@
 
 ## Learning Objectives
 
-1. Install and configure raps CLI for APS operations in under 5 minutes
-2. Execute common APS workflows (auth, buckets, translations) from the command line
-3. Connect raps CLI to AI assistants via MCP for intelligent automation
+1. Identify the five architectural layers that make an APS client robust at enterprise scale
+2. Implement resilient patterns for authentication, rate limits, and bulk operations in any language
+3. Design output layers that serve humans, scripts, and AI agents from a single code path
 
 ![Zero to Production Hero](/devcon/images/1258-zero-to-production-hero.png)
 
 ## Abstract
 
-Every APS project starts the same way. You create an app in the developer portal. You copy the client ID and secret. Then you open your favorite HTTP client and start crafting requests. Base64-encode the credentials. POST to the token endpoint. Copy the access token. Remember to add "Bearer" prefix. Paste it into the next request. Repeat when the token expires in an hour.
+Many teams want to automate their APS workflows but get stuck on the same problems: authentication flows that require careful handling across environments, translations with complex failure modes, and bulk operations that push against API rate limits. These aren't flaws — they're the reality of building on a platform that spans 15+ APIs and serves millions of users.
 
-It's 2026. We can do better.
+This session dissects the architecture of a production CLI that covers 195+ APS operations, showing the five layers that let it survive platform instability at enterprise scale. You'll learn patterns for resilient auth, bulk operations that resume after failures, output that feeds humans, scripts, and AI agents without adaptation, and how structured design made 114 AI-agent tools almost free. Language-agnostic. Battle-tested. Open source.
 
-This session is a speedrun. In 30 minutes, we'll go from zero tooling to a production-ready workflow that handles authentication, file management, model translation, and—here's the twist—AI assistant integration. Everything live, everything real.
+## The Reality
 
-**Part 1: Installation & Setup (5 min)**
-Four ways to install, because developers are opinionated about package managers. OAuth configuration that actually makes sense. Profile management for when you're juggling dev, staging, and production environments.
+APS covers an enormous surface area — 15+ API families, from object storage to construction management to design automation. That breadth is its strength, but it also means complexity compounds fast. Authentication spans multiple OAuth flows. Translations handle dozens of CAD formats with different failure modes. Bulk operations at enterprise scale — hundreds of projects, thousands of users — push every API's rate limits and pagination boundaries.
 
-**Part 2: Core Operations (15 min)**
-The operations you do every day, but faster. Create buckets with one command. Upload files with automatic chunking for large models. Start translations and actually *wait* for them to complete instead of polling manually. Navigate BIM 360/ACC project hierarchies without losing your mind.
+The community feels this complexity. On Stack Overflow, the hardest topics to get answers on are webhooks, ACC API, and authentication — not because they're poorly designed, but because they involve the most moving parts. The most-requested feature on ACC Ideas, bulk user assignment across projects, has 344 kudos — a clear signal that enterprise teams need programmatic access to operations the UI handles one at a time.
 
-**Part 2.5: Pipeline v2 & CI/CD (NEW)**
-The glue that ties it all together. Define multi-step APS workflows in YAML with retry policies, timeouts, conditionals, parallel execution, and for-each loops. Then run them automatically in GitHub Actions or GitLab CI with official RAPS templates -- four composite actions for GitHub, four include templates for GitLab. Zero to automated deployment pipeline in under 5 minutes.
+Good tooling bridges this gap. We built RAPS to handle the complexity so developers can focus on their actual workflows: 195+ operations across 15+ APIs, bulk operations that resume after network failures, output that serves humans, scripts, and AI agents from a single code path.
 
-**Part 2.7: Distributed Deployment (NEW)**
-Scale beyond a single machine. Deploy the full orchestration stack with Docker Compose — Redis-backed job queue, serverless dispatch to Fly.io, and a Cloudflare Workers webhook gateway at the edge. One `docker compose up` gives you 4 worker replicas, monitoring, and automatic scaling to zero.
-
-**Part 3: AI Integration (10 min)**
-The part that makes people's eyes light up. Connect the CLI to Claude, Cursor, or any MCP-compatible AI assistant. Ask questions in English, get operations executed. "What buckets do I have?" becomes a conversation, not a curl command.
-
-## The Problem This Solves
-
-Let me tell you about a Tuesday afternoon that changed how I think about developer tooling.
-
-I was helping a client debug a translation issue. They had a Revit file that kept failing with a cryptic error. To diagnose it, I needed to:
-
-1. Authenticate (find credentials, encode them, POST, copy token)
-2. Check if the file was uploaded correctly (GET object details)
-3. Look at the translation manifest (decode URN, GET manifest)
-4. Parse the nested JSON to find the actual error message
-5. Re-upload with different settings
-6. Repeat steps 2-4
-
-Each step required switching between Postman tabs, copying values, remembering endpoint URLs. By step 4, I'd forgotten what I was originally trying to debug.
-
-That Tuesday, I started building raps.
-
-The idea was simple: what if every APS operation was a single command? What if the CLI handled authentication automatically, remembered my tokens, and let me focus on the actual problem?
-
-18 months later, we have **55 top-level commands (95+ total operations) covering 15 APS APIs**, plus bulk account administration, Python bindings, and AI assistant integration. And it's open source, because the APS community deserves better tooling.
+Here's how — layer by layer.
 
 ## APS Components Used
 
-- Authentication API (2-legged, 3-legged, device code flow, token inspection)
-- OSS API (Buckets, Objects, Signed S3 URLs)
-- Model Derivative API (Translations, Manifests, Downloads, Presets)
+- Authentication API (2-legged, 3-legged, device code flow)
+- OSS API (Buckets, Objects, Signed S3 URLs, resumable uploads)
+- Model Derivative API (Translations, Manifests, Metadata)
 - Data Management API (Hubs, Projects, Folders, Items)
+- ACC Issues API, RFIs API, Assets API, Submittals API, Checklists API
+- ACC Account Admin API (Bulk User Management, Companies, Permissions)
 - Webhooks API
-- Design Automation API (Engines, Activities, Work Items)
-- ACC Issues API
-- ACC RFIs API
-- ACC Assets API
-- ACC Submittals API
-- ACC Checklists API
-- ACC Account Admin API (Bulk User Management)
+- Design Automation API
 
 ## Autodesk Products
 
-Works with everything APS touches:
 - Autodesk Construction Cloud (ACC)
 - BIM 360
-- Autodesk Fusion
-- Autodesk Forma
-- AutoCAD Web
 
-If it has an APS API, raps can talk to it.
+## Layer 1: Resilience (7 min)
 
-## Part 1: Installation (Choose Your Adventure)
+APS authentication is evolving — SSA migration, Developer Hub consolidation, new scope requirements. These are good changes that improve security, but they mean your automation needs to absorb platform evolution gracefully. A client that hardcodes auth assumptions will break; one that abstracts the auth layer adapts.
 
-![Multi-Platform Install](/devcon/images/1258-zero-to-production-installation.png)
+### Pattern 1: Auth as Infrastructure
 
-I respect that developers have strong opinions about package managers. Here are **six ways** to install—pick the one that doesn't make you twitch.
+Authentication is table stakes, but most teams get it wrong the first time. Three decisions that save weeks of debugging:
 
-### Option 1: Quick Install Scripts (Recommended)
+**Token caching with pre-expiry refresh.** Don't wait for a 401. Refresh 5 minutes before expiry so no request ever fails mid-flight. The 300-second margin sounds paranoid until your first large upload fails at 98% because the token expired during transfer.
 
-The fastest path for most developers:
+**2-legged / 3-legged auto-selection.** The client knows which OAuth flow to use based on what the operation needs. Bucket operations → 2-legged. Project navigation → 3-legged. The caller doesn't think about it.
 
-**Linux/macOS:**
-```bash
-curl -fsSL https://raw.githubusercontent.com/dmytro-yemelianov/raps/main/install.sh | bash
+**Credential storage abstraction.** Keyring on desktop, environment variables in CI, file fallback in Docker. One interface, three backends. Developers and CI pipelines use the same CLI with zero configuration changes.
+
+### Pattern 2: Adaptive Per-Endpoint Retry
+
+Model Derivative returns "TranslationWorker-InternalFailure." Do you retry? Is it permanent?
+
+The answer: it depends on the endpoint. Translation failures are often transient (server overload). A 404 on a bucket is permanent. A 429 on any endpoint means "slow down, try again."
+
+The pattern: track failure rates per endpoint. Adjust backoff multipliers (1x → 2x → 4x). Parse `Retry-After` headers when the API provides them. Exponential backoff with jitter so parallel clients don't all retry at the same instant.
+
+```
+Attempt 1: failed (500)  → wait 1s + jitter
+Attempt 2: failed (500)  → wait 2s + jitter
+Attempt 3: success       → reset counter for this endpoint
 ```
 
-**Windows (PowerShell):**
-```powershell
-irm https://raw.githubusercontent.com/dmytro-yemelianov/raps/main/install.ps1 | iex
-```
+Not all 500s are equal. A translation failure at 3 AM is different from a rate limit at peak hours. Your retry logic should know the difference.
 
-### Option 2: npm (Node.js)
+### Pattern 3: Resumable State for Bulk Operations
 
-For the JavaScript ecosystem folks:
-
-```bash
-npm install -g @dmytro-yemelianov/raps-cli
-
-# Or run without installing
-npx @dmytro-yemelianov/raps-cli --version
-```
-
-### Option 3: pip (Python)
-
-For Python developers:
+You're adding a user to 200 projects. Network fails at project 47. Without resumable state, you start over. With it:
 
 ```bash
-pip install raps
+# Resume from where you left off
+raps admin operation resume
+
+# Check what happened
+raps admin operation status
+# ┌────────────┬───────┬──────┬────────┬────────┐
+# │ Operation  │ Total │ Done │ Failed │ Status │
+# ├────────────┼───────┼──────┼────────┼────────┤
+# │ user-add   │  200  │  47  │   0    │ paused │
+# └────────────┴───────┴──────┴────────┴────────┘
 ```
 
-### Option 4: Homebrew (macOS/Linux)
+Operation progress is checkpointed to disk. Every operation is idempotent — re-running doesn't create duplicates. User already exists? Skip. Role already correct? Skip. And every destructive operation supports `--dry-run`: preview exactly what will happen before executing.
 
-For the Unix folks who live in the terminal:
+**The principle:** Your automation will fail. The question is whether it fails gracefully — with state you can inspect, resume, and audit — or catastrophically.
+
+## Layer 2: Scale (6 min)
+
+The most-requested feature on ACC Ideas — bulk user assignment across projects — has 344 kudos. The ACC UI is designed for project-level management, which makes sense for most users. But when you have 200 projects and need to onboard someone across all of them, you need a different approach.
+
+### Pattern 1: Semaphore-Based Concurrency with Rate-Limit Awareness
+
+Naive parallelism: spawn 200 requests, get 429'd after 20, crash.
+
+Smart parallelism: a semaphore limits concurrent requests. Default 5, configurable up to 50. But the real trick is proactive throttling — parse `X-RateLimit-Remaining` headers and slow down *before* hitting the limit.
+
+```
+Request 1-20:   remaining = 80   → full speed
+Request 21-40:  remaining = 30   → slow to 10 concurrent
+Request 41+:    remaining = 8    → slow to 3 concurrent
+```
+
+The API tells you when it's about to reject you. Most clients ignore this signal and react to 429s after the fact. Proactive throttling avoids the penalty entirely.
+
+### Pattern 2: Adaptive Throughput for Uploads
+
+Not all uploads are equal. A 2MB DWG file on fast datacenter internet is different from a 500MB NWD file on office WiFi.
+
+- Small files (<5MB): single PUT, no chunking overhead
+- Medium files (5-100MB): 5MB chunks, reasonable parallelism
+- Large files (>100MB): 25MB chunks, fewer round trips
+
+RAPS goes further: it measures actual upload speed and adjusts dynamically. Slow connection → smaller chunks (less wasted on retry). Fast connection → larger chunks (fewer round trips).
 
 ```bash
-brew install dmytro-yemelianov/tap/raps
+# Upload 47 files, 8 parallel streams
+raps object upload-batch my-bucket *.rvt --parallel 8
+# Sequential: ~45 minutes
+# Parallel with adaptive chunking: ~4 minutes
 ```
 
-Homebrew handles updates, man pages, and shell completions automatically.
+### Pattern 3: The Bulk Operation Contract
 
-### Option 5: Scoop (Windows)
+Every result in a bulk operation is one of three things:
 
-Because Windows developers deserve nice things too:
+- **Success** — operation completed
+- **Skipped** — already done (user already has access, file already uploaded)
+- **Failed** — unexpected error
 
-```powershell
-scoop bucket add raps https://github.com/dmytro-yemelianov/scoop-bucket
-scoop install raps
-```
-
-### Option 6: Cargo (The Rust Way)
-
-If you have Rust installed:
+**Skipped** is the key insight. Idempotent operations mean re-running is always safe. The operation detects existing state and moves on. This is what makes resumable operations work — you don't need to track exactly which items succeeded; you just re-run and let the idempotency handle it.
 
 ```bash
-cargo install raps
+# Preview with dry-run
+raps admin user add "$ACCOUNT_ID" "user@company.com" \
+  --role project_admin --dry-run
+# Would add to 127 projects
+# 73 projects: already has access (skipped)
+
+# Execute — completes in under 2 minutes
+raps admin user add "$ACCOUNT_ID" "user@company.com" \
+  --role project_admin
+# ✓ 127 added, 73 skipped, 0 failed
 ```
 
-### Verify It Works
+Real progress tracking with ETA — not a spinner. "Project 127/200 — 3 min remaining." Numbers your team can plan around.
 
-```bash
-raps --version
-# raps 4.14.0
-```
+**The principle:** Bulk operations aren't loops. They're state machines — with concurrency control, progress tracking, and a clear contract for success, skip, and failure.
 
-If you see a version number, we're in business.
-
-## Configuration: Making It Yours
-
-Here's where raps starts earning its keep. Instead of managing credentials in environment variables, Postman environments, and random .env files, you get profiles.
-
-### Create Your First Profile
-
-```bash
-# Interactive setup walks you through it
-raps config profile create dev
-
-# Or set values directly
-raps config set client_id "your_client_id"
-raps config set client_secret "your_client_secret"
-```
-
-### Multiple Environments, No Confusion
-
-Real projects have multiple environments. raps handles this gracefully:
-
-```bash
-# Create profiles for each environment
-raps config profile create dev
-raps config profile create staging  
-raps config profile create production
-
-# Switch between them
-raps config profile use staging
-
-# Check which profile is active
-raps config profile current
-# → staging
-```
-
-No more "wait, which credentials did I just use?" moments.
-
-### Test Your Setup
-
-```bash
-# Test 2-legged authentication
-raps auth test
-# ✓ Authentication successful
-#   Token expires in: 59 minutes
-#   Scopes: data:read data:write bucket:create ...
-
-# Check detailed status
-raps auth status
-```
-
-If this works, you're ready for the fun part.
-
-## Part 2: Core Operations (The Daily Workflow)
+## Layer 3: Output (6 min)
 
 ![CLI Workflow](/devcon/images/1258-zero-to-production-workflow.png)
 
-### Buckets: Your Cloud Storage
+You automate an APS workflow. It works. Then your manager asks for a weekly report in Excel. Your DevOps team wants it in their CI pipeline. The data team wants it in Power BI. An AI agent needs it in JSON. You now maintain four output formats — or you grep your way through table output and pray nobody changes a column.
 
-OSS buckets are the foundation of everything. Let's create one:
+### Pattern 1: Context Auto-Detection
 
-```bash
-# Interactive mode asks the right questions
-raps bucket create
-# ? Bucket key: hospital-project-2026
-# ? Retention policy: persistent
-# ? Region: us
-# ✓ Bucket created successfully!
+Is stdout a terminal? → colored table with auto-sized columns.
+Is stdout piped? → JSON, no flags needed.
+Is `RAPS_OUTPUT_FORMAT` set? → whatever the environment demands.
 
-# Or one-liner for scripts
-raps bucket create --key hospital-project-2026 --policy persistent --region us
-```
-
-**Why start with the derivative service?** Honestly, because it has the best immediate payoff. You run one command, wait a few minutes, and you can see your model in a browser. It's satisfying. And once people see that work, they're hooked—they want to automate the rest of their workflow.
+The same command serves three consumers without configuration:
 
 ```bash
-# List your buckets
+# Human at a terminal — sees a table
 raps bucket list
 # ┌─────────────────────────┬────────────┬────────┐
 # │ Bucket Key              │ Policy     │ Region │
 # ├─────────────────────────┼────────────┼────────┤
 # │ hospital-project-2026   │ persistent │ US     │
 # │ temp-uploads            │ transient  │ US     │
-# │ archive-2025            │ persistent │ US     │
 # └─────────────────────────┴────────────┴────────┘
 
-# Get detailed info
-raps bucket info hospital-project-2026
+# Script piping to jq — gets JSON automatically
+raps bucket list | jq '.[0].bucketKey'
+# "hospital-project-2026"
+
+# CI environment variable — gets whatever it needs
+RAPS_OUTPUT_FORMAT=csv raps bucket list > buckets.csv
 ```
 
-### Uploads: Handling Real Files
+Zero flags in the common cases. The right thing happens automatically.
 
-This is where I wasted the most time before building raps. Uploading large files to OSS is annoying—you need to chunk files over 100MB, manage upload sessions, handle resumable uploads when your VPN decides to reconnect mid-transfer.
+### Pattern 2: The stderr/stdout Contract
+
+This is the single most important design decision for an AI-ready CLI.
+
+**stdout** = structured data only. The payload. What a machine parses.
+**stderr** = everything else. Progress bars, "Uploading..." messages, warnings, prompts.
+
+Why it matters: `raps translate start --wait` shows a progress bar updating in real time on stderr while the final manifest comes out clean on stdout. A human sees both. A script captures only the result. An AI agent gets parseable JSON without stripping spinner characters.
 
 ```bash
-# Upload a file (auto-chunks large files)
-raps object upload hospital-project-2026 model.rvt
-# Uploading model.rvt to hospital-project-2026/model.rvt
-# [████████████████████████████████] 100% | 245 MB
-# ✓ Upload complete!
-#   Object ID: urn:adsk.objects:os.object:hospital-project-2026/model.rvt
-#   Size: 245.32 MB
-#   SHA1: a3f2b1c4d5e6...
-#
-#   URN (for translation): dXJuOmFkc2sub2JqZWN0czpvcy5vYmplY3Q6aG9z...
+# Human sees progress AND result
+raps translate start $URN --format svf2 --wait
+# Translation: pending 15%... 42%... 78%... 100%    ← stderr
+# {"status": "success", "derivatives": ["svf2"]}     ← stdout
+
+# Script captures only the result
+result=$(raps translate start $URN --format svf2 --wait)
+# $result = clean JSON, no progress noise
 ```
 
-See that URN at the end? That's what you need for translation. No manual Base64 encoding required.
+If you put a single human-friendly message on stdout, you've broken every downstream consumer. Every progress indicator, every warning, every "Uploading file 3 of 47..." — all stderr.
 
-**For the serious workflows:** batch upload multiple files in parallel:
+### Pattern 3: NDJSON for Streaming
+
+Not a JSON array. One JSON object per line. No closing bracket to wait for.
+
+An AI agent processing 10,000 issues starts working after the first line, not after the last. A monitoring pipeline can tail the output like a log stream.
 
 ```bash
-# Upload all DWG files, 4 at a time
-raps object upload-batch hospital-project-2026 *.dwg --parallel 4
-# Uploading 12 files to bucket 'hospital-project-2026' with 4 parallel uploads
-# ✓ floor-plan-L1.dwg (2.3 MB)
-# ✓ floor-plan-L2.dwg (2.1 MB)
-# ✓ floor-plan-L3.dwg (2.4 MB)
-# ...
-# Total: 12 uploaded, 0 failed
-# Size: 28.4 MB
+# Stream-process one record at a time
+raps admin user list "$ACCOUNT_ID" --output ndjson | \
+  while read -r user; do
+    echo "$user" | jq '{email: .email, status: .status}'
+  done
 ```
 
-### Translation: The Moment of Truth
+For large result sets, NDJSON is the difference between "wait 30 seconds for the full response" and "start processing immediately."
 
-Model Derivative translation is where APS earns its keep. You upload a Revit file, APS extracts geometry, properties, metadata, and produces viewable formats.
+### Pattern 4: CSV as a First-Class Citizen
+
+The person asking for the data is often a project manager, not a developer.
 
 ```bash
-# Start a translation
-raps translate start dXJuOmFkc2sub2JqZWN0czpvcy5vYmplY3Q6aG9z... --format svf2
-# ✓ Translation job started
-#   URN: dXJuOmFkc2sub2JqZWN0czpvcy5vYmplY3Q6aG9z...
-#   Output: svf2
-#   Status: pending
-
-# Check status (and actually wait for it)
-raps translate status dXJuOmFkc2sub2JqZWN0czpvcy5vYmplY3Q6aG9z... --wait
-# Translation progress: 15%... 42%... 78%... 100%
-# ✓ Translation complete!
-#   Status: success
-#   Derivatives: svf2, thumbnail
+# Compliance asks "who has access to what?"
+raps admin export-permissions --account "$ACCOUNT_ID" --output csv > permissions.csv
+# Open in Excel. Filter. Email to compliance. Done.
 ```
 
-That `--wait` flag is deceptively powerful. Instead of writing yet another while loop with time.sleep(5), the CLI handles the polling. Go get coffee. Come back. It'll be done.
+No transformation script. No "let me write a quick Python thing to convert that JSON." The answer is a CSV they can open, filter, and forward — not a JSON blob that needs a developer to interpret.
+
+**The principle:** Your CLI's output format is a contract with every consumer you'll ever have — humans today, scripts tomorrow, AI agents next year. Design it once. Get it right.
+
+## Layer 4: Discoverability (5 min)
+
+APS spans a massive API surface — 15+ API families, each with its own documentation site, versioning scheme, and community forum. For developers, finding the right endpoint, understanding its parameters, and knowing the response shape takes real effort. ACC APIs are the newest and fastest-growing, which means the docs and community knowledge are still catching up to the platform's capabilities.
+
+What if your tool could answer "what can you do?" programmatically?
+
+### Pattern 1: Runtime JSON Schema
+
+Every output type in your client has a schema. Not a docs page — a queryable schema at runtime.
 
 ```bash
-# View the manifest (what derivatives are available)
-raps translate manifest dXJuOmFkc2sub2JqZWN0czpvcy5vYmplY3Q6aG9z...
+# What types are available?
+raps schema list
+# bucket-info, object-info, translation-manifest, issue, rfi, ...
 
-# Download derivatives
-raps translate download dXJuOmFkc2sub2JqZWN0czpvcy5vYmplY3Q6aG9z... \
-  --format obj --output ./exports/
+# What does a bucket look like?
+raps schema generate bucket-info
+# {
+#   "type": "object",
+#   "properties": {
+#     "bucketKey": { "type": "string", "description": "Unique bucket identifier" },
+#     "policyKey": { "type": "string", "enum": ["transient", "temporary", "persistent"] },
+#     "region": { "type": "string", "enum": ["US", "EMEA"] }
+#   }
+# }
 ```
 
-### Data Management: Navigating the Hierarchy
+An AI agent discovering your tool for the first time calls `schema list`, picks what it needs, and knows the exact shape of every response before making a single call. No documentation scraping. No hallucinated field names.
 
-BIM 360 and ACC organize data in a hierarchy: Hubs → Projects → Folders → Items → Versions. If you've ever tried to navigate this via raw API calls, you know it's... not fun. Each level requires a different endpoint, different ID format, and the documentation is scattered across three different sites.
+No platform team can document every edge case across 15+ API families. Your client can fill the gap by documenting itself.
+
+### Pattern 2: Structured Exit Codes
+
+Not 0 and 1. Semantic codes that machines can branch on:
+
+| Code | Meaning | Automated response |
+|------|---------|-------------------|
+| 0 | Success | Continue |
+| 1 | Auth failure | Re-authenticate |
+| 2 | Not found | Skip or report |
+| 3 | Rate limited | Wait and retry |
+| 4 | Network error | Retry with backoff |
+| 5 | Invalid input | Fail fast, fix input |
+| 6 | Server error | Retry or escalate |
+
+A CI pipeline branches: exit 3 → retry with backoff. Exit 5 → fail fast, bad input. Exit 1 → re-authenticate. An AI agent interprets: "rate limited, I should wait" — without parsing an error string.
+
+### Pattern 3: Auto-Generated Tool Documentation
 
 ```bash
-# List your hubs (requires 3-legged auth)
-raps auth login  # Opens browser for OAuth flow
-raps hub list
-# ┌───────────────────────────────────────────────┬─────────┐
-# │ Hub Name                                       │ Type    │
-# ├───────────────────────────────────────────────┼─────────┤
-# │ ACME Construction                              │ ACC     │
-# │ Legacy BIM 360 Account                         │ BIM 360 │
-# └───────────────────────────────────────────────┴─────────┘
+# Generate AGENTS.md from live code
+raps docs mcp --write
+# 114 tools documented: descriptions, parameters, auth requirements, examples
 
-# Drill down into projects
-raps project list b.abc123-hub-id
-
-# Navigate folders
-raps folder list b.xyz789-project-id urn:folder:root
-
-# View item versions
-raps item versions b.xyz789-project-id urn:item:12345
+# CI check: fail if code changed but docs didn't regenerate
+raps docs mcp --check
 ```
 
-## Part 2.5: Pipeline v2 & CI/CD (The Automation Multiplier)
+Any documentation maintained separately from code eventually drifts — that's true for every platform, not just APS. Machine-generated docs from live code can't go stale. If the code changes, the docs change.
 
-You've seen individual commands. Now let's chain them into production workflows that run themselves.
+**The principle:** The best documentation is the kind that can't be wrong — because it's generated from the code that runs.
 
-### Pipeline v2: YAML-Defined Workflows
+## Layer 5: MCP — AI Integration as a Consequence (4 min)
 
-Pipeline v2 lets you define multi-step APS workflows in YAML with enterprise-grade features:
+The ACC marketplace has 259 apps — rich UI tools for specific workflows. But there's an untapped category: CLI tools and AI-agent integrations. No one has built them yet, which means there's a wide-open opportunity for developers who think in terms of pipelines, automation, and programmatic access.
 
-```yaml
-name: upload-translate-export
-version: 2
+### The Key Insight
 
-steps:
-  - name: upload
-    command: object upload my-bucket model.rvt
-    retry:
-      max-attempts: 3
-      backoff: exponential
-    timeout: 10m
+We built 195 CLI commands. We needed 114 AI tools. We didn't rewrite anything.
 
-  - name: translate
-    command: translate start ${steps.upload.outputs.urn} --format svf2 --wait
-    timeout: 30m
-    if: steps.upload.status == 'success'
+- **Same auth layer** — MCP tools use the same token cache, same pre-expiry refresh, same 2-leg/3-leg selection.
+- **Same resilience** — retries, rate-limit handling, error classification come for free.
+- **Same output types** — MCP tool responses are the same serializable types that produce JSON, CSV, and tables.
+- **Same domain logic** — the MCP handler for `bucket_list` calls the same function as `raps bucket list`. It's a transport adapter, not a reimplementation.
 
-  - name: export
-    command: translate properties ${steps.translate.outputs.urn} --format csv
-    unless: steps.translate.status == 'failed'
+114 tools. Each one is a thin wrapper over existing domain logic. The MCP server and the CLI share everything except the transport.
+
+### What This Enables
+
+```
+User: "What buckets do I have?"
+
+AI: [Calls bucket_list tool — same code path as CLI]
+    You have 4 buckets:
+    1. hospital-central-2026 (persistent, US)
+    2. temp-processing (transient, US) - 3 objects
+    3. archive-2025 (persistent, US) - 147 objects
+    4. eu-client-data (persistent, EMEA) - 52 objects
+
+User: "Add new.engineer@company.com to all active projects"
+
+AI: [Calls admin_user_add — same resilience, same dry-run]
+    Adding to 127 active projects...
+    125 added, 2 already had access (skipped).
 ```
 
-Retry policies, timeouts, conditionals (`if`/`unless`), parallel steps, and `for-each` loops -- all in declarative YAML. No more brittle bash scripts with nested if-else chains.
+The AI doesn't hallucinate endpoints. It uses the same tools, the same auth, the same error handling as the CLI.
 
-```bash
-# Validate before running
-raps pipeline validate upload-translate-export.yaml
+### The Punchline
 
-# Run it
-raps pipeline run upload-translate-export.yaml
-```
-
-### CI/CD: GitHub Actions + GitLab CI
-
-Now take that pipeline and run it on every push. RAPS ships official integrations for both platforms:
-
-**GitHub Actions** -- four composite actions:
-
-```yaml
-# .github/workflows/aps.yml
-- uses: raps-actions/setup@v1
-  with:
-    version: '4.16.0'
-    client-id: ${{ secrets.APS_CLIENT_ID }}
-    client-secret: ${{ secrets.APS_CLIENT_SECRET }}
-
-- uses: raps-actions/pipeline@v1
-  with:
-    file: pipelines/upload-translate-export.yaml
-```
-
-**GitLab CI** -- four include templates:
-
-```yaml
-# .gitlab-ci.yml
-include:
-  - project: 'raps/raps-ci-templates'
-    file: '/templates/.raps-setup.yml'
-  - project: 'raps/raps-ci-templates'
-    file: '/templates/.raps-pipeline.yml'
-
-run-pipeline:
-  extends: .raps-pipeline
-  variables:
-    PIPELINE_FILE: pipelines/upload-translate-export.yaml
-```
-
-This is the "zero to production" promise fulfilled. Install, configure, define a pipeline, wire it into CI/CD, and every model change automatically flows through your APS workflow.
-
-## Part 3: AI Integration (The Part Where Things Get Weird)
-
-![Speedrun Timer](/devcon/images/1258-zero-to-production-speedrun.png)
-
-I'll be honest—when I first added MCP support, I thought it was a gimmick. "Oh cool, AI can call my CLI. Whatever."
-
-Then I actually used it. Now I can't go back.
-
-### Start the MCP Server
-
-```bash
-raps serve
-```
-
-That's it. The CLI is now an MCP server, exposing **101 tools** for AI assistants to use.
-
-### Connect Claude Desktop
-
-Create or edit your Claude configuration:
-
-**macOS:** `~/Library/Application Support/Claude/claude_desktop_config.json`  
-**Windows:** `%APPDATA%\Claude\claude_desktop_config.json`  
-**Linux:** `~/.config/claude/claude_desktop_config.json`
-
-```json
-{
-  "mcpServers": {
-    "raps": {
-      "command": "raps",
-      "args": ["serve"],
-      "env": {
-        "APS_CLIENT_ID": "your_client_id",
-        "APS_CLIENT_SECRET": "your_client_secret"
-      }
-    }
-  }
-}
-```
-
-Restart Claude Desktop, and you'll see "raps" in the available tools.
-
-### Connect Cursor IDE
-
-For the developers who live in Cursor, add `.cursor/mcp.json` to your project:
-
-```json
-{
-  "mcpServers": {
-    "raps": {
-      "command": "raps",
-      "args": ["serve"]
-    }
-  }
-}
-```
-
-### 101 MCP Tools Available
-
-The MCP server exposes comprehensive APS operations:
-
-**Authentication & Buckets:**
-- `auth_test`, `auth_status`
-- `bucket_list`, `bucket_create`, `bucket_get`, `bucket_delete`
-
-**Objects & Translation:**
-- `object_list`, `object_delete`, `object_signed_url`, `object_urn`
-- `translate_start`, `translate_status`
-
-**Data Management:**
-- `hub_list`, `project_list`, `folder_list`, `folder_create`
-- `item_info`, `item_versions`
-
-**ACC Issues & RFIs:**
-- `issue_list`, `issue_get`, `issue_create`, `issue_update`
-- `rfi_list`, `rfi_get`
-
-**ACC Extended:**
-- `acc_assets_list`, `acc_submittals_list`, `acc_checklists_list`
-
-**Account Admin (Bulk Operations):**
-- `admin_project_list`, `admin_user_add`, `admin_user_remove`
-- `admin_user_update_role`, `admin_operation_list`, `admin_operation_status`
-
-### What Can You Do With This?
-
-Once connected, natural language becomes API operations:
-
-- "List all my OSS buckets" → AI calls `bucket_list`
-- "Create a bucket named 'new-project' with transient policy" → AI calls `bucket_create`
-- "What's the status of my translation job?" → AI calls `translate_status`
-- "Show me all projects in my BIM 360 hub" → AI calls `hub_list`, then `project_list`
-- "Add user@company.com to all active projects as project admin" → AI calls `admin_user_add`
-- "List all open issues in project XYZ" → AI calls `issue_list`
-
-The AI doesn't hallucinate endpoints. It uses the tools we've defined, with the parameters we've specified, against your actual APS environment.
+AI integration isn't a feature you bolt on. It's what happens when your resilience layer handles failures, your output layer speaks JSON, and your schema layer describes itself. MCP was a weekend of wiring, not a quarter of rewriting.
 
 ## The Bigger Picture
 
-Look, this 30-minute walkthrough isn't about the CLI. Not really.
+APS is powerful — and like any platform spanning 15+ API families, it rewards developers who design for its complexity rather than fighting it.
 
-APS is powerful. The APIs are comprehensive. But there's a gap—a big one—between reading the documentation and actually shipping production code. That gap is filled with friction: OAuth dance, Base64 encoding URNs, polling loops with magic sleep timers, error messages that could mean five different things.
+The patterns we showed today — resilience, scale, structured output, self-documentation, and AI as a consequence — aren't specific to RAPS or to Rust. They're how you build automation that survives production. Apply them in Python, C#, Node, Go — the architecture is the same.
 
-Good tooling shrinks that gap. It lets you focus on what you're actually building instead of fighting the mechanics.
-
-raps is one answer. It's the answer I wish existed when I spent three hours debugging why my translation kept returning "complete" with zero derivatives. Maybe it's the answer you need too.
+The code is open source. The patterns are yours. Go build.
 
 ## Key Takeaways
 
-1. **CLI beats clicking** for anything you do more than twice
-2. **raps has 55 top-level commands (95+ total operations)** across 15 APIs -- probably covers what you need
-3. **Pick your poison for install**: npm, pip, brew, scoop, cargo, or curl-bash
-4. **Profiles save your sanity** when juggling staging vs prod (you will forget which one you're on otherwise)
-5. **Pipeline v2 turns commands into workflows** -- retry, timeout, conditionals, parallel, for-each, all in YAML
-6. **Official CI/CD integrations** for GitHub Actions and GitLab CI mean your APS workflows run on every push
-7. **MCP is real** -- 101 tools, works today, not a demo
-8. **Python bindings** exist if you prefer scripting over shell commands
-9. **Open source** means you can fix bugs without waiting on a vendor ticket
+1. **Auth is infrastructure, not application logic** — cache tokens, refresh before expiry, abstract credential storage
+2. **Retry per endpoint, not globally** — translation failures and rate limits need different strategies
+3. **Resumable bulk operations** survive network failures without restarting from item 1
+4. **Proactive rate-limit throttling** reads API headers and slows down before getting 429'd
+5. **Auto-detect output format** — TTY gets tables, pipes get JSON, no flags required
+6. **The stderr/stdout contract** — progress to stderr, data to stdout, one command serves all consumers
+7. **Runtime JSON Schema** lets machines discover your tool's capabilities programmatically
+8. **Structured exit codes** give machines semantics to branch on, not strings to parse
+9. **Auto-generated docs from live code** can't go stale
+10. **AI integration is a consequence** of getting the other layers right — same types, same auth, different transport
 
 ## Resources
 
 - **GitHub**: https://github.com/dmytro-yemelianov/raps
 - **Documentation**: https://rapscli.xyz/docs
-- **Installation Guide**: https://rapscli.xyz/docs/installation
 - **MCP Server Guide**: https://rapscli.xyz/docs/mcp-server
-- **Python Bindings**: https://rapscli.xyz/docs/python-bindings
+- **Account Admin Guide**: https://rapscli.xyz/docs/account-admin
+- **Output Formats**: https://rapscli.xyz/docs/output-formats
 - **Command Reference**: https://rapscli.xyz/docs/commands
+- **CI/CD Integrations**: https://rapscli.xyz/docs/ci-cd
