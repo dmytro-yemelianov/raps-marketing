@@ -58,7 +58,7 @@
 
 ### "What's MCP / Model Context Protocol?"
 
-> MCP (Model Context Protocol) is an open standard that allows AI assistants like Claude and Cursor to interact with external tools. I've built an MCP server for RAPS that exposes 14 APS operations as tools that AI can call directly.
+> MCP (Model Context Protocol) is an open standard that allows AI assistants like Claude and Cursor to interact with external tools. I've built an MCP server for RAPS that exposes 111 APS operations as tools that AI can call directly.
 >
 > This means you can interact with APS using natural language: "List my buckets," "Start translating this file," etc. It's particularly useful for developers who want to explore APS capabilities quickly.
 

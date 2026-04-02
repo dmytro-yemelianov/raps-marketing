@@ -215,13 +215,13 @@ I see several potential issues in your approach. Let me help debug this step by 
 
 **Code Review:**
 Looking at your example, here are the problems:
-```[language]
+```text
 // Your code with comments explaining issues
 [user's code with inline comments about problems]
 ```
 
 **Corrected Approach:**
-```[language]
+```text
 // Fixed version with explanations
 [corrected code with explanations]
 ```

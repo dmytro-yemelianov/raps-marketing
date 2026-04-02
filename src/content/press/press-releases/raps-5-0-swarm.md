@@ -90,6 +90,6 @@ RAPS 5.0.0 is available now via:
 
 **About RAPS**
 
-RAPS is an open-source command-line interface for Autodesk Platform Services (APS), written in Rust. It provides 95+ commands across authentication, data management, model translation, design automation, construction cloud, webhooks, and account administration. RAPS also includes an MCP server with 105 tools for AI assistant integration.
+RAPS is an open-source command-line interface for Autodesk Platform Services (APS), written in Rust. It provides 195+ operations across 51 command families and 10 workspace crates, covering authentication, data management, model translation, design automation, construction cloud, webhooks, and account administration across 15+ APS APIs. RAPS also includes an MCP server with 114 tools for AI assistant integration. The current release is v5.7.0.
 
 **Contact**: Dmytro Yemelianov — github.com/dmytro-yemelianov/raps

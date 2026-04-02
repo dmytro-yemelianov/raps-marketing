@@ -273,16 +273,6 @@ declare module 'astro:content' {
   rendered?: RenderedContent;
   filePath?: string;
 }>;
-"stories": Record<string, {
-  id: string;
-  render(): Render[".md"];
-  slug: string;
-  body: string;
-  collection: "stories";
-  data: InferEntrySchema<"stories">;
-  rendered?: RenderedContent;
-  filePath?: string;
-}>;
 "strategy": Record<string, {
   id: string;
   render(): Render[".md"];
@@ -290,16 +280,6 @@ declare module 'astro:content' {
   body: string;
   collection: "strategy";
   data: InferEntrySchema<"strategy">;
-  rendered?: RenderedContent;
-  filePath?: string;
-}>;
-"videos": Record<string, {
-  id: string;
-  render(): Render[".md"];
-  slug: string;
-  body: string;
-  collection: "videos";
-  data: InferEntrySchema<"videos">;
   rendered?: RenderedContent;
   filePath?: string;
 }>;
@@ -335,6 +315,6 @@ declare module 'astro:content' {
 		LiveContentConfig['collections'][C]['loader']
 	>;
 
-	export type ContentConfig = typeof import("./../src/content/config.js");
+	export type ContentConfig = typeof import("../src/content/config.js");
 	export type LiveContentConfig = never;
 }

@@ -76,7 +76,7 @@ Configure your AI assistant to connect to the MCP server via stdio transport.
 
 ### About RAPS
 
-RAPS is an open-source CLI tool for Autodesk Platform Services, written in Rust. It provides 60+ top-level commands (120+ total operations) covering authentication, data management, object storage, model translation, design automation, webhooks, account administration (company management, user CRUD, project operations), and more. RAPS is developed by Dmytro Yemelianov and released under the Apache-2.0 license.
+RAPS is an open-source CLI tool for Autodesk Platform Services, written in Rust. It provides 51 command families (195+ total operations) and 114 MCP tools covering authentication, data management, object storage, model translation, design automation, webhooks, account administration (company management, user CRUD, project operations), safeguard rollback/backup scripts, and more. RAPS is developed by Dmytro Yemelianov and released under the Apache-2.0 license.
 
 - **Website**: [rapscli.xyz](https://rapscli.xyz)
 - **Source Code**: [github.com/dmytro-yemelianov/raps](https://github.com/dmytro-yemelianov/raps)

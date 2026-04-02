@@ -59,7 +59,7 @@ brew install dmytro-yemelianov/tap/raps
 
 ### About RAPS
 
-RAPS (Rust Autodesk Platform Services) is an open-source CLI and MCP server for Autodesk Platform Services. It provides 100+ commands and 111 MCP tools across 15+ APS APIs, with enterprise features including swarm orchestration, distributed job processing, and pipeline automation.
+RAPS (Rust Autodesk Platform Services) is an open-source CLI and MCP server for Autodesk Platform Services. It provides 195+ operations across 51 command families and 114 MCP tools covering 15+ APS APIs, with 10 workspace crates and enterprise features including swarm orchestration, distributed job processing, and pipeline automation. The current release is v5.7.0.
 
 **Website:** https://rapscli.xyz
 **Repository:** https://github.com/dmytro-yemelianov/raps

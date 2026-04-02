@@ -4,6 +4,8 @@
   "version": "2.0.0",
   "description": "RAPS Marketing Site - Professional APS Automation Tools",
   "scripts": {
+    "predev": "node scripts/clean-astro-cache.mjs",
+    "prebuild": "node scripts/clean-astro-cache.mjs",
     "dev": "astro dev",
     "build": "astro build",
     "preview": "astro preview",

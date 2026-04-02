@@ -128,21 +128,21 @@ documents = [
         'output': 'aps-cheatsheet',
         'title': 'APS Developer Cheat Sheet',
         'subtitle': 'Single-page reference for Autodesk Platform Services APIs',
-        'version': 'RAPS v4.2.1 | January 2026'
+        'version': 'RAPS v4.11.0 | February 2026'
     },
     {
         'file': pdf_ready_dir / 'error-codes-pdf.md',
         'output': 'aps-error-codes-reference',
         'title': 'APS API Error Codes Reference',
         'subtitle': 'Complete troubleshooting guide for Autodesk Platform Services',
-        'version': 'RAPS v4.2.1 | January 2026'
+        'version': 'RAPS v4.11.0 | February 2026'
     },
     {
         'file': pdf_ready_dir / 'forge-migration-pdf.md',
         'output': 'forge-to-aps-migration-guide',
         'title': 'Forge to APS Migration Guide',
         'subtitle': 'Complete step-by-step migration walkthrough',
-        'version': 'RAPS v4.2.1 | Migration deadline: December 31, 2026'
+        'version': 'RAPS v4.11.0 | Migration deadline: December 31, 2026'
     }
 ]
 
@@ -153,14 +153,14 @@ additional_docs = [
         'output': 'raps-developer-quickstart',
         'title': 'RAPS Developer Quick Start Guide',
         'subtitle': 'Get started with RAPS CLI for APS automation',
-        'version': 'RAPS v4.2.1 | January 2026'
+        'version': 'RAPS v4.11.0 | February 2026'
     },
     {
         'file': project_dir / 'developer-resources' / 'references' / 'oauth-scopes.md',
         'output': 'aps-oauth-scopes-reference',
         'title': 'APS OAuth Scopes Reference',
         'subtitle': 'Complete guide to OAuth scopes and permissions',
-        'version': 'RAPS v4.2.1 | January 2026'
+        'version': 'RAPS v4.11.0 | February 2026'
     }
 ]
 

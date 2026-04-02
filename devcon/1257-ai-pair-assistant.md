@@ -96,9 +96,9 @@ The protocol is simple:
 
 It's like giving the AI a set of carefully curated superpowers. Not unlimited access—just specific, well-defined operations.
 
-## The 35 Tools We've Built
+## The 111 Tools We've Built
 
-The raps MCP server exposes **35 tools** that cover comprehensive APS operations:
+The raps MCP server exposes **111 tools** that cover comprehensive APS operations:
 
 **Authentication (because everything starts here):**
 ```
@@ -310,7 +310,7 @@ The answer to "Is this the end of scripts?" is no. But it might be the end of *s
 
 ## Key Takeaways
 
-1. **MCP enables AI assistants to safely interact with APS APIs** via 35 specialized tools—not hallucinated endpoints, but real operations
+1. **MCP enables AI assistants to safely interact with APS APIs** via 111 specialized tools—not hallucinated endpoints, but real operations
 2. **Natural language reduces the barrier to APS automation** for exploration, debugging, and learning
 3. **AI assistance is complementary to—not replacement for—production automation**
 4. **The future is hybrid**: AI for exploration and ad-hoc tasks, scripts for repeatable workflows

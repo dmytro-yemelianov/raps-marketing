@@ -25,7 +25,7 @@ def verify_pdf_content(pdf_path):
             # Check for essential elements
             has_toc = 'contents' in text.lower() or 'table of contents' in text.lower()
             has_raps = 'raps' in text.lower()
-            has_version = any(v in text for v in ['4.2.1', 'version', 'v4.2'])
+            has_version = any(v in text for v in ['4.11.0', 'version', 'v4.11'])
             has_page_numbers = 'page' in text.lower()
             
             print(f"   ✓ Text extraction successful")

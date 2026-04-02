@@ -95,7 +95,7 @@
           "id": "acc-modules",
           "name": "ACC Module Coverage",
           "description": "Shows all ACC modules supported",
-          "prompt": "Hexagonal honeycomb arrangement of ACC module icons. Each hexagon contains an icon and label: Issues (warning triangle), RFIs (question mark), Submittals (document stack), Checklists (checkbox), Assets (barcode), Account Admin (users group). All hexagons connected by glowing lines to central 'raps CLI' hub. Dark theme with Autodesk orange accents. Clean flat design with subtle gradients. Badge showing '35+ MCP Tools'. Text: 'Complete ACC Coverage'. Autodesk DevCon logo. 16:9 aspect ratio."
+          "prompt": "Hexagonal honeycomb arrangement of ACC module icons. Each hexagon contains an icon and label: Issues (warning triangle), RFIs (question mark), Submittals (document stack), Checklists (checkbox), Assets (barcode), Account Admin (users group). All hexagons connected by glowing lines to central 'raps CLI' hub. Dark theme with Autodesk orange accents. Clean flat design with subtle gradients. Badge showing '111 MCP Tools'. Text: 'Complete ACC Coverage'. Autodesk DevCon logo. 16:9 aspect ratio."
         }
       ]
     }

@@ -1,0 +1,211 @@
+<!DOCTYPE html><html lang="en" data-astro-cid-37fxchfa> <head><meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><link rel="icon" type="image/svg+xml" href="/favicon.svg"><meta name="generator" content="Astro v5.18.0"><!-- Primary Meta Tags --><title>AI Pair-Assistant for APS Operators: The End of Scripts? | RAPS CLI</title><meta name="title" content="AI Pair-Assistant for APS Operators: The End of Scripts? | RAPS CLI"><meta name="description" content="DevCon 2026 session: AI Pair-Assistant for APS Operators: The End of Scripts?"><!-- Open Graph / Facebook --><meta property="og:type" content="website"><meta property="og:url" content="https://rapscli.xyz/devcon/1257/"><meta property="og:title" content="AI Pair-Assistant for APS Operators: The End of Scripts? | RAPS CLI"><meta property="og:description" content="DevCon 2026 session: AI Pair-Assistant for APS Operators: The End of Scripts?"><meta property="og:image" content="https://rapscli.xyz/og-image.png"><!-- Twitter --><meta property="twitter:card" content="summary_large_image"><meta property="twitter:url" content="https://rapscli.xyz/devcon/1257/"><meta property="twitter:title" content="AI Pair-Assistant for APS Operators: The End of Scripts? | RAPS CLI"><meta property="twitter:description" content="DevCon 2026 session: AI Pair-Assistant for APS Operators: The End of Scripts?"><meta property="twitter:image" content="https://rapscli.xyz/og-image.png"><!-- Canonical URL --><link rel="canonical" href="https://rapscli.xyz/devcon/1257/"><!-- Fonts --><link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin><link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet"><link rel="stylesheet" href="/_astro/_slug_.B9K_sDND.css">
+<style>.session-content[data-astro-cid-z3xakpcs] h2{scroll-margin-top:100px}.session-content[data-astro-cid-z3xakpcs] pre{box-shadow:0 4px 6px -1px #0000001a,0 2px 4px -2px #0000001a}.session-content[data-astro-cid-z3xakpcs] table{box-shadow:0 1px 3px #0000001a,0 1px 2px -1px #0000001a}.session-content[data-astro-cid-z3xakpcs] code{word-break:break-word}.session-content[data-astro-cid-z3xakpcs] pre code{word-break:normal}
+</style></head> <body class="min-h-screen bg-white" data-astro-cid-37fxchfa> <nav class="sticky top-0 z-50 bg-white/95 backdrop-blur border-b border-gray-200" data-astro-cid-37fxchfa> <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8" data-astro-cid-37fxchfa> <div class="flex justify-between items-center h-16" data-astro-cid-37fxchfa> <div class="flex items-center" data-astro-cid-37fxchfa> <a href="/" class="flex items-center space-x-2" data-astro-cid-37fxchfa> <span class="text-2xl font-bold bg-gradient-to-r from-raps-blue to-raps-purple bg-clip-text text-transparent" data-astro-cid-37fxchfa>
+RAPS
+</span> <span class="text-gray-500" data-astro-cid-37fxchfa>v4.11.0</span> </a> </div> <nav class="hidden md:flex items-center space-x-6" data-astro-cid-37fxchfa> <!-- Developer Dropdown --> <div class="relative group" data-astro-cid-37fxchfa> <button class="text-gray-700 hover:text-raps-blue transition flex items-center" data-astro-cid-37fxchfa>
+Developer <span class="ml-1 text-xs" data-astro-cid-37fxchfa>▼</span> </button> <div class="absolute top-full left-0 mt-2 w-64 bg-white shadow-lg rounded-lg opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all z-50" data-astro-cid-37fxchfa> <a href="/guides" class="block px-4 py-3 text-sm text-gray-700 hover:bg-gray-50 border-b border-gray-100" data-astro-cid-37fxchfa> <div class="font-medium" data-astro-cid-37fxchfa>📚 Guides</div> <div class="text-xs text-gray-500" data-astro-cid-37fxchfa>Step-by-step tutorials</div> </a> <a href="/recipes" class="block px-4 py-3 text-sm text-gray-700 hover:bg-gray-50 border-b border-gray-100" data-astro-cid-37fxchfa> <div class="font-medium" data-astro-cid-37fxchfa>🍳 Recipes</div> <div class="text-xs text-gray-500" data-astro-cid-37fxchfa>Common workflow patterns</div> </a> <a href="/tools" class="block px-4 py-3 text-sm text-gray-700 hover:bg-gray-50 border-b border-gray-100" data-astro-cid-37fxchfa> <div class="font-medium" data-astro-cid-37fxchfa>🛠️ Interactive Tools</div> <div class="text-xs text-gray-500" data-astro-cid-37fxchfa>OAuth, URN, token helpers</div> </a> <a href="/resources" class="block px-4 py-3 text-sm text-gray-700 hover:bg-gray-50" data-astro-cid-37fxchfa> <div class="font-medium" data-astro-cid-37fxchfa>📖 Resources</div> <div class="text-xs text-gray-500" data-astro-cid-37fxchfa>Cheat sheets & references</div> </a> </div> </div> <!-- Content Dropdown --> <div class="relative group" data-astro-cid-37fxchfa> <button class="text-gray-700 hover:text-raps-blue transition flex items-center" data-astro-cid-37fxchfa>
+Content <span class="ml-1 text-xs" data-astro-cid-37fxchfa>▼</span> </button> <div class="absolute top-full left-0 mt-2 w-56 bg-white shadow-lg rounded-lg opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all z-50" data-astro-cid-37fxchfa> <a href="/articles" class="block px-4 py-3 text-sm text-gray-700 hover:bg-gray-50 border-b border-gray-100" data-astro-cid-37fxchfa> <div class="font-medium" data-astro-cid-37fxchfa>✍️ Articles</div> <div class="text-xs text-gray-500" data-astro-cid-37fxchfa>Technical deep-dives</div> </a> <a href="/pdfs" class="block px-4 py-3 text-sm text-gray-700 hover:bg-gray-50" data-astro-cid-37fxchfa> <div class="font-medium" data-astro-cid-37fxchfa>📄 PDFs</div> <div class="text-xs text-gray-500" data-astro-cid-37fxchfa>Downloadable resources</div> </a> </div> </div> <!-- Strategy Dropdown (existing, just enhanced) --> <div class="relative group" data-astro-cid-37fxchfa> <button class="text-gray-700 hover:text-raps-blue transition flex items-center" data-astro-cid-37fxchfa>
+Strategy <span class="ml-1 text-xs" data-astro-cid-37fxchfa>▼</span> </button> <div class="absolute top-full left-0 mt-2 w-56 bg-white shadow-lg rounded-lg opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all z-50" data-astro-cid-37fxchfa> <a href="/campaigns" class="block px-4 py-3 text-sm text-gray-700 hover:bg-gray-50 border-b border-gray-100" data-astro-cid-37fxchfa> <div class="font-medium" data-astro-cid-37fxchfa>🎯 Campaigns</div> <div class="text-xs text-gray-500" data-astro-cid-37fxchfa>Marketing initiatives</div> </a> <a href="/analytics" class="block px-4 py-3 text-sm text-gray-700 hover:bg-gray-50 border-b border-gray-100" data-astro-cid-37fxchfa> <div class="font-medium" data-astro-cid-37fxchfa>📊 Analytics</div> <div class="text-xs text-gray-500" data-astro-cid-37fxchfa>Performance metrics</div> </a> <a href="/strategy" class="block px-4 py-3 text-sm text-gray-700 hover:bg-gray-50 border-b border-gray-100" data-astro-cid-37fxchfa> <div class="font-medium" data-astro-cid-37fxchfa>📋 Strategy</div> <div class="text-xs text-gray-500" data-astro-cid-37fxchfa>Strategic planning</div> </a> <a href="/community" class="block px-4 py-3 text-sm text-gray-700 hover:bg-gray-50 border-b border-gray-100" data-astro-cid-37fxchfa> <div class="font-medium" data-astro-cid-37fxchfa>👥 Community</div> <div class="text-xs text-gray-500" data-astro-cid-37fxchfa>Engagement plans</div> </a> <a href="/press" class="block px-4 py-3 text-sm text-gray-700 hover:bg-gray-50 border-b border-gray-100" data-astro-cid-37fxchfa> <div class="font-medium" data-astro-cid-37fxchfa>📰 Press</div> <div class="text-xs text-gray-500" data-astro-cid-37fxchfa>Press releases</div> </a> <a href="/calendar" class="block px-4 py-3 text-sm text-gray-700 hover:bg-gray-50" data-astro-cid-37fxchfa> <div class="font-medium" data-astro-cid-37fxchfa>📅 Calendar</div> <div class="text-xs text-gray-500" data-astro-cid-37fxchfa>Content schedule</div> </a> </div> </div> <a href="https://github.com/autodesk-platform-services/raps" class="text-gray-700 hover:text-raps-blue transition" data-astro-cid-37fxchfa>
+GitHub
+</a> <a href="https://github.com/autodesk-platform-services/raps/releases" class="px-4 py-2 bg-gradient-to-r from-raps-blue to-raps-purple text-white rounded-lg hover:shadow-lg transition" data-astro-cid-37fxchfa>
+Download
+</a> </nav> <button class="md:hidden p-2 rounded-lg hover:bg-gray-100" data-astro-cid-37fxchfa> <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" data-astro-cid-37fxchfa> <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16" data-astro-cid-37fxchfa></path> </svg> </button> </div> </div> </nav> <main data-astro-cid-37fxchfa>   <section class="bg-gradient-to-r from-purple-500 to-indigo-600 text-white py-12" data-astro-cid-z3xakpcs> <div class="content-container" data-astro-cid-z3xakpcs> <div class="max-w-5xl mx-auto" data-astro-cid-z3xakpcs> <a href="/devcon" class="inline-flex items-center gap-2 text-white/80 hover:text-white mb-4 text-sm transition-colors" data-astro-cid-z3xakpcs>
+← Back to all sessions
+</a> <div class="flex items-start gap-5" data-astro-cid-z3xakpcs> <span class="text-5xl drop-shadow-lg" data-astro-cid-z3xakpcs>🤖</span> <div data-astro-cid-z3xakpcs> <div class="flex items-center gap-3 mb-3" data-astro-cid-z3xakpcs> <span class="text-sm font-mono bg-white/20 backdrop-blur px-3 py-1 rounded-full" data-astro-cid-z3xakpcs>
+Session 1257 </span> <span class="text-sm bg-white/10 backdrop-blur px-3 py-1 rounded-full" data-astro-cid-z3xakpcs>
+30-minute deep dive
+</span> </div> <h1 class="text-3xl md:text-4xl font-bold leading-tight" data-astro-cid-z3xakpcs>AI Pair-Assistant for APS Operators: The End of Scripts?</h1> <p class="mt-3 text-white/80 text-lg" data-astro-cid-z3xakpcs>Speaker: Dmytro Yemelianov</p> </div> </div> </div> </div> </section>  <section class="py-12 bg-white" data-astro-cid-z3xakpcs> <div class="content-container" data-astro-cid-z3xakpcs> <div class="max-w-5xl mx-auto" data-astro-cid-z3xakpcs> <article class="session-content" data-astro-cid-z3xakpcs>
+
+<h2 class="text-2xl font-bold mt-12 mb-6 text-gray-900 pb-3 border-b-2 border-gray-200">Session Details</h2>
+
+<div class="my-6 overflow-x-auto rounded-lg border border-gray-200"><table class="w-full border-collapse text-sm"><thead><tr><th class="bg-gray-50 border border-gray-200 px-4 py-3 text-left font-semibold text-gray-700">Field</th><th class="bg-gray-50 border border-gray-200 px-4 py-3 text-left font-semibold text-gray-700">Value</th></tr></thead><tbody><tr class="hover:bg-gray-50 transition-colors"><td class="border border-gray-200 px-4 py-3 text-gray-700"><strong class="font-semibold text-gray-900">Session ID</strong></td><td class="border border-gray-200 px-4 py-3 text-gray-700">1257</td></tr><tr class="hover:bg-gray-50 transition-colors"><td class="border border-gray-200 px-4 py-3 text-gray-700"><strong class="font-semibold text-gray-900">Title</strong></td><td class="border border-gray-200 px-4 py-3 text-gray-700">AI Pair-Assistant for APS Operators: The End of Scripts?</td></tr><tr class="hover:bg-gray-50 transition-colors"><td class="border border-gray-200 px-4 py-3 text-gray-700"><strong class="font-semibold text-gray-900">Speaker(s)</strong></td><td class="border border-gray-200 px-4 py-3 text-gray-700">Dmytro Yemelianov</td></tr><tr class="hover:bg-gray-50 transition-colors"><td class="border border-gray-200 px-4 py-3 text-gray-700"><strong class="font-semibold text-gray-900">Session Type</strong></td><td class="border border-gray-200 px-4 py-3 text-gray-700">30-minute deep dive</td></tr><tr class="hover:bg-gray-50 transition-colors"><td class="border border-gray-200 px-4 py-3 text-gray-700"><strong class="font-semibold text-gray-900">Status</strong></td><td class="border border-gray-200 px-4 py-3 text-gray-700">Complete</td></tr></tbody></table></div>
+<h2 class="text-2xl font-bold mt-12 mb-6 text-gray-900 pb-3 border-b-2 border-gray-200">AI Pillars</h2>
+
+<ul class="my-4 space-y-1"><li class="flex items-start gap-3 py-1"><span class="text-green-500 mt-0.5">✓</span><span><strong class="font-semibold text-gray-900">Automate</strong> - Speed repetitive tasks, shrink cycle times, reduce errors</span></li>
+<li class="flex items-start gap-3 py-1"><span class="text-green-500 mt-0.5">✓</span><span><strong class="font-semibold text-gray-900">Assist</strong> - Improve decisions with insights, copilots, and intelligent guidance</span></li>
+<li class="flex items-start gap-3 py-1"><span class="text-green-500 mt-0.5">✓</span><span><strong class="font-semibold text-gray-900">Augment</strong> - Expand human capability—new ways to design, plan, deliver</span></li>
+</ul>
+<h2 class="text-2xl font-bold mt-12 mb-6 text-gray-900 pb-3 border-b-2 border-gray-200">Themes</h2>
+
+<ul class="my-4 space-y-1"><li class="flex items-start gap-3 py-1 text-gray-400"><span class="mt-0.5">○</span><span>Sustainability</span></li>
+<li class="flex items-start gap-3 py-1"><span class="text-green-500 mt-0.5">✓</span><span><strong class="font-semibold text-gray-900">Digital Transformation</strong></span></li>
+<li class="flex items-start gap-3 py-1"><span class="text-green-500 mt-0.5">✓</span><span><strong class="font-semibold text-gray-900">System Integration</strong></span></li>
+</ul>
+<h2 class="text-2xl font-bold mt-12 mb-6 text-gray-900 pb-3 border-b-2 border-gray-200">Target Audience</h2>
+
+<ul class="my-4 space-y-1"><li class="flex items-start gap-3 py-1"><span class="text-green-500 mt-0.5">✓</span><span><strong class="font-semibold text-gray-900">Business Decision Makers</strong> - Strategy, ROI, operational outcomes</span></li>
+<li class="flex items-start gap-3 py-1"><span class="text-green-500 mt-0.5">✓</span><span><strong class="font-semibold text-gray-900">Developers/Architects</strong> - How it's built, APIs, patterns, lessons learned</span></li>
+</ul>
+<h2 class="text-2xl font-bold mt-12 mb-6 text-gray-900 pb-3 border-b-2 border-gray-200">Learning Objectives</h2>
+
+<ol class="my-4 list-decimal list-outside space-y-2"><li class="ml-6 mb-2 text-gray-700">Understand how Model Context Protocol (MCP) connects AI assistants to APS APIs</li>
+<li class="ml-6 mb-2 text-gray-700">See real demonstrations of AI-assisted APS operations—no scripting required</li>
+<li class="ml-6 mb-2 text-gray-700">Evaluate when AI assistance replaces, augments, or complements traditional automation</li>
+</ol>
+<figure class="my-8"><img src="/devcon/images/1257-ai-pair-assistant-hero.png" alt="AI Pair-Assistant Hero" class="w-full rounded-xl shadow-lg" loading="lazy" /><figcaption class="text-center text-sm text-gray-500 mt-2">AI Pair-Assistant Hero</figcaption></figure>
+
+<h2 class="text-2xl font-bold mt-12 mb-6 text-gray-900 pb-3 border-b-2 border-gray-200">Abstract</h2>
+
+<p class="mb-5 text-gray-700 leading-relaxed text-base">It's 11 PM. You're troubleshooting a failed translation job. The manifest returns cryptic status codes. You're switching between three browser tabs—API documentation, Postman, and Stack Overflow—trying to remember the exact endpoint for checking derivative status. Your coffee is cold.</p>
+
+<p class="mb-5 text-gray-700 leading-relaxed text-base">What if instead, you could just ask: "Why did my Revit file fail to translate, and how do I fix it?"</p>
+
+<p class="mb-5 text-gray-700 leading-relaxed text-base">This session explores a future that's already here: AI assistants that don't just answer questions about APS—they actually <em class="italic">do things</em> in APS. Through the Model Context Protocol (MCP), we've connected Claude to live APS APIs. The AI doesn't hallucinate endpoints or guess at parameters. It executes real operations: creating buckets, checking translation status, listing your projects.</p>
+
+<p class="mb-5 text-gray-700 leading-relaxed text-base"><strong class="font-semibold text-gray-900">The provocative question in the title deserves an honest answer.</strong> No, this isn't the end of scripts. Production pipelines will always need deterministic, version-controlled automation. But for exploration? For debugging? For that 11 PM troubleshooting session? Having an AI assistant that can actually query your environment changes everything.</p>
+
+<p class="mb-5 text-gray-700 leading-relaxed text-base">We'll demonstrate:</p>
+
+<ul class="my-4 list-disc list-outside space-y-2"><li class="ml-6 mb-2 text-gray-700"><strong class="font-semibold text-gray-900">Conversational APS operations</strong>: "Create a bucket for the hospital project with persistent storage" → done</li>
+<li class="ml-6 mb-2 text-gray-700"><strong class="font-semibold text-gray-900">Intelligent troubleshooting</strong>: AI checks translation status, interprets the manifest, explains what went wrong</li>
+<li class="ml-6 mb-2 text-gray-700"><strong class="font-semibold text-gray-900">Context-aware assistance</strong>: The AI remembers your bucket names, understands regional constraints, knows the difference between transient and persistent policies</li>
+<li class="ml-6 mb-2 text-gray-700"><strong class="font-semibold text-gray-900">The honest limitations</strong>: What AI assistants can't do (yet), and why hybrid workflows matter</li>
+</ul>
+<h2 class="text-2xl font-bold mt-12 mb-6 text-gray-900 pb-3 border-b-2 border-gray-200">The Story Behind This Session</h2>
+
+<p class="mb-5 text-gray-700 leading-relaxed text-base">I've spent a decade building Autodesk integrations. Vault, Inventor, AutoCAD—the whole ecosystem. And I've watched developers struggle with the same problems year after year: authentication flows that require a PhD to understand, URN encoding that trips up everyone, translation jobs that fail with messages like "TranslationWorker-InternalFailure" (thanks, that's very helpful).</p>
+
+<p class="mb-5 text-gray-700 leading-relaxed text-base">The APS documentation is extensive. It's also overwhelming. When you're new to the platform, you don't know what you don't know. You don't know that 3-legged auth requires manual provisioning in the ACC admin console. You don't know that EMEA files can't be translated with US-region credentials. You learn these things the hard way, at 11 PM, with cold coffee.</p>
+
+<p class="mb-5 text-gray-700 leading-relaxed text-base">What if there was a better way?</p>
+
+<p class="mb-5 text-gray-700 leading-relaxed text-base">The Model Context Protocol caught my attention because it solves a fundamental problem: AI assistants are great at explaining things, but they can't <em class="italic">do</em> things. ChatGPT can tell you the Model Derivative API endpoint, but it can't check your actual translation status. MCP changes that equation.</p>
+
+<h2 class="text-2xl font-bold mt-12 mb-6 text-gray-900 pb-3 border-b-2 border-gray-200">APS Components Used</h2>
+
+<ul class="my-4 list-disc list-outside space-y-2"><li class="ml-6 mb-2 text-gray-700">Model Context Protocol (MCP) Server</li>
+<li class="ml-6 mb-2 text-gray-700">Authentication API</li>
+<li class="ml-6 mb-2 text-gray-700">OSS API (Buckets, Objects)</li>
+<li class="ml-6 mb-2 text-gray-700">Model Derivative API</li>
+<li class="ml-6 mb-2 text-gray-700">Data Management API</li>
+<li class="ml-6 mb-2 text-gray-700">ACC Issues API</li>
+<li class="ml-6 mb-2 text-gray-700">ACC RFIs API</li>
+<li class="ml-6 mb-2 text-gray-700">ACC Assets API</li>
+<li class="ml-6 mb-2 text-gray-700">ACC Submittals API</li>
+<li class="ml-6 mb-2 text-gray-700">ACC Checklists API</li>
+<li class="ml-6 mb-2 text-gray-700">ACC Account Admin API</li>
+</ul>
+<h2 class="text-2xl font-bold mt-12 mb-6 text-gray-900 pb-3 border-b-2 border-gray-200">Autodesk Products</h2>
+
+<ul class="my-4 list-disc list-outside space-y-2"><li class="ml-6 mb-2 text-gray-700">Autodesk Construction Cloud (ACC)</li>
+<li class="ml-6 mb-2 text-gray-700">BIM 360</li>
+<li class="ml-6 mb-2 text-gray-700">Any product with APS integration</li>
+</ul>
+<h2 class="text-2xl font-bold mt-12 mb-6 text-gray-900 pb-3 border-b-2 border-gray-200">What is MCP, Really?</h2>
+
+<p class="mb-5 text-gray-700 leading-relaxed text-base"><figure class="my-8"><img src="/devcon/images/1257-ai-pair-assistant-mcp-diagram.png" alt="MCP Architecture" class="w-full rounded-xl shadow-lg" loading="lazy" /><figcaption class="text-center text-sm text-gray-500 mt-2">MCP Architecture</figcaption></figure></p>
+
+<p class="mb-5 text-gray-700 leading-relaxed text-base">Think of MCP as a universal adapter between AI assistants and external tools. Without MCP, when you ask Claude about your APS buckets, it can only give you generic information from its training data. With MCP, Claude can actually call the OSS API and tell you <em class="italic">your specific buckets, right now</em>.</p>
+
+<p class="mb-5 text-gray-700 leading-relaxed text-base">The protocol is simple: <ol class="my-4 list-decimal list-outside space-y-2"><li class="ml-6 mb-2 text-gray-700">You start an MCP server (in our case, <code class="bg-gray-100 text-blue-700 px-1.5 py-0.5 rounded text-sm font-mono border border-gray-200">raps serve</code>)</li> <li class="ml-6 mb-2 text-gray-700">The AI assistant connects to it</li> <li class="ml-6 mb-2 text-gray-700">The server exposes "tools"—functions the AI can call</li> <li class="ml-6 mb-2 text-gray-700">When you ask a question that requires live data, the AI uses the appropriate tool</li> </ol> It's like giving the AI a set of carefully curated superpowers. Not unlimited access—just specific, well-defined operations.</p>
+
+<h2 class="text-2xl font-bold mt-12 mb-6 text-gray-900 pb-3 border-b-2 border-gray-200">The 111 Tools We've Built</h2>
+
+<p class="mb-5 text-gray-700 leading-relaxed text-base">The raps MCP server exposes <strong class="font-semibold text-gray-900">111 tools</strong> that cover comprehensive APS operations:</p>
+
+<p class="mb-5 text-gray-700 leading-relaxed text-base"><strong class="font-semibold text-gray-900">Authentication (because everything starts here):</strong> <div class="relative my-6"><pre class="bg-gray-900 text-gray-100 rounded-xl p-5 overflow-x-auto text-sm leading-relaxed font-mono"><code class="language-text">auth_test      - Test 2-legged OAuth credentials auth_status    - Check current authentication state</code></pre></div></p>
+
+<p class="mb-5 text-gray-700 leading-relaxed text-base"><strong class="font-semibold text-gray-900">Bucket management (your cloud storage foundation):</strong> <div class="relative my-6"><pre class="bg-gray-900 text-gray-100 rounded-xl p-5 overflow-x-auto text-sm leading-relaxed font-mono"><code class="language-text">bucket_list    - List all accessible buckets bucket_create  - Create a new bucket with policy and region bucket_get     - Get detailed bucket information bucket_delete  - Delete an empty bucket</code></pre></div></p>
+
+<p class="mb-5 text-gray-700 leading-relaxed text-base"><strong class="font-semibold text-gray-900">Object operations (the files that matter):</strong> <div class="relative my-6"><pre class="bg-gray-900 text-gray-100 rounded-xl p-5 overflow-x-auto text-sm leading-relaxed font-mono"><code class="language-text">object_list       - List objects in a bucket object_delete     - Delete an object object_signed_url - Generate pre-signed download URL object_urn        - Get Base64-encoded URN for translation</code></pre></div></p>
+
+<p class="mb-5 text-gray-700 leading-relaxed text-base"><strong class="font-semibold text-gray-900">Translation workflow (where the magic happens):</strong> <div class="relative my-6"><pre class="bg-gray-900 text-gray-100 rounded-xl p-5 overflow-x-auto text-sm leading-relaxed font-mono"><code class="language-text">translate_start   - Start a translation job translate_status  - Check translation progress and results</code></pre></div></p>
+
+<p class="mb-5 text-gray-700 leading-relaxed text-base"><strong class="font-semibold text-gray-900">Data Management (navigating the project hierarchy):</strong> <div class="relative my-6"><pre class="bg-gray-900 text-gray-100 rounded-xl p-5 overflow-x-auto text-sm leading-relaxed font-mono"><code class="language-text">hub_list       - List BIM 360/ACC hubs project_list   - List projects in a hub folder_list    - List folder contents folder_create  - Create new folders item_info      - Get item details item_versions  - View item version history</code></pre></div></p>
+
+<p class="mb-5 text-gray-700 leading-relaxed text-base"><strong class="font-semibold text-gray-900">ACC Issues (construction management):</strong> <div class="relative my-6"><pre class="bg-gray-900 text-gray-100 rounded-xl p-5 overflow-x-auto text-sm leading-relaxed font-mono"><code class="language-text">issue_list     - List issues in a project issue_get      - Get issue details issue_create   - Create new issues issue_update   - Update issue status/assignee</code></pre></div></p>
+
+<p class="mb-5 text-gray-700 leading-relaxed text-base"><strong class="font-semibold text-gray-900">ACC RFIs (requests for information):</strong> <div class="relative my-6"><pre class="bg-gray-900 text-gray-100 rounded-xl p-5 overflow-x-auto text-sm leading-relaxed font-mono"><code class="language-text">rfi_list       - List RFIs in a project rfi_get        - Get RFI details</code></pre></div></p>
+
+<p class="mb-5 text-gray-700 leading-relaxed text-base"><strong class="font-semibold text-gray-900">ACC Extended (assets, submittals, checklists):</strong> <div class="relative my-6"><pre class="bg-gray-900 text-gray-100 rounded-xl p-5 overflow-x-auto text-sm leading-relaxed font-mono"><code class="language-text">acc_assets_list      - List project assets acc_submittals_list  - List submittals acc_checklists_list  - List checklists</code></pre></div></p>
+
+<p class="mb-5 text-gray-700 leading-relaxed text-base"><strong class="font-semibold text-gray-900">Account Admin (bulk operations):</strong> <div class="relative my-6"><pre class="bg-gray-900 text-gray-100 rounded-xl p-5 overflow-x-auto text-sm leading-relaxed font-mono"><code class="language-text">admin_project_list      - List all projects in account admin_user_add          - Add user to projects admin_user_remove       - Remove user from projects admin_user_update_role  - Update user roles admin_operation_list    - List bulk operations admin_operation_status  - Check operation progress</code></pre></div></p>
+
+<p class="mb-5 text-gray-700 leading-relaxed text-base">These aren't arbitrary choices. They're the operations I found myself doing repeatedly while building APS integrations. The ones where having an AI assistant would actually save time.</p>
+
+<h2 class="text-2xl font-bold mt-12 mb-6 text-gray-900 pb-3 border-b-2 border-gray-200">Demo Highlights: A Real Conversation</h2>
+
+<p class="mb-5 text-gray-700 leading-relaxed text-base"><figure class="my-8"><img src="/devcon/images/1257-ai-pair-assistant-conversation.png" alt="Conversation Flow" class="w-full rounded-xl shadow-lg" loading="lazy" /><figcaption class="text-center text-sm text-gray-500 mt-2">Conversation Flow</figcaption></figure></p>
+
+<p class="mb-5 text-gray-700 leading-relaxed text-base">Let me show you what this looks like in practice. Not a scripted demo—a real conversation:</p>
+
+<div class="relative my-6"><pre class="bg-gray-900 text-gray-100 rounded-xl p-5 overflow-x-auto text-sm leading-relaxed font-mono"><code class="language-text">User: "I need to set up storage for a new hospital project. 
+       Create a bucket with persistent retention in the US region."
+
+<p class="mb-5 text-gray-700 leading-relaxed text-base">AI: I'll create that bucket for you. What would you like to name it?</p>
+
+<p class="mb-5 text-gray-700 leading-relaxed text-base">User: "hospital-central-2026"</p>
+
+<p class="mb-5 text-gray-700 leading-relaxed text-base">AI: [Calls bucket_create tool]     ✓ Created bucket 'hospital-central-2026'     - Policy: persistent (files kept until explicitly deleted)     - Region: US     - Owner: your-app-name          Ready for uploads. Would you like me to show you the upload command?</p>
+
+<p class="mb-5 text-gray-700 leading-relaxed text-base">User: "Actually, first show me what buckets I already have"</p>
+
+<p class="mb-5 text-gray-700 leading-relaxed text-base">AI: [Calls bucket_list tool]     You have 4 buckets:          1. hospital-central-2026 (persistent, US) ← just created     2. temp-processing (transient, US) - 3 objects     3. archive-2025 (persistent, US) - 147 objects       4. eu-client-data (persistent, EMEA) - 52 objects          The transient bucket will auto-delete files after 24 hours.     Want me to check what's in any of these?</p>
+
+<p class="mb-5 text-gray-700 leading-relaxed text-base">User: "What's the status of the translation I started this morning?"</p>
+
+<p class="mb-5 text-gray-700 leading-relaxed text-base">AI: I'll need the URN to check. Do you have it, or should I list      recent objects in one of your buckets?</p>
+
+<p class="mb-5 text-gray-700 leading-relaxed text-base">User: "It's in temp-processing, the file is called hospital-model.rvt"</p>
+
+<p class="mb-5 text-gray-700 leading-relaxed text-base">AI: [Calls object_list, then translate_status]     Found it. Translation status for hospital-model.rvt:          Status: success ✓     Progress: 100%     Output formats available:     - SVF2 (3D viewer)     - Thumbnail (PNG)          The model is ready for viewing. Would you like a signed      download URL, or shall I show you how to load it in the Viewer?</code></pre></div></p>
+
+<p class="mb-5 text-gray-700 leading-relaxed text-base">This isn't science fiction. This is working today.</p>
+
+<h2 class="text-2xl font-bold mt-12 mb-6 text-gray-900 pb-3 border-b-2 border-gray-200">Demo: ACC Operations via Natural Language</h2>
+
+<p class="mb-5 text-gray-700 leading-relaxed text-base">Here's where it gets interesting for construction teams. Real conversation, not scripted:</p>
+
+<div class="relative my-6"><pre class="bg-gray-900 text-gray-100 rounded-xl p-5 overflow-x-auto text-sm leading-relaxed font-mono"><code class="language-text">User: "Show me all open issues in the Downtown Tower project"
+
+<p class="mb-5 text-gray-700 leading-relaxed text-base">AI: [Calls project_list to find the project, then issue_list]     Found 47 open issues in Downtown Tower:          Critical (3):     - #1042: Structural clash at Level 12 - Grid B4     - #1038: Fire rating discrepancy in stairwell     - #1035: Missing penetration sleeves - MEP coordination          High (12):     - #1041: RFI needed for curtain wall connection detail     ...          Want me to filter by assignee or create a new one?</p>
+
+<p class="mb-5 text-gray-700 leading-relaxed text-base">User: "Add new.engineer@company.com to all active projects as project admin"</p>
+
+<p class="mb-5 text-gray-700 leading-relaxed text-base">AI: [Calls admin_user_add]     Adding user to 127 active projects...     Done.          125 projects: Added     2 projects: Already had access (skipped)</p>
+
+<p class="mb-5 text-gray-700 leading-relaxed text-base">User: "What RFIs are overdue?"</p>
+
+<p class="mb-5 text-gray-700 leading-relaxed text-base">AI: [Calls hub_list, then project_list, then rfi_list for each]     8 overdue RFIs across 3 projects:          Downtown Tower:     - RFI-2024-047: Structural connection detail - 5 days overdue     - RFI-2024-052: MEP routing clarification - 3 days overdue     ...          Want this as a CSV?</code></pre></div></p>
+
+<p class="mb-5 text-gray-700 leading-relaxed text-base">The AI occasionally gets confused about project IDs vs project names—you'll need to be specific sometimes. But for 80% of queries, it just works.</p>
+
+<h2 class="text-2xl font-bold mt-12 mb-6 text-gray-900 pb-3 border-b-2 border-gray-200">The Honest Limitations</h2>
+
+<p class="mb-5 text-gray-700 leading-relaxed text-base"><figure class="my-8"><img src="/devcon/images/1257-ai-pair-assistant-before-after.png" alt="Before vs After" class="w-full rounded-xl shadow-lg" loading="lazy" /><figcaption class="text-center text-sm text-gray-500 mt-2">Before vs After</figcaption></figure></p>
+
+<p class="mb-5 text-gray-700 leading-relaxed text-base">I promised honesty, so here it is:</p>
+
+<p class="mb-5 text-gray-700 leading-relaxed text-base"><strong class="font-semibold text-gray-900">What AI assistance does well:</strong> <ul class="my-4 list-disc list-outside space-y-2"><li class="ml-6 mb-2 text-gray-700">Exploration and discovery ("what buckets do I have?")</li> <li class="ml-6 mb-2 text-gray-700">Troubleshooting ("why did this translation fail?")</li> <li class="ml-6 mb-2 text-gray-700">One-off operations ("create a bucket for this new project")</li> <li class="ml-6 mb-2 text-gray-700">Learning ("what's the difference between SVF and SVF2?")</li> </ul> <strong class="font-semibold text-gray-900">What AI assistance doesn't replace:</strong> <ul class="my-4 list-disc list-outside space-y-2"><li class="ml-6 mb-2 text-gray-700">Production pipelines (you need deterministic, version-controlled scripts)</li> <li class="ml-6 mb-2 text-gray-700">High-volume operations (batch processing 10,000 files needs proper tooling)</li> <li class="ml-6 mb-2 text-gray-700">Complex workflows (multi-step processes with error handling)</li> <li class="ml-6 mb-2 text-gray-700">Audit requirements (scripts provide traceable, repeatable operations)</li> </ul> <strong class="font-semibold text-gray-900">Current technical limitations:</strong> <ul class="my-4 list-disc list-outside space-y-2"><li class="ml-6 mb-2 text-gray-700">MCP uses 2-legged authentication only (app context, not user context)</li> <li class="ml-6 mb-2 text-gray-700">No file upload support (MCP doesn't handle binary data well yet)</li> <li class="ml-6 mb-2 text-gray-700">Stdio transport means the AI client must start the server</li> </ul> The answer to "Is this the end of scripts?" is no. But it might be the end of <em class="italic">starting</em> with scripts. Use AI for exploration, then codify what works into automation.</p>
+
+<h2 class="text-2xl font-bold mt-12 mb-6 text-gray-900 pb-3 border-b-2 border-gray-200">Why This Matters for Your Organization</h2>
+
+<p class="mb-5 text-gray-700 leading-relaxed text-base"><strong class="font-semibold text-gray-900">For developers:</strong> Stop context-switching between documentation tabs. Ask the AI what you need, get an answer that's grounded in your actual environment.</p>
+
+<p class="mb-5 text-gray-700 leading-relaxed text-base"><strong class="font-semibold text-gray-900">For DevOps teams:</strong> Troubleshoot production issues faster. When a translation fails at 3 AM, ask the AI to check the status and interpret the error—before you've even had coffee.</p>
+
+<p class="mb-5 text-gray-700 leading-relaxed text-base"><strong class="font-semibold text-gray-900">For managers:</strong> Lower the barrier to APS adoption. Team members who aren't API experts can still interact with the platform meaningfully.</p>
+
+<p class="mb-5 text-gray-700 leading-relaxed text-base"><strong class="font-semibold text-gray-900">For architects:</strong> Prototype integrations conversationally before committing to code. "What would it take to..." becomes a conversation, not a research project.</p>
+
+<h2 class="text-2xl font-bold mt-12 mb-6 text-gray-900 pb-3 border-b-2 border-gray-200">Key Takeaways</h2>
+
+<ol class="my-4 list-decimal list-outside space-y-2"><li class="ml-6 mb-2 text-gray-700"><strong class="font-semibold text-gray-900">MCP enables AI assistants to safely interact with APS APIs</strong> via 111 specialized tools—not hallucinated endpoints, but real operations</li>
+<li class="ml-6 mb-2 text-gray-700"><strong class="font-semibold text-gray-900">Natural language reduces the barrier to APS automation</strong> for exploration, debugging, and learning</li>
+<li class="ml-6 mb-2 text-gray-700"><strong class="font-semibold text-gray-900">AI assistance is complementary to—not replacement for—production automation</strong></li>
+<li class="ml-6 mb-2 text-gray-700"><strong class="font-semibold text-gray-900">The future is hybrid</strong>: AI for exploration and ad-hoc tasks, scripts for repeatable workflows</li>
+<li class="ml-6 mb-2 text-gray-700"><strong class="font-semibold text-gray-900">raps CLI provides both traditional CLI and MCP server modes</strong> in a single open-source tool</li>
+<li class="ml-6 mb-2 text-gray-700"><strong class="font-semibold text-gray-900">ACC operations are fully supported</strong>: Issues, RFIs, Assets, Submittals, Checklists, and bulk Account Admin</li>
+</ol>
+<h2 class="text-2xl font-bold mt-12 mb-6 text-gray-900 pb-3 border-b-2 border-gray-200">Resources</h2>
+
+<ul class="my-4 list-disc list-outside space-y-2"><li class="ml-6 mb-2 text-gray-700">GitHub: https://github.com/dmytro-yemelianov/raps</li>
+<li class="ml-6 mb-2 text-gray-700">Documentation: https://rapscli.xyz/docs</li>
+<li class="ml-6 mb-2 text-gray-700">MCP Server Guide: https://rapscli.xyz/docs/mcp-server</li>
+<li class="ml-6 mb-2 text-gray-700">Model Context Protocol: https://modelcontextprotocol.io</li>
+<li class="ml-6 mb-2 text-gray-700">Python Bindings: https://rapscli.xyz/docs/python-bindings</li>
+</ul></article> </div> </div> </section>  <section class="py-8 bg-gray-50 border-t border-gray-200" data-astro-cid-z3xakpcs> <div class="content-container" data-astro-cid-z3xakpcs> <div class="max-w-5xl mx-auto flex justify-between items-center" data-astro-cid-z3xakpcs> <span data-astro-cid-z3xakpcs></span> <a href="/devcon" class="text-sm text-gray-500 hover:text-blue-600 transition-colors" data-astro-cid-z3xakpcs>
+All Sessions
+</a> <a href="/devcon/1258" class="flex items-center gap-2 text-gray-600 hover:text-blue-600 transition-colors group" data-astro-cid-z3xakpcs> <span data-astro-cid-z3xakpcs>Zero to Production</span> <span class="group-hover:translate-x-1 transition-transform" data-astro-cid-z3xakpcs>→</span> </a> </div> </div> </section>  </main> <footer class="bg-gray-50 border-t border-gray-200 mt-20" data-astro-cid-37fxchfa> <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12" data-astro-cid-37fxchfa> <div class="grid grid-cols-1 md:grid-cols-4 gap-8" data-astro-cid-37fxchfa> <div data-astro-cid-37fxchfa> <h3 class="font-semibold text-gray-900 mb-4" data-astro-cid-37fxchfa>Product</h3> <ul class="space-y-2" data-astro-cid-37fxchfa> <li data-astro-cid-37fxchfa><a href="/features" class="text-gray-600 hover:text-raps-blue" data-astro-cid-37fxchfa>Features</a></li> <li data-astro-cid-37fxchfa><a href="/pricing" class="text-gray-600 hover:text-raps-blue" data-astro-cid-37fxchfa>Pricing</a></li> <li data-astro-cid-37fxchfa><a href="/changelog" class="text-gray-600 hover:text-raps-blue" data-astro-cid-37fxchfa>Changelog</a></li> <li data-astro-cid-37fxchfa><a href="/roadmap" class="text-gray-600 hover:text-raps-blue" data-astro-cid-37fxchfa>Roadmap</a></li> </ul> </div> <div data-astro-cid-37fxchfa> <h3 class="font-semibold text-gray-900 mb-4" data-astro-cid-37fxchfa>Resources</h3> <ul class="space-y-2" data-astro-cid-37fxchfa> <li data-astro-cid-37fxchfa><a href="/docs" class="text-gray-600 hover:text-raps-blue" data-astro-cid-37fxchfa>Documentation</a></li> <li data-astro-cid-37fxchfa><a href="/guides" class="text-gray-600 hover:text-raps-blue" data-astro-cid-37fxchfa>Guides</a></li> <li data-astro-cid-37fxchfa><a href="/articles" class="text-gray-600 hover:text-raps-blue" data-astro-cid-37fxchfa>Articles</a></li> <li data-astro-cid-37fxchfa><a href="/tools" class="text-gray-600 hover:text-raps-blue" data-astro-cid-37fxchfa>Tools</a></li> </ul> </div> <div data-astro-cid-37fxchfa> <h3 class="font-semibold text-gray-900 mb-4" data-astro-cid-37fxchfa>Community</h3> <ul class="space-y-2" data-astro-cid-37fxchfa> <li data-astro-cid-37fxchfa><a href="https://github.com" class="text-gray-600 hover:text-raps-blue" data-astro-cid-37fxchfa>GitHub</a></li> <li data-astro-cid-37fxchfa><a href="https://discord.gg" class="text-gray-600 hover:text-raps-blue" data-astro-cid-37fxchfa>Discord</a></li> <li data-astro-cid-37fxchfa><a href="https://twitter.com" class="text-gray-600 hover:text-raps-blue" data-astro-cid-37fxchfa>Twitter</a></li> <li data-astro-cid-37fxchfa><a href="/blog" class="text-gray-600 hover:text-raps-blue" data-astro-cid-37fxchfa>Blog</a></li> </ul> </div> <div data-astro-cid-37fxchfa> <h3 class="font-semibold text-gray-900 mb-4" data-astro-cid-37fxchfa>Company</h3> <ul class="space-y-2" data-astro-cid-37fxchfa> <li data-astro-cid-37fxchfa><a href="/about" class="text-gray-600 hover:text-raps-blue" data-astro-cid-37fxchfa>About</a></li> <li data-astro-cid-37fxchfa><a href="/contact" class="text-gray-600 hover:text-raps-blue" data-astro-cid-37fxchfa>Contact</a></li> <li data-astro-cid-37fxchfa><a href="/privacy" class="text-gray-600 hover:text-raps-blue" data-astro-cid-37fxchfa>Privacy</a></li> <li data-astro-cid-37fxchfa><a href="/terms" class="text-gray-600 hover:text-raps-blue" data-astro-cid-37fxchfa>Terms</a></li> </ul> </div> </div> <div class="mt-8 pt-8 border-t border-gray-200" data-astro-cid-37fxchfa> <p class="text-center text-gray-600" data-astro-cid-37fxchfa>
+© 2026 RAPS CLI. Professional APS Automation Tools.
+</p> </div> </div> </footer> </body></html> 

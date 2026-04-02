@@ -129,30 +129,6 @@ const calendar = defineCollection({
   }),
 });
 
-const stories = defineCollection({
-  type: 'content',
-  schema: z.object({
-    title: z.string(),
-    description: z.string(),
-    type: z.enum(['case-study', 'success-story', 'transformation']),
-    audience: z.enum(['enterprise', 'developer', 'startup', 'government']),
-    priority: z.enum(['low', 'medium', 'high']).default('medium'),
-    lastUpdated: z.coerce.date(),
-  }),
-});
-
-const videos = defineCollection({
-  type: 'content',
-  schema: z.object({
-    title: z.string(),
-    description: z.string(),
-    type: z.enum(['demo', 'tutorial', 'marketing', 'comparison']),
-    audience: z.enum(['all', 'developer', 'enterprise', 'decision-maker']),
-    priority: z.enum(['low', 'medium', 'high']).default('medium'),
-    lastUpdated: z.coerce.date(),
-  }),
-});
-
 export const collections = {
   'articles': articles,
   'guides': guides,
@@ -165,6 +141,4 @@ export const collections = {
   'community': community,
   'press': press,
   'calendar': calendar,
-  'stories': stories,
-  'videos': videos,
 };

@@ -1,0 +1,116 @@
+{
+  "generated": "2026-02-25",
+  "sources": {
+    "stackoverflow": {
+      "tags": {
+        "autodesk-forge": { "total_questions": 4582, "unanswered": 597, "unanswered_rate": 0.13 },
+        "autodesk-model-derivative": { "total_questions": 777, "unanswered_est": 100 },
+        "autodesk-viewer": { "total_questions": 400, "unanswered_est": 50 }
+      },
+      "date_range": { "oldest": "2025-03", "newest": "2026-02-25" },
+      "top_pain_points": [
+        { "theme": "authentication", "frequency": "very_high", "unanswered_rate": 0.55, "raps_coverage": "full" },
+        { "theme": "model_derivative", "frequency": "high", "unanswered_rate": 0.40, "raps_coverage": "full" },
+        { "theme": "viewer_sdk", "frequency": "high", "unanswered_rate": 0.30, "raps_coverage": "partial" },
+        { "theme": "acc_api", "frequency": "high_rising", "unanswered_rate": 0.60, "raps_coverage": "full" },
+        { "theme": "webhooks", "frequency": "medium", "unanswered_rate": 0.67, "raps_coverage": "full" },
+        { "theme": "design_automation", "frequency": "medium", "unanswered_rate": 0.50, "raps_coverage": "full" },
+        { "theme": "data_management", "frequency": "medium", "unanswered_rate": 0.40, "raps_coverage": "full" }
+      ],
+      "emerging_trends": [
+        "SSA_migration_friction",
+        "developer_hub_migration_403",
+        "aps_business_model_pricing",
+        "dotnet_core_da_2026",
+        "acc_api_adoption_growing",
+        "ifc_v4_support_gap",
+        "webhook_reliability_issues"
+      ]
+    },
+    "marketplace": {
+      "total_apps_acc_bim360": 259,
+      "total_apps_revit": 1437,
+      "categories": 22,
+      "pricing_distribution": {
+        "free": 0.64,
+        "trial": 0.27,
+        "paid": 0.04,
+        "subscription": 0.02
+      },
+      "cli_tools": 0,
+      "mcp_ai_tools": 0,
+      "developer_admin_tools": 2,
+      "direct_competitors": [
+        { "name": "BIM load", "overlap": "project_setup_bulk_users", "pricing": "unknown", "threat": "medium" },
+        { "name": "IMAGINiT ACCelerate", "overlap": "acc_admin_automation", "pricing": "trial", "threat": "medium" },
+        { "name": "Bulk File Uploader for ACC", "overlap": "batch_upload_download", "pricing": "subscription", "threat": "low" },
+        { "name": "eT.ools DM UD", "overlap": "batch_metadata_update", "pricing": "$100/year", "threat": "low" }
+      ],
+      "raps_unique_capabilities": [
+        "cli_based_access",
+        "mcp_ai_integration_60_tools",
+        "scriptable_ci_cd_workflows",
+        "cross_platform_macos_linux_windows",
+        "oss_bucket_management",
+        "auth_management",
+        "webhook_management",
+        "data_management_api",
+        "model_derivative_operations",
+        "api_health_monitoring",
+        "developer_debugging_tools"
+      ],
+      "gaps_with_zero_competition": 11,
+      "gaps_with_one_competitor": 4
+    },
+    "forums": {
+      "dedicated_aps_forum_exists": false,
+      "forums_analyzed": [
+        { "name": "Forma Developer", "activity": "active", "tags": 72, "aps_relevance": "medium" },
+        { "name": "Revit API", "activity": "active", "tags": "unknown", "aps_relevance": "medium" },
+        { "name": "Data Exchange", "activity": "low", "tags": 27, "aps_relevance": "low" },
+        { "name": "Reddit r/bim", "activity": "active", "tags": "n/a", "aps_relevance": "high" }
+      ],
+      "key_threads": [
+        { "title": "DWG to 3D conversion workflow", "forum": "Data Exchange", "status": "unsolved", "raps_relevant": true },
+        { "title": "Auth API user profile", "forum": "Forma Developer", "status": "solved", "raps_relevant": true },
+        { "title": "APS Tutorial Trouble", "forum": "Revit API", "status": "solved", "raps_relevant": true },
+        { "title": "Revit 2025 Autodesk.Forge loading", "forum": "Revit API", "status": "unsolved", "raps_relevant": true },
+        { "title": "Model Derivative / Design Automation usage?", "forum": "Reddit r/bim", "status": "active", "raps_relevant": true }
+      ],
+      "content_opportunities": [
+        "DWG-to-SVF2 conversion tutorial",
+        "Reddit Model Derivative workflow demo",
+        "3-legged OAuth without code guide",
+        "Forge-to-APS migration helper"
+      ]
+    },
+    "acc_ideas_forum": {
+      "last_scraped": "2026-01-16",
+      "total_ideas": 4295,
+      "total_votes": 24615,
+      "total_views": 1090000,
+      "implemented_rate": 0.014,
+      "gathering_support_rate": 0.966,
+      "top_pain_categories": [
+        { "category": "Permissions", "frequency": 400, "votes": 3628 },
+        { "category": "UI/UX", "frequency": 410, "votes": 2344 },
+        { "category": "Microsoft Integration", "frequency": 386, "votes": 2228 },
+        { "category": "Offline/Sync", "frequency": 367, "votes": 2206 },
+        { "category": "Collaboration/3D", "frequency": 295, "votes": 1994 }
+      ]
+    }
+  },
+  "raps_positioning": {
+    "total_gaps_identified": 15,
+    "zero_competition_areas": 11,
+    "primary_differentiators": [
+      "Only CLI tool in entire Autodesk ecosystem",
+      "Only MCP/AI-integrated APS tool (60+ tools)",
+      "Only cross-platform APS admin tool",
+      "Only CI/CD-compatible APS automation tool",
+      "Addresses #1 SO pain point (auth) directly"
+    ],
+    "competitive_threat_level": "low",
+    "market_opportunity": "very_high"
+  }
+}

@@ -1,0 +1,505 @@
+<!DOCTYPE html><html lang="en" data-astro-cid-37fxchfa> <head><meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><link rel="icon" type="image/svg+xml" href="/favicon.svg"><meta name="generator" content="Astro v5.18.0"><!-- Primary Meta Tags --><title>Which APS API Do I Need? - Decision Tree | RAPS CLI</title><meta name="title" content="Which APS API Do I Need? - Decision Tree | RAPS CLI"><meta name="description" content="Interactive decision tree to help developers choose the right Autodesk Platform Services API for their project. Covers authentication, use cases, and workflows."><!-- Open Graph / Facebook --><meta property="og:type" content="website"><meta property="og:url" content="https://rapscli.xyz/resources/api-decision-tree/"><meta property="og:title" content="Which APS API Do I Need? - Decision Tree | RAPS CLI"><meta property="og:description" content="Interactive decision tree to help developers choose the right Autodesk Platform Services API for their project. Covers authentication, use cases, and workflows."><meta property="og:image" content="https://rapscli.xyz/og-image.png"><!-- Twitter --><meta property="twitter:card" content="summary_large_image"><meta property="twitter:url" content="https://rapscli.xyz/resources/api-decision-tree/"><meta property="twitter:title" content="Which APS API Do I Need? - Decision Tree | RAPS CLI"><meta property="twitter:description" content="Interactive decision tree to help developers choose the right Autodesk Platform Services API for their project. Covers authentication, use cases, and workflows."><meta property="twitter:image" content="https://rapscli.xyz/og-image.png"><!-- Canonical URL --><link rel="canonical" href="https://rapscli.xyz/resources/api-decision-tree/"><!-- Fonts --><link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin><link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet"><link rel="stylesheet" href="/_astro/_slug_.B9K_sDND.css"></head> <body class="min-h-screen bg-white" data-astro-cid-37fxchfa> <nav class="sticky top-0 z-50 bg-white/95 backdrop-blur border-b border-gray-200" data-astro-cid-37fxchfa> <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8" data-astro-cid-37fxchfa> <div class="flex justify-between items-center h-16" data-astro-cid-37fxchfa> <div class="flex items-center" data-astro-cid-37fxchfa> <a href="/" class="flex items-center space-x-2" data-astro-cid-37fxchfa> <span class="text-2xl font-bold bg-gradient-to-r from-raps-blue to-raps-purple bg-clip-text text-transparent" data-astro-cid-37fxchfa>
+RAPS
+</span> <span class="text-gray-500" data-astro-cid-37fxchfa>v4.11.0</span> </a> </div> <nav class="hidden md:flex items-center space-x-6" data-astro-cid-37fxchfa> <!-- Developer Dropdown --> <div class="relative group" data-astro-cid-37fxchfa> <button class="text-gray-700 hover:text-raps-blue transition flex items-center" data-astro-cid-37fxchfa>
+Developer <span class="ml-1 text-xs" data-astro-cid-37fxchfa>▼</span> </button> <div class="absolute top-full left-0 mt-2 w-64 bg-white shadow-lg rounded-lg opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all z-50" data-astro-cid-37fxchfa> <a href="/guides" class="block px-4 py-3 text-sm text-gray-700 hover:bg-gray-50 border-b border-gray-100" data-astro-cid-37fxchfa> <div class="font-medium" data-astro-cid-37fxchfa>📚 Guides</div> <div class="text-xs text-gray-500" data-astro-cid-37fxchfa>Step-by-step tutorials</div> </a> <a href="/recipes" class="block px-4 py-3 text-sm text-gray-700 hover:bg-gray-50 border-b border-gray-100" data-astro-cid-37fxchfa> <div class="font-medium" data-astro-cid-37fxchfa>🍳 Recipes</div> <div class="text-xs text-gray-500" data-astro-cid-37fxchfa>Common workflow patterns</div> </a> <a href="/tools" class="block px-4 py-3 text-sm text-gray-700 hover:bg-gray-50 border-b border-gray-100" data-astro-cid-37fxchfa> <div class="font-medium" data-astro-cid-37fxchfa>🛠️ Interactive Tools</div> <div class="text-xs text-gray-500" data-astro-cid-37fxchfa>OAuth, URN, token helpers</div> </a> <a href="/resources" class="block px-4 py-3 text-sm text-gray-700 hover:bg-gray-50" data-astro-cid-37fxchfa> <div class="font-medium" data-astro-cid-37fxchfa>📖 Resources</div> <div class="text-xs text-gray-500" data-astro-cid-37fxchfa>Cheat sheets & references</div> </a> </div> </div> <!-- Content Dropdown --> <div class="relative group" data-astro-cid-37fxchfa> <button class="text-gray-700 hover:text-raps-blue transition flex items-center" data-astro-cid-37fxchfa>
+Content <span class="ml-1 text-xs" data-astro-cid-37fxchfa>▼</span> </button> <div class="absolute top-full left-0 mt-2 w-56 bg-white shadow-lg rounded-lg opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all z-50" data-astro-cid-37fxchfa> <a href="/articles" class="block px-4 py-3 text-sm text-gray-700 hover:bg-gray-50 border-b border-gray-100" data-astro-cid-37fxchfa> <div class="font-medium" data-astro-cid-37fxchfa>✍️ Articles</div> <div class="text-xs text-gray-500" data-astro-cid-37fxchfa>Technical deep-dives</div> </a> <a href="/pdfs" class="block px-4 py-3 text-sm text-gray-700 hover:bg-gray-50" data-astro-cid-37fxchfa> <div class="font-medium" data-astro-cid-37fxchfa>📄 PDFs</div> <div class="text-xs text-gray-500" data-astro-cid-37fxchfa>Downloadable resources</div> </a> </div> </div> <!-- Strategy Dropdown (existing, just enhanced) --> <div class="relative group" data-astro-cid-37fxchfa> <button class="text-gray-700 hover:text-raps-blue transition flex items-center" data-astro-cid-37fxchfa>
+Strategy <span class="ml-1 text-xs" data-astro-cid-37fxchfa>▼</span> </button> <div class="absolute top-full left-0 mt-2 w-56 bg-white shadow-lg rounded-lg opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all z-50" data-astro-cid-37fxchfa> <a href="/campaigns" class="block px-4 py-3 text-sm text-gray-700 hover:bg-gray-50 border-b border-gray-100" data-astro-cid-37fxchfa> <div class="font-medium" data-astro-cid-37fxchfa>🎯 Campaigns</div> <div class="text-xs text-gray-500" data-astro-cid-37fxchfa>Marketing initiatives</div> </a> <a href="/analytics" class="block px-4 py-3 text-sm text-gray-700 hover:bg-gray-50 border-b border-gray-100" data-astro-cid-37fxchfa> <div class="font-medium" data-astro-cid-37fxchfa>📊 Analytics</div> <div class="text-xs text-gray-500" data-astro-cid-37fxchfa>Performance metrics</div> </a> <a href="/strategy" class="block px-4 py-3 text-sm text-gray-700 hover:bg-gray-50 border-b border-gray-100" data-astro-cid-37fxchfa> <div class="font-medium" data-astro-cid-37fxchfa>📋 Strategy</div> <div class="text-xs text-gray-500" data-astro-cid-37fxchfa>Strategic planning</div> </a> <a href="/community" class="block px-4 py-3 text-sm text-gray-700 hover:bg-gray-50 border-b border-gray-100" data-astro-cid-37fxchfa> <div class="font-medium" data-astro-cid-37fxchfa>👥 Community</div> <div class="text-xs text-gray-500" data-astro-cid-37fxchfa>Engagement plans</div> </a> <a href="/press" class="block px-4 py-3 text-sm text-gray-700 hover:bg-gray-50 border-b border-gray-100" data-astro-cid-37fxchfa> <div class="font-medium" data-astro-cid-37fxchfa>📰 Press</div> <div class="text-xs text-gray-500" data-astro-cid-37fxchfa>Press releases</div> </a> <a href="/calendar" class="block px-4 py-3 text-sm text-gray-700 hover:bg-gray-50" data-astro-cid-37fxchfa> <div class="font-medium" data-astro-cid-37fxchfa>📅 Calendar</div> <div class="text-xs text-gray-500" data-astro-cid-37fxchfa>Content schedule</div> </a> </div> </div> <a href="https://github.com/autodesk-platform-services/raps" class="text-gray-700 hover:text-raps-blue transition" data-astro-cid-37fxchfa>
+GitHub
+</a> <a href="https://github.com/autodesk-platform-services/raps/releases" class="px-4 py-2 bg-gradient-to-r from-raps-blue to-raps-purple text-white rounded-lg hover:shadow-lg transition" data-astro-cid-37fxchfa>
+Download
+</a> </nav> <button class="md:hidden p-2 rounded-lg hover:bg-gray-100" data-astro-cid-37fxchfa> <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" data-astro-cid-37fxchfa> <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16" data-astro-cid-37fxchfa></path> </svg> </button> </div> </div> </nav> <main data-astro-cid-37fxchfa>  <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12"> <div class="prose prose-lg max-w-none"> <h1 id="which-aps-api-do-i-need">Which APS API Do I Need?</h1>
+<p><strong>Interactive decision tree to help you choose the right Autodesk Platform Services API for your project</strong></p>
+<hr>
+<h2 id="quick-decision-flowchart">Quick Decision Flowchart</h2>
+<pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8; overflow-x: auto; white-space: pre-wrap; word-wrap: break-word;" tabindex="0" data-language="mermaid"><code><span class="line"><span style="color:#E1E4E8">flowchart TD</span></span>
+<span class="line"><span style="color:#E1E4E8">    Start([What do you want to build?]) --> Q1{Need to display 3D models&#x3C;br/>in a web browser?}</span></span>
+<span class="line"><span style="color:#E1E4E8">    </span></span>
+<span class="line"><span style="color:#E1E4E8">    Q1 -->|Yes| Viewer[🎯 **Viewer SDK** + Model Derivative&#x3C;br/>📋 Use: Initialize 3D viewer&#x3C;br/>📦 Formats: SVF2, SVF&#x3C;br/>💡 RAPS: `raps translate download &#x26;lt;urn&#x26;gt;`]</span></span>
+<span class="line"><span style="color:#E1E4E8">    </span></span>
+<span class="line"><span style="color:#E1E4E8">    Q1 -->|No| Q2{Need to store/manage files&#x3C;br/>in the cloud?}</span></span>
+<span class="line"><span style="color:#E1E4E8">    </span></span>
+<span class="line"><span style="color:#E1E4E8">    Q2 -->|Yes| Q3{Working with BIM 360/&#x3C;br/>ACC projects?}</span></span>
+<span class="line"><span style="color:#E1E4E8">    </span></span>
+<span class="line"><span style="color:#E1E4E8">    Q3 -->|Yes| BIM360[🎯 **Data Management API**&#x3C;br/>📋 Use: Project files &#x26; folders&#x3C;br/>📦 Context: User's BIM projects&#x3C;br/>💡 RAPS: `raps project list`&#x3C;br/>🔑 Auth: 3-legged OAuth]</span></span>
+<span class="line"><span style="color:#E1E4E8">    </span></span>
+<span class="line"><span style="color:#E1E4E8">    Q3 -->|No| Q4{Just need simple&#x3C;br/>file storage?}</span></span>
+<span class="line"><span style="color:#E1E4E8">    </span></span>
+<span class="line"><span style="color:#E1E4E8">    Q4 -->|Yes| OSS[🎯 **Object Storage Service**&#x3C;br/>📋 Use: Upload/download files&#x3C;br/>📦 Context: Your app's storage&#x3C;br/>💡 RAPS: `raps object upload &#x26;lt;file&#x26;gt; &#x26;lt;bucket&#x26;gt;`&#x3C;br/>🔑 Auth: 2-legged OAuth]</span></span>
+<span class="line"><span style="color:#E1E4E8">    </span></span>
+<span class="line"><span style="color:#E1E4E8">    Q2 -->|No| Q5{Need to convert&#x3C;br/>file formats?}</span></span>
+<span class="line"><span style="color:#E1E4E8">    </span></span>
+<span class="line"><span style="color:#E1E4E8">    Q5 -->|Yes| Q6{Converting to viewable&#x3C;br/>formats for web?}</span></span>
+<span class="line"><span style="color:#E1E4E8">    </span></span>
+<span class="line"><span style="color:#E1E4E8">    Q6 -->|Yes| Translate[🎯 **Model Derivative API**&#x3C;br/>📋 Use: File format conversion&#x3C;br/>📦 Outputs: SVF2, PDF, OBJ, STL&#x3C;br/>💡 RAPS: `raps translate &#x26;lt;urn&#x26;gt; --format svf2`]</span></span>
+<span class="line"><span style="color:#E1E4E8">    </span></span>
+<span class="line"><span style="color:#E1E4E8">    Q6 -->|No| Q7{Need to extract model&#x3C;br/>properties/metadata?}</span></span>
+<span class="line"><span style="color:#E1E4E8">    </span></span>
+<span class="line"><span style="color:#E1E4E8">    Q7 -->|Yes| Properties[🎯 **Model Derivative API**&#x3C;br/>📋 Use: Property extraction&#x3C;br/>📦 Gets: Element properties, geometry&#x3C;br/>💡 RAPS: `raps translate properties &#x26;lt;urn&#x26;gt;`]</span></span>
+<span class="line"><span style="color:#E1E4E8">    </span></span>
+<span class="line"><span style="color:#E1E4E8">    Q5 -->|No| Q8{Need to automate CAD&#x3C;br/>software operations?}</span></span>
+<span class="line"><span style="color:#E1E4E8">    </span></span>
+<span class="line"><span style="color:#E1E4E8">    Q8 -->|Yes| Q9{Which CAD software?}</span></span>
+<span class="line"><span style="color:#E1E4E8">    </span></span>
+<span class="line"><span style="color:#E1E4E8">    Q9 --> AutoCAD[🎯 **Design Automation**&#x3C;br/>📋 Engine: AutoCAD&#x3C;br/>📦 Use: DWG processing, script execution&#x3C;br/>💡 RAPS: `raps da submit-workitem`]</span></span>
+<span class="line"><span style="color:#E1E4E8">    </span></span>
+<span class="line"><span style="color:#E1E4E8">    Q9 --> Revit[🎯 **Design Automation**&#x3C;br/>📋 Engine: Revit&#x3C;br/>📦 Use: BIM model processing&#x3C;br/>💡 RAPS: `raps da engines --filter revit`]</span></span>
+<span class="line"><span style="color:#E1E4E8">    </span></span>
+<span class="line"><span style="color:#E1E4E8">    Q9 --> Inventor[🎯 **Design Automation**&#x3C;br/>📋 Engine: Inventor&#x3C;br/>📦 Use: Mechanical CAD automation&#x3C;br/>💡 RAPS: `raps da engines --filter inventor`]</span></span>
+<span class="line"><span style="color:#E1E4E8">    </span></span>
+<span class="line"><span style="color:#E1E4E8">    Q9 --> Max[🎯 **Design Automation**&#x3C;br/>📋 Engine: 3ds Max&#x3C;br/>📦 Use: 3D rendering, animation&#x3C;br/>💡 RAPS: `raps da engines --filter max`]</span></span>
+<span class="line"><span style="color:#E1E4E8">    </span></span>
+<span class="line"><span style="color:#E1E4E8">    Q8 -->|No| Q10{Need notifications when&#x3C;br/>files change?}</span></span>
+<span class="line"><span style="color:#E1E4E8">    </span></span>
+<span class="line"><span style="color:#E1E4E8">    Q10 -->|Yes| Webhooks[🎯 **Webhooks API**&#x3C;br/>📋 Use: Event notifications&#x3C;br/>📦 Events: File uploads, translations&#x3C;br/>💡 RAPS: `raps webhook create --event dm.version.added`]</span></span>
+<span class="line"><span style="color:#E1E4E8">    </span></span>
+<span class="line"><span style="color:#E1E4E8">    Q10 -->|No| Q11{Need to manage BIM 360/&#x3C;br/>ACC account settings?}</span></span>
+<span class="line"><span style="color:#E1E4E8">    </span></span>
+<span class="line"><span style="color:#E1E4E8">    Q11 -->|Yes| Admin[🎯 **ACC/BIM 360 Admin APIs**&#x3C;br/>📋 Use: Project setup, user management&#x3C;br/>📦 Scope: Account administration&#x3C;br/>💡 RAPS: `raps acc projects --account &#x26;lt;id&#x26;gt;`]</span></span>
+<span class="line"><span style="color:#E1E4E8">    </span></span>
+<span class="line"><span style="color:#E1E4E8">    Q11 -->|No| Auth[🎯 **Authentication API**&#x3C;br/>📋 Use: Get access tokens&#x3C;br/>📦 Types: 2-legged, 3-legged OAuth&#x3C;br/>💡 RAPS: `raps auth login`]</span></span>
+<span class="line"><span style="color:#E1E4E8">    </span></span>
+<span class="line"><span style="color:#E1E4E8">    Q7 -->|No| Q8</span></span></code></pre>
+<hr>
+<h2 id="common-use-case-scenarios">Common Use Case Scenarios</h2>
+<h3 id="1--web-based-3d-model-viewer">1. 🌐 Web-Based 3D Model Viewer</h3>
+<p><strong>“I want users to view 3D models in my web application”</strong></p>
+<p><strong>APIs Needed:</strong></p>
+<ul>
+<li><strong>Model Derivative API</strong> → Convert files to web-viewable formats</li>
+<li><strong>Viewer SDK</strong> → Display models in browser</li>
+<li><strong>Object Storage Service</strong> → Store original files</li>
+</ul>
+<p><strong>Typical Workflow:</strong></p>
+<pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8; overflow-x: auto; white-space: pre-wrap; word-wrap: break-word;" tabindex="0" data-language="bash"><code><span class="line"><span style="color:#6A737D"># Manual approach: 5+ API calls, complex geometry handling</span></span>
+<span class="line"><span style="color:#6A737D"># With RAPS:</span></span>
+<span class="line"><span style="color:#B392F0">raps</span><span style="color:#9ECBFF"> auth</span><span style="color:#9ECBFF"> login</span></span>
+<span class="line"><span style="color:#B392F0">raps</span><span style="color:#9ECBFF"> object</span><span style="color:#9ECBFF"> upload</span><span style="color:#9ECBFF"> mybucket</span><span style="color:#9ECBFF"> model.rvt</span></span>
+<span class="line"><span style="color:#E1E4E8">URN</span><span style="color:#F97583">=</span><span style="color:#E1E4E8">$(</span><span style="color:#79B8FF">echo</span><span style="color:#79B8FF"> -n</span><span style="color:#9ECBFF"> "urn:adsk.objects:os.object:mybucket:model.rvt"</span><span style="color:#F97583"> |</span><span style="color:#B392F0"> base64</span><span style="color:#F97583"> |</span><span style="color:#B392F0"> tr</span><span style="color:#9ECBFF"> '+/'</span><span style="color:#9ECBFF"> '-_'</span><span style="color:#F97583"> |</span><span style="color:#B392F0"> tr</span><span style="color:#79B8FF"> -d</span><span style="color:#9ECBFF"> '='</span><span style="color:#E1E4E8">)</span></span>
+<span class="line"><span style="color:#B392F0">raps</span><span style="color:#9ECBFF"> translate</span><span style="color:#9ECBFF"> start</span><span style="color:#9ECBFF"> "</span><span style="color:#E1E4E8">$URN</span><span style="color:#9ECBFF">"</span><span style="color:#79B8FF"> --format</span><span style="color:#9ECBFF"> svf2</span><span style="color:#79B8FF"> --wait</span></span>
+<span class="line"><span style="color:#B392F0">raps</span><span style="color:#9ECBFF"> translate</span><span style="color:#9ECBFF"> download</span><span style="color:#9ECBFF"> "</span><span style="color:#E1E4E8">$URN</span><span style="color:#9ECBFF">"</span></span></code></pre>
+<p><strong>Authentication:</strong> 2-legged OAuth (server apps) or 3-legged (user apps)<br>
+<strong>Key Scopes:</strong> <code>data:read</code>, <code>viewables:read</code>, <code>bucket:read</code></p>
+<hr>
+<h3 id="2--bim-360acc-file-management">2. 📁 BIM 360/ACC File Management</h3>
+<p><strong>“I need to access files from BIM 360 or Autodesk Construction Cloud projects”</strong></p>
+<p><strong>APIs Needed:</strong></p>
+<ul>
+<li><strong>Data Management API</strong> → Access project files and folders</li>
+<li><strong>Authentication API</strong> → User authorization (3-legged OAuth)</li>
+</ul>
+<p><strong>Typical Workflow:</strong></p>
+<pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8; overflow-x: auto; white-space: pre-wrap; word-wrap: break-word;" tabindex="0" data-language="bash"><code><span class="line"><span style="color:#6A737D"># Manual approach: Complex hub/project hierarchy navigation</span></span>
+<span class="line"><span style="color:#6A737D"># With RAPS:</span></span>
+<span class="line"><span style="color:#B392F0">raps</span><span style="color:#9ECBFF"> auth</span><span style="color:#9ECBFF"> login</span><span style="color:#79B8FF"> --default</span><span style="color:#6A737D">  # scopes: account:read,data:read</span></span>
+<span class="line"><span style="color:#B392F0">raps</span><span style="color:#9ECBFF"> project</span><span style="color:#9ECBFF"> list</span></span>
+<span class="line"><span style="color:#B392F0">raps</span><span style="color:#9ECBFF"> folder</span><span style="color:#9ECBFF"> list</span><span style="color:#F97583"> &#x3C;</span><span style="color:#9ECBFF">project-i</span><span style="color:#E1E4E8">d</span><span style="color:#F97583">></span></span>
+<span class="line"><span style="color:#B392F0">raps</span><span style="color:#9ECBFF"> object</span><span style="color:#9ECBFF"> download</span><span style="color:#F97583"> &#x3C;</span><span style="color:#9ECBFF">item-i</span><span style="color:#E1E4E8">d</span><span style="color:#F97583">></span><span style="color:#9ECBFF"> ./local-file.rvt</span></span></code></pre>
+<p><strong>Authentication:</strong> 3-legged OAuth (user must have project access)<br>
+<strong>Key Scopes:</strong> <code>account:read</code>, <code>data:read</code>, <code>data:write</code> (if uploading)</p>
+<hr>
+<h3 id="3--batch-file-processing">3. 🔄 Batch File Processing</h3>
+<p><strong>“I need to convert hundreds of CAD files to different formats”</strong></p>
+<p><strong>APIs Needed:</strong></p>
+<ul>
+<li><strong>Object Storage Service</strong> → Upload source files</li>
+<li><strong>Model Derivative API</strong> → Batch translation jobs</li>
+<li><strong>Webhooks</strong> (optional) → Get notified when translations complete</li>
+</ul>
+<p><strong>Typical Workflow:</strong></p>
+<pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8; overflow-x: auto; white-space: pre-wrap; word-wrap: break-word;" tabindex="0" data-language="bash"><code><span class="line"><span style="color:#6A737D"># Manual approach: Complex job queuing, polling, error handling</span></span>
+<span class="line"><span style="color:#6A737D"># With RAPS:</span></span>
+<span class="line"><span style="color:#B392F0">raps</span><span style="color:#9ECBFF"> bucket</span><span style="color:#9ECBFF"> create</span><span style="color:#9ECBFF"> batch-processing</span></span>
+<span class="line"><span style="color:#B392F0">raps</span><span style="color:#9ECBFF"> object</span><span style="color:#9ECBFF"> upload-batch</span><span style="color:#79B8FF"> *</span><span style="color:#9ECBFF">.dwg</span><span style="color:#79B8FF"> --bucket</span><span style="color:#9ECBFF"> batch-processing</span></span>
+<span class="line"><span style="color:#B392F0">raps</span><span style="color:#9ECBFF"> translate-batch</span><span style="color:#79B8FF"> --bucket</span><span style="color:#9ECBFF"> batch-processing</span><span style="color:#79B8FF"> --format</span><span style="color:#9ECBFF"> pdf,svf2</span><span style="color:#79B8FF"> --parallel</span><span style="color:#79B8FF"> 5</span></span></code></pre>
+<p><strong>Authentication:</strong> 2-legged OAuth<br>
+<strong>Key Scopes:</strong> <code>bucket:create</code>, <code>bucket:read</code>, <code>data:read</code></p>
+<hr>
+<h3 id="4--cad-automation--scripting">4. 🤖 CAD Automation &#x26; Scripting</h3>
+<p><strong>“I want to automate repetitive tasks in AutoCAD/Revit/Inventor”</strong></p>
+<p><strong>APIs Needed:</strong></p>
+<ul>
+<li><strong>Design Automation API</strong> → Run scripts on cloud-hosted CAD engines</li>
+<li><strong>Object Storage Service</strong> → Input/output file storage</li>
+</ul>
+<p><strong>Typical Workflow:</strong></p>
+<pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8; overflow-x: auto; white-space: pre-wrap; word-wrap: break-word;" tabindex="0" data-language="bash"><code><span class="line"><span style="color:#6A737D"># Manual approach: Complex AppBundle/Activity setup, WorkItem management</span></span>
+<span class="line"><span style="color:#6A737D"># With RAPS:</span></span>
+<span class="line"><span style="color:#B392F0">raps</span><span style="color:#9ECBFF"> da</span><span style="color:#9ECBFF"> engines</span><span style="color:#79B8FF"> --filter</span><span style="color:#9ECBFF"> autocad</span></span>
+<span class="line"><span style="color:#B392F0">raps</span><span style="color:#9ECBFF"> da</span><span style="color:#9ECBFF"> create-activity</span><span style="color:#9ECBFF"> MyDrawingProcessor</span><span style="color:#79B8FF"> --engine</span><span style="color:#9ECBFF"> Autodesk.AutoCAD+24</span></span>
+<span class="line"><span style="color:#B392F0">raps</span><span style="color:#9ECBFF"> da</span><span style="color:#9ECBFF"> submit-workitem</span><span style="color:#9ECBFF"> MyDrawingProcessor</span><span style="color:#79B8FF"> --input</span><span style="color:#9ECBFF"> drawing.dwg</span><span style="color:#79B8FF"> --script</span><span style="color:#9ECBFF"> process.scr</span></span></code></pre>
+<p><strong>Authentication:</strong> 2-legged OAuth<br>
+<strong>Key Scopes:</strong> <code>code:all</code>, <code>bucket:read</code>, <code>bucket:create</code></p>
+<hr>
+<h3 id="5--model-data-extraction">5. 📊 Model Data Extraction</h3>
+<p><strong>“I need to extract properties, geometry, or metadata from CAD models”</strong></p>
+<p><strong>APIs Needed:</strong></p>
+<ul>
+<li><strong>Model Derivative API</strong> → Extract properties and metadata</li>
+<li><strong>Object Storage Service</strong> or <strong>Data Management</strong> → Source file access</li>
+</ul>
+<p><strong>Typical Workflow:</strong></p>
+<pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8; overflow-x: auto; white-space: pre-wrap; word-wrap: break-word;" tabindex="0" data-language="bash"><code><span class="line"><span style="color:#6A737D"># Manual approach: Multi-step manifest navigation, GUID handling</span></span>
+<span class="line"><span style="color:#6A737D"># With RAPS:</span></span>
+<span class="line"><span style="color:#B392F0">raps</span><span style="color:#9ECBFF"> translate</span><span style="color:#F97583"> &#x3C;</span><span style="color:#9ECBFF">ur</span><span style="color:#E1E4E8">n</span><span style="color:#F97583">></span><span style="color:#79B8FF"> --format</span><span style="color:#9ECBFF"> svf2</span></span>
+<span class="line"><span style="color:#B392F0">raps</span><span style="color:#9ECBFF"> translate</span><span style="color:#9ECBFF"> properties</span><span style="color:#F97583"> &#x3C;</span><span style="color:#9ECBFF">ur</span><span style="color:#E1E4E8">n</span><span style="color:#F97583">></span><span style="color:#79B8FF"> --output</span><span style="color:#9ECBFF"> properties.json</span></span>
+<span class="line"><span style="color:#B392F0">raps</span><span style="color:#9ECBFF"> translate</span><span style="color:#9ECBFF"> metadata</span><span style="color:#F97583"> &#x3C;</span><span style="color:#9ECBFF">ur</span><span style="color:#E1E4E8">n</span><span style="color:#F97583">></span><span style="color:#79B8FF"> --guid</span><span style="color:#F97583"> &#x3C;</span><span style="color:#9ECBFF">model-gui</span><span style="color:#E1E4E8">d</span><span style="color:#F97583">></span></span></code></pre>
+<p><strong>Authentication:</strong> 2-legged OAuth<br>
+<strong>Key Scopes:</strong> <code>data:read</code>, <code>viewables:read</code></p>
+<hr>
+<h2 id="api-comparison-matrix">API Comparison Matrix</h2>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<table><thead><tr><th>Use Case</th><th>Primary API</th><th>Secondary APIs</th><th>RAPS Commands</th><th>Authentication Type</th></tr></thead><tbody><tr><td><strong>3D Web Viewer</strong></td><td>Model Derivative</td><td>Viewer SDK, OSS</td><td><code>raps translate download</code>, <code>raps translate</code></td><td>2-legged or 3-legged</td></tr><tr><td><strong>BIM 360 Files</strong></td><td>Data Management</td><td>-</td><td><code>raps project list</code>, <code>raps object download</code></td><td>3-legged only</td></tr><tr><td><strong>Simple File Storage</strong></td><td>Object Storage</td><td>-</td><td><code>raps object upload</code>, <code>raps bucket create</code></td><td>2-legged</td></tr><tr><td><strong>Format Conversion</strong></td><td>Model Derivative</td><td>OSS</td><td><code>raps translate --formats</code></td><td>2-legged</td></tr><tr><td><strong>CAD Automation</strong></td><td>Design Automation</td><td>OSS</td><td><code>raps da submit-workitem</code></td><td>2-legged</td></tr><tr><td><strong>Property Extraction</strong></td><td>Model Derivative</td><td>-</td><td><code>raps translate properties</code></td><td>2-legged</td></tr><tr><td><strong>Event Notifications</strong></td><td>Webhooks</td><td>Data Mgmt/Model Deriv</td><td><code>raps webhook create</code></td><td>2-legged</td></tr><tr><td><strong>Account Management</strong></td><td>ACC/BIM 360 Admin</td><td>Data Management</td><td><code>raps acc projects</code></td><td>3-legged only</td></tr></tbody></table>
+<hr>
+<h2 id="authentication-decision-tree">Authentication Decision Tree</h2>
+<pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8; overflow-x: auto; white-space: pre-wrap; word-wrap: break-word;" tabindex="0" data-language="mermaid"><code><span class="line"><span style="color:#E1E4E8">flowchart TD</span></span>
+<span class="line"><span style="color:#E1E4E8">    AuthStart([Choose Authentication Type]) --> UserApp{Building a user-facing&#x3C;br/>application?}</span></span>
+<span class="line"><span style="color:#E1E4E8">    </span></span>
+<span class="line"><span style="color:#E1E4E8">    UserApp -->|Yes| NeedBIM{Need access to user's&#x3C;br/>BIM 360/ACC projects?}</span></span>
+<span class="line"><span style="color:#E1E4E8">    </span></span>
+<span class="line"><span style="color:#E1E4E8">    NeedBIM -->|Yes| ThreeLegged[🔑 **3-Legged OAuth**&#x3C;br/>📋 User authorizes your app&#x3C;br/>📦 Access: User's projects only&#x3C;br/>💡 RAPS: `raps auth login`]</span></span>
+<span class="line"><span style="color:#E1E4E8">    </span></span>
+<span class="line"><span style="color:#E1E4E8">    NeedBIM -->|No| ServerApp{Server-to-server&#x3C;br/>processing only?}</span></span>
+<span class="line"><span style="color:#E1E4E8">    </span></span>
+<span class="line"><span style="color:#E1E4E8">    UserApp -->|No| ServerApp</span></span>
+<span class="line"><span style="color:#E1E4E8">    </span></span>
+<span class="line"><span style="color:#E1E4E8">    ServerApp -->|Yes| TwoLegged[🔑 **2-Legged OAuth**&#x3C;br/>📋 App credentials only&#x3C;br/>📦 Access: Your app's resources&#x3C;br/>💡 RAPS: `raps auth login`]</span></span>
+<span class="line"><span style="color:#E1E4E8">    </span></span>
+<span class="line"><span style="color:#E1E4E8">    ServerApp -->|No| ThreeLegged</span></span></code></pre>
+<h3 id="authentication-examples">Authentication Examples</h3>
+<p><strong>3-Legged OAuth Use Cases:</strong></p>
+<ul>
+<li>Web app where users upload their own files</li>
+<li>Mobile app accessing user’s BIM 360 projects</li>
+<li>Integration with user’s Autodesk account data</li>
+</ul>
+<p><strong>2-Legged OAuth Use Cases:</strong></p>
+<ul>
+<li>Batch processing service</li>
+<li>File conversion API</li>
+<li>Background automation tasks</li>
+<li>Public file viewing (non-user-specific)</li>
+</ul>
+<hr>
+<h2 id="scope-requirements-by-api">Scope Requirements by API</h2>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<table><thead><tr><th>API Category</th><th>Required Scopes</th><th>Optional Scopes</th><th>RAPS Example</th></tr></thead><tbody><tr><td><strong>Object Storage</strong></td><td><code>bucket:read</code></td><td><code>bucket:create</code>, <code>bucket:delete</code></td><td><code>raps auth login --default  # scopes: bucket:read,bucket:create</code></td></tr><tr><td><strong>Data Management</strong></td><td><code>data:read</code></td><td><code>data:write</code>, <code>data:create</code></td><td><code>raps auth login --default  # scopes: data:read,data:write,data:create</code></td></tr><tr><td><strong>Model Derivative</strong></td><td><code>data:read</code>, <code>viewables:read</code></td><td>-</td><td><code>raps auth login --default  # scopes: data:read,viewables:read</code></td></tr><tr><td><strong>Design Automation</strong></td><td><code>code:all</code></td><td><code>bucket:create</code></td><td><code>raps auth login --default  # scopes: code:all,bucket:create</code></td></tr><tr><td><strong>BIM 360/ACC</strong></td><td><code>account:read</code>, <code>data:read</code></td><td><code>account:write</code>, <code>data:write</code></td><td><code>raps auth login --default  # scopes: account:read,data:read</code></td></tr><tr><td><strong>Webhooks</strong></td><td>Same as target API</td><td>-</td><td><code>raps webhook create --scopes-inherit</code></td></tr></tbody></table>
+<hr>
+<h2 id="file-format-support-guide">File Format Support Guide</h2>
+<h3 id="input-formats-by-api">Input Formats by API</h3>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<table><thead><tr><th>File Type</th><th>Extension</th><th>Model Derivative</th><th>Design Automation</th><th>Viewer SDK</th></tr></thead><tbody><tr><td><strong>AutoCAD</strong></td><td><code>.dwg</code>, <code>.dxf</code></td><td>✅</td><td>✅ (AutoCAD engine)</td><td>✅ (via translation)</td></tr><tr><td><strong>Revit</strong></td><td><code>.rvt</code>, <code>.rfa</code>, <code>.rte</code></td><td>✅</td><td>✅ (Revit engine)</td><td>✅ (via translation)</td></tr><tr><td><strong>Inventor</strong></td><td><code>.ipt</code>, <code>.iam</code>, <code>.ipn</code></td><td>✅</td><td>✅ (Inventor engine)</td><td>✅ (via translation)</td></tr><tr><td><strong>Fusion 360</strong></td><td><code>.f3d</code></td><td>✅</td><td>✅ (Fusion engine)</td><td>✅ (via translation)</td></tr><tr><td><strong>3ds Max</strong></td><td><code>.max</code></td><td>✅</td><td>✅ (3ds Max engine)</td><td>✅ (via translation)</td></tr><tr><td><strong>SolidWorks</strong></td><td><code>.sldprt</code>, <code>.sldasm</code></td><td>✅</td><td>❌</td><td>✅ (via translation)</td></tr><tr><td><strong>SketchUp</strong></td><td><code>.skp</code></td><td>✅</td><td>❌</td><td>✅ (via translation)</td></tr><tr><td><strong>IFC</strong></td><td><code>.ifc</code></td><td>✅</td><td>❌</td><td>✅ (via translation)</td></tr></tbody></table>
+<h3 id="output-formats-from-model-derivative">Output Formats from Model Derivative</h3>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<table><thead><tr><th>Purpose</th><th>Format</th><th>Extension</th><th>RAPS Command</th></tr></thead><tbody><tr><td><strong>Web Viewing</strong></td><td>SVF2 (modern)</td><td><code>.svf2</code></td><td><code>raps translate &#x3C;urn> --format svf2</code></td></tr><tr><td><strong>Web Viewing</strong></td><td>SVF (legacy)</td><td><code>.svf</code></td><td><code>raps translate &#x3C;urn> --format svf</code></td></tr><tr><td><strong>3D Printing</strong></td><td>STL</td><td><code>.stl</code></td><td><code>raps translate &#x3C;urn> --format stl</code></td></tr><tr><td><strong>3D Mesh</strong></td><td>OBJ</td><td><code>.obj</code></td><td><code>raps translate &#x3C;urn> --format obj</code></td></tr><tr><td><strong>2D Drawings</strong></td><td>PDF</td><td><code>.pdf</code></td><td><code>raps translate &#x3C;urn> --format pdf</code></td></tr><tr><td><strong>CAD Exchange</strong></td><td>DWG</td><td><code>.dwg</code></td><td><code>raps translate &#x3C;urn> --format dwg</code></td></tr><tr><td><strong>Properties</strong></td><td>JSON</td><td><code>.json</code></td><td><code>raps translate properties &#x3C;urn></code></td></tr><tr><td><strong>Thumbnails</strong></td><td>PNG</td><td><code>.png</code></td><td><code>raps translate &#x3C;urn> --format thumbnail</code></td></tr></tbody></table>
+<hr>
+<h2 id="regional-considerations">Regional Considerations</h2>
+<h3 id="data-residency-requirements">Data Residency Requirements</h3>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<table><thead><tr><th>Region</th><th>Endpoint</th><th>Use When</th><th>RAPS Setting</th></tr></thead><tbody><tr><td><strong>US</strong></td><td><code>developer.api.autodesk.com</code></td><td>North America, default</td><td><code>raps config set region us</code></td></tr><tr><td><strong>EMEA</strong></td><td><code>developer.api.autodesk.com</code></td><td>Europe, Middle East, Africa</td><td><code>raps config set region emea</code></td></tr></tbody></table>
+<p><strong>Note:</strong> Most APS APIs are globally distributed, but some services (like OSS buckets) have regional preferences for performance.</p>
+<hr>
+<h2 id="next-steps">Next Steps</h2>
+<h3 id="once-you-know-your-api">Once You Know Your API</h3>
+<ol>
+<li>
+<p><strong>Set Up Authentication</strong></p>
+<pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8; overflow-x: auto; white-space: pre-wrap; word-wrap: break-word;" tabindex="0" data-language="bash"><code><span class="line"><span style="color:#B392F0">raps</span><span style="color:#9ECBFF"> auth</span><span style="color:#9ECBFF"> login</span><span style="color:#79B8FF"> --default</span><span style="color:#6A737D">  # scopes: &#x3C;required-scopes></span></span></code></pre>
+</li>
+<li>
+<p><strong>Test Basic Connectivity</strong></p>
+<pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8; overflow-x: auto; white-space: pre-wrap; word-wrap: break-word;" tabindex="0" data-language="bash"><code><span class="line"><span style="color:#B392F0">raps</span><span style="color:#9ECBFF"> auth</span><span style="color:#9ECBFF"> status</span></span>
+<span class="line"><span style="color:#B392F0">raps</span><span style="color:#F97583"> &#x3C;</span><span style="color:#9ECBFF">api-comman</span><span style="color:#E1E4E8">d</span><span style="color:#F97583">></span><span style="color:#79B8FF"> --help</span></span></code></pre>
+</li>
+<li>
+<p><strong>Start with RAPS Examples</strong></p>
+<pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8; overflow-x: auto; white-space: pre-wrap; word-wrap: break-word;" tabindex="0" data-language="bash"><code><span class="line"><span style="color:#B392F0">raps</span><span style="color:#9ECBFF"> examples</span><span style="color:#F97583"> &#x3C;</span><span style="color:#9ECBFF">api-nam</span><span style="color:#E1E4E8">e</span><span style="color:#F97583">></span></span></code></pre>
+</li>
+<li>
+<p><strong>Review Detailed Documentation</strong></p>
+<ul>
+<li><a href="https://aps.autodesk.com/en/docs/">APS Developer Portal</a></li>
+<li><a href="https://rapscli.xyz/docs/">RAPS CLI Documentation</a></li>
+</ul>
+</li>
+</ol>
+<h3 id="still-not-sure">Still Not Sure?</h3>
+<p><strong>Common Combinations:</strong></p>
+<ul>
+<li><strong>Simple file viewer:</strong> OSS + Model Derivative + Viewer SDK</li>
+<li><strong>BIM 360 integration:</strong> Data Management + Model Derivative</li>
+<li><strong>Batch processing:</strong> OSS + Design Automation</li>
+<li><strong>Full construction workflow:</strong> All APIs</li>
+</ul>
+<p><strong>Get Help:</strong></p>
+<ul>
+<li><a href="https://forums.autodesk.com/t5/platform-services/bd-p/42">APS Community Forums</a></li>
+<li><a href="https://discord.gg/raps-community">RAPS Discord Community</a></li>
+<li><a href="https://github.com/dmytro-yemelianov/raps/discussions">RAPS GitHub Discussions</a></li>
+</ul>
+<hr>
+<p><strong>💡 Pro Tip:</strong> Start with RAPS CLI to prototype your workflow quickly. Once you understand the API flow, you can always implement the same logic directly using HTTP requests or SDKs.</p>
+<hr>
+<p><em>Last verified: February 2026 | RAPS v4.14.0 | APS APIs: Auth v2, DM v1, MD v2, OSS v2, DA v3</em><br>
+<em>This decision tree covers 90% of APS use cases. For specialized scenarios, consult the <a href="https://aps.autodesk.com/en/docs/">official APS documentation</a>.</em></p> </div> </div>  </main> <footer class="bg-gray-50 border-t border-gray-200 mt-20" data-astro-cid-37fxchfa> <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12" data-astro-cid-37fxchfa> <div class="grid grid-cols-1 md:grid-cols-4 gap-8" data-astro-cid-37fxchfa> <div data-astro-cid-37fxchfa> <h3 class="font-semibold text-gray-900 mb-4" data-astro-cid-37fxchfa>Product</h3> <ul class="space-y-2" data-astro-cid-37fxchfa> <li data-astro-cid-37fxchfa><a href="/features" class="text-gray-600 hover:text-raps-blue" data-astro-cid-37fxchfa>Features</a></li> <li data-astro-cid-37fxchfa><a href="/pricing" class="text-gray-600 hover:text-raps-blue" data-astro-cid-37fxchfa>Pricing</a></li> <li data-astro-cid-37fxchfa><a href="/changelog" class="text-gray-600 hover:text-raps-blue" data-astro-cid-37fxchfa>Changelog</a></li> <li data-astro-cid-37fxchfa><a href="/roadmap" class="text-gray-600 hover:text-raps-blue" data-astro-cid-37fxchfa>Roadmap</a></li> </ul> </div> <div data-astro-cid-37fxchfa> <h3 class="font-semibold text-gray-900 mb-4" data-astro-cid-37fxchfa>Resources</h3> <ul class="space-y-2" data-astro-cid-37fxchfa> <li data-astro-cid-37fxchfa><a href="/docs" class="text-gray-600 hover:text-raps-blue" data-astro-cid-37fxchfa>Documentation</a></li> <li data-astro-cid-37fxchfa><a href="/guides" class="text-gray-600 hover:text-raps-blue" data-astro-cid-37fxchfa>Guides</a></li> <li data-astro-cid-37fxchfa><a href="/articles" class="text-gray-600 hover:text-raps-blue" data-astro-cid-37fxchfa>Articles</a></li> <li data-astro-cid-37fxchfa><a href="/tools" class="text-gray-600 hover:text-raps-blue" data-astro-cid-37fxchfa>Tools</a></li> </ul> </div> <div data-astro-cid-37fxchfa> <h3 class="font-semibold text-gray-900 mb-4" data-astro-cid-37fxchfa>Community</h3> <ul class="space-y-2" data-astro-cid-37fxchfa> <li data-astro-cid-37fxchfa><a href="https://github.com" class="text-gray-600 hover:text-raps-blue" data-astro-cid-37fxchfa>GitHub</a></li> <li data-astro-cid-37fxchfa><a href="https://discord.gg" class="text-gray-600 hover:text-raps-blue" data-astro-cid-37fxchfa>Discord</a></li> <li data-astro-cid-37fxchfa><a href="https://twitter.com" class="text-gray-600 hover:text-raps-blue" data-astro-cid-37fxchfa>Twitter</a></li> <li data-astro-cid-37fxchfa><a href="/blog" class="text-gray-600 hover:text-raps-blue" data-astro-cid-37fxchfa>Blog</a></li> </ul> </div> <div data-astro-cid-37fxchfa> <h3 class="font-semibold text-gray-900 mb-4" data-astro-cid-37fxchfa>Company</h3> <ul class="space-y-2" data-astro-cid-37fxchfa> <li data-astro-cid-37fxchfa><a href="/about" class="text-gray-600 hover:text-raps-blue" data-astro-cid-37fxchfa>About</a></li> <li data-astro-cid-37fxchfa><a href="/contact" class="text-gray-600 hover:text-raps-blue" data-astro-cid-37fxchfa>Contact</a></li> <li data-astro-cid-37fxchfa><a href="/privacy" class="text-gray-600 hover:text-raps-blue" data-astro-cid-37fxchfa>Privacy</a></li> <li data-astro-cid-37fxchfa><a href="/terms" class="text-gray-600 hover:text-raps-blue" data-astro-cid-37fxchfa>Terms</a></li> </ul> </div> </div> <div class="mt-8 pt-8 border-t border-gray-200" data-astro-cid-37fxchfa> <p class="text-center text-gray-600" data-astro-cid-37fxchfa>
+© 2026 RAPS CLI. Professional APS Automation Tools.
+</p> </div> </div> </footer> </body></html>

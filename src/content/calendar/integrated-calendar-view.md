@@ -24,7 +24,7 @@ lastUpdated: 2026-01-08
 
 | Day | Theme | Priority Activity | Owner | Deadline |
 |-----|-------|------------------|-------|----------|
-| **Monday** | 🚀 Product | RAPS 2.0 release announcement prep | Product Team | Jan 10 |
+| **Monday** | 🚀 Product | RAPS v4.14 release announcement prep | Product Team | Jan 10 |
 | **Tuesday** | 📚 Content | "APS Automation in 2026" blog post | Content Team | Jan 9 |
 | **Wednesday** | 🌍 Community | Reddit AMA setup and promotion | DevRel | Jan 8 |
 | **Thursday** | 🤖 MCP | MCP server alpha testing begins | Engineering | Jan 9 |
@@ -38,7 +38,7 @@ lastUpdated: 2026-01-08
 
 | Week | 🎯 DevCon | 🤖 MCP | 🌍 Community | 📚 Content | 🚀 Product |
 |------|----------|--------|-------------|-----------|-----------|
-| **W1** | Session prep planning | - | Profile setup | 2026 vision blog | RAPS 2.0 release |
+| **W1** | Session prep planning | - | Profile setup | 2026 vision blog | RAPS v4.14 release |
 | **W2** | Content outlines | Alpha testing | Reddit presence | APS Reality Check | Performance patches |
 | **W3** | **Submission deadline** | Beta program | Expert applications | Authentication hell | Parallel processing v2 |
 | **W4** | Content sprint | Feedback collection | Content seeding | Horror stories | Monthly review |

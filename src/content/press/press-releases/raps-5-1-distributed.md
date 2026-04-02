@@ -81,7 +81,7 @@ pip install raps-cli
 
 ### About RAPS
 
-RAPS is an open-source command-line interface for Autodesk Platform Services (APS), providing 100+ commands across all major APS APIs. Built in Rust for performance and reliability, RAPS supports interactive shell, MCP server, Docker, GitHub Actions, GitLab CI, and Python binding modes. Licensed under Apache-2.0.
+RAPS is an open-source command-line interface for Autodesk Platform Services (APS), providing 195+ operations across 51 command families covering 15+ APS APIs. Built in Rust with 10 workspace crates, RAPS supports interactive shell, MCP server (114 tools), Docker, GitHub Actions, GitLab CI, and Python binding modes. The current release is v5.7.0. Licensed under Apache-2.0.
 
 GitHub: https://github.com/dmytro-yemelianov/raps
 Website: https://rapscli.xyz

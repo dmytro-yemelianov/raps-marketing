@@ -1,0 +1,452 @@
+<!DOCTYPE html><html lang="en" data-astro-cid-37fxchfa> <head><meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><link rel="icon" type="image/svg+xml" href="/favicon.svg"><meta name="generator" content="Astro v5.18.0"><!-- Primary Meta Tags --><title>Zero to Production: Shipping an AI-Ready APS CLI in 30 Min | RAPS CLI</title><meta name="title" content="Zero to Production: Shipping an AI-Ready APS CLI in 30 Min | RAPS CLI"><meta name="description" content="DevCon 2026 session: Zero to Production: Shipping an AI-Ready APS CLI in 30 Min"><!-- Open Graph / Facebook --><meta property="og:type" content="website"><meta property="og:url" content="https://rapscli.xyz/devcon/1258/"><meta property="og:title" content="Zero to Production: Shipping an AI-Ready APS CLI in 30 Min | RAPS CLI"><meta property="og:description" content="DevCon 2026 session: Zero to Production: Shipping an AI-Ready APS CLI in 30 Min"><meta property="og:image" content="https://rapscli.xyz/og-image.png"><!-- Twitter --><meta property="twitter:card" content="summary_large_image"><meta property="twitter:url" content="https://rapscli.xyz/devcon/1258/"><meta property="twitter:title" content="Zero to Production: Shipping an AI-Ready APS CLI in 30 Min | RAPS CLI"><meta property="twitter:description" content="DevCon 2026 session: Zero to Production: Shipping an AI-Ready APS CLI in 30 Min"><meta property="twitter:image" content="https://rapscli.xyz/og-image.png"><!-- Canonical URL --><link rel="canonical" href="https://rapscli.xyz/devcon/1258/"><!-- Fonts --><link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin><link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet"><link rel="stylesheet" href="/_astro/_slug_.B9K_sDND.css">
+<style>.session-content[data-astro-cid-z3xakpcs] h2{scroll-margin-top:100px}.session-content[data-astro-cid-z3xakpcs] pre{box-shadow:0 4px 6px -1px #0000001a,0 2px 4px -2px #0000001a}.session-content[data-astro-cid-z3xakpcs] table{box-shadow:0 1px 3px #0000001a,0 1px 2px -1px #0000001a}.session-content[data-astro-cid-z3xakpcs] code{word-break:break-word}.session-content[data-astro-cid-z3xakpcs] pre code{word-break:normal}
+</style></head> <body class="min-h-screen bg-white" data-astro-cid-37fxchfa> <nav class="sticky top-0 z-50 bg-white/95 backdrop-blur border-b border-gray-200" data-astro-cid-37fxchfa> <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8" data-astro-cid-37fxchfa> <div class="flex justify-between items-center h-16" data-astro-cid-37fxchfa> <div class="flex items-center" data-astro-cid-37fxchfa> <a href="/" class="flex items-center space-x-2" data-astro-cid-37fxchfa> <span class="text-2xl font-bold bg-gradient-to-r from-raps-blue to-raps-purple bg-clip-text text-transparent" data-astro-cid-37fxchfa>
+RAPS
+</span> <span class="text-gray-500" data-astro-cid-37fxchfa>v4.11.0</span> </a> </div> <nav class="hidden md:flex items-center space-x-6" data-astro-cid-37fxchfa> <!-- Developer Dropdown --> <div class="relative group" data-astro-cid-37fxchfa> <button class="text-gray-700 hover:text-raps-blue transition flex items-center" data-astro-cid-37fxchfa>
+Developer <span class="ml-1 text-xs" data-astro-cid-37fxchfa>▼</span> </button> <div class="absolute top-full left-0 mt-2 w-64 bg-white shadow-lg rounded-lg opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all z-50" data-astro-cid-37fxchfa> <a href="/guides" class="block px-4 py-3 text-sm text-gray-700 hover:bg-gray-50 border-b border-gray-100" data-astro-cid-37fxchfa> <div class="font-medium" data-astro-cid-37fxchfa>📚 Guides</div> <div class="text-xs text-gray-500" data-astro-cid-37fxchfa>Step-by-step tutorials</div> </a> <a href="/recipes" class="block px-4 py-3 text-sm text-gray-700 hover:bg-gray-50 border-b border-gray-100" data-astro-cid-37fxchfa> <div class="font-medium" data-astro-cid-37fxchfa>🍳 Recipes</div> <div class="text-xs text-gray-500" data-astro-cid-37fxchfa>Common workflow patterns</div> </a> <a href="/tools" class="block px-4 py-3 text-sm text-gray-700 hover:bg-gray-50 border-b border-gray-100" data-astro-cid-37fxchfa> <div class="font-medium" data-astro-cid-37fxchfa>🛠️ Interactive Tools</div> <div class="text-xs text-gray-500" data-astro-cid-37fxchfa>OAuth, URN, token helpers</div> </a> <a href="/resources" class="block px-4 py-3 text-sm text-gray-700 hover:bg-gray-50" data-astro-cid-37fxchfa> <div class="font-medium" data-astro-cid-37fxchfa>📖 Resources</div> <div class="text-xs text-gray-500" data-astro-cid-37fxchfa>Cheat sheets & references</div> </a> </div> </div> <!-- Content Dropdown --> <div class="relative group" data-astro-cid-37fxchfa> <button class="text-gray-700 hover:text-raps-blue transition flex items-center" data-astro-cid-37fxchfa>
+Content <span class="ml-1 text-xs" data-astro-cid-37fxchfa>▼</span> </button> <div class="absolute top-full left-0 mt-2 w-56 bg-white shadow-lg rounded-lg opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all z-50" data-astro-cid-37fxchfa> <a href="/articles" class="block px-4 py-3 text-sm text-gray-700 hover:bg-gray-50 border-b border-gray-100" data-astro-cid-37fxchfa> <div class="font-medium" data-astro-cid-37fxchfa>✍️ Articles</div> <div class="text-xs text-gray-500" data-astro-cid-37fxchfa>Technical deep-dives</div> </a> <a href="/pdfs" class="block px-4 py-3 text-sm text-gray-700 hover:bg-gray-50" data-astro-cid-37fxchfa> <div class="font-medium" data-astro-cid-37fxchfa>📄 PDFs</div> <div class="text-xs text-gray-500" data-astro-cid-37fxchfa>Downloadable resources</div> </a> </div> </div> <!-- Strategy Dropdown (existing, just enhanced) --> <div class="relative group" data-astro-cid-37fxchfa> <button class="text-gray-700 hover:text-raps-blue transition flex items-center" data-astro-cid-37fxchfa>
+Strategy <span class="ml-1 text-xs" data-astro-cid-37fxchfa>▼</span> </button> <div class="absolute top-full left-0 mt-2 w-56 bg-white shadow-lg rounded-lg opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all z-50" data-astro-cid-37fxchfa> <a href="/campaigns" class="block px-4 py-3 text-sm text-gray-700 hover:bg-gray-50 border-b border-gray-100" data-astro-cid-37fxchfa> <div class="font-medium" data-astro-cid-37fxchfa>🎯 Campaigns</div> <div class="text-xs text-gray-500" data-astro-cid-37fxchfa>Marketing initiatives</div> </a> <a href="/analytics" class="block px-4 py-3 text-sm text-gray-700 hover:bg-gray-50 border-b border-gray-100" data-astro-cid-37fxchfa> <div class="font-medium" data-astro-cid-37fxchfa>📊 Analytics</div> <div class="text-xs text-gray-500" data-astro-cid-37fxchfa>Performance metrics</div> </a> <a href="/strategy" class="block px-4 py-3 text-sm text-gray-700 hover:bg-gray-50 border-b border-gray-100" data-astro-cid-37fxchfa> <div class="font-medium" data-astro-cid-37fxchfa>📋 Strategy</div> <div class="text-xs text-gray-500" data-astro-cid-37fxchfa>Strategic planning</div> </a> <a href="/community" class="block px-4 py-3 text-sm text-gray-700 hover:bg-gray-50 border-b border-gray-100" data-astro-cid-37fxchfa> <div class="font-medium" data-astro-cid-37fxchfa>👥 Community</div> <div class="text-xs text-gray-500" data-astro-cid-37fxchfa>Engagement plans</div> </a> <a href="/press" class="block px-4 py-3 text-sm text-gray-700 hover:bg-gray-50 border-b border-gray-100" data-astro-cid-37fxchfa> <div class="font-medium" data-astro-cid-37fxchfa>📰 Press</div> <div class="text-xs text-gray-500" data-astro-cid-37fxchfa>Press releases</div> </a> <a href="/calendar" class="block px-4 py-3 text-sm text-gray-700 hover:bg-gray-50" data-astro-cid-37fxchfa> <div class="font-medium" data-astro-cid-37fxchfa>📅 Calendar</div> <div class="text-xs text-gray-500" data-astro-cid-37fxchfa>Content schedule</div> </a> </div> </div> <a href="https://github.com/autodesk-platform-services/raps" class="text-gray-700 hover:text-raps-blue transition" data-astro-cid-37fxchfa>
+GitHub
+</a> <a href="https://github.com/autodesk-platform-services/raps/releases" class="px-4 py-2 bg-gradient-to-r from-raps-blue to-raps-purple text-white rounded-lg hover:shadow-lg transition" data-astro-cid-37fxchfa>
+Download
+</a> </nav> <button class="md:hidden p-2 rounded-lg hover:bg-gray-100" data-astro-cid-37fxchfa> <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" data-astro-cid-37fxchfa> <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16" data-astro-cid-37fxchfa></path> </svg> </button> </div> </div> </nav> <main data-astro-cid-37fxchfa>   <section class="bg-gradient-to-r from-blue-500 to-cyan-500 text-white py-12" data-astro-cid-z3xakpcs> <div class="content-container" data-astro-cid-z3xakpcs> <div class="max-w-5xl mx-auto" data-astro-cid-z3xakpcs> <a href="/devcon" class="inline-flex items-center gap-2 text-white/80 hover:text-white mb-4 text-sm transition-colors" data-astro-cid-z3xakpcs>
+← Back to all sessions
+</a> <div class="flex items-start gap-5" data-astro-cid-z3xakpcs> <span class="text-5xl drop-shadow-lg" data-astro-cid-z3xakpcs>🚀</span> <div data-astro-cid-z3xakpcs> <div class="flex items-center gap-3 mb-3" data-astro-cid-z3xakpcs> <span class="text-sm font-mono bg-white/20 backdrop-blur px-3 py-1 rounded-full" data-astro-cid-z3xakpcs>
+Session 1258 </span> <span class="text-sm bg-white/10 backdrop-blur px-3 py-1 rounded-full" data-astro-cid-z3xakpcs>
+30-minute deep dive
+</span> </div> <h1 class="text-3xl md:text-4xl font-bold leading-tight" data-astro-cid-z3xakpcs>Zero to Production: Shipping an AI-Ready APS CLI in 30 Min</h1> <p class="mt-3 text-white/80 text-lg" data-astro-cid-z3xakpcs>Speaker: Dmytro Yemelianov</p> </div> </div> </div> </div> </section>  <section class="py-12 bg-white" data-astro-cid-z3xakpcs> <div class="content-container" data-astro-cid-z3xakpcs> <div class="max-w-5xl mx-auto" data-astro-cid-z3xakpcs> <article class="session-content" data-astro-cid-z3xakpcs>
+
+<h2 class="text-2xl font-bold mt-12 mb-6 text-gray-900 pb-3 border-b-2 border-gray-200">Session Details</h2>
+
+<div class="my-6 overflow-x-auto rounded-lg border border-gray-200"><table class="w-full border-collapse text-sm"><thead><tr><th class="bg-gray-50 border border-gray-200 px-4 py-3 text-left font-semibold text-gray-700">Field</th><th class="bg-gray-50 border border-gray-200 px-4 py-3 text-left font-semibold text-gray-700">Value</th></tr></thead><tbody><tr class="hover:bg-gray-50 transition-colors"><td class="border border-gray-200 px-4 py-3 text-gray-700"><strong class="font-semibold text-gray-900">Session ID</strong></td><td class="border border-gray-200 px-4 py-3 text-gray-700">1258</td></tr><tr class="hover:bg-gray-50 transition-colors"><td class="border border-gray-200 px-4 py-3 text-gray-700"><strong class="font-semibold text-gray-900">Title</strong></td><td class="border border-gray-200 px-4 py-3 text-gray-700">Zero to Production: Shipping an AI-Ready APS CLI in 30 Min</td></tr><tr class="hover:bg-gray-50 transition-colors"><td class="border border-gray-200 px-4 py-3 text-gray-700"><strong class="font-semibold text-gray-900">Speaker(s)</strong></td><td class="border border-gray-200 px-4 py-3 text-gray-700">Dmytro Yemelianov</td></tr><tr class="hover:bg-gray-50 transition-colors"><td class="border border-gray-200 px-4 py-3 text-gray-700"><strong class="font-semibold text-gray-900">Session Type</strong></td><td class="border border-gray-200 px-4 py-3 text-gray-700">30-minute deep dive</td></tr><tr class="hover:bg-gray-50 transition-colors"><td class="border border-gray-200 px-4 py-3 text-gray-700"><strong class="font-semibold text-gray-900">Status</strong></td><td class="border border-gray-200 px-4 py-3 text-gray-700">Complete</td></tr></tbody></table></div>
+<h2 class="text-2xl font-bold mt-12 mb-6 text-gray-900 pb-3 border-b-2 border-gray-200">AI Pillars</h2>
+
+<ul class="my-4 space-y-1"><li class="flex items-start gap-3 py-1"><span class="text-green-500 mt-0.5">✓</span><span><strong class="font-semibold text-gray-900">Automate</strong> - Speed repetitive tasks, shrink cycle times, reduce errors</span></li>
+<li class="flex items-start gap-3 py-1"><span class="text-green-500 mt-0.5">✓</span><span><strong class="font-semibold text-gray-900">Assist</strong> - Improve decisions with insights, copilots, and intelligent guidance</span></li>
+<li class="flex items-start gap-3 py-1 text-gray-400"><span class="mt-0.5">○</span><span>Augment</span></li>
+</ul>
+<h2 class="text-2xl font-bold mt-12 mb-6 text-gray-900 pb-3 border-b-2 border-gray-200">Themes</h2>
+
+<ul class="my-4 space-y-1"><li class="flex items-start gap-3 py-1 text-gray-400"><span class="mt-0.5">○</span><span>Sustainability</span></li>
+<li class="flex items-start gap-3 py-1"><span class="text-green-500 mt-0.5">✓</span><span><strong class="font-semibold text-gray-900">Digital Transformation</strong></span></li>
+<li class="flex items-start gap-3 py-1"><span class="text-green-500 mt-0.5">✓</span><span><strong class="font-semibold text-gray-900">System Integration</strong></span></li>
+</ul>
+<h2 class="text-2xl font-bold mt-12 mb-6 text-gray-900 pb-3 border-b-2 border-gray-200">Target Audience</h2>
+
+<ul class="my-4 space-y-1"><li class="flex items-start gap-3 py-1 text-gray-400"><span class="mt-0.5">○</span><span>Business Decision Makers</span></li>
+<li class="flex items-start gap-3 py-1"><span class="text-green-500 mt-0.5">✓</span><span><strong class="font-semibold text-gray-900">Developers/Architects</strong> - How it's built, APIs, patterns, lessons learned</span></li>
+</ul>
+<h2 class="text-2xl font-bold mt-12 mb-6 text-gray-900 pb-3 border-b-2 border-gray-200">Learning Objectives</h2>
+
+<ol class="my-4 list-decimal list-outside space-y-2"><li class="ml-6 mb-2 text-gray-700">Install and configure raps CLI for APS operations in under 5 minutes</li>
+<li class="ml-6 mb-2 text-gray-700">Execute common APS workflows (auth, buckets, translations) from the command line</li>
+<li class="ml-6 mb-2 text-gray-700">Connect raps CLI to AI assistants via MCP for intelligent automation</li>
+</ol>
+<figure class="my-8"><img src="/devcon/images/1258-zero-to-production-hero.png" alt="Zero to Production Hero" class="w-full rounded-xl shadow-lg" loading="lazy" /><figcaption class="text-center text-sm text-gray-500 mt-2">Zero to Production Hero</figcaption></figure>
+
+<h2 class="text-2xl font-bold mt-12 mb-6 text-gray-900 pb-3 border-b-2 border-gray-200">Abstract</h2>
+
+<p class="mb-5 text-gray-700 leading-relaxed text-base">Every APS project starts the same way. You create an app in the developer portal. You copy the client ID and secret. Then you open your favorite HTTP client and start crafting requests. Base64-encode the credentials. POST to the token endpoint. Copy the access token. Remember to add "Bearer" prefix. Paste it into the next request. Repeat when the token expires in an hour.</p>
+
+<p class="mb-5 text-gray-700 leading-relaxed text-base">It's 2026. We can do better.</p>
+
+<p class="mb-5 text-gray-700 leading-relaxed text-base">This session is a speedrun. In 30 minutes, we'll go from zero tooling to a production-ready workflow that handles authentication, file management, model translation, and—here's the twist—AI assistant integration. Everything live, everything real.</p>
+
+<p class="mb-5 text-gray-700 leading-relaxed text-base"><strong class="font-semibold text-gray-900">Part 1: Installation & Setup (5 min)</strong> Four ways to install, because developers are opinionated about package managers. OAuth configuration that actually makes sense. Profile management for when you're juggling dev, staging, and production environments.</p>
+
+<p class="mb-5 text-gray-700 leading-relaxed text-base"><strong class="font-semibold text-gray-900">Part 2: Core Operations (15 min)</strong> The operations you do every day, but faster. Create buckets with one command. Upload files with automatic chunking for large models. Start translations and actually <em class="italic">wait</em> for them to complete instead of polling manually. Navigate BIM 360/ACC project hierarchies without losing your mind.</p>
+
+<p class="mb-5 text-gray-700 leading-relaxed text-base"><strong class="font-semibold text-gray-900">Part 2.5: Pipeline v2 & CI/CD (NEW)</strong> The glue that ties it all together. Define multi-step APS workflows in YAML with retry policies, timeouts, conditionals, parallel execution, and for-each loops. Then run them automatically in GitHub Actions or GitLab CI with official RAPS templates -- four composite actions for GitHub, four include templates for GitLab. Zero to automated deployment pipeline in under 5 minutes.</p>
+
+<p class="mb-5 text-gray-700 leading-relaxed text-base"><strong class="font-semibold text-gray-900">Part 2.7: Distributed Deployment (NEW)</strong> Scale beyond a single machine. Deploy the full orchestration stack with Docker Compose — Redis-backed job queue, serverless dispatch to Fly.io, and a Cloudflare Workers webhook gateway at the edge. One <code class="bg-gray-100 text-blue-700 px-1.5 py-0.5 rounded text-sm font-mono border border-gray-200">docker compose up</code> gives you 4 worker replicas, monitoring, and automatic scaling to zero.</p>
+
+<p class="mb-5 text-gray-700 leading-relaxed text-base"><strong class="font-semibold text-gray-900">Part 3: AI Integration (10 min)</strong> The part that makes people's eyes light up. Connect the CLI to Claude, Cursor, or any MCP-compatible AI assistant. Ask questions in English, get operations executed. "What buckets do I have?" becomes a conversation, not a curl command.</p>
+
+<h2 class="text-2xl font-bold mt-12 mb-6 text-gray-900 pb-3 border-b-2 border-gray-200">The Problem This Solves</h2>
+
+<p class="mb-5 text-gray-700 leading-relaxed text-base">Let me tell you about a Tuesday afternoon that changed how I think about developer tooling.</p>
+
+<p class="mb-5 text-gray-700 leading-relaxed text-base">I was helping a client debug a translation issue. They had a Revit file that kept failing with a cryptic error. To diagnose it, I needed to:</p>
+
+<ol class="my-4 list-decimal list-outside space-y-2"><li class="ml-6 mb-2 text-gray-700">Authenticate (find credentials, encode them, POST, copy token)</li>
+<li class="ml-6 mb-2 text-gray-700">Check if the file was uploaded correctly (GET object details)</li>
+<li class="ml-6 mb-2 text-gray-700">Look at the translation manifest (decode URN, GET manifest)</li>
+<li class="ml-6 mb-2 text-gray-700">Parse the nested JSON to find the actual error message</li>
+<li class="ml-6 mb-2 text-gray-700">Re-upload with different settings</li>
+<li class="ml-6 mb-2 text-gray-700">Repeat steps 2-4</li>
+</ol>
+Each step required switching between Postman tabs, copying values, remembering endpoint URLs. By step 4, I'd forgotten what I was originally trying to debug.
+
+<p class="mb-5 text-gray-700 leading-relaxed text-base">That Tuesday, I started building raps.</p>
+
+<p class="mb-5 text-gray-700 leading-relaxed text-base">The idea was simple: what if every APS operation was a single command? What if the CLI handled authentication automatically, remembered my tokens, and let me focus on the actual problem?</p>
+
+<p class="mb-5 text-gray-700 leading-relaxed text-base">18 months later, we have <strong class="font-semibold text-gray-900">55 top-level commands (95+ total operations) covering 15 APS APIs</strong>, plus bulk account administration, Python bindings, and AI assistant integration. And it's open source, because the APS community deserves better tooling.</p>
+
+<h2 class="text-2xl font-bold mt-12 mb-6 text-gray-900 pb-3 border-b-2 border-gray-200">APS Components Used</h2>
+
+<ul class="my-4 list-disc list-outside space-y-2"><li class="ml-6 mb-2 text-gray-700">Authentication API (2-legged, 3-legged, device code flow, token inspection)</li>
+<li class="ml-6 mb-2 text-gray-700">OSS API (Buckets, Objects, Signed S3 URLs)</li>
+<li class="ml-6 mb-2 text-gray-700">Model Derivative API (Translations, Manifests, Downloads, Presets)</li>
+<li class="ml-6 mb-2 text-gray-700">Data Management API (Hubs, Projects, Folders, Items)</li>
+<li class="ml-6 mb-2 text-gray-700">Webhooks API</li>
+<li class="ml-6 mb-2 text-gray-700">Design Automation API (Engines, Activities, Work Items)</li>
+<li class="ml-6 mb-2 text-gray-700">ACC Issues API</li>
+<li class="ml-6 mb-2 text-gray-700">ACC RFIs API</li>
+<li class="ml-6 mb-2 text-gray-700">ACC Assets API</li>
+<li class="ml-6 mb-2 text-gray-700">ACC Submittals API</li>
+<li class="ml-6 mb-2 text-gray-700">ACC Checklists API</li>
+<li class="ml-6 mb-2 text-gray-700">ACC Account Admin API (Bulk User Management)</li>
+</ul>
+<h2 class="text-2xl font-bold mt-12 mb-6 text-gray-900 pb-3 border-b-2 border-gray-200">Autodesk Products</h2>
+
+<p class="mb-5 text-gray-700 leading-relaxed text-base">Works with everything APS touches: <ul class="my-4 list-disc list-outside space-y-2"><li class="ml-6 mb-2 text-gray-700">Autodesk Construction Cloud (ACC)</li> <li class="ml-6 mb-2 text-gray-700">BIM 360</li> <li class="ml-6 mb-2 text-gray-700">Autodesk Fusion</li> <li class="ml-6 mb-2 text-gray-700">Autodesk Forma</li> <li class="ml-6 mb-2 text-gray-700">AutoCAD Web</li> </ul> If it has an APS API, raps can talk to it.</p>
+
+<h2 class="text-2xl font-bold mt-12 mb-6 text-gray-900 pb-3 border-b-2 border-gray-200">Part 1: Installation (Choose Your Adventure)</h2>
+
+<p class="mb-5 text-gray-700 leading-relaxed text-base"><figure class="my-8"><img src="/devcon/images/1258-zero-to-production-installation.png" alt="Multi-Platform Install" class="w-full rounded-xl shadow-lg" loading="lazy" /><figcaption class="text-center text-sm text-gray-500 mt-2">Multi-Platform Install</figcaption></figure></p>
+
+<p class="mb-5 text-gray-700 leading-relaxed text-base">I respect that developers have strong opinions about package managers. Here are <strong class="font-semibold text-gray-900">six ways</strong> to install—pick the one that doesn't make you twitch.</p>
+
+<h3 class="text-xl font-bold mt-8 mb-4 text-gray-800">Option 1: Quick Install Scripts (Recommended)</h3>
+
+<p class="mb-5 text-gray-700 leading-relaxed text-base">The fastest path for most developers:</p>
+
+<p class="mb-5 text-gray-700 leading-relaxed text-base"><strong class="font-semibold text-gray-900">Linux/macOS:</strong> <div class="relative my-6"><pre class="bg-gray-900 text-gray-100 rounded-xl p-5 overflow-x-auto text-sm leading-relaxed font-mono"><span class="absolute top-2 right-3 text-xs text-gray-500 font-mono">bash</span><code class="language-bash">curl -fsSL https://raw.githubusercontent.com/dmytro-yemelianov/raps/main/install.sh | bash</code></pre></div></p>
+
+<p class="mb-5 text-gray-700 leading-relaxed text-base"><strong class="font-semibold text-gray-900">Windows (PowerShell):</strong> <div class="relative my-6"><pre class="bg-gray-900 text-gray-100 rounded-xl p-5 overflow-x-auto text-sm leading-relaxed font-mono"><span class="absolute top-2 right-3 text-xs text-gray-500 font-mono">powershell</span><code class="language-powershell">irm https://raw.githubusercontent.com/dmytro-yemelianov/raps/main/install.ps1 | iex</code></pre></div></p>
+
+<h3 class="text-xl font-bold mt-8 mb-4 text-gray-800">Option 2: npm (Node.js)</h3>
+
+<p class="mb-5 text-gray-700 leading-relaxed text-base">For the JavaScript ecosystem folks:</p>
+
+<div class="relative my-6"><pre class="bg-gray-900 text-gray-100 rounded-xl p-5 overflow-x-auto text-sm leading-relaxed font-mono"><span class="absolute top-2 right-3 text-xs text-gray-500 font-mono">bash</span><code class="language-bash">npm install -g @dmytro-yemelianov/raps-cli
+
+<p class="mb-5 text-gray-700 leading-relaxed text-base"># Or run without installing npx @dmytro-yemelianov/raps-cli --version</code></pre></div></p>
+
+<h3 class="text-xl font-bold mt-8 mb-4 text-gray-800">Option 3: pip (Python)</h3>
+
+<p class="mb-5 text-gray-700 leading-relaxed text-base">For Python developers:</p>
+
+<div class="relative my-6"><pre class="bg-gray-900 text-gray-100 rounded-xl p-5 overflow-x-auto text-sm leading-relaxed font-mono"><span class="absolute top-2 right-3 text-xs text-gray-500 font-mono">bash</span><code class="language-bash">pip install raps</code></pre></div>
+
+<h3 class="text-xl font-bold mt-8 mb-4 text-gray-800">Option 4: Homebrew (macOS/Linux)</h3>
+
+<p class="mb-5 text-gray-700 leading-relaxed text-base">For the Unix folks who live in the terminal:</p>
+
+<div class="relative my-6"><pre class="bg-gray-900 text-gray-100 rounded-xl p-5 overflow-x-auto text-sm leading-relaxed font-mono"><span class="absolute top-2 right-3 text-xs text-gray-500 font-mono">bash</span><code class="language-bash">brew install dmytro-yemelianov/tap/raps</code></pre></div>
+
+<p class="mb-5 text-gray-700 leading-relaxed text-base">Homebrew handles updates, man pages, and shell completions automatically.</p>
+
+<h3 class="text-xl font-bold mt-8 mb-4 text-gray-800">Option 5: Scoop (Windows)</h3>
+
+<p class="mb-5 text-gray-700 leading-relaxed text-base">Because Windows developers deserve nice things too:</p>
+
+<div class="relative my-6"><pre class="bg-gray-900 text-gray-100 rounded-xl p-5 overflow-x-auto text-sm leading-relaxed font-mono"><span class="absolute top-2 right-3 text-xs text-gray-500 font-mono">powershell</span><code class="language-powershell">scoop bucket add raps https://github.com/dmytro-yemelianov/scoop-bucket
+scoop install raps</code></pre></div>
+
+<h3 class="text-xl font-bold mt-8 mb-4 text-gray-800">Option 6: Cargo (The Rust Way)</h3>
+
+<p class="mb-5 text-gray-700 leading-relaxed text-base">If you have Rust installed:</p>
+
+<div class="relative my-6"><pre class="bg-gray-900 text-gray-100 rounded-xl p-5 overflow-x-auto text-sm leading-relaxed font-mono"><span class="absolute top-2 right-3 text-xs text-gray-500 font-mono">bash</span><code class="language-bash">cargo install raps</code></pre></div>
+
+<h3 class="text-xl font-bold mt-8 mb-4 text-gray-800">Verify It Works</h3>
+
+<div class="relative my-6"><pre class="bg-gray-900 text-gray-100 rounded-xl p-5 overflow-x-auto text-sm leading-relaxed font-mono"><span class="absolute top-2 right-3 text-xs text-gray-500 font-mono">bash</span><code class="language-bash">raps --version
+# raps 4.14.0</code></pre></div>
+
+<p class="mb-5 text-gray-700 leading-relaxed text-base">If you see a version number, we're in business.</p>
+
+<h2 class="text-2xl font-bold mt-12 mb-6 text-gray-900 pb-3 border-b-2 border-gray-200">Configuration: Making It Yours</h2>
+
+<p class="mb-5 text-gray-700 leading-relaxed text-base">Here's where raps starts earning its keep. Instead of managing credentials in environment variables, Postman environments, and random .env files, you get profiles.</p>
+
+<h3 class="text-xl font-bold mt-8 mb-4 text-gray-800">Create Your First Profile</h3>
+
+<div class="relative my-6"><pre class="bg-gray-900 text-gray-100 rounded-xl p-5 overflow-x-auto text-sm leading-relaxed font-mono"><span class="absolute top-2 right-3 text-xs text-gray-500 font-mono">bash</span><code class="language-bash"># Interactive setup walks you through it
+raps config profile create dev
+
+<p class="mb-5 text-gray-700 leading-relaxed text-base"># Or set values directly raps config set client_id "your_client_id" raps config set client_secret "your_client_secret"</code></pre></div></p>
+
+<h3 class="text-xl font-bold mt-8 mb-4 text-gray-800">Multiple Environments, No Confusion</h3>
+
+<p class="mb-5 text-gray-700 leading-relaxed text-base">Real projects have multiple environments. raps handles this gracefully:</p>
+
+<div class="relative my-6"><pre class="bg-gray-900 text-gray-100 rounded-xl p-5 overflow-x-auto text-sm leading-relaxed font-mono"><span class="absolute top-2 right-3 text-xs text-gray-500 font-mono">bash</span><code class="language-bash"># Create profiles for each environment
+raps config profile create dev
+raps config profile create staging  
+raps config profile create production
+
+<p class="mb-5 text-gray-700 leading-relaxed text-base"># Switch between them raps config profile use staging</p>
+
+<p class="mb-5 text-gray-700 leading-relaxed text-base"># Check which profile is active raps config profile current # → staging</code></pre></div></p>
+
+<p class="mb-5 text-gray-700 leading-relaxed text-base">No more "wait, which credentials did I just use?" moments.</p>
+
+<h3 class="text-xl font-bold mt-8 mb-4 text-gray-800">Test Your Setup</h3>
+
+<div class="relative my-6"><pre class="bg-gray-900 text-gray-100 rounded-xl p-5 overflow-x-auto text-sm leading-relaxed font-mono"><span class="absolute top-2 right-3 text-xs text-gray-500 font-mono">bash</span><code class="language-bash"># Test 2-legged authentication
+raps auth test
+# ✓ Authentication successful
+#   Token expires in: 59 minutes
+#   Scopes: data:read data:write bucket:create ...
+
+<p class="mb-5 text-gray-700 leading-relaxed text-base"># Check detailed status raps auth status</code></pre></div></p>
+
+<p class="mb-5 text-gray-700 leading-relaxed text-base">If this works, you're ready for the fun part.</p>
+
+<h2 class="text-2xl font-bold mt-12 mb-6 text-gray-900 pb-3 border-b-2 border-gray-200">Part 2: Core Operations (The Daily Workflow)</h2>
+
+<p class="mb-5 text-gray-700 leading-relaxed text-base"><figure class="my-8"><img src="/devcon/images/1258-zero-to-production-workflow.png" alt="CLI Workflow" class="w-full rounded-xl shadow-lg" loading="lazy" /><figcaption class="text-center text-sm text-gray-500 mt-2">CLI Workflow</figcaption></figure></p>
+
+<h3 class="text-xl font-bold mt-8 mb-4 text-gray-800">Buckets: Your Cloud Storage</h3>
+
+<p class="mb-5 text-gray-700 leading-relaxed text-base">OSS buckets are the foundation of everything. Let's create one:</p>
+
+<div class="relative my-6"><pre class="bg-gray-900 text-gray-100 rounded-xl p-5 overflow-x-auto text-sm leading-relaxed font-mono"><span class="absolute top-2 right-3 text-xs text-gray-500 font-mono">bash</span><code class="language-bash"># Interactive mode asks the right questions
+raps bucket create
+# ? Bucket key: hospital-project-2026
+# ? Retention policy: persistent
+# ? Region: us
+# ✓ Bucket created successfully!
+
+<p class="mb-5 text-gray-700 leading-relaxed text-base"># Or one-liner for scripts raps bucket create --key hospital-project-2026 --policy persistent --region us</code></pre></div></p>
+
+<p class="mb-5 text-gray-700 leading-relaxed text-base"><strong class="font-semibold text-gray-900">Why start with the derivative service?</strong> Honestly, because it has the best immediate payoff. You run one command, wait a few minutes, and you can see your model in a browser. It's satisfying. And once people see that work, they're hooked—they want to automate the rest of their workflow.</p>
+
+<div class="relative my-6"><pre class="bg-gray-900 text-gray-100 rounded-xl p-5 overflow-x-auto text-sm leading-relaxed font-mono"><span class="absolute top-2 right-3 text-xs text-gray-500 font-mono">bash</span><code class="language-bash"># List your buckets
+raps bucket list
+# ┌─────────────────────────┬────────────┬────────┐
+# │ Bucket Key              │ Policy     │ Region │
+# ├─────────────────────────┼────────────┼────────┤
+# │ hospital-project-2026   │ persistent │ US     │
+# │ temp-uploads            │ transient  │ US     │
+# │ archive-2025            │ persistent │ US     │
+# └─────────────────────────┴────────────┴────────┘
+
+<p class="mb-5 text-gray-700 leading-relaxed text-base"># Get detailed info raps bucket info hospital-project-2026</code></pre></div></p>
+
+<h3 class="text-xl font-bold mt-8 mb-4 text-gray-800">Uploads: Handling Real Files</h3>
+
+<p class="mb-5 text-gray-700 leading-relaxed text-base">This is where I wasted the most time before building raps. Uploading large files to OSS is annoying—you need to chunk files over 100MB, manage upload sessions, handle resumable uploads when your VPN decides to reconnect mid-transfer.</p>
+
+<div class="relative my-6"><pre class="bg-gray-900 text-gray-100 rounded-xl p-5 overflow-x-auto text-sm leading-relaxed font-mono"><span class="absolute top-2 right-3 text-xs text-gray-500 font-mono">bash</span><code class="language-bash"># Upload a file (auto-chunks large files)
+raps object upload hospital-project-2026 model.rvt
+# Uploading model.rvt to hospital-project-2026/model.rvt
+# [████████████████████████████████] 100% | 245 MB
+# ✓ Upload complete!
+#   Object ID: urn:adsk.objects:os.object:hospital-project-2026/model.rvt
+#   Size: 245.32 MB
+#   SHA1: a3f2b1c4d5e6...
+#
+#   URN (for translation): dXJuOmFkc2sub2JqZWN0czpvcy5vYmplY3Q6aG9z...</code></pre></div>
+
+<p class="mb-5 text-gray-700 leading-relaxed text-base">See that URN at the end? That's what you need for translation. No manual Base64 encoding required.</p>
+
+<p class="mb-5 text-gray-700 leading-relaxed text-base"><strong class="font-semibold text-gray-900">For the serious workflows:</strong> batch upload multiple files in parallel:</p>
+
+<div class="relative my-6"><pre class="bg-gray-900 text-gray-100 rounded-xl p-5 overflow-x-auto text-sm leading-relaxed font-mono"><span class="absolute top-2 right-3 text-xs text-gray-500 font-mono">bash</span><code class="language-bash"># Upload all DWG files, 4 at a time
+raps object upload-batch hospital-project-2026 *.dwg --parallel 4
+# Uploading 12 files to bucket 'hospital-project-2026' with 4 parallel uploads
+# ✓ floor-plan-L1.dwg (2.3 MB)
+# ✓ floor-plan-L2.dwg (2.1 MB)
+# ✓ floor-plan-L3.dwg (2.4 MB)
+# ...
+# Total: 12 uploaded, 0 failed
+# Size: 28.4 MB</code></pre></div>
+
+<h3 class="text-xl font-bold mt-8 mb-4 text-gray-800">Translation: The Moment of Truth</h3>
+
+<p class="mb-5 text-gray-700 leading-relaxed text-base">Model Derivative translation is where APS earns its keep. You upload a Revit file, APS extracts geometry, properties, metadata, and produces viewable formats.</p>
+
+<div class="relative my-6"><pre class="bg-gray-900 text-gray-100 rounded-xl p-5 overflow-x-auto text-sm leading-relaxed font-mono"><span class="absolute top-2 right-3 text-xs text-gray-500 font-mono">bash</span><code class="language-bash"># Start a translation
+raps translate start dXJuOmFkc2sub2JqZWN0czpvcy5vYmplY3Q6aG9z... --format svf2
+# ✓ Translation job started
+#   URN: dXJuOmFkc2sub2JqZWN0czpvcy5vYmplY3Q6aG9z...
+#   Output: svf2
+#   Status: pending
+
+<p class="mb-5 text-gray-700 leading-relaxed text-base"># Check status (and actually wait for it) raps translate status dXJuOmFkc2sub2JqZWN0czpvcy5vYmplY3Q6aG9z... --wait # Translation progress: 15%... 42%... 78%... 100% # ✓ Translation complete! #   Status: success #   Derivatives: svf2, thumbnail</code></pre></div></p>
+
+<p class="mb-5 text-gray-700 leading-relaxed text-base">That <code class="bg-gray-100 text-blue-700 px-1.5 py-0.5 rounded text-sm font-mono border border-gray-200">--wait</code> flag is deceptively powerful. Instead of writing yet another while loop with time.sleep(5), the CLI handles the polling. Go get coffee. Come back. It'll be done.</p>
+
+<div class="relative my-6"><pre class="bg-gray-900 text-gray-100 rounded-xl p-5 overflow-x-auto text-sm leading-relaxed font-mono"><span class="absolute top-2 right-3 text-xs text-gray-500 font-mono">bash</span><code class="language-bash"># View the manifest (what derivatives are available)
+raps translate manifest dXJuOmFkc2sub2JqZWN0czpvcy5vYmplY3Q6aG9z...
+
+<p class="mb-5 text-gray-700 leading-relaxed text-base"># Download derivatives raps translate download dXJuOmFkc2sub2JqZWN0czpvcy5vYmplY3Q6aG9z... \   --format obj --output ./exports/</code></pre></div></p>
+
+<h3 class="text-xl font-bold mt-8 mb-4 text-gray-800">Data Management: Navigating the Hierarchy</h3>
+
+<p class="mb-5 text-gray-700 leading-relaxed text-base">BIM 360 and ACC organize data in a hierarchy: Hubs → Projects → Folders → Items → Versions. If you've ever tried to navigate this via raw API calls, you know it's... not fun. Each level requires a different endpoint, different ID format, and the documentation is scattered across three different sites.</p>
+
+<div class="relative my-6"><pre class="bg-gray-900 text-gray-100 rounded-xl p-5 overflow-x-auto text-sm leading-relaxed font-mono"><span class="absolute top-2 right-3 text-xs text-gray-500 font-mono">bash</span><code class="language-bash"># List your hubs (requires 3-legged auth)
+raps auth login  # Opens browser for OAuth flow
+raps hub list
+# ┌───────────────────────────────────────────────┬─────────┐
+# │ Hub Name                                       │ Type    │
+# ├───────────────────────────────────────────────┼─────────┤
+# │ ACME Construction                              │ ACC     │
+# │ Legacy BIM 360 Account                         │ BIM 360 │
+# └───────────────────────────────────────────────┴─────────┘
+
+<p class="mb-5 text-gray-700 leading-relaxed text-base"># Drill down into projects raps project list b.abc123-hub-id</p>
+
+<p class="mb-5 text-gray-700 leading-relaxed text-base"># Navigate folders raps folder list b.xyz789-project-id urn:folder:root</p>
+
+<p class="mb-5 text-gray-700 leading-relaxed text-base"># View item versions raps item versions b.xyz789-project-id urn:item:12345</code></pre></div></p>
+
+<h2 class="text-2xl font-bold mt-12 mb-6 text-gray-900 pb-3 border-b-2 border-gray-200">Part 2.5: Pipeline v2 & CI/CD (The Automation Multiplier)</h2>
+
+<p class="mb-5 text-gray-700 leading-relaxed text-base">You've seen individual commands. Now let's chain them into production workflows that run themselves.</p>
+
+<h3 class="text-xl font-bold mt-8 mb-4 text-gray-800">Pipeline v2: YAML-Defined Workflows</h3>
+
+<p class="mb-5 text-gray-700 leading-relaxed text-base">Pipeline v2 lets you define multi-step APS workflows in YAML with enterprise-grade features:</p>
+
+<div class="relative my-6"><pre class="bg-gray-900 text-gray-100 rounded-xl p-5 overflow-x-auto text-sm leading-relaxed font-mono"><span class="absolute top-2 right-3 text-xs text-gray-500 font-mono">yaml</span><code class="language-yaml">name: upload-translate-export
+version: 2
+
+<p class="mb-5 text-gray-700 leading-relaxed text-base">steps:   - name: upload     command: object upload my-bucket model.rvt     retry:       max-attempts: 3       backoff: exponential     timeout: 10m</p>
+
+<p class="mb-5 text-gray-700 leading-relaxed text-base">- name: translate     command: translate start ${steps.upload.outputs.urn} --format svf2 --wait     timeout: 30m     if: steps.upload.status == 'success'</p>
+
+<p class="mb-5 text-gray-700 leading-relaxed text-base">- name: export     command: translate properties ${steps.translate.outputs.urn} --format csv     unless: steps.translate.status == 'failed'</code></pre></div></p>
+
+<p class="mb-5 text-gray-700 leading-relaxed text-base">Retry policies, timeouts, conditionals (<code class="bg-gray-100 text-blue-700 px-1.5 py-0.5 rounded text-sm font-mono border border-gray-200">if</code>/<code class="bg-gray-100 text-blue-700 px-1.5 py-0.5 rounded text-sm font-mono border border-gray-200">unless</code>), parallel steps, and <code class="bg-gray-100 text-blue-700 px-1.5 py-0.5 rounded text-sm font-mono border border-gray-200">for-each</code> loops -- all in declarative YAML. No more brittle bash scripts with nested if-else chains.</p>
+
+<div class="relative my-6"><pre class="bg-gray-900 text-gray-100 rounded-xl p-5 overflow-x-auto text-sm leading-relaxed font-mono"><span class="absolute top-2 right-3 text-xs text-gray-500 font-mono">bash</span><code class="language-bash"># Validate before running
+raps pipeline validate upload-translate-export.yaml
+
+<p class="mb-5 text-gray-700 leading-relaxed text-base"># Run it raps pipeline run upload-translate-export.yaml</code></pre></div></p>
+
+<h3 class="text-xl font-bold mt-8 mb-4 text-gray-800">CI/CD: GitHub Actions + GitLab CI</h3>
+
+<p class="mb-5 text-gray-700 leading-relaxed text-base">Now take that pipeline and run it on every push. RAPS ships official integrations for both platforms:</p>
+
+<p class="mb-5 text-gray-700 leading-relaxed text-base"><strong class="font-semibold text-gray-900">GitHub Actions</strong> -- four composite actions:</p>
+
+<div class="relative my-6"><pre class="bg-gray-900 text-gray-100 rounded-xl p-5 overflow-x-auto text-sm leading-relaxed font-mono"><span class="absolute top-2 right-3 text-xs text-gray-500 font-mono">yaml</span><code class="language-yaml"># .github/workflows/aps.yml
+<ul class="my-4 list-disc list-outside space-y-2"><li class="ml-6 mb-2 text-gray-700">uses: raps-actions/setup@v1</li>
+</ul>  with:
+    version: '4.16.0'
+    client-id: ${{ secrets.APS_CLIENT_ID }}
+    client-secret: ${{ secrets.APS_CLIENT_SECRET }}
+
+<ul class="my-4 list-disc list-outside space-y-2"><li class="ml-6 mb-2 text-gray-700">uses: raps-actions/pipeline@v1</li>
+</ul>  with:
+    file: pipelines/upload-translate-export.yaml</code></pre></div>
+
+<p class="mb-5 text-gray-700 leading-relaxed text-base"><strong class="font-semibold text-gray-900">GitLab CI</strong> -- four include templates:</p>
+
+<div class="relative my-6"><pre class="bg-gray-900 text-gray-100 rounded-xl p-5 overflow-x-auto text-sm leading-relaxed font-mono"><span class="absolute top-2 right-3 text-xs text-gray-500 font-mono">yaml</span><code class="language-yaml"># .gitlab-ci.yml
+include:
+  - project: 'raps/raps-ci-templates'
+    file: '/templates/.raps-setup.yml'
+  - project: 'raps/raps-ci-templates'
+    file: '/templates/.raps-pipeline.yml'
+
+<p class="mb-5 text-gray-700 leading-relaxed text-base">run-pipeline:   extends: .raps-pipeline   variables:     PIPELINE_FILE: pipelines/upload-translate-export.yaml</code></pre></div></p>
+
+<p class="mb-5 text-gray-700 leading-relaxed text-base">This is the "zero to production" promise fulfilled. Install, configure, define a pipeline, wire it into CI/CD, and every model change automatically flows through your APS workflow.</p>
+
+<h2 class="text-2xl font-bold mt-12 mb-6 text-gray-900 pb-3 border-b-2 border-gray-200">Part 3: AI Integration (The Part Where Things Get Weird)</h2>
+
+<p class="mb-5 text-gray-700 leading-relaxed text-base"><figure class="my-8"><img src="/devcon/images/1258-zero-to-production-speedrun.png" alt="Speedrun Timer" class="w-full rounded-xl shadow-lg" loading="lazy" /><figcaption class="text-center text-sm text-gray-500 mt-2">Speedrun Timer</figcaption></figure></p>
+
+<p class="mb-5 text-gray-700 leading-relaxed text-base">I'll be honest—when I first added MCP support, I thought it was a gimmick. "Oh cool, AI can call my CLI. Whatever."</p>
+
+<p class="mb-5 text-gray-700 leading-relaxed text-base">Then I actually used it. Now I can't go back.</p>
+
+<h3 class="text-xl font-bold mt-8 mb-4 text-gray-800">Start the MCP Server</h3>
+
+<div class="relative my-6"><pre class="bg-gray-900 text-gray-100 rounded-xl p-5 overflow-x-auto text-sm leading-relaxed font-mono"><span class="absolute top-2 right-3 text-xs text-gray-500 font-mono">bash</span><code class="language-bash">raps serve</code></pre></div>
+
+<p class="mb-5 text-gray-700 leading-relaxed text-base">That's it. The CLI is now an MCP server, exposing <strong class="font-semibold text-gray-900">111 tools</strong> for AI assistants to use.</p>
+
+<h3 class="text-xl font-bold mt-8 mb-4 text-gray-800">Connect Claude Desktop</h3>
+
+<p class="mb-5 text-gray-700 leading-relaxed text-base">Create or edit your Claude configuration:</p>
+
+<p class="mb-5 text-gray-700 leading-relaxed text-base"><strong class="font-semibold text-gray-900">macOS:</strong> <code class="bg-gray-100 text-blue-700 px-1.5 py-0.5 rounded text-sm font-mono border border-gray-200">~/Library/Application Support/Claude/claude_desktop_config.json</code>   <strong class="font-semibold text-gray-900">Windows:</strong> <code class="bg-gray-100 text-blue-700 px-1.5 py-0.5 rounded text-sm font-mono border border-gray-200">%APPDATA%\Claude\claude_desktop_config.json</code>   <strong class="font-semibold text-gray-900">Linux:</strong> <code class="bg-gray-100 text-blue-700 px-1.5 py-0.5 rounded text-sm font-mono border border-gray-200">~/.config/claude/claude_desktop_config.json</code></p>
+
+<div class="relative my-6"><pre class="bg-gray-900 text-gray-100 rounded-xl p-5 overflow-x-auto text-sm leading-relaxed font-mono"><span class="absolute top-2 right-3 text-xs text-gray-500 font-mono">json</span><code class="language-json">{
+  "mcpServers": {
+    "raps": {
+      "command": "raps",
+      "args": ["serve"],
+      "env": {
+        "APS_CLIENT_ID": "your_client_id",
+        "APS_CLIENT_SECRET": "your_client_secret"
+      }
+    }
+  }
+}</code></pre></div>
+
+<p class="mb-5 text-gray-700 leading-relaxed text-base">Restart Claude Desktop, and you'll see "raps" in the available tools.</p>
+
+<h3 class="text-xl font-bold mt-8 mb-4 text-gray-800">Connect Cursor IDE</h3>
+
+<p class="mb-5 text-gray-700 leading-relaxed text-base">For the developers who live in Cursor, add <code class="bg-gray-100 text-blue-700 px-1.5 py-0.5 rounded text-sm font-mono border border-gray-200">.cursor/mcp.json</code> to your project:</p>
+
+<div class="relative my-6"><pre class="bg-gray-900 text-gray-100 rounded-xl p-5 overflow-x-auto text-sm leading-relaxed font-mono"><span class="absolute top-2 right-3 text-xs text-gray-500 font-mono">json</span><code class="language-json">{
+  "mcpServers": {
+    "raps": {
+      "command": "raps",
+      "args": ["serve"]
+    }
+  }
+}</code></pre></div>
+
+<h3 class="text-xl font-bold mt-8 mb-4 text-gray-800">111 MCP Tools Available</h3>
+
+<p class="mb-5 text-gray-700 leading-relaxed text-base">The MCP server exposes comprehensive APS operations:</p>
+
+<p class="mb-5 text-gray-700 leading-relaxed text-base"><strong class="font-semibold text-gray-900">Authentication & Buckets:</strong> <ul class="my-4 list-disc list-outside space-y-2"><li class="ml-6 mb-2 text-gray-700"><code class="bg-gray-100 text-blue-700 px-1.5 py-0.5 rounded text-sm font-mono border border-gray-200">auth_test</code>, <code class="bg-gray-100 text-blue-700 px-1.5 py-0.5 rounded text-sm font-mono border border-gray-200">auth_status</code></li> <li class="ml-6 mb-2 text-gray-700"><code class="bg-gray-100 text-blue-700 px-1.5 py-0.5 rounded text-sm font-mono border border-gray-200">bucket_list</code>, <code class="bg-gray-100 text-blue-700 px-1.5 py-0.5 rounded text-sm font-mono border border-gray-200">bucket_create</code>, <code class="bg-gray-100 text-blue-700 px-1.5 py-0.5 rounded text-sm font-mono border border-gray-200">bucket_get</code>, <code class="bg-gray-100 text-blue-700 px-1.5 py-0.5 rounded text-sm font-mono border border-gray-200">bucket_delete</code></li> </ul> <strong class="font-semibold text-gray-900">Objects & Translation:</strong> <ul class="my-4 list-disc list-outside space-y-2"><li class="ml-6 mb-2 text-gray-700"><code class="bg-gray-100 text-blue-700 px-1.5 py-0.5 rounded text-sm font-mono border border-gray-200">object_list</code>, <code class="bg-gray-100 text-blue-700 px-1.5 py-0.5 rounded text-sm font-mono border border-gray-200">object_delete</code>, <code class="bg-gray-100 text-blue-700 px-1.5 py-0.5 rounded text-sm font-mono border border-gray-200">object_signed_url</code>, <code class="bg-gray-100 text-blue-700 px-1.5 py-0.5 rounded text-sm font-mono border border-gray-200">object_urn</code></li> <li class="ml-6 mb-2 text-gray-700"><code class="bg-gray-100 text-blue-700 px-1.5 py-0.5 rounded text-sm font-mono border border-gray-200">translate_start</code>, <code class="bg-gray-100 text-blue-700 px-1.5 py-0.5 rounded text-sm font-mono border border-gray-200">translate_status</code></li> </ul> <strong class="font-semibold text-gray-900">Data Management:</strong> <ul class="my-4 list-disc list-outside space-y-2"><li class="ml-6 mb-2 text-gray-700"><code class="bg-gray-100 text-blue-700 px-1.5 py-0.5 rounded text-sm font-mono border border-gray-200">hub_list</code>, <code class="bg-gray-100 text-blue-700 px-1.5 py-0.5 rounded text-sm font-mono border border-gray-200">project_list</code>, <code class="bg-gray-100 text-blue-700 px-1.5 py-0.5 rounded text-sm font-mono border border-gray-200">folder_list</code>, <code class="bg-gray-100 text-blue-700 px-1.5 py-0.5 rounded text-sm font-mono border border-gray-200">folder_create</code></li> <li class="ml-6 mb-2 text-gray-700"><code class="bg-gray-100 text-blue-700 px-1.5 py-0.5 rounded text-sm font-mono border border-gray-200">item_info</code>, <code class="bg-gray-100 text-blue-700 px-1.5 py-0.5 rounded text-sm font-mono border border-gray-200">item_versions</code></li> </ul> <strong class="font-semibold text-gray-900">ACC Issues & RFIs:</strong> <ul class="my-4 list-disc list-outside space-y-2"><li class="ml-6 mb-2 text-gray-700"><code class="bg-gray-100 text-blue-700 px-1.5 py-0.5 rounded text-sm font-mono border border-gray-200">issue_list</code>, <code class="bg-gray-100 text-blue-700 px-1.5 py-0.5 rounded text-sm font-mono border border-gray-200">issue_get</code>, <code class="bg-gray-100 text-blue-700 px-1.5 py-0.5 rounded text-sm font-mono border border-gray-200">issue_create</code>, <code class="bg-gray-100 text-blue-700 px-1.5 py-0.5 rounded text-sm font-mono border border-gray-200">issue_update</code></li> <li class="ml-6 mb-2 text-gray-700"><code class="bg-gray-100 text-blue-700 px-1.5 py-0.5 rounded text-sm font-mono border border-gray-200">rfi_list</code>, <code class="bg-gray-100 text-blue-700 px-1.5 py-0.5 rounded text-sm font-mono border border-gray-200">rfi_get</code></li> </ul> <strong class="font-semibold text-gray-900">ACC Extended:</strong> <ul class="my-4 list-disc list-outside space-y-2"><li class="ml-6 mb-2 text-gray-700"><code class="bg-gray-100 text-blue-700 px-1.5 py-0.5 rounded text-sm font-mono border border-gray-200">acc_assets_list</code>, <code class="bg-gray-100 text-blue-700 px-1.5 py-0.5 rounded text-sm font-mono border border-gray-200">acc_submittals_list</code>, <code class="bg-gray-100 text-blue-700 px-1.5 py-0.5 rounded text-sm font-mono border border-gray-200">acc_checklists_list</code></li> </ul> <strong class="font-semibold text-gray-900">Account Admin (Bulk Operations):</strong> <ul class="my-4 list-disc list-outside space-y-2"><li class="ml-6 mb-2 text-gray-700"><code class="bg-gray-100 text-blue-700 px-1.5 py-0.5 rounded text-sm font-mono border border-gray-200">admin_project_list</code>, <code class="bg-gray-100 text-blue-700 px-1.5 py-0.5 rounded text-sm font-mono border border-gray-200">admin_user_add</code>, <code class="bg-gray-100 text-blue-700 px-1.5 py-0.5 rounded text-sm font-mono border border-gray-200">admin_user_remove</code></li> <li class="ml-6 mb-2 text-gray-700"><code class="bg-gray-100 text-blue-700 px-1.5 py-0.5 rounded text-sm font-mono border border-gray-200">admin_user_update_role</code>, <code class="bg-gray-100 text-blue-700 px-1.5 py-0.5 rounded text-sm font-mono border border-gray-200">admin_operation_list</code>, <code class="bg-gray-100 text-blue-700 px-1.5 py-0.5 rounded text-sm font-mono border border-gray-200">admin_operation_status</code></li> </ul> <h3 class="text-xl font-bold mt-8 mb-4 text-gray-800">What Can You Do With This?</h3></p>
+
+<p class="mb-5 text-gray-700 leading-relaxed text-base">Once connected, natural language becomes API operations:</p>
+
+<ul class="my-4 list-disc list-outside space-y-2"><li class="ml-6 mb-2 text-gray-700">"List all my OSS buckets" → AI calls <code class="bg-gray-100 text-blue-700 px-1.5 py-0.5 rounded text-sm font-mono border border-gray-200">bucket_list</code></li>
+<li class="ml-6 mb-2 text-gray-700">"Create a bucket named 'new-project' with transient policy" → AI calls <code class="bg-gray-100 text-blue-700 px-1.5 py-0.5 rounded text-sm font-mono border border-gray-200">bucket_create</code></li>
+<li class="ml-6 mb-2 text-gray-700">"What's the status of my translation job?" → AI calls <code class="bg-gray-100 text-blue-700 px-1.5 py-0.5 rounded text-sm font-mono border border-gray-200">translate_status</code></li>
+<li class="ml-6 mb-2 text-gray-700">"Show me all projects in my BIM 360 hub" → AI calls <code class="bg-gray-100 text-blue-700 px-1.5 py-0.5 rounded text-sm font-mono border border-gray-200">hub_list</code>, then <code class="bg-gray-100 text-blue-700 px-1.5 py-0.5 rounded text-sm font-mono border border-gray-200">project_list</code></li>
+<li class="ml-6 mb-2 text-gray-700">"Add user@company.com to all active projects as project admin" → AI calls <code class="bg-gray-100 text-blue-700 px-1.5 py-0.5 rounded text-sm font-mono border border-gray-200">admin_user_add</code></li>
+<li class="ml-6 mb-2 text-gray-700">"List all open issues in project XYZ" → AI calls <code class="bg-gray-100 text-blue-700 px-1.5 py-0.5 rounded text-sm font-mono border border-gray-200">issue_list</code></li>
+</ul>
+The AI doesn't hallucinate endpoints. It uses the tools we've defined, with the parameters we've specified, against your actual APS environment.
+
+<h2 class="text-2xl font-bold mt-12 mb-6 text-gray-900 pb-3 border-b-2 border-gray-200">The Bigger Picture</h2>
+
+<p class="mb-5 text-gray-700 leading-relaxed text-base">Look, this 30-minute walkthrough isn't about the CLI. Not really.</p>
+
+<p class="mb-5 text-gray-700 leading-relaxed text-base">APS is powerful. The APIs are comprehensive. But there's a gap—a big one—between reading the documentation and actually shipping production code. That gap is filled with friction: OAuth dance, Base64 encoding URNs, polling loops with magic sleep timers, error messages that could mean five different things.</p>
+
+<p class="mb-5 text-gray-700 leading-relaxed text-base">Good tooling shrinks that gap. It lets you focus on what you're actually building instead of fighting the mechanics.</p>
+
+<p class="mb-5 text-gray-700 leading-relaxed text-base">raps is one answer. It's the answer I wish existed when I spent three hours debugging why my translation kept returning "complete" with zero derivatives. Maybe it's the answer you need too.</p>
+
+<h2 class="text-2xl font-bold mt-12 mb-6 text-gray-900 pb-3 border-b-2 border-gray-200">Key Takeaways</h2>
+
+<ol class="my-4 list-decimal list-outside space-y-2"><li class="ml-6 mb-2 text-gray-700"><strong class="font-semibold text-gray-900">CLI beats clicking</strong> for anything you do more than twice</li>
+<li class="ml-6 mb-2 text-gray-700"><strong class="font-semibold text-gray-900">raps has 55 top-level commands (95+ total operations)</strong> across 15 APIs -- probably covers what you need</li>
+<li class="ml-6 mb-2 text-gray-700"><strong class="font-semibold text-gray-900">Pick your poison for install</strong>: npm, pip, brew, scoop, cargo, or curl-bash</li>
+<li class="ml-6 mb-2 text-gray-700"><strong class="font-semibold text-gray-900">Profiles save your sanity</strong> when juggling staging vs prod (you will forget which one you're on otherwise)</li>
+<li class="ml-6 mb-2 text-gray-700"><strong class="font-semibold text-gray-900">Pipeline v2 turns commands into workflows</strong> -- retry, timeout, conditionals, parallel, for-each, all in YAML</li>
+<li class="ml-6 mb-2 text-gray-700"><strong class="font-semibold text-gray-900">Official CI/CD integrations</strong> for GitHub Actions and GitLab CI mean your APS workflows run on every push</li>
+<li class="ml-6 mb-2 text-gray-700"><strong class="font-semibold text-gray-900">MCP is real</strong> -- 111 tools, works today, not a demo</li>
+<li class="ml-6 mb-2 text-gray-700"><strong class="font-semibold text-gray-900">Python bindings</strong> exist if you prefer scripting over shell commands</li>
+<li class="ml-6 mb-2 text-gray-700"><strong class="font-semibold text-gray-900">Open source</strong> means you can fix bugs without waiting on a vendor ticket</li>
+</ol>
+<h2 class="text-2xl font-bold mt-12 mb-6 text-gray-900 pb-3 border-b-2 border-gray-200">Resources</h2>
+
+<ul class="my-4 list-disc list-outside space-y-2"><li class="ml-6 mb-2 text-gray-700"><strong class="font-semibold text-gray-900">GitHub</strong>: https://github.com/dmytro-yemelianov/raps</li>
+<li class="ml-6 mb-2 text-gray-700"><strong class="font-semibold text-gray-900">Documentation</strong>: https://rapscli.xyz/docs</li>
+<li class="ml-6 mb-2 text-gray-700"><strong class="font-semibold text-gray-900">Installation Guide</strong>: https://rapscli.xyz/docs/installation</li>
+<li class="ml-6 mb-2 text-gray-700"><strong class="font-semibold text-gray-900">MCP Server Guide</strong>: https://rapscli.xyz/docs/mcp-server</li>
+<li class="ml-6 mb-2 text-gray-700"><strong class="font-semibold text-gray-900">Python Bindings</strong>: https://rapscli.xyz/docs/python-bindings</li>
+<li class="ml-6 mb-2 text-gray-700"><strong class="font-semibold text-gray-900">Command Reference</strong>: https://rapscli.xyz/docs/commands</li>
+</ul></article> </div> </div> </section>  <section class="py-8 bg-gray-50 border-t border-gray-200" data-astro-cid-z3xakpcs> <div class="content-container" data-astro-cid-z3xakpcs> <div class="max-w-5xl mx-auto flex justify-between items-center" data-astro-cid-z3xakpcs> <a href="/devcon/1257" class="flex items-center gap-2 text-gray-600 hover:text-blue-600 transition-colors group" data-astro-cid-z3xakpcs> <span class="group-hover:-translate-x-1 transition-transform" data-astro-cid-z3xakpcs>←</span> <span data-astro-cid-z3xakpcs>AI Pair-Assistant</span> </a> <a href="/devcon" class="text-sm text-gray-500 hover:text-blue-600 transition-colors" data-astro-cid-z3xakpcs>
+All Sessions
+</a> <a href="/devcon/1259" class="flex items-center gap-2 text-gray-600 hover:text-blue-600 transition-colors group" data-astro-cid-z3xakpcs> <span data-astro-cid-z3xakpcs>ACC at Enterprise Scale</span> <span class="group-hover:translate-x-1 transition-transform" data-astro-cid-z3xakpcs>→</span> </a> </div> </div> </section>  </main> <footer class="bg-gray-50 border-t border-gray-200 mt-20" data-astro-cid-37fxchfa> <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12" data-astro-cid-37fxchfa> <div class="grid grid-cols-1 md:grid-cols-4 gap-8" data-astro-cid-37fxchfa> <div data-astro-cid-37fxchfa> <h3 class="font-semibold text-gray-900 mb-4" data-astro-cid-37fxchfa>Product</h3> <ul class="space-y-2" data-astro-cid-37fxchfa> <li data-astro-cid-37fxchfa><a href="/features" class="text-gray-600 hover:text-raps-blue" data-astro-cid-37fxchfa>Features</a></li> <li data-astro-cid-37fxchfa><a href="/pricing" class="text-gray-600 hover:text-raps-blue" data-astro-cid-37fxchfa>Pricing</a></li> <li data-astro-cid-37fxchfa><a href="/changelog" class="text-gray-600 hover:text-raps-blue" data-astro-cid-37fxchfa>Changelog</a></li> <li data-astro-cid-37fxchfa><a href="/roadmap" class="text-gray-600 hover:text-raps-blue" data-astro-cid-37fxchfa>Roadmap</a></li> </ul> </div> <div data-astro-cid-37fxchfa> <h3 class="font-semibold text-gray-900 mb-4" data-astro-cid-37fxchfa>Resources</h3> <ul class="space-y-2" data-astro-cid-37fxchfa> <li data-astro-cid-37fxchfa><a href="/docs" class="text-gray-600 hover:text-raps-blue" data-astro-cid-37fxchfa>Documentation</a></li> <li data-astro-cid-37fxchfa><a href="/guides" class="text-gray-600 hover:text-raps-blue" data-astro-cid-37fxchfa>Guides</a></li> <li data-astro-cid-37fxchfa><a href="/articles" class="text-gray-600 hover:text-raps-blue" data-astro-cid-37fxchfa>Articles</a></li> <li data-astro-cid-37fxchfa><a href="/tools" class="text-gray-600 hover:text-raps-blue" data-astro-cid-37fxchfa>Tools</a></li> </ul> </div> <div data-astro-cid-37fxchfa> <h3 class="font-semibold text-gray-900 mb-4" data-astro-cid-37fxchfa>Community</h3> <ul class="space-y-2" data-astro-cid-37fxchfa> <li data-astro-cid-37fxchfa><a href="https://github.com" class="text-gray-600 hover:text-raps-blue" data-astro-cid-37fxchfa>GitHub</a></li> <li data-astro-cid-37fxchfa><a href="https://discord.gg" class="text-gray-600 hover:text-raps-blue" data-astro-cid-37fxchfa>Discord</a></li> <li data-astro-cid-37fxchfa><a href="https://twitter.com" class="text-gray-600 hover:text-raps-blue" data-astro-cid-37fxchfa>Twitter</a></li> <li data-astro-cid-37fxchfa><a href="/blog" class="text-gray-600 hover:text-raps-blue" data-astro-cid-37fxchfa>Blog</a></li> </ul> </div> <div data-astro-cid-37fxchfa> <h3 class="font-semibold text-gray-900 mb-4" data-astro-cid-37fxchfa>Company</h3> <ul class="space-y-2" data-astro-cid-37fxchfa> <li data-astro-cid-37fxchfa><a href="/about" class="text-gray-600 hover:text-raps-blue" data-astro-cid-37fxchfa>About</a></li> <li data-astro-cid-37fxchfa><a href="/contact" class="text-gray-600 hover:text-raps-blue" data-astro-cid-37fxchfa>Contact</a></li> <li data-astro-cid-37fxchfa><a href="/privacy" class="text-gray-600 hover:text-raps-blue" data-astro-cid-37fxchfa>Privacy</a></li> <li data-astro-cid-37fxchfa><a href="/terms" class="text-gray-600 hover:text-raps-blue" data-astro-cid-37fxchfa>Terms</a></li> </ul> </div> </div> <div class="mt-8 pt-8 border-t border-gray-200" data-astro-cid-37fxchfa> <p class="text-center text-gray-600" data-astro-cid-37fxchfa>
+© 2026 RAPS CLI. Professional APS Automation Tools.
+</p> </div> </div> </footer> </body></html> 
