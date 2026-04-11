@@ -1,0 +1,73 @@
+---
+import { type CollectionEntry, getCollection } from 'astro:content';
+import CLILayout from '../../../../layouts/CLILayout.astro';
+
+export async function getStaticPaths() {
+  const recipes = await getCollection('recipes');
+  return recipes.map((recipe) => ({
+    params: { slug: recipe.slug },
+    props: recipe,
+  }));
+}
+
+type Props = CollectionEntry<'recipes'>;
+
+const recipe = Astro.props;
+const { Content } = await recipe.render();
+---
+
+<CLILayout title={recipe.data.title} description={recipe.data.description}>
+  <article class="content-container py-12">
+    <div class="max-w-4xl mx-auto">
+      <header class="mb-8">
+        <div class="flex items-center text-sm text-gray-500 mb-4">
+          <a href="/cli/docs" class="hover:text-raps-blue">Docs</a>
+          <span class="mx-2">/</span>
+          <a href="/cli/docs/recipes" class="hover:text-raps-blue">Recipes</a>
+        </div>
+        <div class="flex items-center gap-4 mb-4">
+          <span class={`px-3 py-1 text-sm rounded-full ${
+            recipe.data.difficulty === 'beginner' ? 'bg-green-100 text-green-800' :
+            recipe.data.difficulty === 'intermediate' ? 'bg-yellow-100 text-yellow-800' :
+            'bg-red-100 text-red-800'
+          }`}>
+            {recipe.data.difficulty}
+          </span>
+          <span class="text-sm text-gray-500">{recipe.data.estimatedTime}</span>
+        </div>
+        <h1 class="text-4xl md:text-5xl font-bold mb-4">{recipe.data.title}</h1>
+        <p class="text-xl text-gray-600 mb-4">{recipe.data.description}</p>
+        {recipe.data.prerequisites.length > 0 && (
+          <div class="bg-yellow-50 rounded-lg p-4">
+            <h3 class="font-semibold text-yellow-900 mb-2">Prerequisites</h3>
+            <ul class="text-sm text-yellow-800 list-disc list-inside">
+              {recipe.data.prerequisites.map((p) => <li>{p}</li>)}
+            </ul>
+          </div>
+        )}
+      </header>
+
+      <div class="prose prose-lg prose-gray max-w-none">
+        <Content />
+      </div>
+
+      <nav class="mt-12 pt-8 border-t border-gray-200 flex justify-between items-center">
+        <a href="/cli/docs/recipes" class="btn btn-secondary">Back to Recipes</a>
+        <a href="/cli/tools" class="btn btn-primary">Try Tools</a>
+      </nav>
+    </div>
+  </article>
+</CLILayout>
+
+<style>
+  .prose { color: rgb(55 65 81); }
+  .prose h2 { @apply text-2xl font-bold mt-8 mb-4; }
+  .prose h3 { @apply text-xl font-semibold mt-6 mb-3; }
+  .prose p { @apply mb-4; }
+  .prose ul, .prose ol { @apply mb-4 ml-6; }
+  .prose li { @apply mb-1; }
+  .prose code { @apply bg-gray-100 text-raps-blue px-1 py-0.5 rounded text-sm font-mono; }
+  .prose pre { @apply bg-gray-900 text-gray-100 rounded-lg p-4 overflow-x-auto my-6; }
+  .prose pre code { @apply bg-transparent p-0 text-gray-100; }
+  .prose a { @apply text-raps-blue hover:underline; }
+</style>

@@ -1,0 +1,56 @@
+---
+import CLILayout from '../../../../layouts/CLILayout.astro';
+import { getCollection } from 'astro:content';
+
+const recipes = await getCollection('recipes');
+---
+
+<CLILayout title="Recipes" description="Common workflow patterns for APS development with RAPS CLI.">
+  <div class="hero-pattern py-12">
+    <div class="content-container">
+      <h1 class="text-4xl md:text-5xl font-bold text-center mb-4">
+        <span class="gradient-text">Recipes</span>
+      </h1>
+      <p class="text-xl text-gray-600 text-center max-w-3xl mx-auto">
+        Step-by-step workflow patterns you can copy and adapt
+      </p>
+    </div>
+  </div>
+
+  <div class="content-container py-12">
+    <div class="grid md:grid-cols-2 gap-6">
+      {recipes.map((recipe) => (
+        <article class="card p-6 hover:shadow-lg transition-shadow">
+          <div class="flex items-center justify-between mb-4">
+            <span class={`px-2 py-1 text-xs rounded-full ${
+              recipe.data.difficulty === 'beginner' ? 'bg-green-100 text-green-800' :
+              recipe.data.difficulty === 'intermediate' ? 'bg-yellow-100 text-yellow-800' :
+              'bg-red-100 text-red-800'
+            }`}>
+              {recipe.data.difficulty}
+            </span>
+            <span class="text-sm text-gray-500">{recipe.data.estimatedTime}</span>
+          </div>
+          <h3 class="text-xl font-semibold mb-3 hover:text-raps-blue transition">
+            <a href={`/cli/docs/recipes/${recipe.slug}`}>{recipe.data.title}</a>
+          </h3>
+          <p class="text-gray-600 mb-4">{recipe.data.description}</p>
+          <div class="flex flex-wrap gap-2 mb-4">
+            {recipe.data.apis.map((api) => (
+              <span class="text-xs bg-blue-50 text-blue-700 px-2 py-1 rounded">{api}</span>
+            ))}
+          </div>
+          <a href={`/cli/docs/recipes/${recipe.slug}`} class="text-raps-blue font-semibold hover:underline">View Recipe</a>
+        </article>
+      ))}
+    </div>
+
+    {recipes.length === 0 && (
+      <div class="text-center py-12">
+        <div class="text-6xl mb-4">🍳</div>
+        <h2 class="text-2xl font-semibold mb-4">Recipes Coming Soon</h2>
+        <p class="text-gray-600">We're preparing workflow patterns.</p>
+      </div>
+    )}
+  </div>
+</CLILayout>
