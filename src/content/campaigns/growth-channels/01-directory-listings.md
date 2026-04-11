@@ -1,3 +1,9 @@
+---
+title: Software Directory Listings
+description: Passive discovery channel for RAPS through software directory submissions.
+campaign: growth-channels
+---
+
 # Software Directory Listings — RAPS
 
 > Passive discovery channel. List once, get traffic indefinitely.

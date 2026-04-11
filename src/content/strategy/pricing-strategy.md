@@ -1,3 +1,10 @@
+---
+title: RAPS Platform Pricing Strategy
+description: Pricing tiers, feature gating, and revenue projections for the RAPS platform.
+category: growth
+lastUpdated: 2026-03-15
+---
+
 # RAPS Platform Pricing Strategy
 
 > **Last updated**: 2026-03-15

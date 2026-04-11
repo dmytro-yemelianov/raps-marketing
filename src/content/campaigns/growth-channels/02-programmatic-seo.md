@@ -1,3 +1,9 @@
+---
+title: Programmatic SEO — Pain-Point Landing Pages
+description: Capture search intent from AEC teams searching for their exact workflow problems.
+campaign: growth-channels
+---
+
 # Programmatic SEO — Pain-Point Landing Pages
 
 > Capture search intent from AEC teams Googling their exact problems.

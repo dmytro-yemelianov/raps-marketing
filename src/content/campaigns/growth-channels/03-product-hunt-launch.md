@@ -1,3 +1,9 @@
+---
+title: Product Hunt Launch Plan
+description: Concentrated visibility burst strategy for launching RAPS on Product Hunt.
+campaign: growth-channels
+---
+
 # Product Hunt Launch Plan — RAPS
 
 > Concentrated visibility burst. One shot — make it count.

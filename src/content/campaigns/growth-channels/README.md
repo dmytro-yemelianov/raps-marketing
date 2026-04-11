@@ -1,3 +1,9 @@
+---
+title: Growth Channels Campaign
+description: Overview of growth channel strategies for RAPS marketing.
+campaign: growth-channels
+---
+
 # Growth Channels Campaign
 
 Inspired by [Marketing for Founders](https://github.com/EdoStra/Marketing-for-Founders) — adapted for RAPS's position as the only CLI tool in the 259-app Autodesk marketplace.
