@@ -1,0 +1,103 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+
+const tiers = [
+  {
+    name: 'Starter',
+    price: 'Free',
+    description: 'For teams exploring ACC automation.',
+    features: [
+      'Up to 10 projects',
+      'Dry-run mode',
+      'Basic audit log',
+      'Community support',
+    ],
+    cta: 'Get Started',
+    ctaHref: '/cli',
+    highlight: false,
+  },
+  {
+    name: 'Professional',
+    price: 'Contact us',
+    description: 'For teams managing ACC at scale.',
+    features: [
+      'Up to 500 projects',
+      'Full bulk operations',
+      'Complete audit trail',
+      'RCW migration tools',
+      'Priority support',
+      'Team management',
+    ],
+    cta: 'Book a Demo',
+    ctaHref: '/rapsody/demo',
+    highlight: true,
+  },
+  {
+    name: 'Enterprise',
+    price: 'Custom',
+    description: 'For organizations with complex requirements.',
+    features: [
+      'Unlimited projects',
+      'Custom integrations',
+      'SSO / SCIM provisioning',
+      'Dedicated support engineer',
+      'SLA guarantees',
+      'On-premise deployment option',
+    ],
+    cta: 'Contact Sales',
+    ctaHref: '/rapsody/demo',
+    highlight: false,
+  },
+];
+---
+
+<BaseLayout title="Pricing" description="Rapsody pricing plans for ACC automation at any scale." section="rapsody">
+  <div class="hero-pattern py-12">
+    <div class="content-container text-center">
+      <h1 class="text-4xl md:text-5xl font-bold mb-4">
+        <span class="bg-gradient-to-r from-raps-purple to-raps-blue bg-clip-text text-transparent">Pricing</span>
+      </h1>
+      <p class="text-xl text-gray-600 max-w-2xl mx-auto">
+        Start free with RAPS CLI. Scale to enterprise with Rapsody.
+      </p>
+    </div>
+  </div>
+
+  <div class="content-container py-12">
+    <div class="grid md:grid-cols-3 gap-8 max-w-5xl mx-auto">
+      {tiers.map((tier) => (
+        <div class:list={[
+          'rounded-2xl p-8 flex flex-col',
+          tier.highlight
+            ? 'bg-gradient-to-br from-raps-purple to-raps-blue text-white shadow-xl scale-105'
+            : 'card',
+        ]}>
+          <h3 class="text-2xl font-bold mb-2">{tier.name}</h3>
+          <div class="text-3xl font-bold mb-2">{tier.price}</div>
+          <p class:list={['mb-6', tier.highlight ? 'opacity-90' : 'text-gray-600']}>{tier.description}</p>
+          <ul class="space-y-3 mb-8 flex-1">
+            {tier.features.map((feature) => (
+              <li class="flex items-start">
+                <svg class:list={['w-5 h-5 mr-2 mt-0.5 shrink-0', tier.highlight ? 'text-white' : 'text-green-500']} fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7" />
+                </svg>
+                <span class:list={[tier.highlight ? '' : 'text-gray-700']}>{feature}</span>
+              </li>
+            ))}
+          </ul>
+          <a
+            href={tier.ctaHref}
+            class:list={[
+              'btn text-center text-lg py-3',
+              tier.highlight
+                ? 'bg-white text-raps-purple hover:bg-gray-100'
+                : 'btn-primary',
+            ]}
+          >
+            {tier.cta}
+          </a>
+        </div>
+      ))}
+    </div>
+  </div>
+</BaseLayout>
