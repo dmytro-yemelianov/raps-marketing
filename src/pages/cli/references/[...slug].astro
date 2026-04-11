@@ -1,0 +1,53 @@
+---
+import { type CollectionEntry, getCollection } from 'astro:content';
+import CLILayout from '../../../layouts/CLILayout.astro';
+
+export async function getStaticPaths() {
+  const references = await getCollection('references');
+  return references.map((ref) => ({
+    params: { slug: ref.slug },
+    props: ref,
+  }));
+}
+
+type Props = CollectionEntry<'references'>;
+
+const ref = Astro.props;
+const { Content } = await ref.render();
+---
+
+<CLILayout title={ref.data.title} description={ref.data.description}>
+  <article class="content-container py-12">
+    <div class="max-w-4xl mx-auto">
+      <div class="flex items-center text-sm text-gray-500 mb-4">
+        <a href="/cli/references" class="hover:text-raps-blue">References</a>
+        <span class="mx-2">/</span>
+        <span class="capitalize">{ref.data.category}</span>
+      </div>
+      <h1 class="text-4xl font-bold mb-4">{ref.data.title}</h1>
+      <p class="text-gray-600 mb-8">{ref.data.description}</p>
+      <div class="prose prose-lg prose-gray max-w-none">
+        <Content />
+      </div>
+      <nav class="mt-12 pt-8 border-t border-gray-200">
+        <a href="/cli/references" class="btn btn-secondary">Back to References</a>
+      </nav>
+    </div>
+  </article>
+</CLILayout>
+
+<style>
+  .prose { color: rgb(55 65 81); }
+  .prose h2 { @apply text-2xl font-bold mt-8 mb-4; }
+  .prose h3 { @apply text-xl font-semibold mt-6 mb-3; }
+  .prose p { @apply mb-4; }
+  .prose ul, .prose ol { @apply mb-4 ml-6; }
+  .prose li { @apply mb-1; }
+  .prose code { @apply bg-gray-100 text-raps-blue px-1 py-0.5 rounded text-sm font-mono; }
+  .prose pre { @apply bg-gray-900 text-gray-100 rounded-lg p-4 overflow-x-auto my-6; }
+  .prose pre code { @apply bg-transparent p-0 text-gray-100; }
+  .prose a { @apply text-raps-blue hover:underline; }
+  .prose table { @apply w-full border-collapse border border-gray-300 my-6; }
+  .prose th, .prose td { @apply border border-gray-300 px-3 py-2 text-left; }
+  .prose th { @apply bg-gray-100 font-semibold; }
+</style>
