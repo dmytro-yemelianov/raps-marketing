@@ -1,0 +1,31 @@
+---
+const currentPath = Astro.url.pathname;
+const links = [
+  { href: '/cli', label: 'Overview', match: /^\/cli\/?$/ },
+  { href: '/cli/docs', label: 'Docs', match: /^\/cli\/docs/ },
+  { href: '/cli/learn', label: 'Learn', match: /^\/cli\/learn/ },
+  { href: '/cli/tools', label: 'Tools', match: /^\/cli\/tools/ },
+  { href: '/cli/references', label: 'References', match: /^\/cli\/references/ },
+  { href: '/cli/pdfs', label: 'PDFs', match: /^\/cli\/pdfs/ },
+];
+---
+
+<nav class="bg-gray-50 border-b border-gray-200">
+  <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+    <div class="flex space-x-6 overflow-x-auto py-3 text-sm">
+      {links.map(({ href, label, match }) => (
+        <a
+          href={href}
+          class:list={[
+            'whitespace-nowrap font-medium transition',
+            match.test(currentPath)
+              ? 'text-raps-blue border-b-2 border-raps-blue pb-2'
+              : 'text-gray-600 hover:text-raps-blue',
+          ]}
+        >
+          {label}
+        </a>
+      ))}
+    </div>
+  </div>
+</nav>
