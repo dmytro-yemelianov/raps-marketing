@@ -1,0 +1,23 @@
+# Existing paths -> new CLI section paths
+/guides/*         /cli/docs/:splat       301
+/guides           /cli/docs              301
+/articles/*       /cli/learn/articles/:splat  301
+/articles         /cli/learn/articles    301
+/recipes/*        /cli/docs/recipes/:splat    301
+/recipes          /cli/docs/recipes      301
+/tools/*          /cli/tools/:splat      301
+/tools            /cli/tools             301
+/resources/aps-cheatsheet    /cli/learn/aps-cheatsheet   301
+/resources/api-decision-tree /cli/learn/api-decision-tree 301
+/resources/*      /cli/learn/:splat      301
+/resources        /cli/learn             301
+/pdfs/*           /cli/pdfs/:splat       301
+/pdfs             /cli/pdfs              301
+
+# Forward-looking aliases from task doc
+/docs/*           /cli/docs/:splat       301
+/docs             /cli/docs              301
+/learn/*          /cli/learn/:splat      301
+/learn            /cli/learn             301
+/references/*     /cli/references/:splat 301
+/references       /cli/references        301
