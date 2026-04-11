@@ -1,0 +1,184 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+---
+
+<BaseLayout
+  title="Rapsody"
+  description="Bulk operations across thousands of Autodesk projects. Safe. Fast. Auditable."
+  section="rapsody"
+>
+  <!-- Hero -->
+  <section class="py-20 bg-gradient-to-br from-gray-50 to-white">
+    <div class="content-container text-center">
+      <h1 class="text-5xl md:text-6xl font-bold mb-6">
+        <span class="bg-gradient-to-r from-raps-purple to-raps-blue bg-clip-text text-transparent">
+          Rapsody
+        </span>
+      </h1>
+      <p class="text-xl md:text-2xl text-gray-600 mb-4 max-w-3xl mx-auto">
+        What takes your team 41 hours, Rapsody does in under 4 minutes.
+      </p>
+      <p class="text-lg text-gray-500 mb-8 max-w-2xl mx-auto">
+        Bulk operations across thousands of Autodesk Construction Cloud projects.
+        Preview every change before it executes. Full audit trail.
+      </p>
+      <div class="flex flex-col sm:flex-row gap-4 justify-center">
+        <a href="/rapsody/demo" class="btn bg-gradient-to-r from-raps-purple to-raps-blue text-white hover:shadow-lg text-lg px-8 py-3 rounded-lg font-medium transition-all">
+          Book a Demo
+        </a>
+        <a href="#how-it-works" class="btn btn-secondary text-lg px-8 py-3">
+          See How It Works
+        </a>
+      </div>
+      <div class="mt-12 grid grid-cols-3 gap-6 max-w-lg mx-auto">
+        <div>
+          <div class="text-3xl font-bold text-raps-purple">630x</div>
+          <div class="text-sm text-gray-500">Faster</div>
+        </div>
+        <div>
+          <div class="text-3xl font-bold text-raps-purple">1,795</div>
+          <div class="text-sm text-gray-500">Projects managed</div>
+        </div>
+        <div>
+          <div class="text-3xl font-bold text-raps-purple">&lt;4 min</div>
+          <div class="text-sm text-gray-500">Execution time</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- How It Works -->
+  <section id="how-it-works" class="py-16">
+    <div class="content-container">
+      <h2 class="text-3xl md:text-4xl font-bold text-center mb-12">How It Works</h2>
+      <div class="grid md:grid-cols-4 gap-8 max-w-5xl mx-auto">
+        <div class="text-center">
+          <div class="w-12 h-12 bg-purple-100 text-raps-purple rounded-full flex items-center justify-center text-xl font-bold mx-auto mb-4">1</div>
+          <h3 class="font-semibold mb-2">Dry Run</h3>
+          <p class="text-sm text-gray-600">Simulate changes across all projects. See exactly what will happen without touching anything.</p>
+        </div>
+        <div class="text-center">
+          <div class="w-12 h-12 bg-purple-100 text-raps-purple rounded-full flex items-center justify-center text-xl font-bold mx-auto mb-4">2</div>
+          <h3 class="font-semibold mb-2">Plan</h3>
+          <p class="text-sm text-gray-600">Review the execution plan. Every change listed, every project identified, every risk flagged.</p>
+        </div>
+        <div class="text-center">
+          <div class="w-12 h-12 bg-purple-100 text-raps-purple rounded-full flex items-center justify-center text-xl font-bold mx-auto mb-4">3</div>
+          <h3 class="font-semibold mb-2">Confirm</h3>
+          <p class="text-sm text-gray-600">Approve the plan. No changes happen until you explicitly confirm.</p>
+        </div>
+        <div class="text-center">
+          <div class="w-12 h-12 bg-purple-100 text-raps-purple rounded-full flex items-center justify-center text-xl font-bold mx-auto mb-4">4</div>
+          <h3 class="font-semibold mb-2">Apply</h3>
+          <p class="text-sm text-gray-600">Execute with full parallelism. Real-time progress, automatic retries, complete audit log.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Features Grid -->
+  <section class="py-16 bg-gray-50">
+    <div class="content-container">
+      <h2 class="text-3xl md:text-4xl font-bold text-center mb-12">Built for Enterprise Scale</h2>
+      <div class="feature-grid">
+        <div class="card p-6">
+          <h3 class="text-xl font-semibold mb-2">Bulk Operations</h3>
+          <p class="text-gray-600">Add users, update permissions, modify settings across hundreds of projects in a single command.</p>
+        </div>
+        <div class="card p-6">
+          <h3 class="text-xl font-semibold mb-2">RCW Migration</h3>
+          <p class="text-gray-600">Migrate roles, companies, and workflows between ACC accounts with zero downtime.</p>
+        </div>
+        <div class="card p-6">
+          <h3 class="text-xl font-semibold mb-2">Compliance</h3>
+          <p class="text-gray-600">Audit user access, enforce permission policies, and generate compliance reports automatically.</p>
+        </div>
+        <div class="card p-6">
+          <h3 class="text-xl font-semibold mb-2">Audit Trail</h3>
+          <p class="text-gray-600">Every operation logged with before/after state. Full traceability for enterprise governance.</p>
+        </div>
+        <div class="card p-6">
+          <h3 class="text-xl font-semibold mb-2">Safe by Default</h3>
+          <p class="text-gray-600">Dry-run mode, confirmation gates, automatic rollback plans. Preview before you execute.</p>
+        </div>
+        <div class="card p-6">
+          <h3 class="text-xl font-semibold mb-2">Parallel Execution</h3>
+          <p class="text-gray-600">Concurrent API operations with intelligent rate limiting. 630x faster than manual workflows.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Trust -->
+  <section class="py-16">
+    <div class="content-container">
+      <div class="bg-gradient-to-r from-raps-purple to-raps-blue rounded-2xl p-8 md:p-12 text-white text-center">
+        <h2 class="text-3xl md:text-4xl font-bold mb-6">Preview Before You Execute</h2>
+        <p class="text-lg opacity-90 max-w-2xl mx-auto mb-8">
+          Every Rapsody operation starts with a dry run. You see exactly what will change,
+          across every project, before a single API call is made. No surprises.
+        </p>
+        <div class="grid md:grid-cols-3 gap-6 max-w-3xl mx-auto">
+          <div class="bg-white/10 backdrop-blur rounded-lg p-4">
+            <div class="text-2xl font-bold mb-1">0</div>
+            <div class="text-sm opacity-90">Unintended changes</div>
+          </div>
+          <div class="bg-white/10 backdrop-blur rounded-lg p-4">
+            <div class="text-2xl font-bold mb-1">100%</div>
+            <div class="text-sm opacity-90">Operations audited</div>
+          </div>
+          <div class="bg-white/10 backdrop-blur rounded-lg p-4">
+            <div class="text-2xl font-bold mb-1">Full</div>
+            <div class="text-sm opacity-90">Rollback capability</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Social Proof -->
+  <section class="py-16 bg-gray-50">
+    <div class="content-container text-center">
+      <h2 class="text-3xl md:text-4xl font-bold mb-8">Trusted at Scale</h2>
+      <p class="text-lg text-gray-600 max-w-2xl mx-auto mb-8">
+        Built in collaboration with leading AEC technology teams.
+        Currently managing bulk operations across 1,795+ ACC projects
+        for Fortune-adjacent enterprise clients.
+      </p>
+      <div class="grid md:grid-cols-2 gap-8 max-w-3xl mx-auto">
+        <div class="card p-6">
+          <p class="text-gray-600 mb-4">
+            "We went from 41 hours of manual project setup to under 4 minutes.
+            The dry-run feature alone saved us from three potential incidents."
+          </p>
+          <p class="text-sm text-gray-500">-- Enterprise ACC Administrator</p>
+        </div>
+        <div class="card p-6">
+          <p class="text-gray-600 mb-4">
+            "Managing permissions across 1,795 projects was impossible before.
+            Now it's a single command with full audit trail."
+          </p>
+          <p class="text-sm text-gray-500">-- AEC Technology Director</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- CTA -->
+  <section class="py-16">
+    <div class="content-container text-center">
+      <h2 class="text-3xl md:text-4xl font-bold mb-6">Ready to Scale Your ACC Operations?</h2>
+      <p class="text-lg text-gray-600 mb-8 max-w-2xl mx-auto">
+        See how Rapsody can transform your enterprise Autodesk workflows.
+      </p>
+      <div class="flex flex-col sm:flex-row gap-4 justify-center">
+        <a href="/rapsody/demo" class="btn bg-gradient-to-r from-raps-purple to-raps-blue text-white hover:shadow-lg text-lg px-8 py-3 rounded-lg font-medium transition-all">
+          Book a Demo
+        </a>
+        <a href="/survey" class="btn btn-secondary text-lg px-8 py-3">
+          Take the Survey
+        </a>
+      </div>
+    </div>
+  </section>
+</BaseLayout>
