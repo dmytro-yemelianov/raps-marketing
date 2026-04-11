@@ -1,0 +1,26 @@
+---
+import CLILayout from '../../../layouts/CLILayout.astro';
+import { getEntry } from 'astro:content';
+
+const cheatsheet = await getEntry('cheatsheets', 'aps-cheatsheet');
+const { Content } = await cheatsheet.render();
+---
+
+<CLILayout title="APS Cheatsheet" description="Single-page quick reference for APS APIs with RAPS shortcuts.">
+  <article class="content-container py-12">
+    <div class="max-w-4xl mx-auto">
+      <div class="flex items-center text-sm text-gray-500 mb-4">
+        <a href="/cli/learn" class="hover:text-raps-blue">Learn</a>
+        <span class="mx-2">/</span>
+        <span>APS Cheatsheet</span>
+      </div>
+      <h1 class="text-4xl font-bold mb-6">{cheatsheet.data.title}</h1>
+      <div class="prose prose-lg prose-gray max-w-none">
+        <Content />
+      </div>
+      <nav class="mt-12 pt-8 border-t border-gray-200">
+        <a href="/cli/learn" class="btn btn-secondary">Back to Learn</a>
+      </nav>
+    </div>
+  </article>
+</CLILayout>

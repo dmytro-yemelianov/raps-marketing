@@ -1,0 +1,66 @@
+---
+import { type CollectionEntry, getCollection } from 'astro:content';
+import CLILayout from '../../../../layouts/CLILayout.astro';
+
+export async function getStaticPaths() {
+  const articles = await getCollection('articles', ({ data }) => !data.draft);
+  return articles.map((article) => ({
+    params: { slug: article.slug },
+    props: article,
+  }));
+}
+
+type Props = CollectionEntry<'articles'>;
+
+const article = Astro.props;
+const { Content } = await article.render();
+---
+
+<CLILayout title={article.data.title} description={article.data.description}>
+  <article class="content-container py-12">
+    <div class="max-w-4xl mx-auto">
+      <header class="mb-8">
+        <div class="flex items-center text-sm text-gray-500 mb-4">
+          <a href="/cli/learn" class="hover:text-raps-blue">Learn</a>
+          <span class="mx-2">/</span>
+          <a href="/cli/learn/articles" class="hover:text-raps-blue">Articles</a>
+        </div>
+        <div class="flex items-center gap-4 mb-4">
+          <span class="text-sm text-gray-500">
+            {article.data.publishDate.toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' })}
+          </span>
+          <span class="text-sm text-gray-500">By {article.data.author}</span>
+        </div>
+        <h1 class="text-4xl md:text-5xl font-bold mb-4">{article.data.title}</h1>
+        <p class="text-xl text-gray-600 mb-4">{article.data.description}</p>
+        <div class="flex flex-wrap gap-2">
+          {article.data.tags.map((tag) => (
+            <span class="text-xs bg-gray-100 text-gray-700 px-2 py-1 rounded">{tag}</span>
+          ))}
+        </div>
+      </header>
+
+      <div class="prose prose-lg prose-gray max-w-none">
+        <Content />
+      </div>
+
+      <nav class="mt-12 pt-8 border-t border-gray-200 flex justify-between items-center">
+        <a href="/cli/learn/articles" class="btn btn-secondary">Back to Articles</a>
+        <a href="/cli/docs" class="btn btn-primary">View Docs</a>
+      </nav>
+    </div>
+  </article>
+</CLILayout>
+
+<style>
+  .prose { color: rgb(55 65 81); }
+  .prose h2 { @apply text-2xl font-bold mt-8 mb-4; }
+  .prose h3 { @apply text-xl font-semibold mt-6 mb-3; }
+  .prose p { @apply mb-4; }
+  .prose ul, .prose ol { @apply mb-4 ml-6; }
+  .prose li { @apply mb-1; }
+  .prose code { @apply bg-gray-100 text-raps-blue px-1 py-0.5 rounded text-sm font-mono; }
+  .prose pre { @apply bg-gray-900 text-gray-100 rounded-lg p-4 overflow-x-auto my-6; }
+  .prose pre code { @apply bg-transparent p-0 text-gray-100; }
+  .prose a { @apply text-raps-blue hover:underline; }
+</style>

@@ -1,0 +1,68 @@
+---
+import CLILayout from '../../../layouts/CLILayout.astro';
+import { getCollection } from 'astro:content';
+
+const articles = await getCollection('articles', ({ data }) => !data.draft);
+const cheatsheets = await getCollection('cheatsheets');
+---
+
+<CLILayout title="Learn" description="Articles, cheatsheets, and troubleshooting resources for APS development.">
+  <div class="hero-pattern py-12">
+    <div class="content-container">
+      <h1 class="text-4xl md:text-5xl font-bold text-center mb-4">
+        <span class="gradient-text">Learn</span>
+      </h1>
+      <p class="text-xl text-gray-600 text-center max-w-3xl mx-auto">
+        Deep dives, cheatsheets, and troubleshooting for APS developers
+      </p>
+    </div>
+  </div>
+
+  <div class="content-container py-12">
+    <div class="grid md:grid-cols-3 gap-6 mb-12">
+      <a href="/cli/learn/articles" class="card p-6 hover:shadow-xl transition-all group">
+        <div class="text-4xl mb-4">✍️</div>
+        <h3 class="text-xl font-semibold mb-2 group-hover:text-raps-blue transition">Articles</h3>
+        <p class="text-gray-600 mb-2">Technical deep-dives into APS development challenges.</p>
+        <span class="text-sm text-gray-500">{articles.length} articles</span>
+      </a>
+      <a href="/cli/learn/aps-cheatsheet" class="card p-6 hover:shadow-xl transition-all group">
+        <div class="text-4xl mb-4">📋</div>
+        <h3 class="text-xl font-semibold mb-2 group-hover:text-raps-blue transition">APS Cheatsheet</h3>
+        <p class="text-gray-600 mb-2">Quick reference for APS APIs with RAPS shortcuts.</p>
+        <span class="text-sm text-gray-500">Quick reference</span>
+      </a>
+      <a href="/cli/learn/api-decision-tree" class="card p-6 hover:shadow-xl transition-all group">
+        <div class="text-4xl mb-4">🌳</div>
+        <h3 class="text-xl font-semibold mb-2 group-hover:text-raps-blue transition">API Decision Tree</h3>
+        <p class="text-gray-600 mb-2">Find the right APS API for your use case.</p>
+        <span class="text-sm text-gray-500">Interactive guide</span>
+      </a>
+    </div>
+
+    {articles.length > 0 && (
+      <section>
+        <h2 class="text-2xl font-bold mb-6">Recent Articles</h2>
+        <div class="space-y-4">
+          {articles
+            .sort((a, b) => b.data.publishDate.getTime() - a.data.publishDate.getTime())
+            .slice(0, 3)
+            .map((article) => (
+              <a href={`/cli/learn/articles/${article.slug}`} class="card p-4 block hover:shadow-lg transition-shadow">
+                <div class="flex items-center justify-between">
+                  <h3 class="font-semibold hover:text-raps-blue transition">{article.data.title}</h3>
+                  <span class="text-sm text-gray-500 ml-4 shrink-0">
+                    {article.data.publishDate.toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' })}
+                  </span>
+                </div>
+                <p class="text-gray-600 text-sm mt-1">{article.data.description}</p>
+              </a>
+            ))}
+        </div>
+        <div class="mt-4 text-center">
+          <a href="/cli/learn/articles" class="text-raps-blue font-semibold hover:underline">View all articles</a>
+        </div>
+      </section>
+    )}
+  </div>
+</CLILayout>
