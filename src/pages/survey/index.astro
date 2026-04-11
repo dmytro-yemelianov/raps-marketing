@@ -1,0 +1,16 @@
+---
+import SurveyLayout from '../../layouts/SurveyLayout.astro';
+import AECSurvey from '../../components/AECSurvey.tsx';
+---
+
+<SurveyLayout title="AEC Automation Survey" description="Help us understand how AEC teams automate Autodesk Construction Cloud workflows.">
+  <div class="text-center py-8">
+    <h1 class="text-3xl md:text-4xl font-bold mb-2">
+      <span class="bg-gradient-to-r from-raps-purple to-raps-blue bg-clip-text text-transparent">
+        AEC Automation Survey
+      </span>
+    </h1>
+    <p class="text-gray-600">5 questions, takes under 2 minutes</p>
+  </div>
+  <AECSurvey client:load />
+</SurveyLayout>
